@@ -1,6 +1,6 @@
 // -------- Global Variables ----------
 
-var base_url = 'http://www.crucio-leipzig.de';
+var base_url = window.location.origin;
 var is_dev = (base_url.indexOf("dev") == 7) ? 1 : 0;
 
 var subject_list = {

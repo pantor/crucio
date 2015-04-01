@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="crucioApp" id="ng-app">
 	<head>
-		<?php include 'parts/head-inc.html'; ?>
+		<?php include 'parts/header.php'; ?>
 
 		<title ng-controller="titleCtrl" ng-bind="Page.title()"></title>
 	</head>

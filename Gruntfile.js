@@ -13,7 +13,7 @@ module.exports = function(grunt) {
 			},
 			js: {
             	files: ['src/js/*.js'],
-				tasks: ['ngAnnotate:crucio', 'uglify:crucio', 'transcode:crucio']
+				tasks: ['ngAnnotate:crucio', 'uglify:crucio']
 			},
 			mail_templates: {
             	files: ['src/mail-templates/*.html'],
@@ -103,7 +103,7 @@ module.exports = function(grunt) {
 				toEncoding: 'utf8' // Target file encoding
 			},
 			crucio: {
-				'public/js/crucio2.min.js': 'public/js/crucio.min.js'
+				'public/js/crucio.min.js': 'public/js/crucio.min.js'
 			}
 		},
 		

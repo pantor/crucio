@@ -2,7 +2,7 @@
 <html ng-app="crucioApp2">
 	<head>
 		<title>Stats | Crucio </title>
-		<?php include '../parts/head-inc.html'; ?>
+		<?php include '../parts/header.php'; ?>
 
 		<script>
 			var crucioApp2 = angular.module('crucioApp2', ['ui.bootstrap', 'angles']);

@@ -3,7 +3,7 @@
 <html ng-app="crucioApp" id="ng-app">
 	<head>
 	    <title>Crucio | Fachschaft Medizin Leipzig</title>
-		<?php include 'parts/head-inc.html'; ?>
+		<?php include 'parts/header.php'; ?>
 		
 		<!-- Smooth Scrollling-->
 		<script>

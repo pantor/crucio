@@ -2,7 +2,7 @@
 <html ng-app="crucioApp" id="ng-app">
 	<head>
 		<title>Passwort vergessen | Crucio </title>
-		<?php include 'parts/head-inc.html'; ?>
+		<?php include 'parts/header.php'; ?>
 	</head>
 
 	<div class="modal fade" id="forgotSucessModal" tabindex="-1" role="dialog">

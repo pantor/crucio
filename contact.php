@@ -2,7 +2,7 @@
 <html ng-app="crucioApp" id="ng-app">
 	<head>
 		<title>Kontakt | Crucio </title>
-		<?php include 'parts/head-inc.html'; ?>
+		<?php include 'parts/header.php'; ?>
 
 		<script type="text/ng-template" id="myModalContent.html">
 		    <div class="modal-header">

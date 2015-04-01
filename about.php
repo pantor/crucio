@@ -2,7 +2,7 @@
 <html ng-app="crucioApp" id="ng-app">
 	<head>
 		<title>Impressum | Crucio </title>
-		<?php include 'parts/head-inc.html'; ?>
+		<?php include 'parts/header.php'; ?>
 	</head>
 
 	<body class="body-padding" ng-controller="aboutCtrl">
