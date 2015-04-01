@@ -1,0 +1,25 @@
+# Created by https://www.gitignore.io
+
+### Bower ###
+bower_components
+.bower-cache
+.bower-registry
+.bower-tmp
+
+
+### grunt ###
+# Grunt usually compiles files inside this directory
+dist/
+
+# Grunt usually preprocesses files such as coffeescript, compass... inside the .tmp directory
+.tmp/
+
+
+### Node ###
+# Dependency directory
+node_modules
+
+
+### Website ###
+robots.txt
+google*.html

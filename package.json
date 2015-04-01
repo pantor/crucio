@@ -1,0 +1,31 @@
+{
+	"name": "Crucio",
+	"author": "Lars Berscheid",
+	"version": "0.6.0",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/crucioproject/Crucio"
+	},
+	"devDependencies": {
+		"alter": "^0.2.0",
+		"convert-source-map": "^0.4.1",
+		"esprima": "^2.0.0",
+		"grunt": "^0.4.5",
+		"grunt-contrib-watch": "*",
+		"grunt-contrib-cssmin": "*",
+		"grunt-contrib-less": "*",
+		"grunt-contrib-uglify": "*",
+		"grunt-contrib-concat": "*",
+		"grunt-inline-css": "^0.1.4",
+		"grunt-ng-annotate": "^0.8.0",
+		"grunt-shell": "^1.1.1",
+		"grunt-transcode": "^0.0.3",
+		"ordered-ast-traverse": "^0.1.1",
+		"simple-fmt": "^0.1.0",
+		"simple-is": "^0.2.0",
+		"source-map": "^0.1.43",
+		"stable": "^0.1.5",
+		"stringmap": "^0.2.2",
+		"stringset": "^0.2.1"
+	}
+}

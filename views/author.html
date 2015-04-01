@@ -1,0 +1,226 @@
+<div class="container">
+	<div class="row mtop-navbar-row">
+	    <div class="col-md-3 sidebar">
+	    	<ul class="nav nav-pills nav-stacked mbottom-2x">
+	    		<li class="active"><a data-target="#exams" data-toggle="tab"><i class="fa fa-list fa-fw"></i>  Klausuren</a></li>
+	    		<li><a data-target="#comments" data-toggle="tab"><i class="fa fa-comments fa-fw"></i>  Kommentare</a></li>
+	    		<li><a data-target="#subjects" data-toggle="tab"><i class="fa fa-flask fa-fw"></i>  Fächer</a></li>
+	    		<hr>
+	    		<li><a data-target="#advices" data-toggle="tab">
+		    		<i class="fa fa-rocket fa-fw"></i>  Hinweise <span class="label label-danger" style="margin-left: 15px;">Aufpassen!</span>
+		    	</a></li>
+			</ul>
+			<hr class="visible-xs visible-sm">
+	    </div>
+
+	    <div class="col-md-9">
+	    	<div class="tab-content">
+	    		<div class="tab-pane active" id="exams" ng-show="exams.length > 0">
+	    			<h4 class="mbottom-2x">Von dir eingetragene Klausuren</h4>
+
+    				<div class="row mmtop">
+    					<div class="col-md-8 col-sm-8">
+    						<div class="btn-toolbar" role="toolbar">
+    							<div class="btn-group mtop">
+    								<a class="btn btn-success" id="newfeedform" ng-click="new_exam()">Neue Klausur</a>
+    							</div>
+
+    							<div class="btn-group mtop">
+    								<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+    									{{ exam_search.subject ? exam_search.subject : 'Alle Fächer' }} <span class="caret"></span>
+    								</button>
+    								<ul class="dropdown-menu" role="menu">
+
+    									<li ng-repeat="subject_child in distinct_subjects">
+    										<a href ng-click="$parent.exam_search.subject=subject_child">{{ subject_child }}</a>
+    									</li>
+    							    	<li class="divider"></li>
+    							    	<li><a href ng-click="exam_search.subject=''">Alle Fächer</a></li>
+    								</ul>
+    							</div>
+
+    							<div class="btn-group mtop">
+    								<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+    									{{ exam_search.semester ? exam_search.semester + '. Semester' : 'Alle Semester' }} <span class="caret"></span>
+    								</button>
+    								<ul class="dropdown-menu" role="menu">
+    									<li ng-repeat="sem in distinct_semesters">
+    										<a href ng-click="$parent.exam_search.semester=sem">{{ sem }}. Semester</a>
+    									</li>
+    							    	<li class="divider"></li>
+    							    	<li><a href ng-click="exam_search.semester=''">Alle Semester</a></li>
+    								</ul>
+    							</div>
+
+    							<div class="btn-group mtop">
+    								<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+    									{{ exam_search.author ? exam_search.author : 'Alle Autoren' }} <span class="caret"></span>
+    								</button>
+    								<ul class="dropdown-menu" role="menu">
+    									<li ng-repeat="author_child in distinct_authors">
+    										<a href ng-click="$parent.exam_search.author=author_child">{{ author_child }}</a>
+    									</li>
+    							    	<li class="divider"></li>
+    							    	<li><a href ng-click="exam_search.author=''">Alle Autoren</a></li>
+    								</ul>
+    							</div>
+    						</div>
+    					</div>
+
+    					<div class="col-md-4 col-sm-4">
+    						<div class="input-group mtop">
+    				    		<input type="text" class="form-control" ng-model="exam_search.query">
+    				    		<span class="input-group-btn">
+    				        		<button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+    				    		</span>
+    				    	</div>
+    					</div>
+    				</div>
+
+    				<br>
+
+    				<table class="table">
+    					<thead>
+    						<th></th>
+    					    <th><i class="fa fa-fw fa-flask"></i> Fach</th>
+    					    <th><i class="fa fa-fw fa-calendar"></i> Termin</th>
+    					    <th>Semester</th>
+    					    <th>Fragen</th>
+    					    <th>Autor</th>
+    					    <th></th>
+    					</thead>
+
+    					<tbody>
+    						<tr ng-repeat="exam in exams" ng-show="exam_in_selection($index)">
+    						    <td>
+	    						    <span ng-if="exam.visibility==0" class="label label-danger"><i class="fa fa-eye-slash"></i></span>
+	    						    <span ng-if="exam.visibility==1" class="label label-success"><i class="fa fa-eye"></i></span>
+    						    </td>
+    						    <td>{{ exam.subject | cut:true:38:'...' }}</td>
+							    <td>{{ exam.date | cut:true:28:'...' }}</td>
+							    <td>{{ exam.semester }}</td>
+							    <td>{{ exam.question_count }}</td>
+							    <td>{{ exam.author }}</td>
+							    <td><a href="edit-exam?id={{ exam.exam_id }}"><i class="fa fa-pencil"></i></a></td>
+    						</tr>
+
+    						<tr class="search-sf" ng-show="exam_in_selection_count() == 0"><td class="text-muted" colspan="6">Nichts gefunden.</td></tr>
+    					</tbody>
+    				</table>
+    			</div>
+
+
+	    		<div class="tab-pane" id="comments">
+					<h4 class="mbottom-2x">Kommentare zu deinen Klausuren <small>Vielleicht kannst du ja helfen...</small></h4>
+
+					<div class="row mmtop">
+						<div class="col-md-6 col-sm-6">
+							<div class="btn-toolbar" role="toolbar">
+								<div class="btn-group mtop">
+									<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+										{{ comment_search.username ? comment_search.username : 'Alle Benutzer' }} <span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu" role="menu">
+										<li ng-repeat="username_child in distinct_users">
+											<a href ng-click="$parent.comment_search.username=username_child">{{ username_child }}</a>
+										</li>
+								    	<li class="divider"></li>
+								    	<li><a href ng-click="comment_search.username=''">Alle Benutzer</a></li>
+									 </ul>
+								</div>
+								<div class="btn-group mtop">
+									<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+										{{ comment_search.username_added ? comment_search.username_added : 'Alle Autoren' }} <span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu" role="menu">
+										<li ng-repeat="username_child in distinct_users_added"><a href ng-click="$parent.comment_search.username_added=username_child">{{ username_child }}</a></li>
+								    	<li class="divider"></li>
+								    	<li><a href ng-click="comment_search.username_added=''">Alle Autoren</a></li>
+									 </ul>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-6 col-sm-6">
+							<div class="input-group mtop">
+							    <input class="form-control" type="text" ng-model="comment_search.query">
+							    <span class="input-group-btn">
+							    	<button class="btn btn-default"><i class="fa fa-search"></i></button>
+							    </span>
+							</div>
+						</div>
+					</div>
+
+					<br>
+
+					<table class="table">
+						<thead>
+					        <th>Frage</th>
+					         <th><i class="fa fa-fw fa-user"></i> Nutzer</th>
+					        <th style="min-width: 120px;"><i class="fa fa-fw fa-comment-o"></i> Kommentar</th>
+					        <th style="min-width: 80px;"><i class="fa fa-fw fa-clock-o"></i>Datum</th>
+					        <th></th>
+					    </thead>
+
+						<tbody ng-repeat="comment_array in questions_by_comment_display">
+						    <tr ng-repeat="c in comment_array">
+							    <td ng-show="$index==0" rowspan="{{comment_array.length}}" style="min-width:140px;">
+							    	<span ng-bind-html="c.question"></span>
+						    	</td>
+							    <td>{{ c.username }}</td>
+								<td>{{ c.comment }}</td>
+								<td><span timeago="{{c.date * 1000}}"></td>
+								<td><a href="question?id={{ c.question_id }}&reset_session=1"><i class="fa fa-chevron-right"></i></a></td>
+						    </tr>
+						</tbody>
+
+						<tbody class="search-sf" ng-show="comment_in_selection_count() == 0">
+							<td class="text-muted" colspan="6">Nichts gefunden.</td>
+						</tbody>
+					</table>
+				</div>
+
+
+	    		<div class="tab-pane" id="subjects">
+					<h4>Fächer & Kategorien</h4>
+					Ihr könnt folgende Fächer schon eintragen, den Fragen könnt ihr dabei eine Kategorie zuordnen. Falls welche fehlen, meldet euch...
+					<br><br>
+
+					<dl class="dl-horizontal">
+					  	<dt ng-repeat-start="(name, cat) in subject_list" style="width:250px;">{{ name }}</dt>
+					  	<dd ng-repeat-end style="margin-left:250px;">
+					  		<span ng-if="cat.length == 0"><br></span>
+					  		<ul><li ng-repeat="c in cat">{{ c }}</li></ul>
+					  	</dd>
+					</dl>
+				</div>
+
+
+	    		<div class="tab-pane mbottom-3x" id="advices">
+					<h4>Hinweise</h4>
+					Zu einer Klausur gehören verschiedene Infos und eine Sammlung an Fragen. Es wäre schön, wenn diese möglichst einheitlich eingetragen werden. Unter anderem dafür folgende Anmerkungen:
+					<br><br>
+					<dl class="dl-horizontal">
+						<dt>Fächer</dt>
+						<dd>Ist das Fach der Klausur, die ihr eintragen wollt, noch nicht gespeichert, so schreibt uns bitte eine Mail. Jede Frage sollte einer Unterkategorie zugeordnet werden. Die Fächer mitsamt den Kategorien könnt ihr links anschauen.</dd>
+
+						<dt>Datum</dt>
+						<dd>Bitte tragt das Datum in der Schreibweise SS 2012 oder WS 2013/14 ein. Ein Wintersemester hat immer zwei Jahreszahlen. Falls ihr das Datum nicht kennt, tragt bitte 'Unbekannt' ein.</dd>
+
+						<dt>Sonstiges</dt>
+						<dd>Es wäre schön, wenn ihr Anmerkungen zur Durchschnittsnote und dem Schwierigkeitsgrad eintragen könntet.</dd>
+
+						<dt>Fragen</dt>
+						<dd>
+							Bitte nummeriert die Fragen nicht. <br>
+							Falls die Frage aus einem Satz besteht, der durch die Antwort vervollständigt wird, so fügt bitte ein ... an das Fragenende hinzu. Ansonsten ein Fragezeichen oder ein Doppelpunkt, falls die Frage grammatikalisch ein Satz ist. <br>
+							Bitte benutzt die Möglichkeiten des Texteditors, insbesondere die Auflistung und die hoch- und tiefgestellten Zeichen.
+						</dd>
+					</dl>
+
+					Wir hoffen, dass der Rest selbsterklärend ist. Falls Unklarheiten offen sind, meldet euch bitte ;)
+				</div>
+	    	</div>
+	    </div>
+	</div>
+</div>
