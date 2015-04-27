@@ -2,7 +2,7 @@
 
 Crucio ist ein Online-Lernsystem für Multiple-Choice-Klausuren. Fachschaften können Alt- oder Probefragen eintragen und auf einfachem Wege allen Studierenden zur Verfügung stellen. Alle Informationen und einige Screenshots findet ihr auf der [Website](http://crucioproject.github.io). Crucio wird derzeit an der [Universität Leipzig](http://www.crucio-leipzig.de) verwendet.
 
-Crucio ist Open Source und damit kostenlos verfügbar. Falls du/ihr/deine Fachschaft Crucio einführen wollt, könnt ihr unter Installation weiterlesen. Bei Fragen könnt ihr an 'crucio@pantorix.de' schreiben!
+Crucio ist Open Source und damit kostenlos verfügbar. Falls du/ihr/deine Fachschaft Crucio einführen wollt, könnt ihr unter Installation weiterlesen. Bei Fragen könnt ihr an crucio@pantorix.de schreiben!
 
 
 ## Fehler & Wünsche
@@ -14,7 +14,7 @@ Falls du/ihr Crucio bei euch einführen möchtet, braucht ihr einen Server mit P
 
 
 ## Entwicklung
-Falls ihr Bugs entfernen oder neue Features einbauen möchtet, seid ihr herzlich dazu eingeladen! Ihr könnt euch gerne über 'crucio@pantorix.de' melden, oder direkt Pull-Requests an den 'Dev'-Branch senden. Ein paar Hinweise zum Projekt:
+Falls ihr Bugs entfernen oder neue Features einbauen möchtet, seid ihr herzlich dazu eingeladen! Ihr könnt euch gerne über crucio@pantorix.de melden, oder direkt Pull-Requests an den `dev`-Branch senden. Ein paar Hinweise zum Projekt:
 
 
 ### Programmiersprachen
