@@ -8,7 +8,7 @@
 	<body class="body" ng-controller="activateCtrl">
 		<div class="wrap">
 			<div class="container-white container-top-bar">
-	    		<div class="container ">
+	    		<div class="container">
 		    		<div class="row">
 			    		<div class="col-md-7 col-md-offset-1 col-sm-5 col-sm-offset-1">
 							<h1><a href="/" target="_self"><i class="fa fa-check-square-o"></i> Crucio</a></h1>
@@ -29,8 +29,8 @@
 	    		</div>
 	    	</div>
 
-	    	<div class="container-back-image top-bottom-padding">
-				<div class="container container-center-text-light">
+	    	<div class="container-back-image container-padding-4">
+				<div class="container container-text- container-text-light">
 	    			<i class="fa fa-user fa-5x"></i>
 	    			<h3>Account Aktivieren</h3>
 	    		</div>

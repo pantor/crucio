@@ -95,15 +95,15 @@
 	    		</div>
 	    	</div>
 
-	    	<div class="container-back-image top-bottom-padding">
-				<div class="container container-center-text-light">
+	    	<div class="container-back-image container-padding-4">
+				<div class="container container-text container-text-light">
 	    			<i class="fa fa-question fa-5x"></i>
-	    			<h3>Passwort vergessen</h3>
+	    			<h4>Passwort vergessen</h4>
 	    		</div>
 			</div>
 
-			<div class="container-light-grey top-bottom-padding">
-				<div class="container container-center-text-dark">
+			<div class="container-light-grey container-padding-4">
+				<div class="container container-text container-text-dark">
 	    			<p>
 		    			Du kannst hier deine E-Mail-Adresse eintragen, wir schicken dir dann ein neues Passwort zu.<br>
 		    			Bei Fragen kannst du uns gerne schreiben.

@@ -265,7 +265,9 @@ angular.module('userModule', ['ipCookie'])
 			var validate = true;
 			if (!Validate.email($scope.user.email))
 				validate = false;
-			if ($scope.user.semester < 1 || $scope.user.semester > 30)
+			if ($scope.user.semester < 1)
+				validate = false;
+			if ($scope.user.semester > 30)
 				validate = false;
 
 			// Assuming User Wants to Change Password
@@ -295,12 +297,12 @@ angular.module('userModule', ['ipCookie'])
 						if (data.status == 'error_incorrect_password')
 							$scope.wrong_password = true;
 
-						$scope.submit_button_title = 'Speichern nicht möglich...';
+						$scope.submit_button_title = 'Speichern nicht m\u00F6glich...';
 					}
 				});
 
 			} else {
-				$scope.submit_button_title = 'Speichern nicht möglich...';
+				$scope.submit_button_title = 'Speichern nicht m\u00F6glich...';
 			}
 		}
 	})
@@ -329,7 +331,7 @@ angular.module('userModule', ['ipCookie'])
 
 		      	} else {
 		      		$scope.user = angular.fromJson(sessionStorage.user);
-		      		$scope.submit_button_title = 'Speichern nicht möglich...';
+		      		$scope.submit_button_title = 'Speichern nicht m\u00F6glich...';
 		      	}
 		    });
 		}

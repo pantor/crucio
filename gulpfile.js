@@ -4,7 +4,8 @@ var gulp = require('gulp'),
 	minifyCss = require('gulp-minify-css'), 
 	rename = require("gulp-rename"), 
 	concat = require("gulp-concat"), 
-	inlineCss = require('gulp-inline-css');
+	inlineCss = require('gulp-inline-css'),
+	order = require("gulp-order");
 
 // Compile Less
 gulp.task('less', function() {
@@ -15,6 +16,7 @@ gulp.task('less', function() {
 
 gulp.task('css', ['less'], function() {
 	return gulp.src('src/css/**/*.css')
+		.pipe(order(['src/css/**/*.css', 'src/css/crucio.css']))
     	.pipe(concat('crucio.css'))
     	.pipe(minifyCss())
     	.pipe(rename({ suffix: '.min' }))
@@ -25,7 +27,7 @@ gulp.task('css', ['less'], function() {
 gulp.task('js', function() {
 	return gulp.src('src/js/**/*.js')
     	.pipe(concat('crucio.js'))
-    	.pipe(uglify())
+    	.pipe(uglify({ mangle: false }))
     	.pipe(rename({ suffix: '.min' }))
 		.pipe(gulp.dest('public/js/'));
 })

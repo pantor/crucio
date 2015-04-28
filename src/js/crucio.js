@@ -3,16 +3,22 @@
 var base_url = window.location.origin;
 var is_dev = (base_url.indexOf("dev") == 7) ? 1 : 0;
 
+// Unicode
+// ä \u00E4 Ä \u00C4
+// ö \u00F6 Ö \u00D6
+// ü \u00FC Ü \u00DC
+// ß \u00DF
+
 var subject_list = {
-	'Anästhesie und Intensivmedizin':[],
+	'An\u00E4sthesie und Intensivmedizin':[],
 
 	'Biologie': [],
 
-	'Biochemie': ['Chemie der Kohlenhydrate', 'Chemie der Aminosäuren, Peptide und Proteine', 'Chemie der Fettsäuren und Lipide', 'Chemie der Nukleotide und Nukleinsäuren', 'Vitamine und Koenzyme', 'Enzyme', 'Ernährung, Verdauung, Resorption', 'Abbau der Kohlenhydrate', 'Abbau der Fettsäuren, Ketonkörper', 'Aminosäurestoffwechsel', 'Zitratzyklus und Atmungskette', 'Glykogenstoffwechsel, Glukoneogenese', 'Biosynthese der Fettsäuren, Lipogenese', 'Mineral- und Elektrolythaushalt', 'Subzelluläre Strukturen', 'Nukleinsäuren, genetische Information, Molekularbiologie', 'Hormone', 'Immunchemie', 'Blut', 'Leber', 'Fettgewebe', 'Niere, Harn', 'Muskelgewebe, Bewegung', 'Binde- und Stützgewebe', 'Nervensystem'],
+	'Biochemie': ['Chemie der Kohlenhydrate', 'Chemie der Aminos\u00E4uren, Peptide und Proteine', 'Chemie der Fetts\u00E4uren und Lipide', 'Chemie der Nukleotide und Nukleins\u00E4uren', 'Vitamine und Koenzyme', 'Enzyme', 'Ern\u00E4hrung, Verdauung, Resorption', 'Abbau der Kohlenhydrate', 'Abbau der Fetts\u00E4uren, Ketonk\u00F6rper', 'Aminos\u00E4urestoffwechsel', 'Zitratzyklus und Atmungskette', 'Glykogenstoffwechsel, Glukoneogenese', 'Biosynthese der Fetts\u00E4uren, Lipogenese', 'Mineral- und Elektrolythaushalt', 'Subzellul\u00E4re Strukturen', 'Nukleins\u00E4uren, genetische Information, Molekularbiologie', 'Hormone', 'Immunchemie', 'Blut', 'Leber', 'Fettgewebe', 'Niere, Harn', 'Muskelgewebe, Bewegung', 'Binde- und St\u00FCtzgewebe', 'Nervensystem'],
 
 	'Physik': [],
-
-	'Physiologie': ['Allgemeine und Zellphysiologie, Zellerregung', 'Blut und Immunsystem', 'Herz', 'Blutkreislauf', 'Atmung', 'Arbeit- und Leistungsphysiologie', 'Ernährung, Verdauungstrakt, Leber', 'Energie- und Wärmehaushalt', 'Wasser- und Elektrolythaushalt, Nierenfunktion', 'Hormonale Regulationen', 'Sexualentwicklung und Reproduktionsphysiologie', 'Funktionsprinzipien des Nervensystems', 'Muskulatur', 'Vegetatives Nervensystem', 'Motorik', 'Somatoviszerale Sensorik', 'Visuelles System', 'Auditorisches System', 'Chemische Sinne', 'Integrative Leistungen des Zentralnervensystems'],
+	
+	'Physiologie': ['Allgemeine und Zellphysiologie, Zellerregung', 'Blut und Immunsystem', 'Herz', 'Blutkreislauf', 'Atmung', 'Arbeit- und Leistungsphysiologie', 'Ern\u00E4hrung, Verdauungstrakt, Leber', 'Energie- und W\u00E4rmehaushalt', 'Wasser- und Elektrolythaushalt, Nierenfunktion', 'Hormonale Regulationen', 'Sexualentwicklung und Reproduktionsphysiologie', 'Funktionsprinzipien des Nervensystems', 'Muskulatur', 'Vegetatives Nervensystem', 'Motorik', 'Somatoviszerale Sensorik', 'Visuelles System', 'Auditorisches System', 'Chemische Sinne', 'Integrative Leistungen des Zentralnervensystems'],
 
 	'Chemie': [],
 
@@ -20,7 +26,7 @@ var subject_list = {
 
 	'Histologie': [],
 
-	'Gynäkologie':[],
+	'Gyn\u00E4kologie':[],
 
 	'Innere Medizin':[],
 
@@ -50,11 +56,10 @@ var subject_list = {
 
 	'Neurologie': [],
 
-	'Orthopädie': [],
+	'Orthop\u00E4die': [],
 
 	'Psychiatrie': [],
 };
-
 
 
 var crucioApp = angular.module('crucioApp', ['ngRoute', 'ngSanitize', 'angular-loading-bar', 'ui.bootstrap', 'angularFileUpload', 'textAngular', 'angles', 'ipCookie',
