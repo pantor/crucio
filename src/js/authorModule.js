@@ -192,7 +192,7 @@ angular.module('authorModule', [])
 
 		$scope.$on('$locationChangeStart', function (event, next, current) {
 			if ($scope.has_changed == 1) {
-				var confirmClose = confirm('Die Änderungen an deiner Klausur bleiben dann ungespeichert. Wirklich verlassen?');
+				var confirmClose = confirm('Die \u00C4nderungen an deiner Klausur bleiben dann ungespeichert. Wirklich verlassen?');
 				if (!confirmClose)
 					event.preventDefault();
 			}
@@ -320,7 +320,7 @@ angular.module('authorModule', [])
 				$scope.is_saving = 0;
 				
 			} else {
-				alert('Da fehlen noch allgemeine Infos zur Klausur.');
+				alert('Es fehlen noch allgemeine Infos zur Klausur.');
 			}
 		}
 

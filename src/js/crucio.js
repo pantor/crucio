@@ -11,7 +11,7 @@ var subject_list = {
 	'Biochemie': ['Chemie der Kohlenhydrate', 'Chemie der Aminosäuren, Peptide und Proteine', 'Chemie der Fettsäuren und Lipide', 'Chemie der Nukleotide und Nukleinsäuren', 'Vitamine und Koenzyme', 'Enzyme', 'Ernährung, Verdauung, Resorption', 'Abbau der Kohlenhydrate', 'Abbau der Fettsäuren, Ketonkörper', 'Aminosäurestoffwechsel', 'Zitratzyklus und Atmungskette', 'Glykogenstoffwechsel, Glukoneogenese', 'Biosynthese der Fettsäuren, Lipogenese', 'Mineral- und Elektrolythaushalt', 'Subzelluläre Strukturen', 'Nukleinsäuren, genetische Information, Molekularbiologie', 'Hormone', 'Immunchemie', 'Blut', 'Leber', 'Fettgewebe', 'Niere, Harn', 'Muskelgewebe, Bewegung', 'Binde- und Stützgewebe', 'Nervensystem'],
 
 	'Physik': [],
-
+	
 	'Physiologie': ['Allgemeine und Zellphysiologie, Zellerregung', 'Blut und Immunsystem', 'Herz', 'Blutkreislauf', 'Atmung', 'Arbeit- und Leistungsphysiologie', 'Ernährung, Verdauungstrakt, Leber', 'Energie- und Wärmehaushalt', 'Wasser- und Elektrolythaushalt, Nierenfunktion', 'Hormonale Regulationen', 'Sexualentwicklung und Reproduktionsphysiologie', 'Funktionsprinzipien des Nervensystems', 'Muskulatur', 'Vegetatives Nervensystem', 'Motorik', 'Somatoviszerale Sensorik', 'Visuelles System', 'Auditorisches System', 'Chemische Sinne', 'Integrative Leistungen des Zentralnervensystems'],
 
 	'Chemie': [],
@@ -22,39 +22,16 @@ var subject_list = {
 
 	'Gynäkologie':[],
 
-	'Innere Medizin':[],
-
 	'Chirurgie': [],
 
 	'Pharmakologie': [],
-
-	'Klinische Pharmakologie': [],
-
-	'Neuroanatomie': [],
 
 	'Allgemeine Pathologie': [],
 
 	'Mikrobiologie / Virologie / Immunologie / Hygiene': [],
 
-	'Psychologie': [],
-
-	'Anatomie': [],
-
-	'Allgemeinmedizin': [],
-
-	'Urologie': [],
-
-	'Dermatologie': [],
-
-	'Humangenetik': [],
-
-	'Neurologie': [],
-
-	'Orthopädie': [],
-
-	'Psychiatrie': [],
+	'Psychologie': []
 };
-
 
 
 var crucioApp = angular.module('crucioApp', ['ngRoute', 'ngSanitize', 'angular-loading-bar', 'ui.bootstrap', 'angularFileUpload', 'textAngular', 'angles', 'ipCookie',
@@ -133,7 +110,7 @@ crucioApp.run(function (ipCookie, $rootScope, $location) {
 	$rootScope.is_dev = is_dev;
 	// console.log('Is Dev Version?', is_dev);
 	
-	var cookieUser = ipCookie('CrucioUserDev');
+	var cookieUser = ipCookie('CrucioUser');
 
 	if(!$rootScope.user) {
 		if(cookieUser) {

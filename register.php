@@ -47,10 +47,10 @@
     			</div>
     		</div>
 
-			<div class="top-bottom-padding container-back-image" style="margin-top:2px;">
-				<div class="container container-center-text-light">
+			<div class="container-back-image container-padding-4" style="margin-top:2px;">
+				<div class="container container-text container-text-light">
     				<i class="fa fa-pencil-square-o fa-5x"></i>
-    				<h3>Registrieren</h3>
+    				<h4>Registrieren</h4>
     			</div>
 			</div>
 
@@ -113,17 +113,17 @@
 				</div>
 			</div>
 
-			<div class="top-bottom-padding container-light-grey">
-			<div class="container container-center-text-dark">
-    			<i class="fa fa-legal fa-5x"></i>
-    			<h3>Warte! Was ist mit den AGB?</h3>
-    			<p>
-	    			Na, heute sind wir mal nicht so. Einfach nett zueinander sein und nichts böses machen. Ihr seid selbst für Fragen und Klausuren verantwortlich, die ihr hochladet. Und es wär cool, wenn wir deine Antworten dazu verwenden könnten besonders schwierige Fragen herauszufinden. Die können wir dir dann gesondert vorschlagen, so wird das Lernen noch effektiver. Falls du diese Auswertung deiner Daten nicht willst, kannst du sie unter deinen Einstellungen abschalten.
-    			</p>
-
-				<button class="btn btn-success btn-lg center-block" ng-click="register()"><i ng-show="is_working" class="fa fa-circle-o-notch fa-spin" style="color:#fff;"></i> Registrieren</button>
-    		</div>
-		</div>
+			<div class="container-light-grey container-padding-4">
+				<div class="container container-text container-text-dark">
+    				<i class="fa fa-legal fa-5x"></i>
+    				<h4>Warte! Was ist mit den AGB?</h4>
+    				<p>
+	    				Na, heute sind wir mal nicht so. Einfach nett zueinander sein und nichts böses machen. Ihr seid selbst für Fragen und Klausuren verantwortlich, die ihr hochladet. Und es wär cool, wenn wir deine Antworten dazu verwenden könnten besonders schwierige Fragen herauszufinden. Die können wir dir dann gesondert vorschlagen, so wird das Lernen noch effektiver. Falls du diese Auswertung deiner Daten nicht willst, kannst du sie unter deinen Einstellungen abschalten.
+    				</p>
+			
+					<button class="btn btn-success btn-lg btn-green" ng-click="register()"><i ng-show="is_working" class="fa fa-circle-o-notch fa-spin" style="color:white;"></i> Registrieren</button>
+    			</div>
+			</div>
 		</div>
 
 		<?php include 'parts/footer.html'; ?>

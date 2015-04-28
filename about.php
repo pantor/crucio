@@ -9,8 +9,8 @@
 		<div ng-include="'parts/navbar.html'"></div>
 
 		<div class="wrap">
-			<div class="top-bottom-padding container-white">
-				<div class="container container-center-text-dark">
+			<div class="container-white container-padding-4">
+				<div class="container container-text container-text-dark">
 	    			<i class="fa fa-info-circle fa-5x"></i>
 	    			<h3>Impressum</h3>
 	    			<p>
@@ -19,7 +19,7 @@
 	    		</div>
 			</div>
 
-			<div class="container-light-grey" style="margin-bottom: 30px;padding-top: 40px;">
+			<div class="container-light-grey container-padding-2">
 				<div class="container">
 					<dl class="dl-horizontal">
 					    <dt>Inhaber</dt>
@@ -31,22 +31,22 @@
 					    	</address>
 					    </dd>
 					
-					    <dt>Copyright</dt>
+					    <dt>Entwicklung</dt>
 					    <dd>
 					    	<address>
-					    		Das Copyright von Crucio liegt bei <a href="http://www.pantorix.de">Pantorix</a>. <strong>&copy; 2014 Pantorix.</strong>
+					    		Crucio wurde entwickelt von <a href="http://www.pantorix.de">Pantorix</a>. <strong>&copy; 2015 Pantorix.</strong>
 					    	</address>
 					    </dd>
 					</dl>
 				</div>
 			</div>
 			
-			<div class="container">
+			<div class="container container-padding-2">
 				<dl class="dl-horizontal">
 				    <dt>Entwicklung</dt>
 				    <dd>
 				    	<address>
-				    		Crucio ist noch in der <strong><span class="text-danger">0.6-Beta</span></strong>-Version, daher werdet ihr sicherlich einige Fehler entdecken. Die könnt ihr in <a href="https://bitbucket.org/siasola/crucio/issues">Bitbucket</a> eintragen; und zwar möglichst so, dass wir den Fehler reproduzieren können. Oder euch einfach bei uns melden...
+				    		Crucio ist noch in der <strong><span class="text-danger">0.6-Beta</span></strong>-Version, daher werdet ihr sicherlich einige Fehler entdecken. Die könnt ihr in <a href="https://github.com/crucioproject/Crucio/issues">Github</a> eintragen; und zwar möglichst so, dass wir den Fehler reproduzieren können. Oder euch einfach bei uns melden...
 				    	</address>
 				    </dd>
 

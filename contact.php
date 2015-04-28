@@ -21,17 +21,15 @@
 		<div ng-include="'parts/navbar.html'"></div>
 
 		<div class="wrap">
-			<div class="top-bottom-padding">
-				<div class="container container-center-text-dark">
-	    			<i class="fa fa-bullhorn fa-5x"></i>
-	    			<h3>Kontakt</h3>
-	    			<p>
-		    			Bei Angelegenheiten wie z.B. Rechtschreibfehler in Fragen, falschen Antworten, unverständlichen Erklärungen, Klausurwünschen oder Bugs, könnt ihr euch natürlich hier an uns wenden.
-	    			</p>
-	    		</div>
+			<div class="container container-text container-text-dark container-padding-4">
+	    		<i class="fa fa-bullhorn fa-5x"></i>
+	    		<h4>Kontakt</h4>
+	    		<p>
+		    		Bei Angelegenheiten wie z.B. Rechtschreibfehler in Fragen, falschen Antworten, unverständlichen Erklärungen, Klausurwünschen oder Bugs, könnt ihr euch natürlich hier an uns wenden.
+	    		</p>
 			</div>
 
-			<div class="container-light-grey top-bottom-padding">
+			<div class="container-light-grey container-padding-2">
 				<div class="container form-horizontal">
 					<div class="form-group">
 						<label class="col-sm-2">Name</label>

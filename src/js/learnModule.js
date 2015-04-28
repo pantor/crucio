@@ -33,8 +33,9 @@ angular.module('learnModule', [])
 					$scope.selection_number_questions = Math.min($scope.number_questions_in_choosen_subjects, 50);
 				}
 
-				if ($scope.selection_number_questions > $scope.number_questions_in_choosen_subjects)
+				if ($scope.selection_number_questions > $scope.number_questions_in_choosen_subjects) {
 					$scope.selection_number_questions = $scope.number_questions_in_choosen_subjects;
+				}
 			});
 		}, true);
 
@@ -145,7 +146,7 @@ angular.module('learnModule', [])
 		$scope.learn_exam = function(exam_id) {
 	    	var random = 1;
 	    	$http.get('api/v1/exams/action/prepare/' + exam_id + '/' + random).success(function(data) {
-	    		var questionList = {'list': data.list};
+		    	var questionList = {'list': data.list};
 	    		questionList['exam_id'] = exam_id;
 				sessionStorage.currentQuestionList = angular.toJson(questionList);
 				$location.path('/question').search('id', questionList['list'][0]['question_id']);
@@ -155,8 +156,7 @@ angular.module('learnModule', [])
 		$scope.learn_subjects = function() {
 			var post_data = {selection_subject_list: $scope.selection_subject_list, selection_number_questions: $scope.selection_number_questions};
 	    	$http.post('api/v1/learn/prepare', post_data).success(function(data) {
-		    	console.log(data);
-	    		var questionList = {'list': data.list};
+		    	var questionList = {'list': data.list};
 	    		questionList['selection_subject_list'] = data.selection_subject_list;
 				sessionStorage.currentQuestionList = angular.toJson(questionList);
 				$location.path('/question').search('id', questionList['list'][0]['question_id']);
