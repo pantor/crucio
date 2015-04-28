@@ -138,7 +138,7 @@ crucioApp.run(function (ipCookie, $rootScope, $location) {
 	$rootScope.is_dev = is_dev;
 	// console.log('Is Dev Version?', is_dev);
 	
-	var cookieUser = ipCookie('CrucioUserDev');
+	var cookieUser = ipCookie('CrucioUser');
 
 	if(!$rootScope.user) {
 		if(cookieUser) {

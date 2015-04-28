@@ -204,7 +204,7 @@ angular.module('userModule', ['ipCookie'])
 			$http.post('api/v1/users/action/login', post_data).success(function(data) {
 				if (data['login'] == 'success') {
 				    if ($scope.remember_me == 1)
-				    	ipCookie('CrucioUserDev', data.logged_in_user, { expires: 21 });
+				    	ipCookie('CrucioUser', data.logged_in_user, { expires: 21 });
 
 			    	sessionStorage.user = angular.toJson(data.logged_in_user);
 			    	window.location.replace('/questions');
@@ -223,7 +223,7 @@ angular.module('userModule', ['ipCookie'])
 
 		$scope.logout = function() {
 			sessionStorage.user = angular.toJson({});
-			ipCookie.remove('CrucioUserDev');
+			ipCookie.remove('CrucioUser');
 		    window.location.replace(base_url);
 		}
 	})
