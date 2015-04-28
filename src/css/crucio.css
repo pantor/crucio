@@ -3,12 +3,6 @@ html {
   height: 100%;
   font-family: 'Open Sans', sans-serif;
 }
-.nav,
-.pagination,
-.carousel,
-.panel-title a {
-  cursor: pointer;
-}
 .body-padding {
   padding-top: 62px;
 }

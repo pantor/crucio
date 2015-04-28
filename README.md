@@ -24,9 +24,7 @@ Crucio ist in PHP, HTML, Javascript, [LESS](http://lesscss.org) und MySQL geschr
 Die wichtigsten Frameworks, auf denen Crucio basiert, sind [AngularJS](https://angularjs.org), [Bootstrap](http://getbootstrap.com) und [SLIM](http://www.slimframework.com). Für Icons wird [FontAwesome](http://fontawesome.io) verwendet.
 
 ### Workflow
-Zur Entwicklung wird [NPM](https://www.npmjs.com) und [Grunt](http://gruntjs.com) verwendet. Letzteres wird hauptsächlich für den LESS-Compiler und für Minify & Concat Aktionen genutzt. Die beiden Tools sollten zur Entwicklung installiert sein, NPM kann als Teil von [NodeJS](https://nodejs.org) von deren Website heruntergeladen werden. Grunt kann dann über `npm install -g grunt-cli` installiert werden. Es müssen einmalig die benötigten Pakete heruntergeladen werden, dies passiert über `npm install`.
-
-Über `grunt watch` wird dann eine Umgebung gestartet, bei der Änderungen sofort verarbeitet werden.
+Zur Entwicklung wird [Gulp](http://gulpjs.com) verwendet; hauptsächlich für den LESS-Compiler und für Minify- & Concat-Aktionen. Es muss zunächst [NodeJS](https://nodejs.org) installiert werden, danach kann Gulp über den Befehl `npm install -g gulp` installiert werden. Es müssen einmalig die benötigten Pakete für Crucio heruntergeladen werden (die in `package.json` aufgelistet sind), dies passiert über `npm install`. Über `gulp` wird dann eine Umgebung gestartet, bei der Änderungen sofort verarbeitet werden.
 
 ## Lizenz
 Crucio ist unter der GNU GENERAL PUBLIC LICENSE Version 2 verfügbar.
