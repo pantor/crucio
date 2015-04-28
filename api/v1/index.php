@@ -190,18 +190,19 @@ $app->group('/learn', function () use ($app) {
 		$mysql = start_mysql();
 
 		$data = json_decode($app->request()->getBody());
+		$subject_list = $data->selection_subject_list;
 		$result = 0;
 
-		foreach ($data->selection_subject_list as $key => $value) {
+		foreach ($subject_list as $key => $value) {
 			if (count($value) == 0) {
 				$result += get_count($mysql, "questions q, exams e WHERE e.subject = ? AND q.exam_id = e.exam_id", [$key]);
 			} else {
-				foreach ($data->selection_subject_list->$key as $cat) {
-					$result += get_count($mysql, "SELECT COUNT(*) AS 'c' FROM questions q, exams e WHERE e.subject = ? AND q.exam_id = e.exam_id AND q.topic = ?", [$key, $cat]);
+				foreach ($subject_list->$key as $cat) {
+					$result += get_count($mysql, "questions q, exams e WHERE e.subject = ? AND q.exam_id = e.exam_id AND q.topic = ?", [$key, $cat]);
 				}
 			}
 		}
-
+		
 		$response['number_questions'] = $result;
 	    print_response($app, $response);
 	});
@@ -217,22 +218,22 @@ $app->group('/learn', function () use ($app) {
 
 		foreach ($subject_list as $key => $value) {
 			if (count($value) == 0) {
-				$result = mysql_execute($mysql, "SELECT DISTINCT q.* FROM questions q, exams e WHERE e.subject = ? AND q.exam_id = e.exam_id", [$key], function($stmt, $mysql) {
+				$result = execute_mysql($mysql, "SELECT DISTINCT q.* FROM questions q, exams e WHERE e.subject = ? AND q.exam_id = e.exam_id", [$key], function($stmt, $mysql) {
 					$response['stmt'] = $stmt;
 					return $response;
 				});
-				while ($row = $result['stmt']->fetch(PDO::FETCH_ARRAY)) {
+				while ($row = $result['stmt']->fetch(PDO::FETCH_ASSOC)) {
 					$row['answers'] = unserialize($row['answers']);
 					$list[] = $row;
 				}
 
 			} else {
 				foreach ($subject_list->$key as $cat) {
-					$result = mysql_execute($mysql, "SELECT DISTINCT q.* FROM questions q, exams e WHERE e.subject = ? AND q.exam_id = e.exam_id AND q.topic = ?", [$key, $cat], function($stmt, $mysql) {
+					$result = execute_mysql($mysql, "SELECT DISTINCT q.* FROM questions q, exams e WHERE e.subject = ? AND q.exam_id = e.exam_id AND q.topic = ?", [$key, $cat], function($stmt, $mysql) {
 						$response['stmt'] = $stmt;
 						return $response;
 					});
-					while ($row = $result['stmt']->fetch(PDO::FETCH_ARRAY)) {
+					while ($row = $result['stmt']->fetch(PDO::FETCH_ASSOC)) {
 						$row['answers'] = unserialize($row['answers']);
 						$list[] = $row;
 					}

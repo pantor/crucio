@@ -5,6 +5,7 @@ var gulp = require('gulp'),
 	rename = require("gulp-rename"), 
 	concat = require("gulp-concat"), 
 	inlineCss = require('gulp-inline-css'),
+	convertEncoding = require('gulp-convert-encoding'),
 	order = require("gulp-order");
 
 // Compile Less
@@ -29,6 +30,7 @@ gulp.task('js', function() {
     	.pipe(concat('crucio.js'))
     	.pipe(uglify({ mangle: false }))
     	.pipe(rename({ suffix: '.min' }))
+    	.pipe(convertEncoding({to: 'iso-8859-15'}))
 		.pipe(gulp.dest('public/js/'));
 })
 

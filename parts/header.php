@@ -32,10 +32,8 @@
 <script src="public/js/angles/angles.js"></script>
 <script src="public/js/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 
-
 <!--script src="public/js/dep.min.js"></script-->
 <script src="public/js/crucio.min.js"></script>
-
 
 <script>
 	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
