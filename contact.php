@@ -5,15 +5,15 @@
 		<?php include 'parts/header.php'; ?>
 
 		<script type="text/ng-template" id="myModalContent.html">
-		    <div class="modal-header">
-		        <h4 class="modal-title" id="myModalLabel">Nachricht abgeschickt.</h4>
-		    </div>
-		    <div class="modal-body">
-		        <p><i class="fa fa-check"></i> Danke für deine Nachricht. Wir kümmern uns so schnell es geht.</p>
-		    </div>
-		    <div class="modal-footer">
-		        <button type="button" class="btn btn-success" ng-click="$close()">Schließen</button>
-		    </div>
+	    <div class="modal-header">
+	      <h4 class="modal-title" id="myModalLabel">Nachricht abgeschickt.</h4>
+	    </div>
+	    <div class="modal-body">
+	      <p><i class="fa fa-check"></i> Danke für deine Nachricht. Wir kümmern uns so schnell es geht.</p>
+	    </div>
+	    <div class="modal-footer">
+	      <button type="button" class="btn btn-success" ng-click="$close()">Schließen</button>
+	    </div>
 		</script>
 	</head>
 
@@ -22,11 +22,11 @@
 
 		<div class="wrap">
 			<div class="container container-text container-text-dark container-padding-4">
-	    		<i class="fa fa-bullhorn fa-5x"></i>
-	    		<h4>Kontakt</h4>
-	    		<p>
-		    		Bei Angelegenheiten wie z.B. Rechtschreibfehler in Fragen, falschen Antworten, unverständlichen Erklärungen, Klausurwünschen oder Bugs, könnt ihr euch natürlich hier an uns wenden.
-	    		</p>
+    		<i class="fa fa-bullhorn fa-5x"></i>
+    		<h4>Kontakt</h4>
+    		<p>
+	    		Bei Angelegenheiten wie z.B. Rechtschreibfehler in Fragen, falschen Antworten, unverständlichen Erklärungen, Klausurwünschen oder Bugs, könnt ihr euch natürlich hier an uns wenden.
+    		</p>
 			</div>
 
 			<div class="container-light-grey container-padding-2">
@@ -40,11 +40,11 @@
 					</div>
 
 					<div class="form-group">
-					   	<label class="col-sm-2">E-Mail-Adresse</label>
-					   	<div class="col-sm-6">
-					   		<input ng-model="email" type="text" class="form-control">
-					   	</div>
-					   	<span class="label validation-error label-danger" ng-show="error_no_email">Keine gültige E-Mail-Adresse</span>
+					  <label class="col-sm-2">E-Mail-Adresse</label>
+            <div class="col-sm-6">
+              <input ng-model="email" type="text" class="form-control">
+					  </div>
+            <span class="label validation-error label-danger" ng-show="error_no_email">Keine gültige E-Mail-Adresse</span>
 					</div>
 
 					<div ng-if="question_id" class="form-group">

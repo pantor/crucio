@@ -3,50 +3,50 @@
 		<div class="row">
 			<div class="col-sm-5 col-md-4 col-md-offset-1">
 				<div class="navbar-header">
-		    	    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-	        	        <span class="icon-bar"></span>
-	        	        <span class="icon-bar"></span>
-	        	        <span class="icon-bar"></span>
-	        	    </button>
+    	    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+  	        <span class="icon-bar"></span>
+  	        <span class="icon-bar"></span>
+  	        <span class="icon-bar"></span>
+          </button>
 
-	        	    <a class="navbar-brand" href="{{ user.username ? 'questions':'/' }}" target="{{ Page.nav()=='' ? '_self' : '' }}">
-		        	    <h1><i class="fa fa-check-square-o"></i>  Crucio</h1>
-		        	</a>
-	        	</div>
-	        </div>
+          <a class="navbar-brand" href="{{ user.username ? 'questions':'/' }}" target="{{ Page.nav()=='' ? '_self' : '' }}">
+        	  <h1><i class="fa fa-check-square-o"></i>  Crucio</h1>
+        	</a>
+      	</div>
+      </div>
 
-	        <div ng-if="user.username" class="col-sm-7">
+      <div ng-if="user.username" class="col-sm-7">
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav navbar-right">
-					    <li class="navbar-element" ng-class="{ active: Page.nav()=='Lernen'}">
-					    	<a href="questions" target="{{ Page.nav()==''?'_self':'' }}">Lernen</a>
-					    </li>
+				    <li class="navbar-element" ng-class="{ active: Page.nav()=='Lernen'}">
+				    	<a href="questions" target="{{ Page.nav()==''?'_self':'' }}">Lernen</a>
+				    </li>
 					    
 						<!--li class="navbar-element" ng-class="{ active: Page.nav()=='Statistik'}">
 							<a href="statistics">Statistik</a>
 						</li-->
 
 						<li ng-if="user.group_id == 2 || user.group_id == 3" class="navbar-element" ng-class="{ active: Page.nav()=='Autor'}">
-					    	<a href="author" target="{{ Page.nav()=='' ? '_self' : '' }}">Autoren</a>
-					    </li>
+              <a href="author" target="{{ Page.nav()=='' ? '_self' : '' }}">Autoren</a>
+            </li>
 
-					    <li ng-if="user.group_id == 2" class="navbar-element" ng-class="{ active: Page.nav()=='Admin'}">
-					    	<a href="admin" target="{{ Page.nav()=='' ? '_self' : '' }}">Admin</a>
-					    </li>
+            <li ng-if="user.group_id == 2" class="navbar-element" ng-class="{ active: Page.nav()=='Admin'}">
+					    <a href="admin" target="{{ Page.nav()=='' ? '_self' : '' }}">Admin</a>
+            </li>
 
-			    	    <li ng-class="{ active: Page.nav()=='Name'}" class="dropdown">
-			    	    	<a class="dropdown-toggle"  data-toggle="dropdown" role="button" href>
+			    	<li ng-class="{ active: Page.nav()=='Name'}" class="dropdown">
+			    	  <a class="dropdown-toggle"  data-toggle="dropdown" role="button" href>
 			    	    		{{ user.username }} <b class="caret"></b>
-							</a>
+						  </a>
 
-					        <ul class="dropdown-menu" role="menu">
-					            <li><a href="account" target="{{ Page.nav()==''?'_self':'' }}"><i class="fa fa-user fa-fw"></i> Account</a></li>
+              <ul class="dropdown-menu" role="menu">
+					      <li><a href="account" target="{{ Page.nav()==''?'_self':'' }}"><i class="fa fa-user fa-fw"></i> Account</a></li>
 								<li><a href="settings" target="{{ Page.nav()==''?'_self':'' }}"><i class="fa fa-sliders fa-fw"></i> Einstellungen</a></li>
 								<li class="divider hidden-xs"></li>
-			    	            <li><a href ng-click="logout()"><i class="fa fa-sign-out fa-fw"></i> Abmelden</a></li>
-			    	        </ul>
+			    	    <li><a href ng-click="logout()"><i class="fa fa-sign-out fa-fw"></i> Abmelden</a></li>
+			    	  </ul>
 						</li>
-			    	</ul>
+			    </ul>
 				</div>
 			</div>
 		</div>

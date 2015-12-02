@@ -1,5 +1,5 @@
 var gulp = require('gulp'),
-	less = require('gulp-less'),
+	sass = require('gulp-sass'),
 	uglify = require('gulp-uglify'),
 	minifyCss = require('gulp-minify-css'), 
 	rename = require("gulp-rename"), 
@@ -8,14 +8,14 @@ var gulp = require('gulp'),
 	convertEncoding = require('gulp-convert-encoding'),
 	order = require("gulp-order");
 
-// Compile Less
-gulp.task('less', function() {
-    return gulp.src('src/less/*.less')
-        .pipe(less())
+// Compile Sass
+gulp.task('sass', function() {
+    return gulp.src('src/sass/**/*.scss')
+        .pipe(sass())
         .pipe(gulp.dest('src/css/'));
 });
 
-gulp.task('css', ['less'], function() {
+gulp.task('css', ['sass'], function() {
 	return gulp.src('src/css/**/*.css')
 		.pipe(order(['src/css/**/*.css', 'src/css/crucio.css']))
     	.pipe(concat('crucio.css'))
@@ -43,7 +43,7 @@ gulp.task('mail', function() {
 
 // Watch Files For Changes
 gulp.task('watch', function() {
-	gulp.watch('src/less/**/*.less', ['less', 'css']);
+	gulp.watch('src/sass/**/*.scss', ['sass', 'css']);
 	gulp.watch('src/js/**/*.js', ['js']);
 	gulp.watch('src/mail-templates/**/*.html', ['mail']);
 });
