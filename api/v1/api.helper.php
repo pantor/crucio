@@ -2,7 +2,7 @@
 
 function start_mysql() {
 	try {
-		$config = include('../config.php');
+		$config = include(dirname(__FILE__).'/../config.php'); // Global path for PDF
 		
 		$mysql = new PDO('mysql:host='.$config['host'].';dbname='.$config['dbname'], $config['user'], $config['password']);
 		$mysql->exec("set names utf8");
