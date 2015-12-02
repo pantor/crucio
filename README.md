@@ -18,13 +18,13 @@ Falls ihr Bugs entfernen oder neue Features einbauen möchtet, seid ihr herzlich
 
 
 ### Programmiersprachen
-Crucio ist in PHP, HTML, Javascript, [LESS](http://lesscss.org) und MySQL geschrieben.
+Crucio ist in PHP, HTML, Javascript, [SASS](http://sass-lang.com) und MySQL geschrieben.
 
 ### Frameworks
 Die wichtigsten Frameworks, auf denen Crucio basiert, sind [AngularJS](https://angularjs.org), [Bootstrap](http://getbootstrap.com) und [SLIM](http://www.slimframework.com). Für Icons wird [FontAwesome](http://fontawesome.io) verwendet.
 
 ### Workflow
-Zur Entwicklung wird [Gulp](http://gulpjs.com) verwendet; hauptsächlich für den LESS-Compiler und für Minify- & Concat-Aktionen. Es muss zunächst [NodeJS](https://nodejs.org) installiert werden, danach kann Gulp über den Befehl `npm install -g gulp` installiert werden. Es müssen einmalig die benötigten Pakete für Crucio heruntergeladen werden (die in `package.json` aufgelistet sind), dies passiert über `npm install`. Über `gulp` wird dann eine Umgebung gestartet, bei der Änderungen sofort verarbeitet werden.
+Zur Entwicklung wird [Gulp](http://gulpjs.com) verwendet; hauptsächlich für den SASS-Compiler und für Minify- & Concat-Aktionen. Es muss zunächst [NodeJS](https://nodejs.org) installiert werden, danach kann Gulp über den Befehl `npm install -g gulp` installiert werden. Es müssen einmalig die benötigten Pakete für Crucio heruntergeladen werden (die in `package.json` aufgelistet sind), dies passiert über `npm install`. Über `gulp` wird dann eine Umgebung gestartet, bei der Änderungen sofort verarbeitet werden.
 
 ## Lizenz
 Crucio ist unter der GNU GENERAL PUBLIC LICENSE Version 2 verfügbar.
