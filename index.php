@@ -121,7 +121,7 @@
 				    <div class="col-sm-4 info-block-crucio">
 				    	<i class="fa fa-car"></i>
 				    	<h2>Überall</h2>
-				    	<p>Du kannst Klausuren und deren Lösungszettel seperat ausdrucken. Außerdem ist Crucio für Smartphones und Tablets angepasst. So kannst du überall entfallende Antworten nachschauen oder unterwegs weiterlernen. Füge doch Crucio zu deinem Startbildschirm als hinzu!</p>
+				    	<p>Du kannst Klausuren und deren Lösungszettel seperat ausdrucken. Außerdem ist Crucio für Smartphones und Tablets angepasst. So kannst du überall entfallende Antworten nachschauen oder unterwegs weiterlernen. Füge doch Crucio zu deinem Startbildschirm hinzu!</p>
 				    </div>
 
 				    <div class="col-sm-4 info-block-crucio">

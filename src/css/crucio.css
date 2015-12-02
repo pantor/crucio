@@ -76,7 +76,7 @@ html {
 }
 .container-top-bar h1 a:hover {
   text-decoration: none;
-  color: #ffffff;
+  color: #fff;
   background-color: #2c3e50;
 }
 .container-top-bar .element {
@@ -90,17 +90,17 @@ html {
 .container-top-bar .element label {
   margin-top: 0px;
   font-size: 12px;
-  color: #444444;
+  color: #444;
   font-family: 'Lato', sans-serif;
 }
 .container-top-bar .element label a {
-  color: #444444;
+  color: #444;
 }
 .container-top-bar button,
 .container-top-bar a.btn {
   margin-top: 7px;
   margin-bottom: 6px;
-  color: #444444;
+  color: #444;
   background-color: rgba(0, 0, 0, 0);
   font-family: 'Lato', sans-serif;
   border: 2px solid #2c3e50;
@@ -112,7 +112,7 @@ html {
 }
 .container-top-bar button:hover,
 .container-top-bar a.btn:hover {
-  color: #ffffff;
+  color: #fff;
   background-color: #2c3e50;
 }
 .container-text {
@@ -148,19 +148,19 @@ html {
   transition: all .2s;
 }
 .container-text .btn-green:hover {
-  color: #ffffff;
+  color: #fff;
   background-color: #17971b;
 }
 .container-text-light {
-  color: #eeeeee;
+  color: #eee;
 }
 .container-text-dark {
-  color: #444444;
+  color: #444;
 }
 .brand {
   margin: 20px auto;
   text-align: center;
-  color: #ffffff;
+  color: #fff;
   font-family: 'Lato', 'Open Sans', sans-serif;
 }
 .brand h1 {
@@ -178,9 +178,9 @@ html {
   font-size: 16px;
 }
 .brand .btn {
-  border: 2px solid #ffffff;
+  border: 2px solid #fff;
   margin: 5px;
-  color: #ffffff;
+  color: #fff;
   -o-transition: all .2s;
   -moz-transition: all .2s;
   -webkit-transition: all .2s;
@@ -189,7 +189,7 @@ html {
 }
 .brand .btn:hover {
   color: #17971b;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 .image-med-exam {
   margin-top: 0px;
@@ -200,7 +200,7 @@ html {
   max-width: 260px;
 }
 .sturamed p {
-  color: #444444;
+  color: #444;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   text-align: center;
@@ -235,7 +235,7 @@ html {
 .info-block-crucio h2 {
   margin-top: 10px;
   margin-bottom: 10px;
-  color: #444444;
+  color: #444;
   font-size: 30px;
   font-weight: 300;
 }
@@ -261,17 +261,17 @@ html {
   -ms-transition: all .2s;
   transition: all .2s;
   font-size: 56px;
-  color: #ffffff;
+  color: #fff;
 }
 .info-block-crucio i:hover {
-  background: #ffffff;
+  background: #fff;
   color: #6d9bb5;
 }
 #footer {
   padding-top: 21px;
   padding-bottom: 9px;
   background-color: #2c3e50;
-  color: #eeeeee;
+  color: #eee;
   text-transform: uppercase;
   font-size: 12px;
   letter-spacing: 0.1em;
@@ -292,7 +292,7 @@ html {
   width: 250px;
 }
 #footer a {
-  color: #ffffff;
+  color: #fff;
 }
 #footer i {
   font-size: 20px;
@@ -527,14 +527,14 @@ table .btn {
   padding-bottom: 5px;
 }
 .navbar-crucio {
-  color: #ffffff;
+  color: #fff;
   background-image: url(../images/background.jpg);
   background-position-x: 50%;
   border-bottom: 6px solid #d35400;
   height: 76px;
 }
 .navbar-crucio .navbar-brand {
-  color: #ffffff;
+  color: #fff;
   background-color: #d35400;
   line-height: 72px;
   height: 72px;
@@ -546,7 +546,7 @@ table .btn {
 }
 .navbar-crucio .navbar-brand:hover,
 .navbar-crucio .navbar-brand:focus {
-  color: #ffffff;
+  color: #fff;
   background-color: #d35400;
 }
 .navbar-crucio .navbar-text {
@@ -561,7 +561,7 @@ table .btn {
 }
 .navbar-crucio .navbar-nav > li > a:hover,
 .navbar-crucio .navbar-nav > li > a:focus {
-  color: #ffffff;
+  color: #fff;
   background-color: #d35400;
   -o-transition: all .2s;
   -moz-transition: all .2s;
@@ -570,8 +570,8 @@ table .btn {
   transition: all .2s;
 }
 .navbar-crucio .navbar-toggle {
-  color: #ffffff;
-  border-color: #ffffff;
+  color: #fff;
+  border-color: #fff;
 }
 .navbar-crucio .navbar-toggle:hover,
 .navbar-crucio .navbar-toggle:focus {
@@ -589,7 +589,7 @@ table .btn {
 .navbar-crucio .navbar-nav > .active > a,
 .navbar-crucio .navbar-nav > .active > a:hover,
 .navbar-crucio .navbar-nav > .active > a:focus {
-  color: #ffffff;
+  color: #fff;
   background-color: #d35400;
   font-weight: bold;
 }
@@ -602,7 +602,7 @@ table .btn {
 .navbar-crucio .navbar-nav > .open > a,
 .navbar-crucio .navbar-nav > .open > a:hover,
 .navbar-crucio .navbar-nav > .open > a:focus {
-  color: #ffffff;
+  color: #fff;
   background-color: #d35400;
 }
 @media (max-width: 767px) {
@@ -620,7 +620,7 @@ table .btn {
   }
   .navbar-crucio .navbar-nav .open .dropdown-menu > li > a:hover,
   .navbar-crucio .navbar-nav .open .dropdown-menu > li > a:focus {
-    color: #ffffff;
+    color: #fff;
     background-color: #c24200;
   }
   .navbar-crucio .navbar-nav .open .dropdown-menu > .active > a,
@@ -643,6 +643,7 @@ table .btn {
   text-transform: uppercase;
   font-weight: 400;
   font-family: 'Lato', sans-serif;
+  cursor: pointer;
 }
 .sidebar li:hover a {
   background-color: #eef0f1;
@@ -651,18 +652,18 @@ table .btn {
 .sidebar li.active > a,
 .sidebar li.active > a:hover,
 .sidebar li.active > a:focus {
-  color: #ffffff;
+  color: #fff;
   background-color: #2c3e50;
 }
 .stats-box {
   text-align: center;
   padding: 10px;
   margin: 10px 5px;
-  background-color: #eeeeee;
+  background-color: #eee;
   -moz-border-radius: 8px;
   -webkit-border-radius: 8px;
   border-radius: 8px;
-  color: #444444;
+  color: #444;
 }
 .stats-box h5 {
   margin-top: 10px;
@@ -679,29 +680,29 @@ table .btn {
 }
 .stats-box.stats-box-info {
   background-color: #5bc0de;
-  color: #ffffff;
+  color: #fff;
 }
 .stats-box.stats-box-danger {
   background-color: #d9534f;
-  color: #ffffff;
+  color: #fff;
 }
 .stats-box.stats-box-success {
   background-color: #5cb85c;
-  color: #ffffff;
+  color: #fff;
 }
 .stats-box.stats-box-warning {
   background-color: #f0ad4e;
-  color: #ffffff;
+  color: #fff;
 }
 .exam-box {
   padding: 4px;
   padding-left: 30px;
   margin: 4px 5px;
-  background-color: #eeeeee;
+  background-color: #eee;
   -moz-border-radius: 8px;
   -webkit-border-radius: 8px;
   border-radius: 8px;
-  color: #444444;
+  color: #444;
 }
 .exam-box h5 {
   margin-top: 4px;
@@ -747,7 +748,7 @@ table .btn {
   border: none;
 }
 .exam-edit-list-group .list-group-item.active .list-group-item-text {
-  color: #ffffff;
+  color: #fff;
 }
 .edit-exam-wrapper {
   min-height: 20px;
