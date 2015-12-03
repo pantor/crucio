@@ -1,12 +1,13 @@
 var gulp = require('gulp'),
 	sass = require('gulp-sass'),
 	uglify = require('gulp-uglify'),
-	minifyCss = require('gulp-minify-css'), 
-	rename = require("gulp-rename"), 
-	concat = require("gulp-concat"), 
+	minifyCss = require('gulp-minify-css'),
+	rename = require("gulp-rename"),
+	concat = require("gulp-concat"),
 	inlineCss = require('gulp-inline-css'),
 	convertEncoding = require('gulp-convert-encoding'),
 	order = require("gulp-order");
+
 
 // Compile Sass
 gulp.task('sass', function() {
@@ -42,11 +43,11 @@ gulp.task('mail', function() {
 })
 
 // Watch Files For Changes
-gulp.task('watch', function() {
+gulp.task('serve', function() {
 	gulp.watch('src/sass/**/*.scss', ['sass', 'css']);
 	gulp.watch('src/js/**/*.js', ['js']);
 	gulp.watch('src/mail-templates/**/*.html', ['mail']);
 });
 
 // Default Task
-gulp.task('default', ['watch']);
+gulp.task('default', ['serve']);
