@@ -9,6 +9,12 @@ $mysql = start_mysql();
 
 $exam = get_fetch($mysql, "SELECT * FROM exams WHERE exam_id = ? LIMIT 1", [$exam_id])['result'];
 $author = get_fetch($mysql, "SELECT * FROM users WHERE user_id = ? LIMIT 1", [$exam['user_id_added']])['result'];
+/* $questions = get_all($mysql, "SELECT * FROM questions WHERE exam_id = ? ORDER BY question_id ASC", [$exam_id])['result'];
+
+foreach ($questions as &$question) {
+    $question['answers'] = unserialize($question['answers']);
+} */
+
 $questions = get_each($mysql, "SELECT * FROM questions WHERE exam_id = ? ORDER BY question_id ASC", [$exam_id], 'questions', function($row, $stmt, $mysql) {
 	$tmp['answers'] = unserialize($row['answers']);
 	return $tmp;

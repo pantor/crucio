@@ -28,28 +28,28 @@
 
 			    		<div class="col-md-3">
 				    		<div class="form-group element has-feedback {{login_error ? 'has-error' : ''}}">
-                  <input class="form-control" ng-model="email" type="email" placeholder="E-Mail-Adresse" autofocus>
-                  <label class="checkbox">
-		        			  <input type="checkbox" ng-model="remember_me" ng-true-value="1" ng-false-value="0" style="margin-top:2px;">
-                    Angemeldet bleiben
-                  </label>
-	        		  </div>
+                                <input class="form-control" ng-model="email" type="email" placeholder="E-Mail-Adresse" autofocus>
+                                <label class="checkbox">
+                                    <input type="checkbox" ng-model="remember_me" ng-true-value="1" ng-false-value="0" style="margin-top:2px;">
+                                    Angemeldet bleiben
+                                </label>
+	        		        </div>
 			    		</div>
 
 			    		<div class="col-md-2">
 				    		<div class="form-group element has-feedback {{login_error ? 'has-error' : ''}}">
-    		    	    <input class="form-control" ng-model="password" type="password" placeholder="Passwort">
-    		    	    <i class="fa fa-remove form-control-feedback" ng-show="login_error" style="margin-top:9px;"></i>
-    		    	    <label for="passwordInput">
-    		    	    	<a href="forgot-password" target="_self">Passwort vergessen?</a>
-    		    	    </label>
-      		    	</div>
+            		    	    <input class="form-control" ng-model="password" type="password" placeholder="Passwort">
+            		    	    <i class="fa fa-remove form-control-feedback" ng-show="login_error" style="margin-top:9px;"></i>
+            		    	    <label for="passwordInput">
+            		    	    	<a href="forgot-password" target="_self">Passwort vergessen?</a>
+            		    	    </label>
+            		    	</div>
 			    		</div>
 
 			    		<div class="col-md-1">
 				    		<button class="btn btn-index-top">
-					        <i class="fa fa-sign-in fa-fw hidden-xs"></i> Anmelden
-                </button>
+					            <i class="fa fa-sign-in fa-fw hidden-xs"></i> Anmelden
+                            </button>
 			    		</div>
 		    		</form>
 	    		</div>
@@ -66,7 +66,7 @@
 						</p>
 						
 						<a class="btn btn-lg" href="register" target="_self">Registrieren</a>
-				    <a class="btn btn-lg" href="#more" target="_self">Mehr Infos</a>
+                        <a class="btn btn-lg" href="#more" target="_self">Mehr Infos</a>
 					</div>
 				</div>
 
@@ -82,28 +82,28 @@
 
 			<a name="more"></a>
 	    	<div class="container container-padding-6">
-  				<div class="row">
-  			    <div class="col-sm-4 info-block-crucio">
-  			    	<i class="fa fa-book"></i>
-  			    	<h2>Lernen</h2>
-  			    	<p>Mit Crucio kannst du Fragen & Übungsklausuren anschauen, lernen, wiederholen und erklären lassen. Hier sind alle Fragen, die bisher an der Uni Leipzig gesammelt wurden, vereint. Damit sind die Fragen mit dem Studium in Leipzig abgestimmt, sodass du perfekt für die nächsten Klausuren vorbereitet bist.</p>
-  			    </div>
+				<div class="row">
+			    <div class="col-sm-4 info-block-crucio">
+			    	<i class="fa fa-book"></i>
+			    	<h2>Lernen</h2>
+			    	<p>Mit Crucio kannst du Fragen & Übungsklausuren anschauen, lernen, wiederholen und erklären lassen. Hier sind alle Fragen, die bisher an der Uni Leipzig gesammelt wurden, vereint. Damit sind die Fragen mit dem Studium in Leipzig abgestimmt, sodass du perfekt für die nächsten Klausuren vorbereitet bist.</p>
+			    </div>
+
+			    <div class="col-sm-4 info-block-crucio">
+			    	<i class="fa fa-inbox"></i>
+			    	<h2>Übersicht</h2>
+			    	<p>Crucio ist ein zentraler Ort für Fragen und Übungsklausuren an & von der Universität Leipzig. Die Übungsklausuren sind automatisch nach deinem Semester sortiert, du kannst aber natürlich nach Fachbereich oder einzelnen Fragen suchen. So kannst du dir deine Zeit und Nerven für Inhalte aufheben.</p>
+			    </div>
   
-  			    <div class="col-sm-4 info-block-crucio">
-  			    	<i class="fa fa-inbox"></i>
-  			    	<h2>Übersicht</h2>
-  			    	<p>Crucio ist ein zentraler Ort für Fragen und Übungsklausuren an & von der Universität Leipzig. Die Übungsklausuren sind automatisch nach deinem Semester sortiert, du kannst aber natürlich nach Fachbereich oder einzelnen Fragen suchen. So kannst du dir deine Zeit und Nerven für Inhalte aufheben.</p>
-  			    </div>
-  
-  			    <div class="col-sm-4 info-block-crucio">
-  			    	<i class="fa fa-bar-chart-o"></i>
-  			    	<h2>Statistik</h2>
-  			    	<p>Mit Crucio kannst du genau analysieren, welche Fragen aus welchem Fachbereich du richtig oder falsch gelöst hast. Oder wo deine Schwachpunkte bei einer bestimmten Klausur sind, damit es beim nächsten Mal umso besser klappt. <br><small>Noch nicht verfügbar.</small></p>
-  			    </div>
-  				</div>
+			    <div class="col-sm-4 info-block-crucio">
+			    	<i class="fa fa-bar-chart-o"></i>
+			    	<h2>Statistik</h2>
+			    	<p>Mit Crucio kannst du genau analysieren, welche Fragen aus welchem Fachbereich du richtig oder falsch gelöst hast. Oder wo deine Schwachpunkte bei einer bestimmten Klausur sind, damit es beim nächsten Mal umso besser klappt. <br><small>Noch nicht verfügbar.</small></p>
+			    </div>
+				</div>
 			</div>
 
-      <div class="container-light-grey container-padding-2">
+            <div class="container-light-grey container-padding-2">
 				<div class="cite">
 					<h3>Heureka, Papier ist [...] sowas von gestern!</h3>
 					<i class="fa fa-quote-left pull-left"> <a href="http://de.wikipedia.org/wiki/Epikur">Epikuros von Samos</a></i>
@@ -132,7 +132,7 @@
 				</div>
 			</div>
 
-      <div class="container-dark-orange container-padding-6">
+            <div class="container-dark-orange container-padding-6">
 				<div class="container container-text container-text-light">
 					<i class="fa fa-magic fa-5x"></i>
 					<h4>Noch nicht registriert?</h4>
@@ -141,8 +141,8 @@
 					</p>
 				</div>
 			</div>
-	  </div>
+	    </div>
 
-    <?php include 'parts/footer.html'; ?>
+        <?php include 'parts/footer.html'; ?>
 	</body>
 </html>

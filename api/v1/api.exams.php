@@ -5,11 +5,11 @@ $app->group('/exams', function () use ($app) {
 	$app->get('', function() use ($app) {
 		$mysql = start_mysql();
 		$response = get_all($mysql, 
-		"SELECT e.*, u.username AS 'author', COUNT(*) AS 'question_count' 
-		FROM exams e, users u, questions q 
-    WHERE e.visibility = 1 AND e.user_id_added = u.user_id AND q.exam_id = e.exam_id 
-    GROUP BY q.exam_id 
-    ORDER BY e.semester ASC, e.subject ASC, e.date DESC", 
+		    "SELECT e.*, u.username AS 'author', COUNT(*) AS 'question_count' 
+            FROM exams e, users u, questions q 
+            WHERE e.visibility = 1 AND e.user_id_added = u.user_id AND q.exam_id = e.exam_id 
+            GROUP BY q.exam_id 
+        ORDER BY e.semester ASC, e.subject ASC, e.date DESC", 
 		[], 'exams');
 		print_response($app, $response);
 	});
@@ -17,11 +17,11 @@ $app->group('/exams', function () use ($app) {
 	$app->get('/all-visibility', function() use ($app) {
 		$mysql = start_mysql();
 		$response = get_all($mysql, 
-		"SELECT e.*, u.username AS 'author', COUNT(*) AS 'question_count' 
-		FROM exams e, users u, questions q 
-    WHERE e.user_id_added = u.user_id AND q.exam_id = e.exam_id 
-    GROUP BY q.exam_id 
-    ORDER BY e.semester ASC, e.subject ASC, e.date DESC", 
+		    "SELECT e.*, u.username AS 'author', COUNT(*) AS 'question_count' 
+		    FROM exams e, users u, questions q 
+            WHERE e.user_id_added = u.user_id AND q.exam_id = e.exam_id 
+            GROUP BY q.exam_id 
+            ORDER BY e.semester ASC, e.subject ASC, e.date DESC", 
 		[], 'exams');
 		print_response($app, $response);
 	});
@@ -29,41 +29,42 @@ $app->group('/exams', function () use ($app) {
 	$app->get('/user_id/:user_id', function($user_id) use ($app) {
 		$mysql = start_mysql();
 		$response = get_all($mysql, 
-		"SELECT e.*, u.username, COUNT(*) AS 'question_count', IFNULL(answered_questions, 0) AS 'answered_questions'
-     FROM exams e
-    LEFT JOIN (SELECT q.exam_id, COUNT(*) AS 'answered_questions'
-      FROM results r
-      INNER JOIN questions q ON q.question_id = r.question_id AND r.user_id = ?
-      WHERE r.resetted = 0 AND r.attempt = 1
-      GROUP BY q.exam_id) AS R ON e.exam_id = R.exam_id
-    INNER JOIN questions q ON q.exam_id = e.exam_id
-    INNER JOIN users u ON u.user_id = e.user_id_added
-    WHERE e.visibility = 1
-    GROUP BY q.exam_id
-    ORDER BY e.semester ASC, e.subject ASC, e.date DESC",
-    [$user_id], 'exam');
+		    "SELECT e.*, u.username, COUNT(*) AS 'question_count', IFNULL(answered_questions, 0) AS 'answered_questions'
+            FROM exams e
+            LEFT JOIN (SELECT q.exam_id, COUNT(*) AS 'answered_questions'
+                FROM results r
+                INNER JOIN questions q ON q.question_id = r.question_id AND r.user_id = ?
+                WHERE r.resetted = 0 AND r.attempt = 1
+                GROUP BY q.exam_id) AS R ON e.exam_id = R.exam_id
+            INNER JOIN questions q ON q.exam_id = e.exam_id
+            INNER JOIN users u ON u.user_id = e.user_id_added
+            WHERE e.visibility = 1
+            GROUP BY q.exam_id
+            ORDER BY e.semester ASC, e.subject ASC, e.date DESC",
+        [$user_id], 'exam');
 		print_response($app, $response);
 	});
 
 	$app->get('/:exam_id', function($exam_id) use ($app) {
 		$mysql = start_mysql();
 		$exam = execute_mysql($mysql, 
-		"SELECT e.*, u.username, u.email 
-		FROM exams e, users u 
-		WHERE e.exam_id = ? AND u.user_id = e.user_id_added", 
+		    "SELECT e.*, u.username, u.email 
+            FROM exams e, users u 
+            WHERE e.exam_id = ? AND u.user_id = e.user_id_added", 
 		[$exam_id], function($stmt, $mysql) {
 			$response['exam'] = $stmt->fetch(PDO::FETCH_ASSOC);
 			return $response;
 		});
-
-		$questions = get_each($mysql, 
-		"SELECT * 
-		FROM questions 
-		WHERE exam_id = ? ORDER BY question_id ASC", 
-		[$exam_id], 'questions', function($row, $stmt, $mysql) {
-			$tmp['answers'] = unserialize($row['answers']);
-			return $tmp;
-		});
+		
+		$questions = get_all($mysql, 
+		    "SELECT * 
+		    FROM questions 
+		    WHERE exam_id = ? ORDER BY question_id ASC", 
+		[$exam_id], 'questions');
+		
+		foreach ($questions['questions'] as &$question) {
+            $question['answers'] = unserialize($question['answers']);
+        }
 
 		$response = $exam['exam'];
 		$response['questions'] = $questions['questions'];

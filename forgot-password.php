@@ -116,7 +116,7 @@
 					<div class="form-group">
 					    <label class="col-sm-3 control-label">E-Mail-Adresse</label>
 				        <div class="col-sm-4">
-				      		<input class="form-control" type="text" ng-model="user.email" placeholder=""/>
+				    		<input class="form-control" type="text" ng-model="user.email" placeholder=""/>
 				        </div>
 				        <span ng-show="error_email" class="label validation-error label-danger">Keine gültige E-Mail-Adresse</span>
 				        <span ng-show="error_already_requested" class="label validation-error label-danger">
