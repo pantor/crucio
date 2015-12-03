@@ -7,15 +7,32 @@
     "url": "git://github.com/crucioproject/Crucio"
   },
   "devDependencies": {
+    "angular": "^1.4.8",
+    "angular-bootstrap": "^0.12.2",
+    "angular-cookie": "^4.0.9",
+    "angular-file-upload": "^2.2.0",
+    "angular-loading-bar": "^0.8.0",
+    "angular-route": "^1.4.8",
+    "angular-sanitize": "^1.4.8",
+    "angular-scroll": "^1.0.0",
+    "bootstrap": "^3.3.6",
+    "font-awesome": "^4.5.0",
     "gulp": "^3.9.0",
     "gulp-concat": "^2.5.2",
     "gulp-connect-php": "0.0.7",
     "gulp-convert-encoding": "0.0.3",
     "gulp-inline-css": "^2.0.0",
+    "gulp-jshint": "^2.0.0",
     "gulp-minify-css": "^1.1.0",
     "gulp-order": "^1.1.1",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.1.0",
-    "gulp-uglify": "^1.2.0"
+    "gulp-uglify": "^1.2.0",
+    "jquery": "^2.1.4",
+    "jquery-ui": "^1.10.5",
+    "jshint": "^2.8.0",
+    "jshint-stylish": "^2.1.0",
+    "phplint": "^1.7.0",
+    "spin.js": "^2.3.2"
   }
 }

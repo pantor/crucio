@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="crucioApp" id="ng-app">
 	<head>
-		<title>Passwort vergessen | Crucio </title>
+		<title>Passwort vergessen | Crucio</title>
 		<?php include 'parts/header.php'; ?>
 	</head>
 

@@ -9,28 +9,28 @@
 <link rel="apple-touch-icon" href="public/images/apple-icon.png" />
 <link rel="apple-touch-icon-precomposed" href="public/images/apple-icon.png" />
 
-<link rel="stylesheet" href="public/css/crucio.min.css" />
 <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:300,400,700" />
+<link rel="stylesheet" href="public/css/crucio.min.css" />
 
-<script src="public/js/jquery/jquery.min.js"></script>
-<script src="public/js/jquery-ui/jquery-ui.min.js"></script>
-<script src="public/js/angular/angular.min.js"></script>
-<script src="public/js/bootstrap/bootstrap.min.js"></script>
+<script src="public/js/jquery.min.js"></script>
+<script src="public/js/jquery-ui.min.js"></script>
+<script src="public/js/angular.min.js"></script>
+<script src="public/js/bootstrap.min.js"></script>
 
-<script src="public/js/angular-route/angular-route.min.js"></script>
-<script src="public/js/angular-cookie/angular-cookie.min.js"></script>
-<script src="public/js/angular-sanitize/angular-sanitize.min.js"></script>
-<script src="public/js/angular-scroll/angular-scroll.min.js"></script>
-<script src="public/js/angular-file-upload/angular-file-upload.min.js"></script>
+<script src="public/js/angular-route.min.js"></script>
+<script src="public/js/angular-cookie.min.js"></script>
+<script src="public/js/angular-sanitize.min.js"></script>
+<script src="public/js/angular-scroll.min.js"></script>
+<script src="public/js/angular-file-upload.min.js"></script>
 
-<script src="public/js/textAngular/textAngular.min.js"></script>
+<script src="public/js/textAngular.min.js"></script>
 <script src="public/js/textAngularSetup.js"></script>
-<script src="public/js/angular-loading-bar/loading-bar.js"></script>
-<script src="public/js/chartjs/Chart.min.js"></script>
-<script src="public/js/tagmanager/tagmanager.js"></script>
-<script src="public/js/spinjs/spin.js"></script>
-<script src="public/js/angles/angles.js"></script>
-<script src="public/js/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="public/js/loading-bar.min.js"></script>
+<script src="public/js/Chart.min.js"></script>
+<script src="public/js/tagmanager.js"></script>
+<script src="public/js/spin.min.js"></script>
+<script src="public/js/angles.js"></script>
+<script src="public/js/ui-bootstrap-tpls.js"></script>
 
 <script src="public/js/crucio.min.js"></script>
 

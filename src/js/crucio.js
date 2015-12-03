@@ -147,16 +147,14 @@ crucioApp.run(function (ipCookie, $rootScope, $location) {
 			route_c = route.substr(0, route.indexOf('?'));
 		return ( routesForAdmin.indexOf(route_c) > -1) ? 1:0;
 	};
-
-	if($rootScope.user) {
-	    var isLoggedIn = ($rootScope.user.group_id) ? 1:0;
-	    var isAuthor = ($rootScope.user.group_id == 3) ? 1:0;
-	    var isAdmin = ($rootScope.user.group_id == 2) ? 1:0;
-
-	} else {
-	    var isLoggedIn = 0;
-	    var isAuthor = 0;
-	    var isAdmin = 0;
+    
+    var isLoggedIn = 0;
+    var isAuthor = 0;
+    var isAdmin = 0;
+	if ($rootScope.user) {
+	    isLoggedIn = ($rootScope.user.group_id) ? 1:0;
+	    isAuthor = ($rootScope.user.group_id == 3) ? 1:0;
+        isAdmin = ($rootScope.user.group_id == 2) ? 1:0;
 	}
 
 	if (!routeClean($location.url()) && !isLoggedIn) {
@@ -209,7 +207,7 @@ crucioApp.service('Selection', function() {
 			}
 		}
 		return true;
-	}
+	};
 
 	this.count = function(list, search_dictionary) {
 		if(!list) { return 0; }
@@ -219,7 +217,7 @@ crucioApp.service('Selection', function() {
 			if (this.is_element_included(list[i], search_dictionary)) counter++;
 
 		return counter;
-	}
+	};
 
 	this.find_distinct = function(list, search_key) {
 		var result = [];
@@ -229,7 +227,7 @@ crucioApp.service('Selection', function() {
 		});
 		result.sort();
 		return result;
-	}
+	};
 });
 
 crucioApp.filter('cut', function () {
@@ -260,7 +258,7 @@ Array.prototype.getIndexBy = function(name, value) {
             return i;
         }
     }
-}
+};
 
 Array.prototype.getArrayByKey = function(name) {
 	var array = [];
@@ -270,4 +268,4 @@ Array.prototype.getArrayByKey = function(name) {
         }
     }
     return array;
-}
+};

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="crucioApp" id="ng-app">
 	<head>
-		<title>Account Aktivierung | Crucio </title>
+		<title>Account Aktivierung | Crucio</title>
 		<?php include 'parts/header.php'; ?>
 	</head>
 

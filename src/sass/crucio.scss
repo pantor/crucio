@@ -27,6 +27,13 @@ $black: #000;
 	transition: all .2s;
 }
 
+
+@import 'bootstrap';
+@import 'font-awesome';
+@import 'loading-bar';
+@import 'tagmanager';
+
+
 body, html {
 	height: 100%;
 	font-family: 'Open Sans', sans-serif;
@@ -59,13 +66,13 @@ body, html {
 	margin: 8px;
 
 	.ui-slider {
-		margin-top:5px;
+		margin-top: 5px;
 	}
 }
 
 .question-answer {
 	padding: 6px;
-	margin-top:-6px;
+	margin-top: -6px;
 
 	.btn {
 		margin-top:-1px;
@@ -109,7 +116,6 @@ body, html {
 	}
 
 	.element {
-		// width: 200px;
 		margin-bottom: 0px;
 
 		.checkbox {
@@ -177,7 +183,7 @@ body, html {
 		margin-top: 40px;
 		
 		color: $dark-green;
-		background-color:rgba(255, 255, 255, 0);
+		background-color: rgba(255, 255, 255, 0);
 
 		@include transition();
 		
@@ -266,12 +272,12 @@ body, html {
 	i {
 		color: $dark-orange;
 		margin-left: 120px;
-	}
-
-	i a {
-		font-size: 14px;
-		font-weight: 400;
-		color: #596068;
+		
+		a {
+    		font-size: 14px;
+    		font-weight: 400;
+    		color: #596068;
+    	}
 	}
 }
 
@@ -368,34 +374,18 @@ body, html {
 }
 
 
-/* Container Full Width for all pages with colored background */
+// --- Container Full Width for all pages with colored background ---
 
 
-[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
-    display: none;
-}
 
-#loading-bar .bar {
-    background: $dark-orange;
-    height: 5px;
-}
-#loading-bar-spinner .spinner-icon {
-    border-top-color:  $dark-orange;
-    border-left-color: $dark-orange;
-}
-#loading-bar .peg {
-    -moz-box-shadow: #f5f5f5 0px 0 0px 0px;
-    -ms-box-shadow: #f5f5f5 0px 0 0px 0px;
-    -webkit-box-shadow: #f5f5f5 0px 0 0px 0px;
-    box-shadow: #f5f5f5 0px 0 0px 0px;
-}
+
 
 .strong {
 	font-weight: bold;
 }
 
 .mtop-navbar-row {
-	margin-top:46px;
+	margin-top: 46px;
 }
 
 .mtop { margin-top: 10px; }
@@ -426,6 +416,10 @@ body, html {
 .dot-info { background-color: $blue_2; }
 .dot-warning { background-color: $yellow; }
 
+
+
+// --- Comment ---
+
 .comment-voting {
 	margin-top: -4px;
 	margin-right: 12px;
@@ -449,6 +443,8 @@ body, html {
 }
 
 
+
+// --- Container ---
 
 .container-center-align {
 	margin-top: 80px;
@@ -491,6 +487,8 @@ body, html {
 
 
 
+// --- Spinner ---
+
 .spinner {
 	position: absolute;
 	left: 50%;
@@ -508,7 +506,9 @@ body, html {
 	width:200px;
 }
 
-/* Flat UI Slider Element for Account Settings */
+
+
+// --- Flat UI slider element for account settings ---
 
 .ui-slider {
 	background: $light-grey;
@@ -533,21 +533,21 @@ body, html {
 	transition: background 0.25s;
 
 	&:focus, &:hover {
-	background-color: $light-orange;
-	outline: none;
-  }
-
-  &:active {
-    background-color: $dark-orange;
-  }
+    	background-color: $light-orange;
+    	outline: none;
+    }
+    
+    &:active {
+        background-color: $dark-orange;
+    }
 }
 
 .ui-slider-range {
-  background-color: $light-orange;
-  display: block;
-  height: 100%;
-  position: absolute;
-  z-index: 1;
+    background-color: $light-orange;
+    display: block;
+    height: 100%;
+    position: absolute;
+    z-index: 1;
 }
 
 .ui-slider-segment {
@@ -579,7 +579,7 @@ body, html {
 
 
 
-/* Validation Error for all Forms: Registration, Account... */
+// --- Validation error for all forms: registration, account... ---
 
 .validation-error {
 	font-size: 85%;
@@ -595,7 +595,8 @@ input[id^="textAngular"] {
 }
 
 
-/* Buttons in Tables, e.g. on the Questions Page */
+
+// --- Buttons in tables, e.g. on the questions page ---
 
 table .btn {
     padding: 2px 6px 1px;
@@ -609,7 +610,7 @@ table .btn {
 
 
 
-/* Crucio colored Navbar */
+// --- Crucio colored navbar ---
 
 .navbar-nav > li > a {
     padding-top: 26px;
@@ -749,9 +750,10 @@ table .btn {
 }
 
 
-.sidebar {
-	// position: fixed;
 
+// --- Sidebar menu ---
+
+.sidebar {
     li {
         a {
         	color: $dark-blue;
@@ -784,6 +786,10 @@ table .btn {
     }
 }
 
+
+
+// --- Stats Box ---
+
 .stats-box {
 	text-align: center;
 	padding: 10px;
@@ -813,24 +819,25 @@ table .btn {
 		text-transform: uppercase;
 		font-family: 'Lato', sans-serif;
 	}
+	
+	&.stats-box-info {
+    	background-color: $blue_2;
+    	color: $white;
+    }
+    &.stats-box-danger {
+    	background-color: $red;
+    	color: $white;
+    }
+    &.stats-box.stats-box-success {
+    	background-color: $green;
+    	color: $white;
+    }
+    &.stats-box-warning {
+    	background-color: $yellow;
+    	color: $white;
+    }
 }
 
-.stats-box.stats-box-info {
-	background-color: $blue_2;
-	color: $white;
-}
-.stats-box.stats-box-danger {
-	background-color: $red;
-	color: $white;
-}
-.stats-box.stats-box-success {
-	background-color: $green;
-	color: $white;
-}
-.stats-box.stats-box-warning {
-	background-color: $yellow;
-	color: $white;
-}
 
 .exam-box {
 	padding: 4px;
@@ -884,6 +891,10 @@ table .btn {
 	font-family: 'Lato', sans-serif;
 }
 
+
+
+// --- Edit exam ---
+
 .exam-edit-list-group {
 	margin: 0px;
 
@@ -929,6 +940,8 @@ table .btn {
 
 
 
+// --- Editor ---
+
 .ta-scroll-window.form-control {
 	min-height: 20px;
 }
@@ -957,114 +970,14 @@ table .btn {
 }
 
 
+
+
 .questions-row-slider {
 	margin-top:8px;
 
 	.ui-slider {
 		margin-top:5px;
 	}
-}
-
-.tm-tag {
-    color: #555555;
-    background-color: #f5f5f5;
-    display: inline-block;
-    border-radius: 3px;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 13px;
-    margin: 0 5px 5px 0;
-    padding: 6px 8px;
-    text-decoration: none;
-    transition: background-color 0.2s linear 0s;
-    -moz-transition: background-color 0.2s linear 0s;
-    -webkit-transition: background-color 0.2s linear 0s;
-    vertical-align: middle;
-}
-.tm-tag .tm-tag-remove {
-    color: #ffffff;
-    font-weight: bold;
-    margin-left: 4px;
-    font-size: 18px;
-    line-height: 16px;
-}
-.tm-tag .tm-tag-remove:hover {
-    color: #ffffff;
-    text-decoration: none;
-}
-.tm-tag.tm-tag-warning {
-    color: #945203;
-    background-color: #f2c889;
-    border-color: #f0a12f;
-}
-.tm-tag.tm-tag-error {
-    color: #fff;
-    background-color: #e74c3c;
-}
-.tm-tag.tm-tag-error:hover {
-    color: #fff;
-    background-color: #c0392b;
-}
-.tm-tag.tm-tag-success {
-    color: #fff;
-    background-color: #1abc9c;
-}
-.tm-tag.tm-tag-success:hover {
-    color: #fff;
-    background-color: #16a085;
-}
-.tm-tag.tm-tag-info {
-    color: #4594b5;
-    background-color: #c5eefa;
-    border-color: #5dc8f7;
-}
-.tm-tag.tm-tag-inverse {
-    color: #cccccc;
-    background-color: #555555;
-    border-color: #333333;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2) inset;
-}
-.tm-tag.tm-tag-inverse .tm-tag-remove {
-    color: #ffffff;
-}
-.tm-tag.tm-tag-large {
-    font-size: 16.25px;
-    border-radius: 4px;
-    padding: 11px 7px;
-}
-.tm-tag.tm-tag-small {
-    font-size: 11.049999999999999px;
-    border-radius: 3px;
-    padding: 2px 4px;
-}
-.tm-tag.tm-tag-mini {
-    font-size: 9.75px;
-    border-radius: 2px;
-    padding: 0px 2px;
-}
-.tm-tag.tm-tag-plain {
-    color: #333333;
-    box-shadow: none;
-    background: none;
-    border: none;
-}
-.tm-tag.tm-tag-disabled {
-    color: #aaaaaa;
-    background-color: #e6e6e6;
-    border-color: #cccccc;
-    box-shadow: none;
-}
-.tm-tag.tm-tag-disabled .tm-tag-remove {
-    display: none;
-}
-input[type="text"].tm-input {
-    margin-bottom: 5px;
-    vertical-align: middle !important;
-}
-.control-group.tm-group {
-    margin-bottom: 5px;
-}
-.form-horizontal .control-group.tm-group {
-    margin-bottom: 15px;
 }
 
 .strike {
@@ -1076,12 +989,4 @@ input[type="text"].tm-input {
 }
 .showhim:hover .showme{
 	display : block;
-}
-
-.fixed-wrapper {
-
-}
-
-.fixed-wrapper-sm-4 {
-
 }

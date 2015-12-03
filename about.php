@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="crucioApp" id="ng-app">
 	<head>
-		<title>Impressum | Crucio </title>
+		<title>Impressum | Crucio</title>
 		<?php include 'parts/header.php'; ?>
 	</head>
 
