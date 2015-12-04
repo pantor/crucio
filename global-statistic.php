@@ -14,7 +14,6 @@
 
 				function reloadData() {
 					$http.get('api/v1/stats/general').success(function(data) {
-						console.log('asdf');
 						$scope.stats = data.stats;
 
 						if (first) {

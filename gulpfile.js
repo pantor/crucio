@@ -19,7 +19,7 @@ gulp.task('sass', function() {
 
 // Lint and format JS
 gulp.task('js', function() {
-	return gulp.src('src/js/**/*.js')
+	return gulp.src(['src/js/crucio.js', 'src/js/**/*.js'])
 	    .pipe(jshint())
         .pipe(jshint.reporter('jshint-stylish'))
     	.pipe(concat('crucio.js'))

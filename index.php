@@ -58,7 +58,7 @@
 	    	<div class="container-back-image container-padding-6">
 	    		<div class="container">
 	    			<div class="brand">
-					    <h1><i class="fa fa-check-square-o"></i> Crucio<span ng-show="is_dev">Dev</span></h1>
+					    <h1><i class="fa fa-check-square-o"></i> Crucio</h1>
 					    
 					    <p>
 						    ... hilft dir bei der Vorbereitung für Medizinklausuren an der Universität Leipzig.
