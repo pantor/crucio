@@ -31,7 +31,7 @@ var subject_list = {
 };
 
 
-var crucio = angular.module('crucioApp', ['ngRoute', 'ngSanitize', 'angular-loading-bar', 'ui.bootstrap', 'angularFileUpload', 'textAngular', 'angles', 'ipCookie',
+var crucio = angular.module('crucioApp', ['ngRoute', 'ngSanitize', 'ngTagsInput', 'rzModule', 'angular-loading-bar', 'ui.bootstrap', 'angularFileUpload', 'textAngular', 'angles', 'ipCookie',
 	'userModule', 'learnModule', 'authorModule', 'adminModule']);
 
 
@@ -45,7 +45,7 @@ crucio.config(function($routeProvider, $locationProvider) {
     	.when('/activate-account', { templateUrl: 'activate-account.php', controller: 'activateCtrl' })
     	.when('/contact', { templateUrl: 'contact.php', controller: 'contactCtrl' })
     	.when('/about', { templateUrl: 'about.php', controller: 'aboutCtrl' })
-    	.when('/stats', { templateUrl: 'stats.php', controller: 'blogCtrl' })
+    	.when('/stats', { templateUrl: 'stats.php', controller: 'statisticsCtrl' })
 
 		.when('/questions', { templateUrl : 'views/questions.html', controller: 'questionsCtrl' })
     	.when('/author', { templateUrl : 'views/author.html', controller: 'authorCtrl' })
@@ -78,10 +78,9 @@ crucio.run(function(Auth, ipCookie, $rootScope, $location) {
 	var routesForAdmin = ['/admin']; // + Author Routes
 
     $rootScope.user = Auth.getUser();
-	
-	var cookieUser = ipCookie('CrucioUser');
-
 	if (!$rootScope.user) {
+    	var cookieUser = ipCookie('CrucioUser');
+    	
 		if (cookieUser) {
     		Auth.setUser(cookieUser);
 		}

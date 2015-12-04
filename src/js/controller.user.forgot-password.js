@@ -1,5 +1,5 @@
 angular.module('userModule')
-	.controller('forgotPasswordCtrl', function($scope, $location, Auth, Page, $route, API) {
+	.controller('forgotPasswordCtrl', function($scope, Auth, Page, $location, $route, API) {
 		$scope.user = Auth.getUser();
 
 		$scope.confirm = $location.search().confirm;

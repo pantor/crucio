@@ -170,7 +170,10 @@
 										von {{ number_questions_in_choosen_subjects }}
 										<span class="text-muted pull-right"><small>Weniger</small></span>
 									</div>
-									<div id="numberSlider" class="ui-slider col-xs-5 col-sm-8"></div>
+									
+									<rzslider class="col-xs-5 col-sm-8" rz-slider-model="selection_number_questions" rz-slider-options="slider_options"></rzslider>
+									
+									
 									<div class="text-muted col-xs-2 col-sm-1"><small>Mehr</small></div>
 								</div>
 							</div>
@@ -418,7 +421,7 @@
 							<tbody ng-repeat="(tag, tag_array) in questions_by_tag">
 							    <tr>
 							    	<td rowspan="{{tag_array.length}}" style="min-width:140px;">
-								    	<span class="tm-tag tm-tag-error pull-right">
+								    	<span class="tag-item pull-right">
 											{{ tag }}
 										</span>
 							    	</td>

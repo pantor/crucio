@@ -45,57 +45,37 @@ angular.module('learnModule')
 		API.get('questions/' + $scope.question_id + '/user/' + $scope.user.user_id).success(function(data) {
 			$scope.question = data;
 
-			if ($scope.question.question_image_url) {
-				if (false) {
-					$scope.question.question_image_url = 'public' + $scope.question.question_image_url.slice(2);
-					if (!image_exist($scope.question.question_image_url))
-						$scope.question.question_image_url = '';
-				} else {
-					$scope.question.question_image_url = '/public/files/' + $scope.question.question_image_url;
-				}
-			}
+			if ($scope.question.question_image_url)
+				$scope.question.question_image_url = '/public/files/' + $scope.question.question_image_url;
 
 			for (var i = 0; i < $scope.question.comments.length; i++) {
 				$scope.question.comments[i].voting = ( parseInt($scope.question.comments[i].voting) || 0 );
 				$scope.question.comments[i].user_voting = ( parseInt($scope.question.comments[i].user_voting) || 0 );
 			}
-
-			function image_exist(url) {
-			   var img = new Image();
-			   img.src = url;
-			   return img.height !== 0;
+            
+			if ($scope.question.tags) {
+    			var array = $scope.question.tags.split(',');
+    			$scope.question.tags = [];
+    			for (var i = 0; i < array.length; i++)
+    			    $scope.question.tags.push({'text': array[i]});
 			}
-
-			// Tag Functions
-			var tags = [];
-			if ($scope.question.tags)
-				tags = $scope.question.tags.split(',');
-			
-			$('#tagInput').tagsManager({
-			    prefilled: tags,
-			    maxTags: 5,
-			    replace: true,
-			    output: null,
-			    tagsContainer: null,
-			    tagCloseIcon: '&times;',
-			    tagClass: 'tm-tag-error',
-			    onlyTagList: false,
-			    createHandler: function(tagManager, tags) {
-			    	var data = {'tags': tags, 'question_id': $scope.question_id, 'user_id': $scope.user.user_id};
-					API.post('tags', data);
-			    },
-			    removeHandler: function(tagManager, tags) {
-			    	var data = {'tags': tags, 'question_id': $scope.question_id, 'user_id': $scope.user.user_id};
-					API.post('tags', data);
-			    }
-			});
-
+				
 			if ($scope.given_result)
 				$scope.check_answer($scope.given_result);
 
 			if ($scope.show_answer)
 				$scope.mark_answer($scope.given_result);
 		});
+		
+		$scope.updateTags = function(tag) {
+    		var string = '';
+    		for (var i = 0; i < $scope.question.tags.length; i++)
+    		    string += $scope.question.tags[i].text + ',';
+            string = string.slice(0, -1);
+    		
+    		var data = {'tags': string, 'question_id': $scope.question_id, 'user_id': $scope.user.user_id};
+            API.post('tags', data);
+		};
 
 		// If show solution button is clicked
 		$scope.show_solution = function() {

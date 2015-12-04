@@ -13,7 +13,6 @@
 <link rel="stylesheet" href="public/css/crucio.min.css" />
 
 <script src="public/js/jquery.min.js"></script>
-<script src="public/js/jquery-ui.min.js"></script>
 <script src="public/js/angular.min.js"></script>
 <script src="public/js/bootstrap.min.js"></script>
 
@@ -25,12 +24,15 @@
 
 <script src="public/js/textAngular.min.js"></script>
 <script src="public/js/textAngularSetup.js"></script>
+<script src="public/js/ui-bootstrap-tpls.min.js"></script>
 <script src="public/js/loading-bar.min.js"></script>
-<script src="public/js/Chart.min.js"></script>
-<script src="public/js/tagmanager.js"></script>
-<script src="public/js/spin.min.js"></script>
+<script src="public/js/ng-tags-input.min.js"></script>
 <script src="public/js/angles.js"></script>
-<script src="public/js/ui-bootstrap-tpls.js"></script>
+
+<script src="public/js/Chart.min.js"></script>
+<script src="public/js/rzslider.min.js"></script>
+<script src="public/js/spin.min.js"></script>
+
 
 <script src="public/js/crucio.min.js"></script>
 

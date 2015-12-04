@@ -80,8 +80,8 @@
 	    		</div>
 
 	        	<hr>
-
-	        	<input type="text" name="tags" placeholder="Markierung hinzufügen" id="tagInput" class="tm-input form-control"/>
+	        	
+	        	<tags-input placeholder="Markierung hinzufügen" ng-model="question.tags" on-tag-added="updateTags($tag)" on-tag-removed="updateTags($tag)"></tags-input>
 	        </div>
 	    </div>
 

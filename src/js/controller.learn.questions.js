@@ -1,8 +1,8 @@
 angular.module('learnModule')
-    .controller('questionsCtrl', function($scope, Page, $location, API, Selection) {
+	.controller('questionsCtrl', function($scope, Auth, Page, $location, API, Selection) {
 		Page.set_title_and_nav('Lernen | Crucio', 'Lernen');
 
-		$scope.user = angular.fromJson(sessionStorage.user);
+		$scope.user = Auth.getUser();
 		if (!$scope.user)
 			window.location.replace(base_url);
 
@@ -21,7 +21,7 @@ angular.module('learnModule')
 
 
 		var spinner = new Spinner({length: 0, radius: 18, color: '#333', shadow: false});
-		$('#numberSlider').slider({ value: $scope.selection_number_questions, step: 10, min: 0, max: $scope.number_questions_in_choosen_subjects});
+		$scope.slider_options = {floor: 0, ceil: $scope.number_questions_in_choosen_subjects};
 
 		$scope.$watch("selection_subject_list", function( newValue, oldValue ) {
 			var post_data = {ignoreLoadingBar: true, selection_subject_list: $scope.selection_subject_list};
@@ -54,7 +54,8 @@ angular.module('learnModule')
 			if (max < 200)
 				if (max % step !== 0)
 					max += step;
-			$('#numberSlider').slider({ value: $scope.selection_number_questions, step: step, min: 0, max: max});
+            
+            $scope.slider_options = {floor: 0, ceil: max};
 		}, true);
 
 		API.get('exams/user_id/' + $scope.user.user_id).success(function(data) {

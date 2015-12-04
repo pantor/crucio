@@ -1,8 +1,8 @@
 angular.module('adminModule')
-	.controller('adminCtrl', function($scope, Page, API, Selection, $interval) {
+	.controller('adminCtrl', function($scope, Auth, Page, API, Selection, $interval) {
 		Page.set_title_and_nav('Verwaltung | Crucio', 'Admin');
 
-		$scope.user = angular.fromJson(sessionStorage.user);
+		$scope.user = Auth.getUser();
 
 		$scope.user_search = {'semester': '', 'group': '', 'login': '', 'query': '', 'query_keys': ['group_name', 'username']};
 		$scope.comment_search = {'question_id': '', 'username': '', 'query': '', 'query_keys': ['question', 'comment', 'username', 'question_id']};
@@ -17,7 +17,7 @@ angular.module('adminModule')
 				for (var i = 0; i < comments.length; i++) {
 					var comment = comments[i];
 					
-					// Check if Comment satisfies search query
+					// Check if comment satisfies search query
 					if (Selection.is_element_included(comment, newValue)) {
 						var found_idx = -1;
 						for (var j = 0; j < $scope.questions_by_comment_display.length; j++) {
@@ -27,11 +27,11 @@ angular.module('adminModule')
 						    }
 						}
 						
-						// Add to Array at Found Index
+						// Add to array at found index
 						if (-1 < found_idx) {
 							$scope.questions_by_comment_display[found_idx].push(comment);
 							
-						// Create New Array
+						// Create new array
 						} else {
 							$scope.questions_by_comment_display.push([comment]);
 						}
@@ -44,7 +44,7 @@ angular.module('adminModule')
 		API.get('users').success(function(data) {
 			$scope.users = data.users;
 			$scope.distinct_semesters = Selection.find_distinct($scope.users, 'semester');
-			$scope.distinct_semesters.sort(function(a, b) { return a-b; });
+			$scope.distinct_semesters.sort(function(a, b) { return a - b; });
 			$scope.distinct_groups = ['Standard', 'Admin', 'Autor'];
 
 			$scope.ready = 1;

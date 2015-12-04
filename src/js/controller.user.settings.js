@@ -4,17 +4,12 @@ angular.module('userModule')
 
 		$scope.user = Auth.getUser();
 
-		$('#repetitionSlider').slider({ value: $scope.user.repetitionValue});
-
 		$scope.submit_button_title = 'Speichern';
 
 	    $scope.update_user = function() {
 		    $scope.submit_button_title = 'Speichern...';
 
-		    var repetition = $('#repetitionSlider').slider('option', 'value');
-		    $scope.user.repetitionValue = repetition;
-
-		    var data = {'highlightExams': $scope.user.highlightExams, 'showComments': $scope.user.showComments, 'repetitionValue': repetition, 'useAnswers': $scope.user.useAnswers, 'useTags': $scope.user.useTags};
+		    var data = {'highlightExams': $scope.user.highlightExams, 'showComments': $scope.user.showComments, 'repetitionValue': 50, 'useAnswers': $scope.user.useAnswers, 'useTags': $scope.user.useTags};
 		    API.put('users/' + $scope.user.user_id + '/settings', data).success(function(data) {
 		    	if (data.status == 'success') {
                     Auth.setUser($scope.user);
@@ -28,7 +23,6 @@ angular.module('userModule')
 		};
 
 		$scope.remove_all_results = function() {
-			var data = {};
-			API.delete('results/' + $scope.user.user_id, data);
+			API.delete('results/' + $scope.user.user_id);
 		};
 	});
