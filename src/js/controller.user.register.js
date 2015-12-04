@@ -7,20 +7,20 @@ angular.module('userModule')
 		$scope.course = 1;
 
 		$scope.$watch("username", function(newValue, oldValue) {
-			if(newValue != oldValue) {
+			if (newValue != oldValue) {
 				$scope.error_no_name = !Validate.non_empty(newValue);
 				$scope.error_duplicate_name = 0;
 			}
 
 		}, true);
 		$scope.$watch("email", function(newValue, oldValue) {
-			if(newValue != oldValue) {
+			if (newValue != oldValue) {
 				$scope.error_no_email = !Validate.email(newValue);
 				$scope.error_duplicate_email = 0;
 			}
 		}, true);
 		$scope.$watch("password", function(newValue, oldValue) {
-			if(newValue != oldValue) {
+			if (newValue != oldValue) {
 				$scope.error_no_password = !Validate.password(newValue);
 			}
 		}, true);

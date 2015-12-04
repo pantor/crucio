@@ -1,5 +1,3 @@
-// -------- Global Variables ----------
-
 var subject_list = {
 	'Anästhesie und Intensivmedizin':[],
 
@@ -85,57 +83,45 @@ crucio.run(function(Auth, ipCookie, $rootScope, $location) {
     		Auth.setUser(cookieUser);
 		}
 	}
-
+	
+	var routeinArray = function(array, route) {
+		var route_c = route;
+		if (-1 < route.indexOf('?'))
+			route_c = route.substr(0, route.indexOf('?'));
+		return (array.indexOf(route_c) > -1) ? 1 : 0;
+	};
 
 	var routeClean = function(route) {
-		var route_c = route;
-		if (route.indexOf('?') > -1)
-			route_c = route.substr(0, route.indexOf('?'));
-		return ( routesThatDontRequireAuth.indexOf(route_c) > -1) ? 1:0;
+		return routeinArray(routesThatDontRequireAuth, route);
 	};
-
 	var routeLogin = function(route) {
-		var route_c = route;
-		if (route.indexOf('?') > -1)
-			route_c = route.substr(0, route.indexOf('?'));
-		return ( routesThatLogin.indexOf(route_c) > -1) ? 1:0;
+		return routeinArray(routesThatLogin, route);
 	};
-
 	var routeAuthor = function(route) {
-		var route_c = route;
-		if (route.indexOf('?') > -1)
-			route_c = route.substr(0, route.indexOf('?'));
-		return ( routesForAuthor.indexOf(route_c) > -1) ? 1:0;
+		return routeinArray(routesForAuthor, route);
 	};
-
 	var routeAdmin = function(route) {
-		var route_c = route;
-		if(route.indexOf('?') > -1)
-			route_c = route.substr(0, route.indexOf('?'));
-		return ( routesForAdmin.indexOf(route_c) > -1) ? 1:0;
+		return routeinArray(routesForAdmin, route);
 	};
     
     var isLoggedIn = 0;
-    var isAuthor = 0;
     var isAdmin = 0;
+    var isAuthor = 0;
 	if ($rootScope.user) {
 	    isLoggedIn = ($rootScope.user.group_id) ? 1:0;
+	    isAdmin = ($rootScope.user.group_id == 2) ? 1:0;
 	    isAuthor = ($rootScope.user.group_id == 3) ? 1:0;
-        isAdmin = ($rootScope.user.group_id == 2) ? 1:0;
 	}
 
-	if (!routeClean($location.url()) && !isLoggedIn) {
-		// window.location.replace('');
-	}
-	if (routeLogin($location.url()) && isLoggedIn) {
+	if (routeLogin($location.url()) && isLoggedIn)
 		$location.path('/403');
-	}
-	if (routeAuthor($location.url()) && !(isAuthor || isAdmin)) {
+
+	if (routeAuthor($location.url()) && !(isAuthor || isAdmin))
 		$location.path('/403');
-	}
-	if (routeAdmin($location.url()) && !isAdmin) {
+
+	if (routeAdmin($location.url()) && !isAdmin)
 		$location.path('/403');
-	}
+
 });
 
 
@@ -146,7 +132,7 @@ angular.module('learnModule', []);
 angular.module('userModule', ['ipCookie']);
 
 
-
+// Prototype functions
 Array.prototype.getIndexBy = function(name, value) {
     for (var i = 0; i < this.length; i++) {
         if (this[i][name] == value) {

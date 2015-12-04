@@ -234,6 +234,9 @@ angular.module('learnModule')
 				var data = {'query': $scope.question_search_query, 'visibility': 1, 'limit': 101};
 				// , 'subject': $scope.question_search_subject, 'semester': $scope.question_search_semester};
 				API.get('questions', data).success(function(data) {
+    				
+    				console.log(data);
+    				
 				    spinner.stop();
 
 		    	    if (0 === data.result.length) {

@@ -4,10 +4,17 @@ $app->group('/questions', function () use ($app) {
     
     $app->get('', function() use ($app) {
 		$mysql = start_mysql();
+		$params = [];
 		
 		$user_id = $app->request()->params('user_id');
+		
 		$query = urldecode($app->request()->params('query'));
-		$sql_query = $query; // str_replace(' ', '%\') AND LOWER(CONCAT(q.question, q.answers, q.explanation)) LIKE LOWER(\'%', $query);
+		$subquery_array = explode(' ', $query);
+		$sql_query = "";
+		foreach ($subquery_array as $sub_query) {
+    		$sql_query .= "AND ( LOWER(CONCAT(q.question, q.answers, q.explanation)) LIKE LOWER(?) ) ";
+    		array_push($params, '%'.$sub_query.'%');
+        }
 		
 		$limit = $app->request()->params('limit');
 		$limit_sql_limit = "";
@@ -47,14 +54,15 @@ $app->group('/questions', function () use ($app) {
 		    INNER JOIN exams e ON q.exam_id = e.exam_id
 		    INNER JOIN subjects s ON e.subject_id = s.subject_id
 		    WHERE 1 = 1 "
-		        ."AND ( LOWER(CONCAT(q.question, q.answers, q.explanation)) LIKE LOWER(?) ) "
+		        .$sql_query
                 .$visibility_sql_where
                 .$semester_sql_where
                 .$subject_id_sql_where
                 .$question_id_sql_where
 		    .$limit_sql_limit, 
-        ['%'.$sql_query.'%']);
+        $params);
 		
+		$response['query'] = $sql_query;
 		print_response($app, $response);
 	});
 
