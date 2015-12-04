@@ -1,26 +1,26 @@
 angular.module('userModule', ['ipCookie'])
 
-	.controller('registerCtrl', function($scope, Page, $route, $http, Validate) {
+	.controller('registerCtrl', function($scope, Page, $route, API, Validate) {
 		$scope.user = angular.fromJson(sessionStorage.user);
 
 		$scope.is_working = 0;
 		$scope.semester = 1;
 		$scope.course = 1;
 
-		$scope.$watch("username", function( newValue, oldValue ) {
+		$scope.$watch("username", function(newValue, oldValue) {
 			if(newValue != oldValue) {
 				$scope.error_no_name = !Validate.non_empty(newValue);
 				$scope.error_duplicate_name = 0;
 			}
 
 		}, true);
-		$scope.$watch("email", function( newValue, oldValue ) {
+		$scope.$watch("email", function(newValue, oldValue) {
 			if(newValue != oldValue) {
 				$scope.error_no_email = !Validate.email(newValue);
 				$scope.error_duplicate_email = 0;
 			}
 		}, true);
-		$scope.$watch("password", function( newValue, oldValue ) {
+		$scope.$watch("password", function(newValue, oldValue) {
 			if(newValue != oldValue) {
 				$scope.error_no_password = !Validate.password(newValue);
 			}
@@ -49,7 +49,7 @@ angular.module('userModule', ['ipCookie'])
 			    $scope.is_working = 1;
 
 			    var post_data = {'username': $scope.username, 'email': $scope.email.replace('@','(@)'), 'semester': $scope.semester, 'course': $scope.course, 'password': $scope.password};
-			    $http.post('api/v1/users', post_data).success(function(data) {
+			    API.post('users', post_data).success(function(data) {
 				    $scope.is_working = 0;
 
 					if (data.status == 'success') {
@@ -67,7 +67,7 @@ angular.module('userModule', ['ipCookie'])
 	})
 
 
-	.controller('activateCtrl', function($scope, Page, $route, $http, $location) {
+	.controller('activateCtrl', function($scope, Page, $route, API, $location) {
 		$scope.user = angular.fromJson(sessionStorage.user);
 		$scope.token = $location.search().token;
 
@@ -77,8 +77,7 @@ angular.module('userModule', ['ipCookie'])
 
 		} else {
 			var post_data = {'token': $scope.token};
-			$http.post('api/v1/users/action/activate', post_data).success(function(data) {
-				console.log(data);
+			API.post('users/action/activate', post_data).success(function(data) {
 			    if (data.status == 'error_unknown') {
 					$scope.success = 0;
 					$scope.error_no_token = 0;
@@ -99,7 +98,7 @@ angular.module('userModule', ['ipCookie'])
 	})
 
 
-	.controller('forgotPasswordCtrl', function($scope, $location, Page, $route, $http) {
+	.controller('forgotPasswordCtrl', function($scope, $location, Page, $route, API) {
 		$scope.user = angular.fromJson(sessionStorage.user);
 
 		$scope.confirm = $location.search().confirm;
@@ -117,7 +116,7 @@ angular.module('userModule', ['ipCookie'])
 			$scope.reset = 0;
 
 			var post_data = {'token': $scope.confirm};
-			$http.post('api/v1/users/password/confirm', post_data).success(function(data) {
+			API.post('users/password/confirm', post_data).success(function(data) {
 				$scope.status = data.status;
 				$('#forgotConfirmModal').modal('show');
 			});
@@ -127,13 +126,13 @@ angular.module('userModule', ['ipCookie'])
 			$scope.reset = 0;
 
 			var data = {'token': $scope.deny};
-			$http.post('api/v1/users/password/deny', data).success(function(data) {
+			API.post('users/password/deny', data).success(function(data) {
 				$scope.status = data.status;
 				$('#forgotDenyModal').modal('show');
 			});
 		}
 
-		$scope.$watch("user.email", function( newValue, oldValue ) {
+		$scope.$watch("user.email", function(newValue, oldValue) {
 			$scope.error_email = 0;
 			$scope.error_already_requested = 0;
 		}, true);
@@ -152,7 +151,7 @@ angular.module('userModule', ['ipCookie'])
 				$scope.is_working = 1;
 
 				var data = {'email': $scope.user.email.replace('@','(@)')};
-				$http.post('api/v1/users/password/reset', data).success(function(data) {	
+				API.post('users/password/reset', data).success(function(data) {	
 					$scope.is_working = 0;
 					
 					if (!data) {
@@ -179,7 +178,7 @@ angular.module('userModule', ['ipCookie'])
 	})
 
 
-	.controller('loginCtrl', function($scope, Page, $route, $http, ipCookie) {
+	.controller('loginCtrl', function($scope, Page, $route, API, ipCookie) {
 		$scope.user = angular.fromJson(sessionStorage.user);
 
 		$scope.email = '';
@@ -200,7 +199,7 @@ angular.module('userModule', ['ipCookie'])
 				$scope.email += '@studserv.uni-leipzig.de';
 
 			var data = {email: $scope.email.replace('@','(@)'), remember_me: $scope.remember_me, password: $scope.password};
-			$http.post('api/v1/users/action/login', data).success(function(data) {
+			API.post('users/action/login', data).success(function(data) {
 				if (data.login == 'success') {
 				    if ($scope.remember_me == 1)
 				    	ipCookie('CrucioUser', data.logged_in_user, { expires: 21 });
@@ -228,7 +227,7 @@ angular.module('userModule', ['ipCookie'])
 	})
 
 
-	.controller('accountCtrl', function($scope, Page, $http, Validate) {
+	.controller('accountCtrl', function($scope, Page, API, Validate) {
 		Page.set_title_and_nav('Account | Crucio', 'Name');
 
 		$scope.user = angular.fromJson(sessionStorage.user);
@@ -281,10 +280,8 @@ angular.module('userModule', ['ipCookie'])
 				$scope.submit_button_title = 'Speichern...';
 
 				var data = {'email': $scope.user.email.replace('@','(@)'), 'course_id': $scope.user.course_id, 'semester': $scope.user.semester, 'current_password': $scope.old_password, 'password': $scope.new_password};
-				$http.put('api/v1/users/' + $scope.user.user_id + '/account', data).success(function(data, status, headers) {
-					console.log(data);
-
-					if(data.status == 'success') {
+				API.put('users/' + $scope.user.user_id + '/account', data).success(function(data, status, headers) {
+					if (data.status == 'success') {
 				    	sessionStorage.user = angular.toJson($scope.user);
 				    	$scope.submit_button_title = 'Gespeichert';
 
@@ -306,7 +303,7 @@ angular.module('userModule', ['ipCookie'])
 	})
 
 
-	.controller('settingsCtrl', function($scope, Page, $http) {
+	.controller('settingsCtrl', function($scope, Page, API) {
 		Page.set_title_and_nav('Einstellungen | Crucio', 'Name');
 
 		$scope.user = angular.fromJson(sessionStorage.user);
@@ -322,7 +319,7 @@ angular.module('userModule', ['ipCookie'])
 		    $scope.user.repetitionValue = repetition;
 
 		    var data = {'highlightExams': $scope.user.highlightExams, 'showComments': $scope.user.showComments, 'repetitionValue': repetition, 'useAnswers': $scope.user.useAnswers, 'useTags': $scope.user.useTags};
-		    $http.put('api/v1/users/' + $scope.user.user_id + '/settings', data).success(function(data) {
+		    API.put('users/' + $scope.user.user_id + '/settings', data).success(function(data) {
 		    	if (data.status=='success') {
                     sessionStorage.user = angular.toJson($scope.user);
                     $scope.submit_button_title = 'Gespeichert';
@@ -336,14 +333,14 @@ angular.module('userModule', ['ipCookie'])
 
 		$scope.remove_all_results = function() {
 			var data = {};
-			$http.delete('api/v1/results/' + $scope.user.user_id, data);
+			API.delete('results/' + $scope.user.user_id, data);
 		};
 	})
 
 
-	.service('Validate', function($http) {
+	.service('Validate', function(API) {
 		var whitelist = Array();
-		$http.get('api/v1/whitelist').success(function(data) {
+		API.get('whitelist').success(function(data) {
 			whitelist = data.whitelist;
 		});
 

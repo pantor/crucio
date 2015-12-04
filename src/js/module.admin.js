@@ -1,6 +1,6 @@
 angular.module('adminModule', [])
 
-	.controller('adminCtrl', function($scope, Page, $http, Selection, $interval) {
+	.controller('adminCtrl', function($scope, Page, API, Selection, $interval) {
 		Page.set_title_and_nav('Verwaltung | Crucio', 'Admin');
 
 		$scope.user = angular.fromJson(sessionStorage.user);
@@ -42,7 +42,7 @@ angular.module('adminModule', [])
 		    $scope.questions_by_comment_display.sort(function(a, b) { return b[0].date - a[0].date; });
 		}, true);
 
-		$http.get('api/v1/users').success(function(data) {
+		API.get('users').success(function(data) {
 			$scope.users = data.users;
 			$scope.distinct_semesters = Selection.find_distinct($scope.users, 'semester');
 			$scope.distinct_semesters.sort(function(a, b) { return a-b; });
@@ -51,7 +51,7 @@ angular.module('adminModule', [])
 			$scope.ready = 1;
 		});
 
-		/* $http.get('api/v1/tags').success(function(data) {
+		/* API.get('tags').success(function(data) {
 			$scope.tags = data.tags;
 
 			$scope.distinct_tags = [];
@@ -78,7 +78,7 @@ angular.module('adminModule', [])
 		    });
 		}); */
 
-		$http.get('api/v1/comments').success(function(data) {
+		API.get('comments').success(function(data) {
 			$scope.comments = data.comments;
 			$scope.distinct_questions = Selection.find_distinct($scope.comments, 'question_id');
 			$scope.distinct_users = Selection.find_distinct($scope.comments, 'username');
@@ -101,11 +101,11 @@ angular.module('adminModule', [])
 		    $scope.questions_by_comment_display = $scope.questions_by_comment;
 		});
 
-		$http.get('api/v1/whitelist').success(function(data) {
+		API.get('whitelist').success(function(data) {
 			$scope.whitelist = data.whitelist;
 		});
 
-		$http.get('api/v1/stats/general').success(function(data) {
+		API.get('stats/general').success(function(data) {
 			$scope.stats = data.stats;
 		});
 
@@ -115,8 +115,8 @@ angular.module('adminModule', [])
 			if (email.length) {
 				$scope.whitelist.push({username: '', mail_address: email});
 
-				var post_data = {'mail_address': email.replace('@','(@)')};
-				$http.post('api/v1/whitelist', post_data).success(function(data) { });
+				var data = {'mail_address': email.replace('@','(@)')};
+				API.post('whitelist', data).success(function(data) { });
 			}
 		};
 
@@ -124,7 +124,7 @@ angular.module('adminModule', [])
 			var email = $scope.whitelist[index].mail_address;
 			if (email.length) {
 				$scope.whitelist.splice(index, 1);
-				$http.delete('api/v1/whitelist/' + email).success(function(data) { });
+				API.delete('whitelist/' + email).success(function(data) { });
 			}
 		};
 
@@ -156,9 +156,9 @@ angular.module('adminModule', [])
 				$scope.users[index].group_name = "Autor";
 			}
 
-			var post_data = {'group_id': group_id};
+			var data = {'group_id': group_id};
 			$scope.users[index].group_id = group_id;
-			$http.put('api/v1/users/' + user_id + '/group', post_data).success(function(data) { });
+			API.put('users/' + user_id + '/group', data);
 		};
 
 		$scope.is_today = function(date) {
@@ -177,7 +177,7 @@ angular.module('adminModule', [])
 			var yesterday = new Date(diff);
 
 			var date_c = new Date(date * 1000);
-			if(yesterday.toDateString() == date_c.toDateString())
+			if (yesterday.toDateString() == date_c.toDateString())
 				return true;
 			else
 				return false;
@@ -204,20 +204,20 @@ angular.module('adminModule', [])
 
 		$scope.increase_semester = function() {
 			var post_data = {'number': '1'};
-	    	$http.post('api/v1/admin/change-semester/dFt(45i$hBmk*I', post_data).success(function(data) {
+	    	API.post('admin/change-semester/dFt(45i$hBmk*I', post_data).success(function(data) {
 	    		alert(data.status);
 			});
 		};
 
 		$scope.decrease_semester = function() {
 			var post_data = {'number': '-1'};
-	    	$http.post('api/v1/admin/change-semester/dFt(45i$hBmk*I', post_data).success(function(data) {
+	    	API.post('admin/change-semester/dFt(45i$hBmk*I', post_data).success(function(data) {
 	    		alert(data.status);
 			});
 		};
 
 		$scope.remove_test_account = function(index) {
-			$http.delete('api/v1/users/test-account').success(function(data) {
+			API.delete('users/test-account').success(function(data) {
 				alert(data.status);
 			});
 		};

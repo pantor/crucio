@@ -1,6 +1,6 @@
 angular.module('learnModule', [])
 
-	.controller('questionsCtrl', function($scope, Page, $location, $http, Selection) {
+	.controller('questionsCtrl', function($scope, Page, $location, API, Selection) {
 		Page.set_title_and_nav('Lernen | Crucio', 'Lernen');
 
 		$scope.user = angular.fromJson(sessionStorage.user);
@@ -26,7 +26,7 @@ angular.module('learnModule', [])
 
 		$scope.$watch("selection_subject_list", function( newValue, oldValue ) {
 			var post_data = {ignoreLoadingBar: true, selection_subject_list: $scope.selection_subject_list};
-			$http.post('api/v1/learn/number-questions', post_data).success(function(data) {
+			API.post('learn/number-questions', post_data).success(function(data) {
 				$scope.number_questions_in_choosen_subjects = data.number_questions;
 
 				if (0 === $scope.selection_number_questions) {
@@ -58,7 +58,7 @@ angular.module('learnModule', [])
 			$('#numberSlider').slider({ value: $scope.selection_number_questions, step: step, min: 0, max: max});
 		}, true);
 
-		$http.get('api/v1/exams/user_id/' + $scope.user.user_id).success(function(data) {
+		API.get('exams/user_id/' + $scope.user.user_id).success(function(data) {
 			$scope.exams = data.exam;
 			$scope.distinct_semesters = Selection.find_distinct($scope.exams, 'semester');
 			$scope.distinct_subjects = Selection.find_distinct($scope.exams, 'subject');
@@ -87,7 +87,7 @@ angular.module('learnModule', [])
 		    $scope.ready = 1;
 		});
 
-		$http.get('api/v1/tags', {'params': {'user_id': $scope.user.user_id}}).success(function(data) {
+		API.get('tags', {'user_id': $scope.user.user_id}).success(function(data) {
 			$scope.tags = data.tags;
 
 			$scope.distinct_tags = [];
@@ -130,7 +130,7 @@ angular.module('learnModule', [])
 		    });
 		});
 
-		$http.get('api/v1/comments/' + $scope.user.user_id).success(function(data) {
+		API.get('comments/' + $scope.user.user_id).success(function(data) {
 			$scope.comments = data.comments;
 
 			$scope.questions_by_comment = {};
@@ -145,7 +145,7 @@ angular.module('learnModule', [])
 
 		$scope.learn_exam = function(exam_id) {
 	    	var random = 1;
-	    	$http.get('api/v1/exams/action/prepare/' + exam_id + '/' + random).success(function(data) {
+	    	API.get('exams/action/prepare/' + exam_id + '/' + random).success(function(data) {
 		    	var questionList = {'list': data.list};
 	    		questionList.exam_id = exam_id;
 				sessionStorage.currentQuestionList = angular.toJson(questionList);
@@ -155,7 +155,7 @@ angular.module('learnModule', [])
 
 		$scope.learn_subjects = function() {
 			var data = {selection_subject_list: $scope.selection_subject_list, selection_number_questions: $scope.selection_number_questions};
-	    	$http.post('api/v1/learn/prepare', data).success(function(data) {
+	    	API.post('learn/prepare', data).success(function(data) {
 		    	var questionList = {'list': data.list};
 	    		questionList.selection_subject_list = data.selection_subject_list;
 				sessionStorage.currentQuestionList = angular.toJson(questionList);
@@ -167,14 +167,14 @@ angular.module('learnModule', [])
 			var exam_id = $scope.exams[index].exam_id;
 			$scope.exams[index].answered_questions = 0;
 			var data = {};
-			$http.delete('api/v1/results/' + $scope.user.user_id + '/' + exam_id, data);
+			API.delete('results/' + $scope.user.user_id + '/' + exam_id, data);
 		};
 
 		$scope.reset_abstract_results = function(index) {
 			var exam_id = $scope.abstract_exams[index].exam_id;
 			$scope.abstract_exams[index].answered_questions = 0;
 			var data = {};
-			$http.delete('api/v1/results/' + $scope.user.user_id + '/' + exam_id, data);
+			API.delete('results/' + $scope.user.user_id + '/' + exam_id, data);
 		};
 
 		$scope.toggle_selection = function(subject, category, checked) {
@@ -233,7 +233,7 @@ angular.module('learnModule', [])
 
 				var data = {'query': $scope.question_search_query, 'visibility': 1, 'limit': 101};
 				// , 'subject': $scope.question_search_subject, 'semester': $scope.question_search_semester};
-				$http.get('api/v1/questions', {'params': data}).success(function(data) {
+				API.get('questions', data).success(function(data) {
 				    spinner.stop();
 
 		    	    if (0 === data.result.length) {
@@ -267,7 +267,7 @@ angular.module('learnModule', [])
 	})
 
 
-	.controller('examCtrl', function($scope, $rootScope, $routeParams, Page, $http, $location, $modal) {
+	.controller('examCtrl', function($scope, $rootScope, $routeParams, Page, API, $location, $modal) {
 		Page.set_title_and_nav('Klausur | Crucio', 'Lernen');
 
 		$scope.user = angular.fromJson(sessionStorage.user);
@@ -278,7 +278,7 @@ angular.module('learnModule', [])
 
 		$scope.current_index = 0;
 
-		$http.get('api/v1/exams/' + $scope.exam_id).success(function(data) {
+		API.get('exams/' + $scope.exam_id).success(function(data) {
 			$scope.exam = data;
 
 			var questions =  $scope.exam.questions;
@@ -316,7 +316,7 @@ angular.module('learnModule', [])
 	})
 
 
-	.controller('questionCtrl', function($scope, Page, $routeParams, $http, $location, $modal) {
+	.controller('questionCtrl', function($scope, Page, $routeParams, API, $location, $modal) {
 		Page.set_title_and_nav('Frage | Crucio', 'Lernen');
 
 		$scope.answerButtonClass = 'btn-primary';
@@ -359,7 +359,7 @@ angular.module('learnModule', [])
 			}
 		}, true);
 
-		$http.get('api/v1/questions/' + $scope.question_id + '/user/' + $scope.user.user_id).success(function(data) {
+		API.get('questions/' + $scope.question_id + '/user/' + $scope.user.user_id).success(function(data) {
 			$scope.question = data;
 
 			if ($scope.question.question_image_url) {
@@ -399,18 +399,16 @@ angular.module('learnModule', [])
 			    onlyTagList: false,
 			    createHandler: function(tagManager, tags) {
 			    	var data = {'tags': tags, 'question_id': $scope.question_id, 'user_id': $scope.user.user_id};
-					$http.post('api/v1/tags', data);
+					API.post('tags', data);
 			    },
 			    removeHandler: function(tagManager, tags) {
 			    	var data = {'tags': tags, 'question_id': $scope.question_id, 'user_id': $scope.user.user_id};
-					$http.post('api/v1/tags', data);
+					API.post('tags', data);
 			    }
 			});
 
-			if ($scope.given_result) {
-				console.log('question get given_result', $scope.given_result);
+			if ($scope.given_result)
 				$scope.check_answer($scope.given_result);
-			}
 
 			if ($scope.show_answer)
 				$scope.mark_answer($scope.given_result);
@@ -426,7 +424,7 @@ angular.module('learnModule', [])
 	    	if (1 == $scope.question.type) { correct = -1; }
 
 	    	var data = {'correct': correct, 'question_id': $scope.question_id, 'user_id': $scope.user.user_id, 'given_result': $scope.given_result};
-	    	$http.post('api/v1/results', data);
+	    	API.post('results', data);
 
 
 			if ($scope.questionList) {
@@ -486,7 +484,7 @@ angular.module('learnModule', [])
 		$scope.add_comment = function() {
 			var now = new Date() / 1000;
 			var post_data = {'comment': $scope.commentText, 'question_id': $scope.question_id, 'reply_to': 0, 'username': $scope.user.username, 'date': now};
-	    	$http.post('api/v1/comments/' + $scope.user.user_id, post_data).success(function(data) {
+	    	API.post('comments/' + $scope.user.user_id, post_data).success(function(data) {
 				post_data.voting = 0;
 	    		post_data.user_voting = 0;
 	    		post_data.comment_id = data.comment_id;
@@ -497,21 +495,21 @@ angular.module('learnModule', [])
 
 		$scope.delete_comment = function(index) {
 			var comment_id = $scope.question.comments[index].comment_id;
-			$http.delete('api/v1/comments/' + comment_id);
+			API.delete('comments/' + comment_id);
 			$scope.question.comments.splice(index, 1);
 		};
 
 		$scope.increase_user_voting = function(current_user_voting, comment_id) {
 			var result = current_user_voting == 1 ? 1 : current_user_voting + 1;
 			var post_data = {'user_voting': result};
-			$http.post('api/v1/comments/' + comment_id + '/user/' + $scope.user.user_id, post_data);
+			API.post('comments/' + comment_id + '/user/' + $scope.user.user_id, post_data);
 			return result;
 		};
 
 		$scope.decrease_user_voting = function(current_user_voting, comment_id) {
 			var result = current_user_voting == -1 ? -1 : current_user_voting - 1;
 			var post_data = {'user_voting': result};
-			$http.post('api/v1/comments/' + comment_id + '/user/' + $scope.user.user_id, post_data);
+			API.post('comments/' + comment_id + '/user/' + $scope.user.user_id, post_data);
 			return result;
 		};
 
@@ -534,7 +532,7 @@ angular.module('learnModule', [])
 	})
 
 
-	.controller('analysisCtrl', function($scope, Page, $http) {
+	.controller('analysisCtrl', function($scope, Page, API) {
 		Page.set_title_and_nav('Analyse | Crucio', 'Lernen');
 
 		$scope.user = angular.fromJson(sessionStorage.user);
@@ -549,7 +547,7 @@ angular.module('learnModule', [])
 						if (0 === question.correct_answer) { correct = -1; }
 
 						var data = {'correct': correct, 'question_id': question.question_id, 'user_id': $scope.user.user_id, 'given_answer': question.given_result};
-						$http.post('api/v1/results', data);
+						API.post('results', data);
 					}
 				}
 				question.mark_answer = 'analysis';
@@ -607,14 +605,14 @@ angular.module('learnModule', [])
 		}
 
 		if ($scope.exam_id) {
-			$http.get('api/v1/exams/' + $scope.exam_id).success(function(data) {
+			API.get('exams/' + $scope.exam_id).success(function(data) {
 				$scope.exam = data;
 			});
 		}
 	})
 
 
-	.controller('statisticsCtrl', function($scope, Page, $http) {
+	.controller('statisticsCtrl', function($scope, Page, API) {
 		Page.set_title_and_nav('Statistik | Crucio', 'Lernen');
 
 		$scope.user = angular.fromJson(sessionStorage.user);
@@ -677,16 +675,16 @@ angular.module('learnModule', [])
 					}
 
 					var words = seconds < 45 && substitute(strings.seconds, Math.round(seconds)) ||
-					  seconds < 90 && substitute(strings.minute, 1) ||
-					  minutes < 45 && substitute(strings.minutes, Math.round(minutes)) ||
-					  minutes < 90 && substitute(strings.hour, 1) ||
-					  hours < 24 && substitute(strings.hours, Math.round(hours)) ||
-					  hours < 42 && substitute(strings.day, 1) ||
-					  days < 30 && substitute(strings.days, Math.round(days)) ||
-					  days < 45 && substitute(strings.month, 1) ||
-					  days < 365 && substitute(strings.months, Math.round(days / 30)) ||
-					  years < 1.5 && substitute(strings.year, 1) ||
-					  substitute(strings.years, Math.round(years));
+                        seconds < 90 && substitute(strings.minute, 1) ||
+                        minutes < 45 && substitute(strings.minutes, Math.round(minutes)) ||
+                        minutes < 90 && substitute(strings.hour, 1) ||
+                        hours < 24 && substitute(strings.hours, Math.round(hours)) ||
+                        hours < 42 && substitute(strings.day, 1) ||
+                        days < 30 && substitute(strings.days, Math.round(days)) ||
+                        days < 45 && substitute(strings.month, 1) ||
+                        days < 365 && substitute(strings.months, Math.round(days / 30)) ||
+                        years < 1.5 && substitute(strings.year, 1) ||
+                        substitute(strings.years, Math.round(years));
 
 					var separator = strings.wordSeparator;
 

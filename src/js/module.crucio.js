@@ -5,7 +5,7 @@ angular.module('crucioModule', [])
 	})
 
 
-	.controller('contactCtrl', function($scope, Page, $routeParams, $http, $location, $modal) {
+	.controller('contactCtrl', function($scope, Page, $routeParams, API, $location, $modal) {
 		$scope.user = angular.fromJson(sessionStorage.user);
 
 		var route_params = $location.search();
@@ -21,7 +21,7 @@ angular.module('crucioModule', [])
 		}
 
 		if ($scope.question_id) {
-			$http.get('api/v1/questions/' + $scope.question_id).success(function(data) {
+			API.get('questions/' + $scope.question_id).success(function(data) {
 				$scope.question = data.question;
 			});
 		}
@@ -64,14 +64,14 @@ angular.module('crucioModule', [])
 					destination += ', ' + $scope.question.email; // Author
 
 					var data1 = {'name': $scope.name, 'email': $scope.email.replace('@','(@)'), 'text': text, 'question_id': $scope.question_id, 'author': $scope.question.username, 'question': $scope.question.question, 'exam_id': $scope.question.exam_id, 'subject': $scope.question.subject, 'date': $scope.question.date, 'author_email': $scope.question.email, 'mail_subject': $scope.subject};
-					$http.post('api/v1/contact/send-mail-question', data1).success(function(data) {
+					API.post('contact/send-mail-question', data1).success(function(data) {
 						$scope.is_working = 0;
 					    $scope.open();
 					});
 
 				} else {
 					var data2 = {'name': $scope.name, 'email': $scope.email.replace('@','(@)'), 'text': text};
-					$http.post('api/v1/contact/send-mail', data2).success(function(data) {
+					API.post('contact/send-mail', data2).success(function(data) {
 						$scope.is_working = 0;
 					    $scope.open();
 					});

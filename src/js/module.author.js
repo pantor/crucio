@@ -1,6 +1,6 @@
 angular.module('authorModule', [])
 
-	.controller('authorCtrl', function($scope, Page, $location, $http, Selection) {
+	.controller('authorCtrl', function($scope, API, Page, $location, Selection) {
 		Page.set_title_and_nav('Autor | Crucio', 'Autor');
 
 		$scope.user = angular.fromJson(sessionStorage.user);
@@ -41,7 +41,7 @@ angular.module('authorModule', [])
 		    $scope.questions_by_comment_display.sort(function(a, b) { return b[0].date - a[0].date; });
 		}, true);
 
-		$http.get('api/v1/exams').success(function(data) {
+		API.get('exams').success(function(data) {
 		    $scope.exams = data.exams;
 
 		    // Find Distinct Semesters
@@ -74,7 +74,7 @@ angular.module('authorModule', [])
 		    $scope.ready = 1;
 		});
 
-		$http.get('api/v1/comments/author/' + $scope.user.user_id).success(function(data) {
+		API.get('comments/author/' + $scope.user.user_id).success(function(data) {
 		    $scope.comments = data.comments;
 
 		    // Find Distinct Comments
@@ -108,7 +108,7 @@ angular.module('authorModule', [])
 
 		$scope.new_exam = function() {
 			var data = {'subject': '', 'professor': '', 'semester': '', 'date': '', 'type': '', 'user_id_added': $scope.user.user_id, 'duration': '', 'notes': ''};
-		    $http.post('api/v1/exams', data).success(function(data) {
+		    API.post('exams', data).success(function(data) {
 		    	$location.path('/edit-exam').search('id', data.exam_id);
 		    });
 		};
@@ -131,7 +131,7 @@ angular.module('authorModule', [])
 	})
 
 
-	.controller('editCtrl', function($scope, $routeParams, Page, $location, $http, FileUploader) {
+	.controller('editCtrl', function($scope, $routeParams, Page, $location, API, FileUploader) {
 		Page.set_title_and_nav('Klausur | Crucio', 'Autor');
 
 		$scope.ready = 0;
@@ -202,7 +202,7 @@ angular.module('authorModule', [])
 	    	resize_overscroll();
     	});
 
-		$http.get('api/v1/exams/' + $scope.exam_id).success(function(data) {
+		API.get('exams/' + $scope.exam_id).success(function(data) {
 			$scope.exam = data;
 
 			$scope.exam.semester = parseInt(data.semester);
@@ -260,7 +260,7 @@ angular.module('authorModule', [])
 			var question_id = $scope.exam.questions[index].question_id;
 
 			if (question_id)
-				$http.delete('api/v1/questions/' + question_id).success(function(data, status, headers) { });
+				API.delete('questions/' + question_id).success(function(data, status, headers) { });
 			$scope.exam.questions.splice(index, 1);
 
 			remake_uploader_array();
@@ -289,7 +289,7 @@ angular.module('authorModule', [])
 				$scope.is_saving = 1;
 
 				var post_data = $scope.exam;
-				$http.put('api/v1/exams/' + $scope.exam_id, post_data).success(function(data) { });
+				API.put('exams/' + $scope.exam_id, post_data);
 
 				$scope.exam.questions.forEach(function(question) {
 					var validate_question = true;
@@ -306,13 +306,13 @@ angular.module('authorModule', [])
 
 		    			// New Question
 		    			if (!question.question_id) {
-		    				$http.post('api/v1/questions', data).success(function(data) {
+		    				API.post('questions', data).success(function(data) {
 		    					question.question_id = data.question_id;
 		    					console.log(data);
 							});
 
 		    			} else {
-		    				$http.put('api/v1/questions/' + question.question_id, post_question_data).success(function(data) { });
+		    				API.put('questions/' + question.question_id, post_question_data);
 		    			}
 		    		}
 				});
@@ -325,7 +325,7 @@ angular.module('authorModule', [])
 		};
 
 		$scope.delete_exam = function() {
-			$http.delete('api/v1/exams/' + $scope.exam.exam_id).success(function(data) {
+			API.delete('exams/' + $scope.exam.exam_id).success(function(data) {
 				$location.url('/author');
 			});
 		};
