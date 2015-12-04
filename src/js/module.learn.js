@@ -87,7 +87,7 @@ angular.module('learnModule', [])
 		    $scope.ready = 1;
 		});
 
-		$http.get('api/v1/tags/' + $scope.user.user_id).success(function(data) {
+		$http.get('api/v1/tags', {'params': {'user_id': $scope.user.user_id}}).success(function(data) {
 			$scope.tags = data.tags;
 
 			$scope.distinct_tags = [];
@@ -231,15 +231,16 @@ angular.module('learnModule', [])
 			if (query_question.length) {
 				spinner.spin(document.getElementById('spinner'));
 
-				var post_data = {'query': query_question, 'subject': $scope.question_search_subject, 'semester': $scope.question_search_semester};
-				$http.get('api/v1/questions/search/' + $scope.question_search_query + '/' + $scope.user.user_id).success(function(data) {
+				var data = {'query': $scope.question_search_query, 'visibility': 1, 'limit': 101};
+				// , 'subject': $scope.question_search_subject, 'semester': $scope.question_search_semester};
+				$http.get('api/v1/questions', {'params': data}).success(function(data) {
 				    spinner.stop();
 
 		    	    if (0 === data.result.length) {
 			    	    $scope.question_field_message = 'Nichts gefunden ;(';
 
 		    	    } else if (100 < data.result.length) {
-			    	    $scope.question_field_message = 'Zu Viel gefunden, geht es ein bisschen konkreter? ;(';
+			    	    $scope.question_field_message = 'Zu viel gefunden, geht es ein bisschen konkreter? ;(';
 
 		    	    } else {
 		    	    	$scope.search_results = data.result;
@@ -585,23 +586,23 @@ angular.module('learnModule', [])
 
 		$scope.random = $scope.get_random(0, 1000);
 
-		for (var question in $scope.workedQuestionList) {
-			if (question.correct_answer == question.given_result && question.given_result > 0 && question.correct_answer > 0)
+		for (var question2 in $scope.workedQuestionList) {
+			if (question2.correct_answer == question2.given_result && question2.given_result > 0 && question2.correct_answer > 0)
 				$scope.correct_q_count++;
 
-			if (question.correct_answer != question.given_result && question.given_result > 0 && question.correct_answer > 0)
+			if (question2.correct_answer != question2.given_result && question2.given_result > 0 && question2.correct_answer > 0)
 				$scope.wrong_q_count++;
 
-			if (question.given_result > 0)
+			if (question2.given_result > 0)
 				$scope.solved_q_count++;
 
-			if (question.given_result > -2)
+			if (question2.given_result > -2)
 				$scope.seen_q_count++;
 
-			if (1 == question.type)
+			if (1 == question2.type)
 				$scope.free_q_count++;
 
-			if (0 === question.correct_answer  && 1 != question.type)
+			if (0 === question2.correct_answer  && 1 != question2.type)
 				$scope.no_answer_q_count++;
 		}
 

@@ -1,6 +1,6 @@
 <?php
 
-require_once('api.helper.php');
+require_once('helper.php');
 require_once('../Slim/Slim.php');
 
 

@@ -28,10 +28,10 @@ angular.module('crucioModule', [])
 
 		$scope.is_working = 0;
 
-		$scope.$watch("name", function( newValue, oldValue ) {
+		$scope.$watch("name", function(newValue, oldValue) {
 			$scope.error_no_name = 0;
 		}, true);
-		$scope.$watch("email", function( newValue, oldValue ) {
+		$scope.$watch("email", function(newValue, oldValue) {
 			$scope.error_no_email = 0;
 		}, true);
 

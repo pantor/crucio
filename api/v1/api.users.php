@@ -4,13 +4,23 @@ $app->group('/users', function () use ($app) {
 
 	$app->get('', function() use ($app) {
 		$mysql = start_mysql();
-		$response = get_all($mysql, "SELECT u.*, g.name AS 'group_name' FROM users u, groups g WHERE u.group_id = g.group_id ORDER BY g.name ASC, u.user_id DESC", [], 'users');
+		$response = get_all($mysql, 
+		    "SELECT u.*, g.name AS 'group_name' 
+		    FROM users u 
+		    INNER JOIN groups g ON g.group_id = u.group_id 
+		    ORDER BY g.name ASC, u.user_id DESC", 
+        [], 'users');
 		print_response($app, $response);
 	});
 
 	$app->get('/:user_id', function($user_id) use ($app) {
 		$mysql = start_mysql();
-		$response = get_all($mysql, "SELECT u.*, g.name FROM users u, groups g WHERE u.group_id = g.group_id AND u.user_id = ?", [$user_id], 'users');
+		$response = get_all($mysql, 
+		    "SELECT u.*, g.name 
+		    FROM users u 
+		    INNER JOIN groups g ON g.group_id = u.group_id 
+		    WHERE u.user_id = ?", 
+        [$user_id], 'users');
 		print_response($app, $response);
 	});
 

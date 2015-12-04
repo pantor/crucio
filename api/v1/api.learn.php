@@ -34,7 +34,12 @@ $app->group('/learn', function () use ($app) {
 
 		foreach ($subject_list as $key => $value) {
 			if (count($value) == 0) {
-				$result = execute_mysql($mysql, "SELECT DISTINCT q.* FROM questions q, exams e WHERE e.subject = ? AND q.exam_id = e.exam_id", [$key], function($stmt, $mysql) {
+				$result = execute_mysql($mysql, 
+				    "SELECT DISTINCT q.* 
+				    FROM questions q
+				    INNER JOIN exams e ON e.exam_id = q.exam_id
+				    WHERE e.subject = ?", 
+				[$key], function($stmt, $mysql) {
 					$response['stmt'] = $stmt;
 					return $response;
 				});
@@ -45,7 +50,12 @@ $app->group('/learn', function () use ($app) {
 
 			} else {
 				foreach ($subject_list->$key as $cat) {
-					$result = execute_mysql($mysql, "SELECT DISTINCT q.* FROM questions q, exams e WHERE e.subject = ? AND q.exam_id = e.exam_id AND q.topic = ?", [$key, $cat], function($stmt, $mysql) {
+					$result = execute_mysql($mysql, 
+					    "SELECT DISTINCT q.* 
+					    FROM questions q
+					    INNER JOIN exams e ON e.exam_id = q.exam_id
+					    WHERE e.subject = ? AND q.topic = ?", 
+                    [$key, $cat], function($stmt, $mysql) {
 						$response['stmt'] = $stmt;
 						return $response;
 					});

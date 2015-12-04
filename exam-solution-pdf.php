@@ -1,7 +1,7 @@
 <?php
 
 require_once('public/php/tcpdf/tcpdf.php');
-require_once('api/v1/api.helper.php');
+require_once('api/v1/helper.php');
 
 $exam_id = $_GET['id'];
 
@@ -9,16 +9,11 @@ $mysql = start_mysql();
 
 $exam = get_fetch($mysql, "SELECT * FROM exams WHERE exam_id = ? LIMIT 1", [$exam_id])['result'];
 $author = get_fetch($mysql, "SELECT * FROM users WHERE user_id = ? LIMIT 1", [$exam['user_id_added']])['result'];
-/* $questions = get_all($mysql, "SELECT * FROM questions WHERE exam_id = ? ORDER BY question_id ASC", [$exam_id])['result'];
+$questions = get_all($mysql, "SELECT * FROM questions WHERE exam_id = ? ORDER BY question_id ASC", [$exam_id])['result'];
 
 foreach ($questions as &$question) {
     $question['answers'] = unserialize($question['answers']);
-} */
-
-$questions = get_each($mysql, "SELECT * FROM questions WHERE exam_id = ? ORDER BY question_id ASC", [$exam_id], 'questions', function($row, $stmt, $mysql) {
-	$tmp['answers'] = unserialize($row['answers']);
-	return $tmp;
-})['questions'];
+}
 $question_count = count($questions);
 
 
@@ -29,7 +24,6 @@ class crucioPDF extends TCPDF {
 	    global $exam;
 
 	    $this->Ln(14);
-		// $this->Image('public/images/favicon-lg.png', 20, 14, 14);
 	    $this->SetFont('dejavusans', 'B', 16);
 	    $this->MultiCell(0, 0, $exam['subject'], 0, 'C', false, 1, PDF_MARGIN_LEFT, $this->y);
 	    $this->SetFont('dejavusans', '', 12);
@@ -95,6 +89,6 @@ for ($i = 0; $i < $question_count; $i++) {
 }
 
 
-$pdf->Output('crucio-klausur-loesungen-'.$exam_id.'.pdf', 'I');
+$pdf->Output('crucio-loesungen-'.$exam_id.'.pdf', 'I');
 
 ?>

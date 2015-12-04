@@ -54,28 +54,8 @@ function get_fetch($mysql, $query, $parameters, $name = 'result') {
 	});
 }
 
-function get_each($mysql, $query, $parameters, $name = 'result', $callback2 = null) {
-	return execute_mysql($mysql, $query, $parameters, function($stmt, $mysql) use ($name, $callback2) {
-		$tmp = [];
-		while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-			if ($callback2)
-				$row = array_merge( $row, $callback2($row, $stmt, $mysql));
-		    $tmp[] = $row;
-		}
-		$response[$name] = $tmp;
-		return $response;
-	});
-}
-
 function get_count($mysql, $sub_query, $parameters = []) {
-	$stmt = $mysql->prepare("SELECT COUNT(*) AS 'c' FROM ".$sub_query);
-	try {
-		$stmt->execute($parameters);
-		$result = $stmt->fetch(PDO::FETCH_ASSOC)['c'];
-	} catch(PDOException $e){
-		$result = 'error';
-	}
-	return $result;
+	return get_count_with_pre($mysql, "COUNT(*)", $sub_query, $parameters);
 }
 
 function get_count_with_pre($mysql, $pre_query, $sub_query, $parameters = []) {

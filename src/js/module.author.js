@@ -41,13 +41,13 @@ angular.module('authorModule', [])
 		    $scope.questions_by_comment_display.sort(function(a, b) { return b[0].date - a[0].date; });
 		}, true);
 
-		$http.get('api/v1/exams/all-visibility').success(function(data) {
+		$http.get('api/v1/exams').success(function(data) {
 		    $scope.exams = data.exams;
 
 		    // Find Distinct Semesters
 		    $scope.distinct_semesters = [];
 		    $scope.exams.forEach(function(entry) {
-		    	if ($scope.distinct_semesters.indexOf(entry.semester) == -1) {
+		    	if (-1 == $scope.distinct_semesters.indexOf(entry.semester)) {
 		    		$scope.distinct_semesters.push(entry.semester);
 		    	}
 		    });
@@ -56,7 +56,7 @@ angular.module('authorModule', [])
 		    // Find Distinct Subjects
 		    $scope.distinct_subjects = [];
 		    $scope.exams.forEach(function(entry) {
-		    	if ($scope.distinct_subjects.indexOf(entry.subject) == -1) {
+		    	if (-1 == $scope.distinct_subjects.indexOf(entry.subject)) {
 		    		$scope.distinct_subjects.push(entry.subject);
 		    	}
 		    });
@@ -65,7 +65,7 @@ angular.module('authorModule', [])
 		    // Find Distinct Authors
 		    $scope.distinct_authors = [];
 		    $scope.exams.forEach(function(entry) {
-		    	if ($scope.distinct_authors.indexOf(entry.author) == -1) {
+		    	if (-1 == $scope.distinct_authors.indexOf(entry.author)) {
 		    		$scope.distinct_authors.push(entry.author);
 		    	}
 		    });

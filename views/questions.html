@@ -6,9 +6,9 @@
 	    		<hr>
 	    		<li><a data-target="#subjects" data-toggle="tab"><i class="fa fa-flask fa-fw"></i>  Fächer</a></li>
 	    		<li><a data-target="#exams" data-toggle="tab"><i class="fa fa-list fa-fw"></i>  Klausuren</a></li>
-				<li><a data-target="#questions" data-toggle="tab"><i class="fa fa-question fa-fw"></i>  Fragen</a></li>
+				<li><a data-target="#search" data-toggle="tab"><i class="fa fa-search fa-fw"></i>  Suche</a></li>
+				<li><a data-target="#tags" data-toggle="tab"><i class="fa fa-tags fa-fw"></i>  Markierungen</a></li>
 	    		<li><a data-target="#comments" data-toggle="tab"><i class="fa fa-comments fa-fw"></i>  Kommentare</a></li>
-	    		<li><a data-target="#tags" data-toggle="tab"><i class="fa fa-tags fa-fw"></i>  Markierungen</a></li>
 			</ul>
 			<hr class="visible-xs visible-sm">
 	    </div>
@@ -333,7 +333,7 @@
     			</div>
 
 
-	    		<div class="tab-pane" id="questions">
+	    		<div class="tab-pane" id="search">
 					<div class="row">
 						<div class="col-md-12">
 							<div class="panel panel-default">
@@ -391,48 +391,7 @@
 				</div>
 
 
-	    		<div class="tab-pane" id="comments">
-					<h4 class="mbottom">Deine Kommentare <small></small></h4>
-
-					<div ng-if="comments.length == 0" class="container-center-align-sm">
-					    <i class="fa fa-comments"></i>
-
-					    <hr>
-					    <h3>Du hast noch keine Kommentare geschrieben.</h3>
-					    <h5>Du kannst zu jeder Frage Kommentare schreiben und so von deinen<br> Kommilitonen zusätzliche Informationen bekommen.</h5>
-					    <br>
-					</div>
-
-					<div ng-if="comments.length > 0">
-						<table class="table">
-							<thead>
-						        <th>Frage</th>
-						        <th style="min-width: 120px;"><i class="fa fa-fw fa-comment-o"></i> Kommentar</th>
-						        <th style="min-width: 80px;"><i class="fa fa-fw fa-clock-o"></i>Datum</th>
-						        <th></th>
-						    </thead>
-
-							<tbody ng-repeat="(question, comment_array) in questions_by_comment">
-							    <tr>
-							    	<td rowspan="{{ comment_array.length }}" style="min-width:140px;">
-								    	<span ng-bind-html="comment_array[0].question"></span>
-							    	</td>
-							    	<td>{{ comment_array[0].comment }}</td>
-							    	<td><span timeago="{{ comment_array[0].date * 1000 }}"></td>
-									<td><a href="question?id={{ comment_array[0].question_id }}&reset_session=1"><i class="fa fa-chevron-right"></i></a></td>
-							    </tr>
-							    <tr ng-repeat="c in comment_array" ng-show="$index > 0">
-									<td>{{ c.comment }}</td>
-									<td><span timeago="{{ c.date * 1000 }}"></td>
-									<td><a href="question?id={{ c.question_id }}&reset_session=1"><i class="fa fa-chevron-right"></i></a></td>
-							    </tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-
-
-	    		<div class="tab-pane" id="tags">
+                <div class="tab-pane" id="tags">
 					<h4 class="mbottom">Deine Markierungen <small></small></h4>
 
 					<div ng-if="tags.length == 0" class="container-center-align-sm">
@@ -471,6 +430,47 @@
 							    	<td>{{ q.subject }}</td>
 									<td><span ng-bind-html="q.question"></span></td>
 									<td><a href="question?id={{ q.question_id }}&reset_session=1"><i class="fa fa-chevron-right"></i></a></td>
+							    </tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+                
+	    		<div class="tab-pane" id="comments">
+					<h4 class="mbottom">Deine Kommentare <small></small></h4>
+
+					<div ng-if="comments.length == 0" class="container-center-align-sm">
+					    <i class="fa fa-comments"></i>
+
+					    <hr>
+					    <h3>Du hast noch keine Kommentare geschrieben.</h3>
+					    <h5>Du kannst zu jeder Frage Kommentare schreiben und so von deinen<br> Kommilitonen zusätzliche Informationen bekommen.</h5>
+					    <br>
+					</div>
+
+					<div ng-if="comments.length > 0">
+						<table class="table">
+							<thead>
+						        <th>Frage</th>
+						        <th style="min-width: 120px;"><i class="fa fa-fw fa-comment-o"></i> Kommentar</th>
+						        <th style="min-width: 80px;"><i class="fa fa-fw fa-clock-o"></i>Datum</th>
+						        <th></th>
+						    </thead>
+
+							<tbody ng-repeat="(question, comment_array) in questions_by_comment">
+							    <tr>
+							    	<td rowspan="{{ comment_array.length }}" style="min-width:140px;">
+								    	<span ng-bind-html="comment_array[0].question"></span>
+							    	</td>
+							    	<td>{{ comment_array[0].comment }}</td>
+							    	<td><span timeago="{{ comment_array[0].date * 1000 }}"></td>
+									<td><a href="question?id={{ comment_array[0].question_id }}&reset_session=1"><i class="fa fa-chevron-right"></i></a></td>
+							    </tr>
+							    <tr ng-repeat="c in comment_array" ng-show="$index > 0">
+									<td>{{ c.comment }}</td>
+									<td><span timeago="{{ c.date * 1000 }}"></td>
+									<td><a href="question?id={{ c.question_id }}&reset_session=1"><i class="fa fa-chevron-right"></i></a></td>
 							    </tr>
 							</tbody>
 						</table>

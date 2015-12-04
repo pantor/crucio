@@ -23,7 +23,7 @@
 	    		<div class="container">
 		    		<form class="row" ng-submit="login()">
 			    		<div class="col-md-4 col-md-offset-1">
-							  <h1><a href="/"><i class="fa fa-check-square-o"></i> Crucio </a></h1>
+                            <h1><a href="/"><i class="fa fa-check-square-o"></i> Crucio </a></h1>
 			    		</div>
 
 			    		<div class="col-md-3">
@@ -136,9 +136,7 @@
 				<div class="container container-text container-text-light">
 					<i class="fa fa-magic fa-5x"></i>
 					<h4>Noch nicht registriert?</h4>
-					<p>
-						Auf gehts, Crucio ist seit kurzem freigeschaltet! Wenn du gar nicht in Leipzig studierst, dann kannst du uns gerne mal anschreiben, vielleicht können wir dir helfen...
-					</p>
+					<p>Auf gehts, Crucio ist seit kurzem freigeschaltet! Wenn du gar nicht in Leipzig studierst, dann kannst du uns gerne mal anschreiben, vielleicht können wir dir helfen...</p>
 				</div>
 			</div>
 	    </div>

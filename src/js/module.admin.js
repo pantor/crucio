@@ -12,7 +12,7 @@ angular.module('adminModule', [])
 		$scope.show_activity = {search_query: !true, result: !true, login: !true, register: !true, comment: !true, exam_new: !true, exam_update: !true};
 
 
-		$scope.$watch("comment_search", function( newValue, oldValue ) {
+		$scope.$watch("comment_search", function(newValue, oldValue) {
 			$scope.questions_by_comment_display = [];
 			$scope.questions_by_comment.forEach(function(comments) {
 				for (var i = 0; i < comments.length; i++) {

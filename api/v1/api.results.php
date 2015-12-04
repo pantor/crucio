@@ -4,13 +4,20 @@ $app->group('/results', function () use ($app) {
 
 	$app->get('', function() use ($app) {
 		$mysql = start_mysql();
-		$response = get_all($mysql, "SELECT r.* FROM results r", [], 'results');
-		print_response($app, $response);
-	});
-
-	$app->get('/:user_id', function($user_id) use ($app) {
-		$mysql = start_mysql();
-		$response = execute_mysql($mysql, "SELECT * FROM results WHERE user_id = ?", [$user_id], 'results');
+		
+		$user_id = $app->request()->params('user_id');
+		$user_id_sql_where = "";
+		if ($user_id) {
+    		$user_id_sql_where = "AND r.user_id = $user_id ";
+		}
+		
+		$response = get_all($mysql, 
+		    "SELECT r.* 
+		    FROM results r 
+		    WHERE 1 = 1 "
+		        .$user_id_sql_where
+		    , 
+        [], 'results');
 		print_response($app, $response);
 	});
 

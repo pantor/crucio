@@ -40,11 +40,11 @@
 					</div>
 
 					<div class="form-group">
-					  <label class="col-sm-2">E-Mail-Adresse</label>
-            <div class="col-sm-6">
-              <input ng-model="email" type="text" class="form-control">
-					  </div>
-            <span class="label validation-error label-danger" ng-show="error_no_email">Keine gültige E-Mail-Adresse</span>
+                        <label class="col-sm-2">E-Mail-Adresse</label>
+                        <div class="col-sm-6">
+                            <input ng-model="email" type="text" class="form-control">
+					    </div>
+                        <span class="label validation-error label-danger" ng-show="error_no_email">Keine gültige E-Mail-Adresse</span>
 					</div>
 
 					<div ng-if="question_id" class="form-group">
