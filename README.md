@@ -10,7 +10,7 @@ Wenn ihr Fehler in Crucio gefunden habt, tragt sie bitte unter Issues ein. Dafü
 
 
 ## Installation
-Falls du/ihr Crucio bei euch einführen möchtet, braucht ihr einen Server mit PHP und einer MySQL-Datenbank; diese kann man ab 60€ im Jahr mieten. Falls ihr Hilfe bei der Einrichtung und Wartung braucht, könnt ihr euch gerne melden.
+Falls du/ihr Crucio bei euch einführen möchtet, braucht ihr einen Server mit PHP und einer MySQL-Datenbank; diese kann man ab 75€ im Jahr mieten. Falls ihr Hilfe bei der Einrichtung und Wartung braucht, könnt ihr euch gerne melden.
 
 
 ## Entwicklung
@@ -18,13 +18,13 @@ Falls ihr Bugs entfernen oder neue Features einbauen möchtet, seid ihr herzlich
 
 
 ### Programmiersprachen
-Crucio ist in PHP, HTML, Javascript, [SASS](http://sass-lang.com) und MySQL geschrieben.
+Crucio is written in PHP, Javascript ES6, [SASS](http://sass-lang.com) and MySQL.
 
 ### Frameworks
-Die wichtigsten Frameworks, auf denen Crucio basiert, sind [AngularJS](https://angularjs.org), [Bootstrap](http://getbootstrap.com) und [SLIM](http://www.slimframework.com). Für Icons wird [FontAwesome](http://fontawesome.io) verwendet.
+Crucio is based on several frameworks and plug-ins. The most important ones are [AngularJS](https://angularjs.org), [Bootstrap](http://getbootstrap.com) and [SLIM](http://www.slimframework.com). For Icons [FontAwesome](http://fontawesome.io) is used.
 
 ### Workflow
-Zur Entwicklung wird [Gulp](http://gulpjs.com) verwendet; hauptsächlich für den SASS-Compiler und für Minify- & Concat-Aktionen. Es muss zunächst [NodeJS](https://nodejs.org) installiert werden, danach kann Gulp über den Befehl `npm install -g gulp` installiert werden. Es müssen einmalig die benötigten Pakete für Crucio heruntergeladen werden (die in `package.json` aufgelistet sind), dies passiert über `npm install`. Über `gulp` wird dann eine Umgebung gestartet, bei der Änderungen sofort verarbeitet werden.
+For development [Gulp](http://gulpjs.com) is used; mainly for compiling SCSS files and minify- and concat actions. At first, [NodeJS](https://nodejs.org) needs to be installed, afterwards Gulp can be installed via `npm install -g gulp`. The needed dependencies for Crucio (which are listed in `package.json`) can be downloaded via `npm install`. 
 
 ## Lizenz
-Crucio ist unter der GNU GENERAL PUBLIC LICENSE Version 2 verfügbar.
+Crucio is released under the GNU GENERAL PUBLIC LICENSE v2.
