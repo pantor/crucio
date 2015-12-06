@@ -6,13 +6,13 @@
 
 		<script>
 			var crucioApp2 = angular.module('crucioApp2', ['ui.bootstrap', 'angles']);
-			crucioApp2.controller('statsCtrl', function($scope, $http, $interval) {
+			crucioApp2.controller('StatsController', function($scope, $http, $interval) {
 				$scope.update_activity = false;
 				$scope.show_activity = {search_query: !true, result: !true, login: !true, register: !true, comment: !true, exam_new: !true, exam_update: !true};
 
 				var first = true;
 
-				function reloadData() {
+				var reloadData = function() {
 					$http.get('api/v1/stats/general').success(function(data) {
 						$scope.stats = data.stats;
 
@@ -40,53 +40,6 @@
 							    }]
 							};
 
-							/* $scope.chart_time_user = {
-							    labels: [$scope.stats.result_dep_time_day[0], $scope.stats.result_dep_time_day[1]],
-								datasets: [
-								    {
-								        label: "Nutzer",
-								        fillColor: "rgba(220,220,120,0.2)",
-										strokeColor: "rgba(220,220,120,1)",
-										pointColor: "rgba(220,220,120,1)",
-										pointStrokeColor: "#fff",
-										pointHighlightFill: "#fff",
-								        data: [$scope.stats.result_dep_time_day[0], $scope.stats.result_dep_time_day[1]]
-								    }
-								]
-							};
-
-							$scope.chart_time_question = {
-							    labels: $scope.stats.date_name,
-								datasets: [
-								    {
-							        	label: "Fragen",
-								        fillColor: "rgba(151,187,205,0.2)",
-										strokeColor: "rgba(151,187,205,1)",
-										pointColor: "rgba(151,187,205,1)",
-										pointStrokeColor: "#fff",
-										pointHighlightFill: "#fff",
-										pointHighlightStroke: "rgba(151,187,205,1)",
-								        data: $scope.stats.question_count_time
-								    }
-								]
-							};
-
-							$scope.chart_time_result = {
-							    labels: $scope.stats.date_name,
-								datasets: [
-								    {
-								        label: "Antworten",
-								        fillColor: "rgba(251,127,105,0.2)",
-										strokeColor: "rgba(251,127,105,1)",
-										pointColor: "rgba(251,127,105,1)",
-										pointStrokeColor: "#fff",
-										pointHighlightFill: "#fff",
-										pointHighlightStroke: "rgba(251,187,205,1)",
-								        data: $scope.stats.result_count_time
-								    }
-								]
-							}; */
-
 							$scope.chart_time_result_today = {
 								labels: $scope.stats.result_dep_time_today_label,
 								datasets: [
@@ -106,9 +59,6 @@
 							first = false;
 						}
 					});
-
-
-
 					$http.get('api/v1/stats/search-queries').success(function(data) {
 					   $scope.search_queries = data.search_queries;
 					});
@@ -117,10 +67,8 @@
 					   $scope.activities = data.activities;
 					   console.log(data.activities);
 					});
-				}
-
-
-
+				};
+				
 				reloadData();
 				var timerData = $interval(function () {
 					if ($scope.update_activity)
@@ -150,7 +98,7 @@
 					years: "%d Jahren",
 					wordSeparator: " ",
 					numbers: []
-				}
+				};
 
 				return {
 			    	restrict:'A',
@@ -233,7 +181,7 @@
     			</div>
 			</div>
 
-			<div class="container" ng-controller="statsCtrl">
+			<div class="container" ng-controller="StatsController">
 				<div class="row mtop-navbar-row">
 				    <div class="col-md-3 sidebar">
 				    	<ul class="nav nav-pills nav-stacked mbottom-2x">

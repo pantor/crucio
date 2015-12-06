@@ -1,6 +1,6 @@
 <?php
 
-require_once('public/php/tcpdf/tcpdf.php');
+require_once('api/tcpdf/tcpdf.php');
 require_once('api/v1/helper.php');
 
 $exam_id = $_GET['id'];

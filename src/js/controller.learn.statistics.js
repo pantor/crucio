@@ -1,6 +1,9 @@
-angular.module('learnModule')
-	.controller('statisticsCtrl', function($scope, Auth, Page, API) {
-		Page.set_title_and_nav('Statistik | Crucio', 'Lernen');
+class StatisticsController {
+    constructor(Auth, Page) {
+        Page.setTitleAndNav('Statistik | Crucio', 'Lernen');
 
-		$scope.user = Auth.getUser();
-	});
+        this.user = Auth.getUser();
+    }
+}
+
+angular.module('learnModule').controller('StatisticsController', StatisticsController);

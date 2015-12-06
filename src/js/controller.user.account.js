@@ -1,73 +1,93 @@
-angular.module('userModule')
-	.controller('accountCtrl', function($scope, Auth, Page, API, Validate) {
-		Page.set_title_and_nav('Account | Crucio', 'Name');
+class AccountController {
+    constructor(Page, Auth, API, Validate, $scope) {
+        this.API = API;
+        this.Auth = Auth;
+        this.Validate = Validate;
 
-		$scope.user = Auth.getUser();
+        Page.setTitleAndNav('Account | Crucio', 'Name');
 
-		$scope.Validate = Validate;
+        this.user = this.Auth.getUser();
+        this.user.semester = Number(this.user.semester);
 
-		$scope.old_password = '';
-		$scope.wrong_password = false;
+        this.old_password = '';
+        this.wrong_password = false;
 
-		$scope.submit_button_title = 'Speichern';
+        this.submit_button_title = 'Speichern';
 
-		$scope.$watch("user.email", function( newValue, oldValue ) {
-			if (newValue != oldValue)
-				$scope.submit_button_title = 'Speichern';
-		}, true);
-		$scope.$watch("old_password", function( newValue, oldValue ) {
-			if (newValue != oldValue) {
-				$scope.submit_button_title = 'Speichern';
-				$scope.wrong_password = false;
-			}
-		}, true);
-		$scope.$watch("new_password", function( newValue, oldValue ) {
-			if (newValue != oldValue)
-				$scope.submit_button_title = 'Speichern';
-		}, true);
-		$scope.$watch("new_password_c", function( newValue, oldValue ) {
-			if (newValue != oldValue)
-				$scope.submit_button_title = 'Speichern';
-		}, true);
+        $scope.$watch(() => this.user.email, (newValue, oldValue) => {
+            if (newValue != oldValue) {
+                this.submit_button_title = 'Speichern';
+            }
+        }, true);
+        $scope.$watch(() => this.old_password, (newValue, oldValue) => {
+            if (newValue != oldValue) {
+                this.submit_button_title = 'Speichern';
+                this.wrong_password = false;
+            }
+        }, true);
+        $scope.$watch(() => this.new_password, (newValue, oldValue) => {
+            if (newValue != oldValue) {
+                this.submit_button_title = 'Speichern';
+            }
+        }, true);
+        $scope.$watch(() => this.new_password_c, (newValue, oldValue) => {
+            if (newValue != oldValue) {
+                this.submit_button_title = 'Speichern';
+            }
+        }, true);
+    }
 
-		$scope.save_user = function() {
-			var validate = true;
-			if (!Validate.email($scope.user.email))
-				validate = false;
-			if ($scope.user.semester < 1)
-				validate = false;
-			if ($scope.user.semester > 30)
-				validate = false;
+    save_user() {
+        let validate = true;
+        if (!this.Validate.email(this.user.email)) {
+            validate = false;
+        }
+        if (this.user.semester < 1) {
+            validate = false;
+        }
+        if (this.user.semester > 30) {
+            validate = false;
+        }
 
-			// Assuming User Wants to Change Password
-			if ($scope.old_password.length > 0) {
-				if ($scope.new_password.length < 6)
-					validate = false;
-				if ($scope.new_password != $scope.new_password_c)
-					validate = false;
-			}
+        // Assuming User Wants to Change Password
+        if (this.old_password.length > 0) {
+            if (this.new_password.length < 6) {
+                validate = false;
+            }
+            if (this.new_password != this.new_password_c) {
+                validate = false;
+            }
+        }
 
-			if (validate) {
-				$scope.submit_button_title = 'Speichern...';
+        if (validate) {
+            this.submit_button_title = 'Speichern...';
 
-				var data = {'email': $scope.user.email.replace('@','(@)'), 'course_id': $scope.user.course_id, 'semester': $scope.user.semester, 'current_password': $scope.old_password, 'password': $scope.new_password};
-				API.put('users/' + $scope.user.user_id + '/account', data).success(function(data, status, headers) {
-					if (data.status == 'success') {
-    					Auth.setUser($scope.user);
-				    	$scope.submit_button_title = 'Gespeichert';
+            const data = {
+                'email': this.user.email.replace('@', '(@)'),
+                'course_id': this.user.course_id,
+                'semester': this.user.semester,
+                'current_password': this.old_password,
+                'password': this.new_password,
+            };
 
-					} else {
-						$scope.user = Auth.getUser();
+            this.API.put('users/' + this.user.user_id + '/account', data).success((result) => {
+                if (result.status == 'success') {
+                    this.Auth.setUser(this.user);
+                    this.submit_button_title = 'Gespeichert';
+                } else {
+                    this.user = this.Auth.getUser();
 
-						if (data.status == 'error_incorrect_password')
-							$scope.wrong_password = true;
+                    if (result.status == 'error_incorrect_password') {
+                        this.wrong_password = true;
+                    }
 
-						$scope.submit_button_title = 'Speichern nicht m\u00F6glich...';
-					}
-				});
+                    this.submit_button_title = 'Speichern nicht möglich...';
+                }
+            });
+        } else {
+            this.submit_button_title = 'Speichern nicht möglich...';
+        }
+    }
+}
 
-			} else {
-				$scope.submit_button_title = 'Speichern nicht m\u00F6glich...';
-			}
-		};
-	});
+angular.module('userModule').controller('AccountController', AccountController);

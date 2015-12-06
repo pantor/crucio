@@ -1,28 +1,40 @@
-angular.module('userModule')
-	.controller('settingsCtrl', function($scope, Auth, Page, API) {
-		Page.set_title_and_nav('Einstellungen | Crucio', 'Name');
+class SettingsController {
+    constructor(Page, Auth, API) {
+        this.API = API;
+        this.Auth = Auth;
 
-		$scope.user = Auth.getUser();
+        Page.setTitleAndNav('Einstellungen | Crucio', 'Name');
 
-		$scope.submit_button_title = 'Speichern';
+        this.user = this.Auth.getUser();
+    }
 
-	    $scope.update_user = function() {
-		    $scope.submit_button_title = 'Speichern...';
+    updateUser() {
+        this.is_working = true;
 
-		    var data = {'highlightExams': $scope.user.highlightExams, 'showComments': $scope.user.showComments, 'repetitionValue': 50, 'useAnswers': $scope.user.useAnswers, 'useTags': $scope.user.useTags};
-		    API.put('users/' + $scope.user.user_id + '/settings', data).success(function(data) {
-		    	if (data.status == 'success') {
-                    Auth.setUser($scope.user);
-                    $scope.submit_button_title = 'Gespeichert';
+        const data = {
+            'highlightExams': this.user.highlightExams,
+            'showComments': this.user.showComments,
+            'repetitionValue': 50,
+            'useAnswers': this.user.useAnswers,
+            'useTags': this.user.useTags,
+        };
 
-                } else {
-		    		$scope.user = Auth.getUser();
-                    $scope.submit_button_title = 'Speichern nicht m\u00F6glich...';
-                }
-		    });
-		};
+        this.API.put('users/' + this.user.user_id + '/settings', data).success((result) => {
+            if (result.status == 'success') {
+                this.Auth.setUser(this.user);
+                this.is_saved = true;
+                this.is_working = false;
+            } else {
+                this.user = this.Auth.getUser();
+                this.has_error = true;
+                this.is_working = false;
+            }
+        });
+    }
 
-		$scope.remove_all_results = function() {
-			API.delete('results/' + $scope.user.user_id);
-		};
-	});
+    removeAllResults() {
+        this.API.delete('results/' + this.user.user_id);
+    }
+}
+
+angular.module('userModule').controller('SettingsController', SettingsController);

@@ -1,79 +1,84 @@
-angular.module('userModule')
-	.controller('forgotPasswordCtrl', function($scope, Auth, Page, $location, $route, API) {
-		$scope.user = Auth.getUser();
+class ForgotPasswordController {
+    constructor(Auth, API, $location, $scope) {
+        this.API = API;
 
-		$scope.confirm = $location.search().confirm;
-		$scope.deny = $location.search().deny;
+        this.user = Auth.tryGetUser();
 
-		$scope.is_working = 0;
+        if (angular.isUndefined(this.user)) {
+            this.user = { 'email': '' };
+        }
 
-		$scope.error_email = 0;
-		$scope.error_already_requested = 0;
+        this.confirm = $location.search().confirm;
+        this.deny = $location.search().deny;
 
-		if (!$scope.confirm && !$scope.deny)
-			$scope.reset = 1;
+        this.is_working = 0;
 
-		if ($scope.confirm) {
-			$scope.reset = 0;
+        this.error_email = 0;
+        this.error_already_requested = 0;
 
-			var post_data = {'token': $scope.confirm};
-			API.post('users/password/confirm', post_data).success(function(data) {
-				$scope.status = data.status;
-				$('#forgotConfirmModal').modal('show');
-			});
-		}
+        if (!this.confirm && !this.deny) {
+            this.reset = 1;
+        }
 
-		if ($scope.deny) {
-			$scope.reset = 0;
+        if (this.confirm) {
+            this.reset = 0;
 
-			var data = {'token': $scope.deny};
-			API.post('users/password/deny', data).success(function(data) {
-				$scope.status = data.status;
-				$('#forgotDenyModal').modal('show');
-			});
-		}
+            const data = { 'token': this.confirm };
+            this.API.post('users/password/confirm', data).success((result) => {
+                this.status = result.status;
+                $('#forgotConfirmModal').modal('show');
+            });
+        }
 
-		$scope.$watch("user.email", function(newValue, oldValue) {
-			$scope.error_email = 0;
-			$scope.error_already_requested = 0;
-		}, true);
+        if (this.deny) {
+            this.reset = 0;
 
-		$scope.reset_password = function() {
-			var validate = true;
-			if (!$scope.user) {
-				validate = false;
-				$scope.error_email = 1;
-			} else if (!$scope.user.email) {
-				validate = false;
-				$scope.error_email = 1;
-			}
+            const data = { 'token': this.deny };
+            API.post('users/password/deny', data).success((result) => {
+                this.status = result.status;
+                $('#forgotDenyModal').modal('show');
+            });
+        }
 
-			if (validate) {
-				$scope.is_working = 1;
+        $scope.$watch(() => this.user.email, () => {
+            this.error_email = 0;
+            this.error_already_requested = 0;
+        }, true);
+    }
 
-				var data = {'email': $scope.user.email.replace('@','(@)')};
-				API.post('users/password/reset', data).success(function(data) {	
-					$scope.is_working = 0;
-					
-					if (!data) {
-						$scope.error_email = 1;
-						
-					} else {
-						
-						if (data.status == 'success') {
-							$scope.error_email = 0;
-							$scope.error_already_requested = 0;
-						
-							$('#forgotSucessModal').modal('show');
-						
-						} else if(data.status == 'error_email') {
-							$scope.error_email = 1;
-						
-						} else if(data.status == 'error_already_requested') {
-							$scope.error_already_requested = 1;
-						}
-					}
-				});
-			}
-		};
-	});
+    reset_password() {
+        let validate = true;
+        if (!this.user) {
+            validate = false;
+            this.error_email = 1;
+        } else if (!this.user.email) {
+            validate = false;
+            this.error_email = 1;
+        }
+
+        if (validate) {
+            this.is_working = 1;
+
+            const data = { 'email': this.user.email.replace('@', '(@)') };
+            this.API.post('users/password/reset', data).success((result) => {
+                this.is_working = 0;
+
+                if (!result) {
+                    this.error_email = 1;
+                } else {
+                    if (result.status == 'success') {
+                        this.error_email = 0;
+                        this.error_already_requested = 0;
+                        $('#forgotSucessModal').modal('show');
+                    } else if (result.status == 'error_email') {
+                        this.error_email = 1;
+                    } else if (result.status == 'error_already_requested') {
+                        this.error_already_requested = 1;
+                    }
+                }
+            });
+        }
+    }
+}
+
+angular.module('userModule').controller('ForgotPasswordController', ForgotPasswordController);

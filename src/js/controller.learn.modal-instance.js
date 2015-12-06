@@ -1,4 +1,8 @@
-angular.module('learnModule')
-	.controller('ModalInstanceCtrl', function ($scope, $modalInstance, image_url) {
-		$scope.image_url = image_url;
-	});
+class ModalInstanceController {
+    constructor(image_url, $modalInstance) {
+        this.image_url = image_url;
+        this.$modalInstance = $modalInstance;
+    }
+}
+
+angular.module('learnModule').controller('ModalInstanceController', ModalInstanceController);

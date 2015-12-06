@@ -1,189 +1,182 @@
-angular.module('adminModule')
-	.controller('adminCtrl', function($scope, Auth, Page, API, Selection, $interval) {
-		Page.set_title_and_nav('Verwaltung | Crucio', 'Admin');
+class AdminController {
+    constructor(Page, Auth, API, Selection, $scope) {
+        this.API = API;
+        this.Selection = Selection;
 
-		$scope.user = Auth.getUser();
+        Page.setTitleAndNav('Verwaltung | Crucio', 'Admin');
 
-		$scope.user_search = {'semester': '', 'group': '', 'login': '', 'query': '', 'query_keys': ['group_name', 'username']};
-		$scope.comment_search = {'question_id': '', 'username': '', 'query': '', 'query_keys': ['question', 'comment', 'username', 'question_id']};
+        this.user = Auth.getUser();
 
-		$scope.update_activity = false;
-		$scope.show_activity = {search_query: !true, result: !true, login: !true, register: !true, comment: !true, exam_new: !true, exam_update: !true};
+        this.user_search = { 'semester': '', 'group': '', 'login': '', 'query': '', 'query_keys': ['group_name', 'username'] };
+        this.comment_search = { 'question_id': '', 'username': '', 'query': '', 'query_keys': ['question', 'comment', 'username', 'question_id'] };
 
-
-		$scope.$watch("comment_search", function(newValue, oldValue) {
-			$scope.questions_by_comment_display = [];
-			$scope.questions_by_comment.forEach(function(comments) {
-				for (var i = 0; i < comments.length; i++) {
-					var comment = comments[i];
-					
-					// Check if comment satisfies search query
-					if (Selection.is_element_included(comment, newValue)) {
-						var found_idx = -1;
-						for (var j = 0; j < $scope.questions_by_comment_display.length; j++) {
-						    if ($scope.questions_by_comment_display[j][0].question == comment.question) {
-						        found_idx = j;
-						        break;
-						    }
-						}
-						
-						// Add to array at found index
-						if (-1 < found_idx) {
-							$scope.questions_by_comment_display[found_idx].push(comment);
-							
-						// Create new array
-						} else {
-							$scope.questions_by_comment_display.push([comment]);
-						}
-					}
-				}
-		    });
-		    $scope.questions_by_comment_display.sort(function(a, b) { return b[0].date - a[0].date; });
-		}, true);
-
-		API.get('users').success(function(data) {
-			$scope.users = data.users;
-			$scope.distinct_semesters = Selection.find_distinct($scope.users, 'semester');
-			$scope.distinct_semesters.sort(function(a, b) { return a - b; });
-			$scope.distinct_groups = ['Standard', 'Admin', 'Autor'];
-
-			$scope.ready = 1;
-		});
-
-		API.get('comments').success(function(data) {
-			$scope.comments = data.comments;
-			$scope.distinct_questions = Selection.find_distinct($scope.comments, 'question_id');
-			$scope.distinct_users = Selection.find_distinct($scope.comments, 'username');
-
-			$scope.questions_by_comment = [];
-			$scope.comments.forEach(function(c) {
-				var found = -1;
-				for (var i = 0; i < $scope.questions_by_comment.length; i++) {
-				    if ($scope.questions_by_comment[i][0].question == c.question) {
-				        found = i;
-				        break;
-				    }
-				}
-
-			    if (found > -1)
-			    	$scope.questions_by_comment[found].push(c);
-			    else
-			    	$scope.questions_by_comment.push([c]);
-		    });
-		    $scope.questions_by_comment_display = $scope.questions_by_comment;
-		});
-
-		API.get('whitelist').success(function(data) {
-			$scope.whitelist = data.whitelist;
-		});
-
-		API.get('stats/general').success(function(data) {
-			$scope.stats = data.stats;
-		});
+        this.update_activity = false;
+        this.show_activity = { search_query: !true, result: !true, login: !true, register: !true, comment: !true, exam_new: !true, exam_update: !true };
 
 
-		$scope.add_mail = function() {
-			var email = $scope.new_whitelist_mail;
-			if (email.length) {
-				$scope.whitelist.push({username: '', mail_address: email});
+        $scope.$watch(() => this.comment_search, (newValue) => {
+            this.questions_by_comment_display = [];
+            if (this.questions_by_comment) {
+                for (const comments of this.questions_by_comment) {
+                    for (const comment of comments) {
+                        if (this.Selection.is_element_included(comment, newValue)) { // Check if comment satisfies search query
+                            let found_idx = -1;
+                            for (let j = 0; j < this.questions_by_comment_display.length; j++) {
+                                if (this.questions_by_comment_display[j][0].question == comment.question) {
+                                    found_idx = j;
+                                    break;
+                                }
+                            }
 
-				var data = {'mail_address': email.replace('@','(@)')};
-				API.post('whitelist', data).success(function(data) { });
-			}
-		};
+                            if (found_idx > -1) { // Add to array at found index
+                                this.questions_by_comment_display[found_idx].push(comment);
+                            } else { // Create new array
+                                this.questions_by_comment_display.push([comment]);
+                            }
+                        }
+                    }
+                }
+            }
+            this.questions_by_comment_display.sort((a, b) => { return b[0].date - a[0].date; });
+        }, true);
 
-		$scope.remove_mail = function(index) {
-			var email = $scope.whitelist[index].mail_address;
-			if (email.length) {
-				$scope.whitelist.splice(index, 1);
-				API.delete('whitelist/' + email).success(function(data) { });
-			}
-		};
+        this.API.get('users').success((result) => {
+            this.users = result.users;
+            this.distinct_semesters = this.Selection.find_distinct(this.users, 'semester');
+            this.distinct_semesters.sort((a, b) => { return a - b; });
+            this.distinct_groups = ['Standard', 'Admin', 'Autor'];
 
-		$scope.send_mail = function() {
-			var mailAddresses = '';
+            this.ready = 1;
+        });
 
-	    	$('#user-table tbody tr:visible').children('td').children('a').each(function(i, obj) {
-	    		mailAddresses += $(obj).attr('data-original-title') + ',';
-	    	});
+        this.API.get('comments').success((result) => {
+            this.comments = result.comments;
+            this.distinct_questions = this.Selection.find_distinct(this.comments, 'question_id');
+            this.distinct_users = this.Selection.find_distinct(this.comments, 'username');
 
-	    	mailAddresses = mailAddresses.slice(0,-1);
-	    	window.location.href = 'mailto:' + mailAddresses;
-		};
+            this.questions_by_comment = [];
+            for (const c of this.comments) {
+                let found = -1;
+                for (let i = 0; i < this.questions_by_comment.length; i++) {
+                    if (this.questions_by_comment[i][0].question == c.question) {
+                        found = i;
+                        break;
+                    }
+                }
 
-		$scope.change_group = function(index) {
-			var user_id = $scope.users[index].user_id;
-			var group_id = $scope.users[index].group_id;
+                if (found > -1) {
+                    this.questions_by_comment[found].push(c);
+                } else {
+                    this.questions_by_comment.push([c]);
+                }
+            }
+            this.questions_by_comment_display = this.questions_by_comment;
+        });
 
-			if (user_id == 1) return false;
+        this.API.get('whitelist').success((result) => {
+            this.whitelist = result.whitelist;
+        });
 
-			if (group_id == 2) {
-				group_id = 1;
-				$scope.users[index].group_name = "Standard";
-			} else if (group_id == 3) {
-				group_id = 2;
-				$scope.users[index].group_name = "Admin";
-			} else {
-				group_id = 3;
-				$scope.users[index].group_name = "Autor";
-			}
+        this.API.get('stats/general').success((result) => {
+            this.stats = result.stats;
+        });
+    }
 
-			var data = {'group_id': group_id};
-			$scope.users[index].group_id = group_id;
-			API.put('users/' + user_id + '/group', data);
-		};
+    add_mail() {
+        const email = this.new_whitelist_mail;
+        if (email.length) {
+            this.whitelist.push({ username: '', mail_address: email });
 
-		$scope.is_today = function(date) {
-			var today = new Date();
+            const data = { 'mail_address': email.replace('@', '(@)') };
+            this.API.post('whitelist', data);
+        }
+    }
 
-			var date_c = new Date(date * 1000);
-			if (today.toDateString() == date_c.toDateString())
-				return true;
-			else
-				return false;
-		};
+    remove_mail(index) {
+        const email = this.whitelist[index].mail_address;
+        if (email.length) {
+            this.whitelist.splice(index, 1);
+            this.API.delete('whitelist/' + email);
+        }
+    }
 
-		$scope.is_yesterday = function(date) {
-			var today = new Date();
-			var diff = today - 1000 * 60 * 60 * 24;
-			var yesterday = new Date(diff);
+    change_group(index) {
+        const user_id = this.users[index].user_id;
+        let group_id = this.users[index].group_id;
 
-			var date_c = new Date(date * 1000);
-			if (yesterday.toDateString() == date_c.toDateString())
-				return true;
-			else
-				return false;
-		};
+        if (user_id == 1) {
+            return false;
+        }
 
-		$scope.user_in_selection = function(index) {
-			return Selection.is_element_included($scope.users[index], $scope.user_search);
-		};
+        if (group_id == 2) {
+            group_id = 1;
+            this.users[index].group_name = 'Standard';
+        } else if (group_id == 3) {
+            group_id = 2;
+            this.users[index].group_name = 'Admin';
+        } else {
+            group_id = 3;
+            this.users[index].group_name = 'Autor';
+        }
 
-		$scope.user_in_selection_count = function() {
-			return Selection.count($scope.users, $scope.user_search);
-		};
+        const data = { 'group_id': group_id };
+        this.users[index].group_id = group_id;
+        this.API.put('users/' + user_id + '/group', data);
+    }
 
-		$scope.comment_in_selection_count = function() {
-			return Selection.count($scope.comments, $scope.comment_search);
-		};
+    is_today(date) {
+        const today = new Date();
 
-		$scope.increase_semester = function() {
-			var data = {'number': '1'};
-	    	API.post('admin/change-semester/dFt(45i$hBmk*I', data).success(function(data) {
-	    		alert(data.status);
-			});
-		};
+        const date_c = new Date(date * 1000);
+        if (today.toDateString() == date_c.toDateString()) {
+            return true;
+        }
+        return false;
+    }
 
-		$scope.decrease_semester = function() {
-			var data = {'number': '-1'};
-	    	API.post('admin/change-semester/dFt(45i$hBmk*I', data).success(function(data) {
-	    		alert(data.status);
-			});
-		};
+    is_yesterday(date) {
+        const today = new Date();
+        const diff = today - 1000 * 60 * 60 * 24;
+        const yesterday = new Date(diff);
 
-		$scope.remove_test_account = function(index) {
-			API.delete('users/test-account').success(function(data) {
-				alert(data.status);
-			});
-		};
-	});
+        const date_c = new Date(date * 1000);
+        if (yesterday.toDateString() == date_c.toDateString()) {
+            return true;
+        }
+        return false;
+    }
+
+    user_in_selection(index) {
+        return this.Selection.is_element_included(this.users[index], this.user_search);
+    }
+
+    user_in_selection_count() {
+        return this.Selection.count(this.users, this.user_search);
+    }
+
+    comment_in_selection_count() {
+        return this.Selection.count(this.comments, this.comment_search);
+    }
+
+    increase_semester() {
+        const data = { 'number': '1' };
+        this.API.post('admin/change-semester/dFt(45i$hBmk*I', data).success((result) => {
+            alert(result.status);
+        });
+    }
+
+    decrease_semester() {
+        const data = { 'number': '-1' };
+        this.API.post('admin/change-semester/dFt(45i$hBmk*I', data).success((result) => {
+            alert(result.status);
+        });
+    }
+
+    remove_test_account() {
+        this.API.delete('users/test-account').success((result) => {
+            alert(result.status);
+        });
+    }
+}
+
+angular.module('adminModule').controller('AdminController', AdminController);

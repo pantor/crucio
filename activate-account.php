@@ -5,7 +5,7 @@
 		<?php include 'parts/header.php'; ?>
 	</head>
 
-	<body class="body" ng-controller="activateCtrl">
+	<body class="body" ng-controller="ActivateController as ctrl">
 		<div class="wrap">
 			<div class="container-white container-top-bar">
         		<div class="container">
@@ -30,30 +30,30 @@
         	</div>
     
         	<div class="container-back-image container-padding-4">
-    			<div class="container container-text- container-text-light">
+    			<div class="container container-text container-text-light">
         			<i class="fa fa-user fa-5x"></i>
-        			<h3>Account Aktivieren</h3>
+        			<h4>Account Aktivieren</h4>
         		</div>
     		</div>
     
             <div class="container">
     		    <div class="row">
     		    	<div class="col-sm-10 col-sm-offset-1">
-    		    		<div ng-if="error_no_token || error_unknown" class="container-center-align-sm" style="padding: 60px;">
+    		    		<div ng-if="ctrl.error_no_token || ctrl.error_unknown" class="container-center-align-sm" style="padding: 60px;">
     					    <h3>Fehler bei der Aktivierung.</h3>
     
     					    <hr>
     
-    					    <div ng-if="error_no_token" class="alert alert-danger">
+    					    <div ng-if="ctrl.error_no_token" class="alert alert-danger">
     					    	Der Schlüssel konnte deinen Account nicht aktivieren. Wir haben einfach keinen Schlüssel gefunden.
     					    </div>
     
-    					    <div ng-if="error_unknown" class="alert alert-danger">
+    					    <div ng-if="ctrl.error_unknown" class="alert alert-danger">
     					    	Der Schlüssel konnte deinen Account nicht aktivieren. <br> Entweder passt der Schlüssel nicht oder dein Account ist bereits aktiviert.
     					    </div>
     				    </div>
     
-                        <div ng-if="success" class="container-center-align-sm" style="padding: 60px;">
+                        <div ng-if="ctrl.success" class="container-center-align-sm" style="padding: 60px;">
     					    <div class="alert alert-success">
     					    	Dein Account ist aktiviert und deine E-Mail-Adresse bestätigt. Willkommen bei Crucio!
     					    </div>

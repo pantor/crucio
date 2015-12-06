@@ -2,7 +2,7 @@
 
 require_once('helper.php');
 require_once('../Slim/Slim.php');
-
+require_once('../tcpdf/tcpdf.php');
 
 \Slim\Slim::registerAutoloader();
 $app = new \Slim\Slim();
@@ -17,6 +17,7 @@ require_once('api.comments.php');
 require_once('api.contact.php');
 require_once('api.exams.php');
 require_once('api.learn.php');
+require_once('api.pdf.php');
 require_once('api.questions.php');
 require_once('api.results.php');
 require_once('api.stats.php');

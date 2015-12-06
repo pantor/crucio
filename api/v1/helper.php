@@ -3,7 +3,7 @@
 function start_mysql() {
 	try {
 		$config = include(dirname(__FILE__).'/../config.php'); // Global path for PDF
-		
+
 		$mysql = new PDO('mysql:host='.$config['host'].';dbname='.$config['dbname'], $config['user'], $config['password']);
 		$mysql->exec("set names utf8");
 		return $mysql;
@@ -17,8 +17,10 @@ function execute_mysql($mysql, $query, $parameters, $callback = null) {
 	try {
 		$stmt->execute($parameters);
 		$response['status'] = 'success';
-		if ($callback)
+
+		if ($callback) {
 			$response += $callback($stmt, $mysql);
+        }
 	} catch(PDOException $e){
 		$response['status'] = 'error';
 		$response['error'] = 'statement error';
@@ -78,11 +80,11 @@ function validate_activation_token($mysql, $token, $is_not_active) {
 }
 
 function fetch_user_details($mysql, $username = null, $token = null) {
-	if ($username != null)
+	if ($username != null) {
 		$response = get_fetch($mysql, "SELECT * FROM users WHERE username_clean = ? LIMIT 1", [sanitize($username)]);
-	else
+	} else {
 		$response = get_fetch($mysql, "SELECT * FROM users WHERE activationtoken = ? LIMIT 1", [sanitize($token)]);
-
+    }
 	return $response['result'];
 }
 
@@ -109,20 +111,22 @@ function sanitize($str) {
 }
 
 function generate_hash($plainText, $salt = null) {
-	if ($salt === null)
+	if ($salt === null) {
 		$salt = substr(md5(uniqid(rand(), true)), 0, 25);
-	else
+	} else {
 		$salt = substr($salt, 0, 25);
+    }
 
 	return $salt . sha1($salt . $plainText);
 }
 
 function get_unique_code($length = "") {
 	$code = md5(uniqid(rand(), true));
-	if ($length != '')
+	if ($length != '') {
 		return substr($code, 0, $length);
-	else
+	} else {
 		return $code;
+    }
 }
 
 // Generate an activation key
@@ -153,7 +157,7 @@ function send_mail($destination, $subject, $message, $sender_name = 'Crucio', $s
 
 function send_template_mail($template, $destination, $subject, $additionalHooks, $sender_name = 'Crucio', $sender_email = 'noreply@crucio-leipzig.de') {
 	$emailDate = date('l \\t\h\e jS');
-	$message = file_get_contents('../../public/mail-templates/'.$template);
+	$message = file_get_contents('../mail-templates/'.$template);
 	$message = str_replace(array("#WEBSITENAME#", "#WEBSITEURL#", "#DATE#"), array('Crucio', $website_url, $emailDate), $message);
 	$message = str_replace($additionalHooks["searchStrs"], $additionalHooks["subjectStrs"], $message);
 

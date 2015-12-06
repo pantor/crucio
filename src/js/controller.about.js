@@ -1,4 +1,7 @@
-angular.module('crucioApp')
-	.controller('aboutCtrl', function($scope, Auth) {
-		$scope.user = $scope.user = Auth.getUser();
-	});
+class AboutController {
+    constructor(Auth) {
+        this.user = Auth.tryGetUser();
+    }
+}
+
+angular.module('crucioApp').controller('AboutController', AboutController);

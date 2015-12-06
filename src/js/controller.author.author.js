@@ -1,130 +1,122 @@
-angular.module('authorModule')
-	.controller('authorCtrl', function($scope, Auth, API, Page, $location, Selection) {
-		Page.set_title_and_nav('Autor | Crucio', 'Autor');
+class AuthorController {
+    constructor(Page, Auth, API, Selection, $scope, $location) {
+        this.API = API;
+        this.Selection = Selection;
+        this.$location = $location;
 
-		$scope.user = Auth.getUser();
+        Page.setTitleAndNav('Autor | Crucio', 'Autor');
 
-		$scope.subject_list = subject_list;
+        this.user = Auth.getUser();
 
-		$scope.exam_search = {'subject': '', 'semester': '', 'author': $scope.user.username, 'query': '', 'query_keys': ['subject', 'author', 'date']};
-		$scope.comment_search = {'username_added': '', 'username': '', 'query': '', 'query_keys': ['question', 'comment', 'username', 'question_id']};
+        this.subject_list = subject_list;
 
-
-		$scope.$watch("comment_search", function( newValue ) {
-			$scope.questions_by_comment_display = [];
-			$scope.questions_by_comment.forEach(function(comments) {
-				for (var i = 0; i < comments.length; i++) {
-					var comment = comments[i];
-					
-					// Check if Comment satisfies search query
-					if (Selection.is_element_included(comment, newValue)) {
-						var found_idx = -1;
-						for (var j = 0; j < $scope.questions_by_comment_display.length; j++) {
-						    if ($scope.questions_by_comment_display[j][0].question == comment.question) {
-						        found_idx = j;
-						        break;
-						    }
-						}
-						
-						// Add to Array at Found Index
-						if (found_idx > -1) {
-							$scope.questions_by_comment_display[found_idx].push(comment);
-							
-						// Create New Array
-						} else {
-							$scope.questions_by_comment_display.push([comment]);
-						}
-					}
-				}
-		    });
-		    $scope.questions_by_comment_display.sort(function(a, b) { return b[0].date - a[0].date; });
-		}, true);
-
-		API.get('exams').success(function(data) {
-		    $scope.exams = data.exams;
-
-		    // Find Distinct Semesters
-		    $scope.distinct_semesters = [];
-		    $scope.exams.forEach(function(entry) {
-		    	if (-1 == $scope.distinct_semesters.indexOf(entry.semester)) {
-		    		$scope.distinct_semesters.push(entry.semester);
-		    	}
-		    });
-		    $scope.distinct_semesters.sort();
-
-		    // Find Distinct Subjects
-		    $scope.distinct_subjects = [];
-		    $scope.exams.forEach(function(entry) {
-		    	if (-1 == $scope.distinct_subjects.indexOf(entry.subject)) {
-		    		$scope.distinct_subjects.push(entry.subject);
-		    	}
-		    });
-		    $scope.distinct_subjects.sort();
-
-		    // Find Distinct Authors
-		    $scope.distinct_authors = [];
-		    $scope.exams.forEach(function(entry) {
-		    	if (-1 == $scope.distinct_authors.indexOf(entry.author)) {
-		    		$scope.distinct_authors.push(entry.author);
-		    	}
-		    });
-		    $scope.distinct_authors.sort();
-
-		    $scope.ready = 1;
-		});
-
-		API.get('comments/author/' + $scope.user.user_id).success(function(data) {
-		    $scope.comments = data.comments;
-
-		    // Find Distinct Comments
-		    $scope.distinct_users = [];
-		    $scope.distinct_users_added = [];
-
-		    $scope.distinct_users = Selection.find_distinct($scope.comments, 'username');
-		    $scope.distinct_users_added = Selection.find_distinct($scope.comments, 'username_added');
-
-		    $scope.questions_by_comment = [];
-			$scope.comments.forEach(function(c) {
-				var found = -1;
-				for (var i = 0; i < $scope.questions_by_comment.length; i++) {
-				    if ($scope.questions_by_comment[i][0].question == c.question) {
-				        found = i;
-				        break;
-				    }
-				}
-
-			    if (found > 0)
-			    	$scope.questions_by_comment[found].push(c);
-			    else
-			    	$scope.questions_by_comment.push([c]);
-		    });
-		    $scope.questions_by_comment.sort(function(a, b) { return b[0].date - a[0].date; });
-		    $scope.questions_by_comment_display = $scope.questions_by_comment;
-		    
-		    $scope.comment_search.username_added = $scope.user.username;
-		});
+        this.exam_search = { 'subject': '', 'semester': '', 'author': this.user.username, 'query': '', 'query_keys': ['subject', 'author', 'date'] };
+        this.comment_search = { 'username_added': '', 'username': '', 'query': '', 'query_keys': ['question', 'comment', 'username', 'question_id'] };
 
 
-		$scope.new_exam = function() {
-			var data = {'subject': '', 'professor': '', 'semester': '', 'date': '', 'type': '', 'user_id_added': $scope.user.user_id, 'duration': '', 'notes': ''};
-		    API.post('exams', data).success(function(data) {
-		    	$location.path('/edit-exam').search('id', data.exam_id);
-		    });
-		};
+        $scope.$watch(() => this.comment_search, (newValue) => {
+            this.questions_by_comment_display = [];
+            if (this.questions_by_comment) {
+                for (const comments of this.questions_by_comment) {
+                    for (const comment of comments) {
+                        if (this.Selection.is_element_included(comment, newValue)) { // Check if comment satisfies search query
+                            let found_idx = -1;
+                            for (let j = 0; j < this.questions_by_comment_display.length; j++) {
+                                if (this.questions_by_comment_display[j][0].question == comment.question) {
+                                    found_idx = j;
+                                    break;
+                                }
+                            }
 
-		$scope.comment_in_selection = function(index) {
-			return Selection.is_element_included($scope.comments[index], $scope.comment_search);
-		};
+                            if (found_idx > -1) { // Add to array at found index
+                                this.questions_by_comment_display[found_idx].push(comment);
+                            } else { // Create new array
+                                this.questions_by_comment_display.push([comment]);
+                            }
+                        }
+                    }
+                }
+            }
+            this.questions_by_comment_display.sort((a, b) => { return b[0].date - a[0].date; });
+        }, true);
 
-		$scope.comment_in_selection_count = function() {
-			return Selection.count($scope.comments, $scope.comment_search);
-		};
+        this.API.get('exams').success((result) => {
+            this.exams = result.exams;
 
-		$scope.exam_in_selection = function(index) {
-			return Selection.is_element_included($scope.exams[index], $scope.exam_search);
-		};
+            console.log(this.exams);
 
-		$scope.exam_in_selection_count = function() {
-			return Selection.count($scope.exams, $scope.exam_search);
-		};
-	});
+            this.distinct_semesters = this.Selection.find_distinct(this.exams, 'semester');
+            this.distinct_subjects = this.Selection.find_distinct(this.exams, 'subject');
+            this.distinct_authors = this.Selection.find_distinct(this.exams, 'author');
+
+            this.ready = 1;
+        });
+
+        this.API.get('comments/author/' + this.user.user_id).success((result) => {
+            this.comments = result.comments;
+
+            // Find Distinct Comments
+            this.distinct_users = [];
+            this.distinct_users_added = [];
+
+            this.distinct_users = this.Selection.find_distinct(this.comments, 'username');
+            this.distinct_users_added = this.Selection.find_distinct(this.comments, 'username_added');
+
+            this.questions_by_comment = [];
+            for (const c of this.comments) {
+                let found = -1;
+                for (let i = 0; i < this.questions_by_comment.length; i++) {
+                    if (this.questions_by_comment[i][0].question == c.question) {
+                        found = i;
+                        break;
+                    }
+                }
+
+                if (found > 0) {
+                    this.questions_by_comment[found].push(c);
+                } else {
+                    this.questions_by_comment.push([c]);
+                }
+            }
+            this.questions_by_comment.sort((a, b) => { return b[0].date - a[0].date; });
+            this.questions_by_comment_display = this.questions_by_comment;
+
+            this.comment_search.username_added = this.user.username;
+        });
+    }
+
+    new_exam() {
+        const data = {
+            'subject': '',
+            'professor': '',
+            'semester': '',
+            'date': '',
+            'type': '',
+            'user_id_added': this.user.user_id,
+            'duration': '',
+            'notes': '',
+        };
+
+        this.API.post('exams', data).success((result) => {
+            this.$location.path('/edit-exam').search('id', result.exam_id);
+        });
+    }
+
+    comment_in_selection(index) {
+        return this.Selection.is_element_included(this.comments[index], this.comment_search);
+    }
+
+    comment_in_selection_count() {
+        return this.Selection.count(this.comments, this.comment_search);
+    }
+
+    exam_in_selection(index) {
+        return this.Selection.is_element_included(this.exams[index], this.exam_search);
+    }
+
+    exam_in_selection_count() {
+        return this.Selection.count(this.exams, this.exam_search);
+    }
+}
+
+angular.module('authorModule').controller('AuthorController', AuthorController);

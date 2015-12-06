@@ -4,7 +4,7 @@
 	<head>
 	  <title>Crucio | Fachschaft Medizin Leipzig</title>
 		<?php include 'parts/header.php'; ?>
-		
+
 		<!-- Smooth Scrollling-->
 		<script>
 		$(function() { $('a[href*=#]:not([href=#])').click(function() {
@@ -19,27 +19,27 @@
 
 	<body class="body">
 	    <div class="wrap">
-	    	<div class="container-top-bar" ng-controller="loginCtrl" style="margin-bottom: 0px;">
+	    	<div class="container-top-bar" ng-controller="LoginController as ctrl" style="margin-bottom: 0px;">
 	    		<div class="container">
-		    		<form class="row" ng-submit="login()">
+		    		<form class="row" ng-submit="ctrl.login()">
 			    		<div class="col-md-4 col-md-offset-1">
                             <h1><a href="/"><i class="fa fa-check-square-o"></i> Crucio </a></h1>
 			    		</div>
 
 			    		<div class="col-md-3">
-				    		<div class="form-group element has-feedback {{login_error ? 'has-error' : ''}}">
-                                <input class="form-control" ng-model="email" type="email" placeholder="E-Mail-Adresse" autofocus>
+				    		<div class="form-group element has-feedback {{ ctrl.login_error ? 'has-error' : '' }}">
+                                <input class="form-control" ng-model="ctrl.email" type="email" placeholder="E-Mail-Adresse" autofocus>
                                 <label class="checkbox">
-                                    <input type="checkbox" ng-model="remember_me" ng-true-value="1" ng-false-value="0" style="margin-top:2px;">
+                                    <input type="checkbox" ng-model="ctrl.remember_me" style="margin-top:2px;">
                                     Angemeldet bleiben
                                 </label>
 	        		        </div>
 			    		</div>
 
 			    		<div class="col-md-2">
-				    		<div class="form-group element has-feedback {{login_error ? 'has-error' : ''}}">
-            		    	    <input class="form-control" ng-model="password" type="password" placeholder="Passwort">
-            		    	    <i class="fa fa-remove form-control-feedback" ng-show="login_error" style="margin-top:9px;"></i>
+				    		<div class="form-group element has-feedback {{ ctrl.login_error ? 'has-error' : '' }}">
+            		    	    <input class="form-control" ng-model="ctrl.password" type="password" placeholder="Passwort">
+            		    	    <i class="fa fa-remove form-control-feedback" ng-show="ctrl.login_error" style="margin-top:9px;"></i>
             		    	    <label for="passwordInput">
             		    	    	<a href="forgot-password" target="_self">Passwort vergessen?</a>
             		    	    </label>
@@ -59,12 +59,12 @@
 	    		<div class="container">
 	    			<div class="brand">
 					    <h1><i class="fa fa-check-square-o"></i> Crucio</h1>
-					    
+
 					    <p>
 						    ... hilft dir bei der Vorbereitung für Medizinklausuren an der Universität Leipzig.
 							Hier werden Übungsfragen aus dem Studium gesammelt, gekreuzt und erklärt.
 						</p>
-						
+
 						<a class="btn btn-lg" href="register" target="_self">Registrieren</a>
                         <a class="btn btn-lg" href="#more" target="_self">Mehr Infos</a>
 					</div>
@@ -94,7 +94,7 @@
 			    	<h2>Übersicht</h2>
 			    	<p>Crucio ist ein zentraler Ort für Fragen und Übungsklausuren an & von der Universität Leipzig. Die Übungsklausuren sind automatisch nach deinem Semester sortiert, du kannst aber natürlich nach Fachbereich oder einzelnen Fragen suchen. So kannst du dir deine Zeit und Nerven für Inhalte aufheben.</p>
 			    </div>
-  
+
 			    <div class="col-sm-4 info-block-crucio">
 			    	<i class="fa fa-bar-chart-o"></i>
 			    	<h2>Statistik</h2>

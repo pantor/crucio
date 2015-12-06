@@ -1,200 +1,205 @@
-angular.module('authorModule')
-	.controller('editCtrl', function($scope, $routeParams, Auth, Page, $location, API, FileUploader) {
-		Page.set_title_and_nav('Klausur | Crucio', 'Autor');
+class EditController {
+    constructor(Page, Auth, API, FileUploader, $scope, $location, $routeParams, $timeout) {
+        this.API = API;
+        this.FileUploader = FileUploader;
+        this.$location = $location;
+        this.$timeout = $timeout;
 
-		$scope.ready = 0;
+        Page.setTitleAndNav('Klausur | Crucio', 'Autor');
 
-		$scope.user = Auth.getUser();
-		$scope.exam_id = $routeParams.id;
-		$scope.open_question_id = $routeParams.question_id;
+        this.ready = 0;
 
-		$scope.subject_list = subject_list;
+        this.user = Auth.getUser();
+        this.exam_id = $routeParams.id;
+        this.open_question_index = -1;
 
-		$scope.has_changed = 0;
-		$scope.number_changed = 0;
-		$scope.is_saving = 0;
+        this.subject_list = subject_list;
 
-		$scope.uploader = new FileUploader({url: '/public/php/upload-file.php'});
-		$scope.uploader.onSuccessItem = function(fileItem, response, status, headers) {
-			$scope.exam.file_name = response.upload_name;
-		};
-		$scope.uploader_array = [];
+        this.has_changed = 0;
+        this.number_changed = 0;
+        this.is_saving = 0;
 
-
-		var $footer = $('#footer');
-    	var $sidebar = $('.edit-exam-wrapper');
-    	var $content_2 = $('.edit-exam-wrapper .exam-edit-list-group');
-
-		function remake_uploader_array() {
-			$scope.uploader_array = [];
-			for (var i = 0; i < $scope.exam.questions.length; i++) {
-				var uploader = new FileUploader({url: '/public/php/upload-file.php', formData: i});
-				var question = $scope.exam.questions[i];
-				uploader.onSuccessItem = function(fileItem, response) {
-					var j = fileItem.formData;
-					$scope.exam.questions[j].question_image_url = response.upload_name;
-				};
-				$scope.uploader_array.push(uploader);
-			}
-		}
-
-		function resize_overscroll() {
-			var sidebar_height = $(this).height() - 300 + $footer.height();
-	    	if (sidebar_height > $content_2.height())
-				sidebar_height = $content_2.height();
-			$sidebar.height(sidebar_height);
-		}
+        this.uploader = new FileUploader({ url: '/public/php/upload-file.php' });
+        this.uploader.onSuccessItem = function (fileItem, response) {
+            this.exam.file_name = response.upload_name;
+        };
+        this.uploader_array = [];
 
 
-		var exam_watch = $scope.$watch("exam", function( newValue, oldValue ) {
-			if (1 < $scope.number_changed)
-				$scope.has_changed = 1;
-			$scope.number_changed += 1;
-		}, true);
+        $scope.$watch(() => this.exam, () => {
+            if (this.number_changed > 1) {
+                this.has_changed = 1;
+            }
+            this.number_changed += 1;
+        }, true);
 
-		$('body').on( 'shown.bs.tab', 'a[data-toggle="tab"]', function(e){
-		    var previous = $(this).closest(".list-group").children(".active");
-		    previous.removeClass('active');
-		    $(e.target).addClass('active');
-		});
+        $scope.$on('$locationChangeStart', (event) => {
+            if (this.has_changed == 1) {
+                const confirmClose = confirm('Die Änderungen an deiner Klausur bleiben dann ungespeichert. Wirklich verlassen?');
+                if (!confirmClose) {
+                    event.preventDefault();
+                }
+            }
+        });
 
-		$scope.$on('$locationChangeStart', function (event, next, current) {
-			if (1 == $scope.has_changed) {
-				var confirmClose = confirm('Die \u00C4nderungen an deiner Klausur bleiben dann ungespeichert. Wirklich verlassen?');
-				if (!confirmClose)
-					event.preventDefault();
-			}
-		});
+        this.API.get('exams/' + this.exam_id).success((result) => {
+            this.exam = result;
+            this.exam.semester = Number(result.semester);
+            this.exam.duration = Number(result.duration);
 
-		$(window).on('resize', function(){
-	    	resize_overscroll();
-    	});
+            for (let i = 0; i < this.exam.questions.length; i++) {
+                if (this.exam.questions[i].topic.length === 0) {
+                    this.exam.questions[i].topic = 'Sonstiges';
+                }
 
-		API.get('exams/' + $scope.exam_id).success(function(data) {
-			$scope.exam = data;
-
-			$scope.exam.semester = parseInt(data.semester);
-			$scope.exam.duration = parseInt(data.duration);
-
-			for (var i = 0; i < $scope.exam.questions.length; i++) {
-				if (0 === $scope.exam.questions[i].topic.length)
-					$scope.exam.questions[i].topic = 'Sonstiges';
-			}
-
-			remake_uploader_array();
-
-			if (0 === $scope.exam.questions.length) {
-				$scope.add_question(0, false);
-			}
-
-			if (!$scope.exam.subject) {
-				$scope.exam.subject = 'Allgemeine Pathologie';
-				$scope.exam.sort = 'Erstklausur';
-			}
-
-			if ($scope.open_question_id) {
-				// Scroll
-			}
-
-			$scope.ready = 1;
-
-			setTimeout(function(){ resize_overscroll(); }, 10);
-		});
+                if (this.exam.questions[i].question_id == $routeParams.question_id) {
+                    this.open_question_index = i;
+                }
+            }
 
 
-		$scope.add_question = function(show, scroll_to_question) {
-			if (typeof(scroll_to_question)==='undefined') scroll_to_question = true;
+            this.remakeUploaderArray();
 
-			var question = {};
-			question.question = "";
-			question.type = 5;
-			question.correct_answer = 0;
-			question.answers = ['', '', '', '', '', ''];
-			question.topic = 'Sonstiges';
+            if (this.exam.questions.length === 0) {
+                this.add_question(0, false);
+            }
 
-			$scope.exam.questions.push(question);
-			$scope.open_question_id = 0;
+            if (!this.exam.subject) {
+                this.exam.subject = 'Allgemeine Pathologie';
+                this.exam.sort = 'Erstklausur';
+            }
 
-			remake_uploader_array();
-			setTimeout(function(){ resize_overscroll(); }, 10);
+            this.ready = 1;
+        });
+    }
 
-			if (scroll_to_question) {
-				var new_show = $scope.exam.questions.length + 1;
-				setTimeout(function(){ $('.edit-exam-wrapper a:nth-child(' + new_show + ')').tab('show'); }, 10);
-			}
-		};
+    remakeUploaderArray() {
+        this.uploader_array = [];
+        for (let i = 0; i < this.exam.questions.length; i++) {
+            const uploader = new this.FileUploader({ url: '/public/php/upload-file.php', formData: i });
+            uploader.onSuccessItem = function (fileItem, response) {
+                const j = fileItem.formData;
+                this.exam.questions[j].question_image_url = response.upload_name;
+            };
+            this.uploader_array.push(uploader);
+        }
+    }
 
-		$scope.delete_question = function(index) {
-			var question_id = $scope.exam.questions[index].question_id;
+    add_question(show) {
+        const question = {
+            'question': '',
+            'type': 5,
+            'correct_answer': 0,
+            'answers': ['', '', '', '', '', ''],
+            'topic': 'Sonstiges',
+        };
 
-			if (question_id)
-				API.delete('questions/' + question_id).success(function(data, status, headers) { });
-			$scope.exam.questions.splice(index, 1);
+        this.exam.questions.push(question);
+        if (show) {
+            this.open_question_index = this.exam.questions.length - 1;
+        }
 
-			remake_uploader_array();
+        this.remakeUploaderArray();
+    }
 
-			var new_show = index + 1;
-			setTimeout(function(){ $('.edit-exam-wrapper a:nth-child(' + new_show + ')').tab('show'); }, 10);
+    delete_question(index) {
+        const question_id = this.exam.questions[index].question_id;
 
-			if (0 === $scope.exam.questions.length) {
-				$scope.add_question(1);
-			}
+        if (question_id) {
+            this.API.delete('questions/' + question_id);
+        }
 
-			setTimeout(function(){ resize_overscroll(); }, 10);
-		};
+        this.exam.questions.splice(index, 1);
 
-	    $scope.leave_edit = function() {
-			$scope.$apply( $location.path( $scope.next_route ) );
-		};
+        this.remakeUploaderArray();
 
-		$scope.save_exam = function() {
-			var validate = true;
-			if (!$scope.exam.subject) { validate = false; }
-			if ($scope.exam.semester < 1) { validate = false; }
-			if (!$scope.exam.date) { validate = false; }
+        if (this.open_question_index >= this.exam.questions.length) {
+            this.open_question_index = this.exam.questions.length - 1;
+        }
 
-			if (validate) {
-				$scope.is_saving = 1;
+        if (this.exam.questions.length === 0) {
+            this.add_question(1);
+        }
+    }
 
-				var post_data = $scope.exam;
-				API.put('exams/' + $scope.exam_id, post_data);
+    leave_edit() {
+        this.$location.path(this.next_route);
+    }
 
-				$scope.exam.questions.forEach(function(question) {
-					var validate_question = true;
-					if (!question.question.length) { validate_question = false; }
-					if (question.question_id) { validate_question = true; }
+    save_exam() {
+        let validate = true;
+        if (!this.exam.subject) {
+            validate = false;
+        }
 
-		    		if (validate_question) {
-			    		if (!question.explanation) {}
-			    			question.explanation = '';
-			    		if (!question.question_image_url)
-			    			question.question_image_url = '';
+        if (this.exam.semester < 1) {
+            validate = false;
+        }
 
-		    			var data = {'question': question.question, 'topic': question.topic, 'type': question.type, 'answers': question.answers, 'correct_answer': question.correct_answer, 'exam_id': $scope.exam.exam_id, 'user_id_added': $scope.user.user_id, 'explanation': question.explanation, 'question_image_url': question.question_image_url};
+        if (!this.exam.date) {
+            validate = false;
+        }
 
-		    			// New Question
-		    			if (!question.question_id) {
-		    				API.post('questions', data).success(function(data) {
-		    					question.question_id = data.question_id;
-		    					console.log(data);
-							});
+        if (validate) {
+            this.is_saving = 1;
 
-		    			} else {
-		    				API.put('questions/' + question.question_id, post_question_data);
-		    			}
-		    		}
-				});
-				$scope.has_changed = 0;
-				$scope.is_saving = 0;
-				
-			} else {
-				alert('Es fehlen noch allgemeine Infos zur Klausur.');
-			}
-		};
+            const exam_data = this.exam;
+            this.API.put('exams/' + this.exam_id, exam_data);
 
-		$scope.delete_exam = function() {
-			API.delete('exams/' + $scope.exam.exam_id).success(function(data) {
-				$location.url('/author');
-			});
-		};
-	});
+            for (const question of this.exam.questions) {
+                let validateQuestion = true;
+                if (!question.question.length) {
+                    validateQuestion = false;
+                }
+
+                if (question.question_id) {
+                    validateQuestion = true;
+                }
+
+                if (validateQuestion) {
+                    if (!question.explanation) {
+                        question.explanation = '';
+                    }
+
+                    if (!question.question_image_url) {
+                        question.question_image_url = '';
+                    }
+
+                    const data = {
+                        'question': question.question,
+                        'topic': question.topic,
+                        'type': question.type,
+                        'answers': question.answers,
+                        'correct_answer': question.correct_answer,
+                        'exam_id': this.exam.exam_id,
+                        'user_id_added': this.user.user_id,
+                        'explanation': question.explanation,
+                        'question_image_url': question.question_image_url,
+                    };
+
+                    // New Question
+                    if (!question.question_id) {
+                        this.API.post('questions', data).success((result) => {
+                            question.question_id = result.question_id;
+                        });
+                    } else {
+                        this.API.put('questions/' + question.question_id, data);
+                    }
+                }
+            }
+
+            this.has_changed = 0;
+            this.is_saving = 0;
+        } else {
+            alert('Es fehlen noch allgemeine Infos zur Klausur.');
+        }
+    }
+
+    delete_exam() {
+        this.API.delete('exams/' + this.exam.exam_id).success(() => {
+            this.$location.url('/author');
+        });
+    }
+}
+
+angular.module('authorModule').controller('EditController', EditController);

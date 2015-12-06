@@ -1,193 +1,218 @@
-angular.module('learnModule')
-	.controller('questionCtrl', function($scope, Auth, Page, API, $routeParams, $location, $modal) {
-		Page.set_title_and_nav('Frage | Crucio', 'Lernen');
+class QuestionController {
+    constructor(Auth, Page, API, $scope, $routeParams, $location, $window, $uibModal) {
+        this.Auth = Auth;
+        this.API = API;
+        this.$location = $location;
+        this.$uibModal = $uibModal;
 
-		$scope.answerButtonClass = 'btn-primary';
+        Page.setTitleAndNav('Frage | Crucio', 'Lernen');
 
-		$scope.user = Auth.getUser();
-		$scope.questionList = angular.fromJson(sessionStorage.currentQuestionList);
+        this.answerButtonClass = 'btn-primary';
 
-		$scope.question_id = $routeParams.id;
-		$scope.reset_session = $routeParams.reset_session;
+        this.user = Auth.getUser();
+        this.questionList = angular.fromJson(sessionStorage.currentQuestionList);
 
-		if (!$scope.question_id)
-			$window.location.replace('/questions');
+        this.question_id = $routeParams.id;
+        this.reset_session = $routeParams.reset_session;
 
-		$scope.show_explanation = 0;
-		$scope.given_result = 0;
-		$scope.strike = {};
+        if (!this.question_id) {
+            this.$window.location.replace('/questions');
+        }
 
-		if ($scope.reset_session) {
-			$scope.questionList = {};
-			sessionStorage.currentQuestionList = angular.toJson($scope.questionList);
-		}
+        this.show_explanation = 0;
+        this.given_result = 0;
+        this.strike = {};
 
-		if ($scope.questionList) {
-			if (Object.keys($scope.questionList).length) {
-				$scope.index = $scope.questionList.list.getIndexBy('question_id', $scope.question_id);
-				$scope.length = $scope.questionList.list.length;
-				$scope.show_answer = $scope.questionList.list[$scope.index].mark_answer;
-				$scope.given_result = $scope.questionList.list[$scope.index].given_result;
-				if ($scope.questionList.list[$scope.index].strike)
-					$scope.strike = $scope.questionList.list[$scope.index].strike;
-			}
-		}
+        if (this.reset_session) {
+            this.questionList = {};
+            sessionStorage.currentQuestionList = angular.toJson(this.questionList);
+        }
 
-		$scope.$watch("strike", function(newValue, oldValue) {
-			if ($scope.questionList) {
-				if (Object.keys($scope.questionList).length) {
-					$scope.questionList.list[$scope.index].strike = newValue;
-					sessionStorage.currentQuestionList = angular.toJson($scope.questionList);
-				}
-			}
-		}, true);
+        function getIndexBy(array, name, value) {
+            for (let i = 0; i < array.length; i++) {
+                if (array[i][name] == value) {
+                    return i;
+                }
+            }
+        }
 
-		API.get('questions/' + $scope.question_id + '/user/' + $scope.user.user_id).success(function(data) {
-			$scope.question = data;
+        if (this.questionList) {
+            if (Object.keys(this.questionList).length) {
+                this.index = getIndexBy(this.questionList.list, 'question_id', this.question_id);
+                this.length = this.questionList.list.length;
+                this.show_answer = this.questionList.list[this.index].mark_answer;
+                this.given_result = this.questionList.list[this.index].given_result;
+                if (this.questionList.list[this.index].strike) {
+                    this.strike = this.questionList.list[this.index].strike;
+                }
+            }
+        }
 
-			if ($scope.question.question_image_url)
-				$scope.question.question_image_url = '/public/files/' + $scope.question.question_image_url;
+        $scope.$watch(() => this.strike, (newValue) => {
+            if (this.questionList) {
+                if (Object.keys(this.questionList).length) {
+                    this.questionList.list[this.index].strike = newValue;
+                    sessionStorage.currentQuestionList = angular.toJson(this.questionList);
+                }
+            }
+        }, true);
 
-			for (var i = 0; i < $scope.question.comments.length; i++) {
-				$scope.question.comments[i].voting = ( parseInt($scope.question.comments[i].voting) || 0 );
-				$scope.question.comments[i].user_voting = ( parseInt($scope.question.comments[i].user_voting) || 0 );
-			}
-            
-			if ($scope.question.tags) {
-    			var array = $scope.question.tags.split(',');
-    			$scope.question.tags = [];
-    			for (var i = 0; i < array.length; i++)
-    			    $scope.question.tags.push({'text': array[i]});
-			}
-				
-			if ($scope.given_result)
-				$scope.check_answer($scope.given_result);
+        API.get('questions/' + this.question_id + '/user/' + this.user.user_id).success((result) => {
+            this.question = result;
 
-			if ($scope.show_answer)
-				$scope.mark_answer($scope.given_result);
-		});
-		
-		$scope.updateTags = function(tag) {
-    		var string = '';
-    		for (var i = 0; i < $scope.question.tags.length; i++)
-    		    string += $scope.question.tags[i].text + ',';
-            string = string.slice(0, -1);
-    		
-    		var data = {'tags': string, 'question_id': $scope.question_id, 'user_id': $scope.user.user_id};
-            API.post('tags', data);
-		};
+            for (let i = 0; i < this.question.comments.length; i++) {
+                this.question.comments[i].voting = (parseInt(this.question.comments[i].voting, 0) || 0);
+                this.question.comments[i].user_voting = (parseInt(this.question.comments[i].user_voting, 0) || 0);
+            }
 
-		// If show solution button is clicked
-		$scope.show_solution = function() {
-			var correct_answer = $scope.correct_answer();
+            if (this.question.tags) {
+                const array = this.question.tags.split(',');
+                this.question.tags = [];
+                for (const element of array) {
+                    this.question.tags.push({ 'text': element });
+                }
+            }
 
-			var correct = (correct_answer == $scope.given_result) ? 1 : 0;
+            if (this.given_result) {
+                this.check_answer(this.given_result);
+            }
 
-	    	if (0 === correct_answer)
-	    	    correct = -1;
-	    	    
-	    	if (1 == $scope.question.type)
-	    	    correct = -1;
+            if (this.show_answer) {
+                this.mark_answer(this.given_result);
+            }
+        });
+    }
 
-	    	var data = {'correct': correct, 'question_id': $scope.question_id, 'user_id': $scope.user.user_id, 'given_result': $scope.given_result};
-	    	API.post('results', data);
+    // If tag field is changed
+    updateTags() {
+        let string = '';
+        for (const tag of this.question.tags) {
+            string += tag.text + ',';
+        }
+        string = string.slice(0, -1);
 
+        const data = { 'tags': string, 'question_id': this.question_id, 'user_id': this.user.user_id };
+        this.API.post('tags', data);
+    }
 
-			if ($scope.questionList) {
-	    		if (Object.keys($scope.questionList).length) {
-		    		$scope.questionList.list[$scope.index].mark_answer = 1;
-					sessionStorage.currentQuestionList = angular.toJson($scope.questionList);
-	    		}
-	    	}
+    // If show solution button is clicked
+    show_solution() {
+        const correct_answer = this.correct_answer();
+        let correct = (correct_answer == this.given_result) ? 1 : 0;
 
-			$scope.mark_answer($scope.given_result);
-		};
+        if (correct_answer === 0) {
+            correct = -1;
+        }
 
-		// Saves the answer
-		$scope.save_answer = function(given_answer) {
-			$scope.given_result = given_answer;
+        if (this.question.type == 1) {
+            correct = -1;
+        }
 
-			if ($scope.questionList) {
-				if (Object.keys($scope.questionList).length) {
-					$scope.questionList.list[$scope.index].given_result = given_answer;
-					sessionStorage.currentQuestionList = angular.toJson($scope.questionList);
-				}
-			}
-	    };
+        const data = {
+            'correct': correct,
+            'question_id': this.question_id,
+            'user_id': this.user.user_id,
+            'given_result': this.given_result,
+        };
+        this.API.post('results', data);
 
-		// Checks the answer box
-		$scope.check_answer = function(answer) {
-			$scope.checked_answer = answer;
-		};
+        if (this.questionList) {
+            if (Object.keys(this.questionList).length) {
+                this.questionList.list[this.index].mark_answer = 1;
+                sessionStorage.currentQuestionList = angular.toJson(this.questionList);
+            }
+        }
 
-		// Returns correct answer
-		$scope.correct_answer = function() {
-			return $scope.question.correct_answer;
-		};
+        this.mark_answer(this.given_result);
+    }
 
-		// Colors the given answers and shows the correct solution
-		$scope.mark_answer = function(given_answer) {
-			$scope.mark_answer_free = true;
-			var type = $scope.question.type;
-			var correct_answer = $scope.correct_answer();
-	    	if (type > 1) {
-	    		$scope.check_answer(given_answer);
+    // Saves the answer
+    save_answer(given_answer) {
+        this.given_result = given_answer;
 
-				if(given_answer == correct_answer) {
-				    $scope.correctAnswer = given_answer;
-				    $scope.answerButtonClass = 'btn-success';
-				    
-				} else {
-				    $scope.wrongAnswer = given_answer;
-				    $scope.correctAnswer = correct_answer;
-				    $scope.answerButtonClass = 'btn-danger';
-				}
-	    	} else if (type == 1) {
-		    	$scope.answerButtonClass = 'btn-info';
-	    	}
-		};
+        if (this.questionList) {
+            if (Object.keys(this.questionList).length) {
+                this.questionList.list[this.index].given_result = given_answer;
+                sessionStorage.currentQuestionList = angular.toJson(this.questionList);
+            }
+        }
+    }
 
-		$scope.add_comment = function() {
-			var now = new Date() / 1000;
-			var post_data = {'comment': $scope.commentText, 'question_id': $scope.question_id, 'reply_to': 0, 'username': $scope.user.username, 'date': now};
-	    	API.post('comments/' + $scope.user.user_id, post_data).success(function(data) {
-				post_data.voting = 0;
-	    		post_data.user_voting = 0;
-	    		post_data.comment_id = data.comment_id;
-	    		$scope.question.comments.push(post_data);
-	    		$scope.commentText = '';
-			});
-		};
+    // Checks the answer box
+    check_answer(answer) {
+        this.checked_answer = answer;
+    }
 
-		$scope.delete_comment = function(index) {
-			var comment_id = $scope.question.comments[index].comment_id;
-			API.delete('comments/' + comment_id);
-			$scope.question.comments.splice(index, 1);
-		};
+    // Returns correct answer
+    correct_answer() {
+        return this.question.correct_answer;
+    }
 
-		$scope.increase_user_voting = function(current_user_voting, comment_id) {
-			var result = current_user_voting == 1 ? 1 : current_user_voting + 1;
-			var data = {'user_voting': result};
-			API.post('comments/' + comment_id + '/user/' + $scope.user.user_id, data);
-			return result;
-		};
+    // Colors the given answers and shows the correct solution
+    mark_answer(given_answer) {
+        this.mark_answer_free = true;
+        const type = this.question.type;
+        const correct_answer = this.correct_answer();
+        if (type > 1) {
+            this.check_answer(given_answer);
 
-		$scope.decrease_user_voting = function(current_user_voting, comment_id) {
-			var result = current_user_voting == -1 ? -1 : current_user_voting - 1;
-			var data = {'user_voting': result};
-			API.post('comments/' + comment_id + '/user/' + $scope.user.user_id, data);
-			return result;
-		};
+            if (given_answer == correct_answer) {
+                this.correctAnswer = given_answer;
+                this.answerButtonClass = 'btn-success';
+            } else {
+                this.wrongAnswer = given_answer;
+                this.correctAnswer = correct_answer;
+                this.answerButtonClass = 'btn-danger';
+            }
+        } else if (type == 1) {
+            this.answerButtonClass = 'btn-info';
+        }
+    }
 
-		$scope.open_image_model = function () {
-			var modalInstance = $modal.open({
-		    	templateUrl: 'imageModalContent.html',
-		    	controller: 'ModalInstanceCtrl',
-				resolve: {
-    				image_url: function () {
-    				    return $scope.question.question_image_url;
-    				}
-				}
-			});
-		};
-	});
+    add_comment() {
+        const now = new Date() / 1000;
+        const data = { 'comment': this.commentText, 'question_id': this.question_id, 'reply_to': 0, 'username': this.user.username, 'date': now };
+        this.API.post('comments/' + this.user.user_id, data).success((result) => {
+            data.voting = 0;
+            data.user_voting = 0;
+            data.comment_id = result.comment_id;
+            this.question.comments.push(data);
+            this.commentText = '';
+        });
+    }
+
+    delete_comment(index) {
+        const comment_id = this.question.comments[index].comment_id;
+        this.API.delete('comments/' + comment_id);
+        this.question.comments.splice(index, 1);
+    }
+
+    increase_user_voting(current_user_voting, comment_id) {
+        const result = Math.min(current_user_voting + 1, 1);
+        const data = { 'user_voting': result };
+        this.API.post('comments/' + comment_id + '/user/' + this.user.user_id, data);
+        return result;
+    }
+
+    decrease_user_voting(current_user_voting, comment_id) {
+        const result = Math.max(current_user_voting - 1, -1);
+        const data = { 'user_voting': result };
+        this.API.post('comments/' + comment_id + '/user/' + this.user.user_id, data);
+        return result;
+    }
+
+    open_image_model() {
+        this.$uibModal.open({
+            templateUrl: 'imageModalContent.html',
+            controller: 'ModalInstanceController',
+            controllerAs: 'ctrl',
+            resolve: {
+                image_url: () => {
+                    return this.question.question_image_url;
+                },
+            },
+        });
+    }
+}
+
+angular.module('learnModule').controller('QuestionController', QuestionController);

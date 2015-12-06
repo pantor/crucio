@@ -1,270 +1,268 @@
-angular.module('learnModule')
-	.controller('questionsCtrl', function($scope, Auth, Page, $location, API, Selection) {
-		Page.set_title_and_nav('Lernen | Crucio', 'Lernen');
+class QuestionsController {
+    constructor(Auth, Page, API, Selection, $scope, $location) {
+        this.API = API;
+        this.Selection = Selection;
+        this.$location = $location;
 
-		$scope.user = Auth.getUser();
-		if (!$scope.user)
-			window.location.replace(base_url);
+        Page.setTitleAndNav('Lernen | Crucio', 'Lernen');
 
-		$scope.exam_search = {'subject': '', 'semester': '', 'query': '', 'query_keys': ['subject', 'semester', 'date']};
-		$scope.comment_search = {'query': '', 'query_keys': ['comment', 'username', 'question_id']};
-		$scope.tag_search = {'query': '', 'query_keys': ['tag']};
+        this.user = Auth.getUser();
 
-		$scope.subject_list = subject_list;
+        this.exam_search = { 'subject': '', 'semester': '', 'query': '', 'query_keys': ['subject', 'semester', 'date'] };
+        this.comment_search = { 'query': '', 'query_keys': ['comment', 'username', 'question_id'] };
+        this.tag_search = { 'query': '', 'query_keys': ['tag'] };
 
-		$scope.question_field_message = '';
+        this.subject_list = subject_list;
 
-		$scope.selection_subject_list = {};
-		$scope.selection_number_questions = 0;
-		$scope.number_questions_in_choosen_subjects = 0;
-		$scope.conditions = 1;
+        this.question_field_message = '';
 
+        this.selection_subject_list = {};
+        this.selection_number_questions = 0;
+        this.number_questions_in_choosen_subjects = 0;
+        this.conditions = 1;
 
-		var spinner = new Spinner({length: 0, radius: 18, color: '#333', shadow: false});
-		$scope.slider_options = {floor: 0, ceil: $scope.number_questions_in_choosen_subjects};
+        this.show_spinner = false;
+        this.slider_options = { floor: 0, ceil: this.number_questions_in_choosen_subjects };
 
-		$scope.$watch("selection_subject_list", function( newValue, oldValue ) {
-			var post_data = {ignoreLoadingBar: true, selection_subject_list: $scope.selection_subject_list};
-			API.post('learn/number-questions', post_data).success(function(data) {
-				$scope.number_questions_in_choosen_subjects = data.number_questions;
+        $scope.$watch(() => this.selection_subject_list, () => {
+            const data = { ignoreLoadingBar: true, selection_subject_list: this.selection_subject_list };
+            this.API.post('learn/number-questions', data).success((result) => {
+                this.number_questions_in_choosen_subjects = result.number_questions;
 
-				if (0 === $scope.selection_number_questions) {
-					$scope.selection_number_questions = Math.min($scope.number_questions_in_choosen_subjects, 50);
-				}
+                if (this.selection_number_questions === 0) {
+                    this.selection_number_questions = Math.min(this.number_questions_in_choosen_subjects, 50);
+                }
 
-				if ($scope.selection_number_questions > $scope.number_questions_in_choosen_subjects) {
-					$scope.selection_number_questions = $scope.number_questions_in_choosen_subjects;
-				}
-			});
-		}, true);
+                if (this.selection_number_questions > this.number_questions_in_choosen_subjects) {
+                    this.selection_number_questions = this.number_questions_in_choosen_subjects;
+                }
+            });
+        }, true);
 
-		$scope.$watch("number_questions_in_choosen_subjects", function( newValue, oldValue ) {
-			var max = $scope.number_questions_in_choosen_subjects;
-			if (max > 200)
-				max = 200;
+        $scope.$watch(() => this.number_questions_in_choosen_subjects, () => {
+            let max = this.number_questions_in_choosen_subjects;
+            if (max > 200) {
+                max = 200;
+            }
 
-			var step = 10;
-			if (max < 100)
-				step = 10;
-			if (max < 40)
-				step = 4;
-			if (max < 20)
-				step = 1;
+            let step = 10;
+            if (max < 100) {
+                step = 10;
+            }
+            if (max < 40) {
+                step = 4;
+            }
+            if (max < 20) {
+                step = 1;
+            }
 
-			if (max < 200)
-				if (max % step !== 0)
-					max += step;
-            
-            $scope.slider_options = {floor: 0, ceil: max};
-		}, true);
+            if (max < 200) {
+                if (max % step !== 0) {
+                    max += step;
+                }
+            }
 
-		API.get('exams/user_id/' + $scope.user.user_id).success(function(data) {
-			$scope.exams = data.exam;
-			$scope.distinct_semesters = Selection.find_distinct($scope.exams, 'semester');
-			$scope.distinct_subjects = Selection.find_distinct($scope.exams, 'subject');
+            this.slider_options = { floor: 0, ceil: max };
+        }, true);
 
-			// Find Exams for Abstract
-		    $scope.abstract_exams = [];
-		    $scope.exams.forEach(function(entry) {
-		    	var select = true;
+        this.API.get('exams/user_id/' + this.user.user_id).success((result) => {
+            this.exams = result.exam;
+            this.distinct_semesters = Selection.find_distinct(this.exams, 'semester');
+            this.distinct_subjects = Selection.find_distinct(this.exams, 'subject');
 
-		    	if (entry.semester != $scope.user.semester) select = false;
-		    	if (entry.date == 'unbekannt') select = false;
+            // Find Exams for Abstract
+            this.abstract_exams = [];
+            for (const entry of this.exams) {
+                let select = true;
 
-		    	if ($scope.exams.length > 10)
-			    	if (entry.question_count < 30) select = false;
+                if (entry.semester != this.user.semester) {
+                    select = false;
+                }
 
-		    	if (entry.answered_questions > 0) select = true;
+                if (entry.date == 'unbekannt') {
+                    select = false;
+                }
 
-		    	if (select) {
-		    		if (entry.answered_questions > 0)
-			    		$scope.abstract_exams.unshift(entry);
-		    		else
-			    		$scope.abstract_exams.push(entry);
-		    	}
-		    });
+                if (this.exams.length > 10) {
+                    if (entry.question_count < 30) {
+                        select = false;
+                    }
+                }
 
-		    $scope.ready = 1;
-		});
+                if (entry.answered_questions > 0) {
+                    select = true;
+                }
 
-		API.get('tags', {'user_id': $scope.user.user_id}).success(function(data) {
-			$scope.tags = data.tags;
+                if (select) {
+                    if (entry.answered_questions > 0) {
+                        this.abstract_exams.unshift(entry);
+                    } else {
+                        this.abstract_exams.push(entry);
+                    }
+                }
+            }
 
-			$scope.distinct_tags = [];
-		    $scope.tags.forEach(function(entry) {
-		    	entry.tags.split(',').forEach(function(tagText) {
-		    		if($scope.distinct_tags.indexOf(tagText) == -1) {
-		    			$scope.distinct_tags.push(tagText);
-					}
-				});
-		    });
+            this.ready = 1;
+        });
 
-		    function clone(obj) {
-			    if (null === obj || "object" != typeof obj) return obj;
-			    var copy = obj.constructor();
-			    for (var attr in obj) {
-			        if (obj.hasOwnProperty(attr)) copy[attr] = clone(obj[attr]);
-			    }
-			    return copy;
-			}
+        const data = { 'user_id': this.user.user_id };
+        this.API.get('tags', data).success((result) => {
+            this.tags = result.tags;
 
-			function sortByKey(array, key) {
-			    return array.sort(function(a, b) {
-			        var x = a[key]; var y = b[key];
-			        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-			    });
-			}
+            this.distinct_tags = [];
+            for (const entry of this.tags) {
+                for (const tagText of entry.tags.split(',')) {
+                    if (this.distinct_tags.indexOf(tagText) == -1) {
+                        this.distinct_tags.push(tagText);
+                    }
+                }
+            }
 
-			$scope.questions_by_tag = {};
-		    $scope.distinct_tags.forEach(function(distinct_tag) {
-			    $scope.questions_by_tag[distinct_tag] = [];
-		    });
-		    $scope.distinct_tags.forEach(function(distinct_tag) {
-			    $scope.tags.forEach(function(entry) {
-					entry.tags.split(',').forEach(function(tagText) {
-						if (distinct_tag == tagText) {
-							$scope.questions_by_tag[distinct_tag].push(entry);
-						}
-					});
-				});
-		    });
-		});
+            this.questions_by_tag = {};
+            for (const distinct_tag of this.distinct_tags) {
+                this.questions_by_tag[distinct_tag] = [];
+            }
+            for (const distinct_tag of this.distinct_tags) {
+                for (const entry of this.tags) {
+                    for (const tagText of entry.tags.split(',')) {
+                        if (distinct_tag == tagText) {
+                            this.questions_by_tag[distinct_tag].push(entry);
+                        }
+                    }
+                }
+            }
+        });
 
-		API.get('comments/' + $scope.user.user_id).success(function(data) {
-			$scope.comments = data.comments;
+        this.API.get('comments/' + this.user.user_id).success((result) => {
+            this.comments = result.comments;
 
-			$scope.questions_by_comment = {};
-		    $scope.comments.forEach(function(c) {
-			    $scope.questions_by_comment[c.question] = [];
-		    });
-		    $scope.comments.forEach(function(c) {
-			    $scope.questions_by_comment[c.question].push(c);
-		    });
-		});
+            this.questions_by_comment = {};
+            for (const comment of this.comments) {
+                this.questions_by_comment[comment.question] = [];
+            }
 
+            for (const comment of this.comments) {
+                this.questions_by_comment[comment.question].push(comment);
+            }
+        });
+    }
 
-		$scope.learn_exam = function(exam_id) {
-	    	var random = 1;
-	    	API.get('exams/action/prepare/' + exam_id + '/' + random).success(function(data) {
-		    	var questionList = {'list': data.list};
-	    		questionList.exam_id = exam_id;
-				sessionStorage.currentQuestionList = angular.toJson(questionList);
-				$location.path('/question').search('id', questionList.list[0].question_id);
-			});
-		};
+    learn_exam(examId) {
+        const random = 1;
+        this.API.get('exams/action/prepare/' + examId + '/' + random).success((result) => {
+            const questionList = { 'list': result.list };
+            questionList.exam_id = examId;
+            sessionStorage.currentQuestionList = angular.toJson(questionList);
+            this.$location.path('/question').search('id', questionList.list[0].question_id);
+        });
+    }
 
-		$scope.learn_subjects = function() {
-			var data = {selection_subject_list: $scope.selection_subject_list, selection_number_questions: $scope.selection_number_questions};
-	    	API.post('learn/prepare', data).success(function(data) {
-		    	var questionList = {'list': data.list};
-	    		questionList.selection_subject_list = data.selection_subject_list;
-				sessionStorage.currentQuestionList = angular.toJson(questionList);
-				$location.path('/question').search('id', questionList.list[0].question_id);
-			});
-		};
+    learn_subjects() {
+        const data = { selection_subject_list: this.selection_subject_list, selection_number_questions: this.selection_number_questions };
+        this.API.post('learn/prepare', data).success((result) => {
+            const questionList = { 'list': result.list };
+            questionList.selection_subject_list = data.selection_subject_list;
+            sessionStorage.currentQuestionList = angular.toJson(questionList);
+            this.$location.path('/question').search('id', questionList.list[0].question_id);
+        });
+    }
 
-		$scope.reset_results = function(index) {
-			var exam_id = $scope.exams[index].exam_id;
-			$scope.exams[index].answered_questions = 0;
-			var data = {};
-			API.delete('results/' + $scope.user.user_id + '/' + exam_id, data);
-		};
+    reset_results(index) {
+        const examId = this.exams[index].exam_id;
+        this.exams[index].answered_questions = 0;
+        const data = {};
+        this.API.delete('results/' + this.user.user_id + '/' + examId, data);
+    }
 
-		$scope.reset_abstract_results = function(index) {
-			var exam_id = $scope.abstract_exams[index].exam_id;
-			$scope.abstract_exams[index].answered_questions = 0;
-			var data = {};
-			API.delete('results/' + $scope.user.user_id + '/' + exam_id, data);
-		};
+    reset_abstract_results(index) {
+        const examId = this.abstract_exams[index].exam_id;
+        this.abstract_exams[index].answered_questions = 0;
+        const data = {};
+        this.API.delete('results/' + this.user.user_id + '/' + examId, data);
+    }
 
-		$scope.toggle_selection = function(subject, category, checked) {
+    toggle_selection(subject, category, checked = false) {
+        const selection = this.selection_subject_list;
+        const subjects = this.subject_list;
 
-			var selection = $scope.selection_subject_list;
-			var subjects = $scope.subject_list;
+        if (Object.keys(selection).indexOf(subject) > -1) { // If Subject in Selection Keys
+            if (selection[subject].length === 0) { // If Subject in Selection has Empty Array
+                if (category == 'all') {
+                    delete selection[subject];
+                }
+            } else if (selection[subject].length > 0) { // If Subject in Selection has Full Array
+                if (category == 'all') {
+                    if (!checked) {
+                        selection[subject] = subjects[subject].slice(0);
+                    } else {
+                        delete selection[subject];
+                    }
+                } else {
+                    const idx = selection[subject].indexOf(category);
+                    if (idx > -1) {
+                        selection[subject].splice(idx, 1);
+                        if (selection[subject].length === 0) {
+                            delete selection[subject];
+                        }
+                    } else {
+                        selection[subject].push(category);
+                    }
+                }
+            } else { // If Subject in Selection has No Array
+                if (category == 'all') {
+                    selection[subject] = subjects[subject].slice(0);
+                } else {
+                    selection[subject] = [category];
+                }
+            }
+        } else {
+            if (category == 'all') {
+                selection[subject] = subjects[subject].slice(0);
+            } else {
+                selection[subject] = [category];
+            }
+        }
+    }
 
-			if (!checked)
-				checked = false;
+    search_question() {
+        this.search_results = [];
 
-			if (-1 < Object.keys(selection).indexOf(subject)) { // If Subject in Selection Keys
-				if (0 === selection[subject].length) { // If Subject in Selection has Empty Array
-					if (category == 'all')
-						delete selection[subject];
+        const query_question = this.question_search_query;
+        this.question_field_message = '';
+        if (query_question.length) {
+            this.show_spinner = true;
 
-				} else if (0 < selection[subject].length) { // If Subject in Selection has Full Array
-					if (category == 'all') {
-						if (!checked)
-							selection[subject] = subjects[subject].slice(0);
-						else
-							delete selection[subject];
+            const data = { 'query': this.question_search_query, 'visibility': 1, 'limit': 101 };
+            // , 'subject': this.question_search_subject, 'semester': this.question_search_semester };
+            this.API.get('questions', data).success((result) => {
+                this.show_spinner = false;
 
-					} else {
-						var idx = selection[subject].indexOf(category);
-						if (idx > -1) {
-							selection[subject].splice(idx, 1);
-							if (0 === selection[subject].length)
-								delete selection[subject];
-						} else {
-							selection[subject].push(category);
-						}
-					}
+                if (result.result.length === 0) {
+                    this.question_field_message = 'Nichts gefunden ;(';
+                } else if (result.result.length > 100) {
+                    this.question_field_message = 'Zu viel gefunden, geht es ein bisschen konkreter? ;(';
+                } else {
+                    this.search_results = result.result;
+                }
+            });
+        }
+    }
 
-				} else { // If Subject in Selection has No Array
-					if (category == 'all')
-						selection[subject] = subjects[subject].slice(0);
-					else
-						selection[subject] = [category];
-				}
+    exam_in_selection(index) {
+        return this.Selection.is_element_included(this.exams[index], this.exam_search);
+    }
 
-			} else {
-				if (category == 'all')
-					selection[subject] = subjects[subject].slice(0);
-				else
-					selection[subject] = [category];
-			}
-		};
+    exam_in_selection_count() {
+        return this.Selection.count(this.exams, this.exam_search);
+    }
 
-		$scope.search_question = function() {
-			$scope.search_results = [];
+    comment_in_selection(index) {
+        return this.Selection.is_element_included(this.comments[index], this.comment_search);
+    }
 
-			var query_question = $scope.question_search_query;
-			$scope.question_field_message = '';
-			if (query_question.length) {
-				spinner.spin(document.getElementById('spinner'));
+    comment_in_selection_count() {
+        return this.Selection.count(this.comments, this.comment_search);
+    }
+}
 
-				var data = {'query': $scope.question_search_query, 'visibility': 1, 'limit': 101};
-				// , 'subject': $scope.question_search_subject, 'semester': $scope.question_search_semester};
-				API.get('questions', data).success(function(data) {
-    				
-    				console.log(data);
-    				
-				    spinner.stop();
-
-		    	    if (0 === data.result.length) {
-			    	    $scope.question_field_message = 'Nichts gefunden ;(';
-
-		    	    } else if (100 < data.result.length) {
-			    	    $scope.question_field_message = 'Zu viel gefunden, geht es ein bisschen konkreter? ;(';
-
-		    	    } else {
-		    	    	$scope.search_results = data.result;
-		    	    }
-				});
-		    }
-		};
-
-		$scope.exam_in_selection = function(index) {
-			return Selection.is_element_included($scope.exams[index], $scope.exam_search);
-		};
-
-		$scope.exam_in_selection_count = function() {
-			return Selection.count($scope.exams, $scope.exam_search);
-		};
-
-		$scope.comment_in_selection = function(index) {
-			return Selection.is_element_included($scope.comments[index], $scope.comment_search);
-		};
-
-		$scope.comment_in_selection_count = function() {
-			return Selection.count($scope.comments, $scope.comment_search);
-		};
-	});
+angular.module('userModule').controller('QuestionsController', QuestionsController);

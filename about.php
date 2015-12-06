@@ -5,23 +5,31 @@
 		<?php include 'parts/header.php'; ?>
 	</head>
 
-	<body class="body-padding" ng-controller="aboutCtrl">
-		<div ng-include="'parts/navbar.html'"></div>
-
+	<body class="body" ng-controller="AboutController as ctrl">
 		<div class="wrap">
-			<div class="container-white container-padding-4">
-				<div class="container container-text container-text-dark">
+    		<div class="container-white container-top-bar">
+	    		<div class="container ">
+		    		<div class="row">
+			    		<div class="col-md-7 col-md-offset-1 col-sm-5 col-sm-offset-1">
+							<h1><a href="/" target="_self"><i class="fa fa-check-square-o"></i> Crucio</a></h1>
+			    		</div>
+		    		</div>
+	    		</div>
+	    	</div>
+	    	
+			<div class="container-back-image container-padding-4">
+				<div class="container container-text container-text-light">
 	    			<i class="fa fa-info-circle fa-5x"></i>
-	    			<h3>Impressum</h3>
+	    			<h4>Impressum</h4>
 	    			<p>
 		    			Alles Rechtliche & Wichtige...
 	    			</p>
 	    		</div>
 			</div>
 
-			<div class="container-light-grey container-padding-2">
+			<div class="container-light-grey container-padding-4">
 				<div class="container">
-					<dl class="dl-horizontal">
+					<dl class="dl-horizontal" style="margin-bottom: 0;">
 					    <dt>Inhaber</dt>
 					    <dd>
 					    	<address>
@@ -41,12 +49,12 @@
 				</div>
 			</div>
 			
-			<div class="container container-padding-2">
+			<div class="container container-padding-4">
 				<dl class="dl-horizontal">
-				    <dt>Entwicklung</dt>
+				    <dt>Version</dt>
 				    <dd>
 				    	<address>
-				    		Crucio ist noch in der <strong><span class="text-danger">0.6-Beta</span></strong>-Version, daher werdet ihr sicherlich einige Fehler entdecken. Die könnt ihr in <a href="https://github.com/crucioproject/Crucio/issues">Github</a> eintragen; und zwar möglichst so, dass wir den Fehler reproduzieren können. Oder euch einfach bei uns melden...
+				    		Crucio ist noch in der <strong><span class="text-danger">0.7-Beta</span></strong>-Version, daher werdet ihr sicherlich einige Fehler entdecken. Die könnt ihr in <a href="https://github.com/crucioproject/Crucio/issues">Github</a> eintragen; und zwar möglichst so, dass wir den Fehler reproduzieren können. Oder euch einfach bei uns melden...
 				    	</address>
 				    </dd>
 
@@ -63,6 +71,6 @@
 			</div>
 		</div>
 
-		<?php require_once('parts/footer.html'); ?>
+		<?php require_once('parts/footer.php'); ?>
 	</body>
 </html>

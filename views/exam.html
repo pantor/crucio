@@ -1,169 +1,150 @@
-<script>
-	$('.admin-nav').on('activate.bs.scrollspy', function () {
-		var hash = $(this).find("li.active a").attr("data-target");
-		var current_index = parseInt(hash.slice(2)) - 1;
-		var scope = angular.element($(".external-ctrl")).scope();
-		scope.$apply(function(){
-		    scope.current_index = current_index;
-		});
-	})
-</script>
-
 <div class="container">
-	<div class="row mtop-navbar-row">
-		<div class="col-sm-12 col-md-4 visible-xs visible-sm">
-	    	<div class="panel panel-default" ng-show="exam">
-	    		<div class="panel-heading"><h3 class="panel-title"><i class="fa fa-fw fa-flask"></i> {{ exam.subject }}</h3></div>
-	    		<ul class="list-group">
-	    			<li class="list-group-item">{{ exam.semester }}. Semester<span ng-show="exam.sort">, {{ exam.sort }}</span></li>
-	    			<li class="list-group-item"><i class="fa fa-fw fa-calendar"></i> {{ exam.date }}</li>
-	    			<li class="list-group-item" ng-show="exam.professor"><i class="fa fa-fw fa-user-md"></i> {{ exam.professor }}</li>
-	    			<li class="list-group-item" ng-show="exam.notes"><i class="fa fa-fw fa-pencil-square-o"></i> {{ exam.notes }}</li>
+    <div class="row mtop-navbar-row">
+        <div class="col-sm-12 col-md-4 visible-xs visible-sm">
+            <div class="panel panel-default" ng-show="ctrl.exam">
+                <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-fw fa-flask"></i> {{ ctrl.exam.subject }}</h3></div>
+                <ul class="list-group">
+                    <li class="list-group-item">{{ ctrl.exam.semester }}. Semester<span ng-show="ctrl.exam.sort">, {{ ctrl.exam.sort }}</span></li>
+                    <li class="list-group-item"><i class="fa fa-fw fa-calendar"></i> {{ ctrl.exam.date }}</li>
+                    <li class="list-group-item" ng-show="ctrl.exam.professor"><i class="fa fa-fw fa-user-md"></i> {{ ctrl.exam.professor }}</li>
+                    <li class="list-group-item" ng-show="ctrl.exam.notes"><i class="fa fa-fw fa-pencil-square-o"></i> {{ ctrl.exam.notes }}</li>
 
-	    			<li class="list-group-item">
+                    <li class="list-group-item">
+                        <div class="btn-toolbar" role="toolbar">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-fw fa-file-pdf-o"></i> PDF
+                                    <span class="caret"></span>
+                                </button>
 
-	    				<div class="btn-toolbar" role="toolbar">
-							<div class="btn-group" role="group">
-								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-									<i class="fa fa-fw fa-file-pdf-o"></i> PDF
-									<span class="caret"></span>
-								</button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li ng-class="{disabled: ctrl.exam.file_name == ''}">
+                                        <a href="/public/files/{{ ctrl.exam.file_name }}" target="_self" ng-if="ctrl.exam.file_name != ''">Originaldokument</a>
+                                        <a ng-if="ctrl.exam.file_name == ''">Originaldokument</a>
+                                    </li>
 
-								<ul class="dropdown-menu" role="menu">
-									<li ng-class="{disabled: exam.file_name == ''}">
-										<a href="/public/files/{{exam.file_name}}" target="_self" ng-if="exam.file_name != ''">Originaldokument</a>
-										<a ng-if="exam.file_name == ''">Originaldokument</a>
-									</li>
+                                    <li><a href="exam-pdf?id={{ ctrl.exam.exam_id }}" target="_self">Klausur als PDF</a></li>
+                                    <li><a href="exam-solution-pdf?id={{ ctrl.exam.exam_id }}" target="_self">L&ouml;sungen als PDF</a></li>
+                                </ul>
+                            </div>
 
-									<li><a href="exam-pdf?id={{ exam.exam_id }}" target="_self">Klausur als PDF</a></li>
-									<li><a href="exam-solution-pdf?id={{ exam.exam_id }}" target="_self">Lösungen als PDF</a></li>
-								</ul>
-							</div>
+                            <div class="btn-group pull-right" role="group">
+                                <button type="button" class="btn btn-danger" ng-click="ctrl.hand_exam()">Klausur abgeben</button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
 
-							<div class="btn-group pull-right" role="group">
-								<button type="button" class="btn btn-danger" ng-click="hand_exam()">Klausur abgeben</button>
-							</div>
-						</div>
-	    			</li>
-	    		</ul>
+        <div class="col-sm-12 col-md-8 mbottom-3x" id="asdfw">
+            <div ng-repeat="q in ::ctrl.exam.questions" id="{{ $index + 1 }}">
+                <div class="form-horizontal" id="id{{ $index }}">
+                    <blockquote>
+                        <p>
+                            <a href data-toggle="modal" data-target="#myModal" ng-show="q.question_image_url" ng-click="ctrl.open_image_model(q.question_image_url)">
+                                <img class="img-thumbnail pull-right" width="250px" ng-src="http://www.crucio-leipzig.de/public/files/{{ q.question_image_url }}">
+                            </a>
 
-				<div class="admin-nav" style="display: none;">
-				    <ul class="nav nav-pills nav-stacked" role="tablist">
-				        <li ng-repeat="q in exam.questions"><a data-target="#a{{ $index + 1 }}" href></a></li>
-				    </ul>
-				</div>
-	        </div>
-		</div>
+                            <script type="text/ng-template" id="imageModalContent.html">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="myModalLabel"><i class="fa fa-search"></i> Vergr&ouml;&szlig;erung</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <center><img class="img-thumbnail" ng-src="http://www.crucio-leipzig.de/public/files/{{ ctrl.image_url }}"></center>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-success" ng-click="$close()">Schlie&szlig;en</button>
+                                </div>
+                            </script>
 
-	    <div class="col-sm-12 col-md-8 mbottom-3x">
-	    	<div ng-repeat="q in exam.questions" id="{{ $index + 1 }}">
-	    	    <div class="form-horizontal" id="a{{ $index + 1 }}">
-	    	    	<blockquote>
-			    		<p>
-			    	    	<a href data-toggle="modal" data-target="#myModal" ng-show="q.question_image_url" ng-click="open_image_model(q.question_image_url)">
-	    						<img class="img-thumbnail pull-right" width="250px" ng-src="/public/files/{{q.question_image_url}}">
-	    					</a>
+                            <span ng-bind-html="q.question | newline_to_br"></span>
 
-	    					<script type="text/ng-template" id="imageModalContent.html">
-							    <div class="modal-header">
-							        <h4 class="modal-title" id="myModalLabel"><i class="fa fa-search"></i> Vergößerung</h4>
-							    </div>
-							    <div class="modal-body">
-							        <center><img class="img-thumbnail" ng-src="/public/files/{{image_url}}"></center>
-							    </div>
-							    <div class="modal-footer">
-							        <button type="button" class="btn btn-success" ng-click="$close()">Schließen</button>
-							    </div>
-							</script>
+                            <span class="label label-info" ng-show="question.type==1"> Freie Frage</span>
+                            <span class="label label-danger" ng-show="question.type>1 && !question.correct_answer"> Keine Antwort</span>
+                        </p>
+                    </blockquote>
 
-			    	    	<span ng-bind-html="q.question | newline_to_br"></span>
+                    <div class="form-group" ng-repeat="answer in q.answers track by $index" ng-show="q.type>1 && answer">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            <div class="radio" ng-click="ctrl.save_answer($parent.$index, $index+1)">
+                                <label>
+                                    <input type="radio" name="answers{{ $parent.$index }}" ng-checked="q.answers.result == $index+1" ng-value="$index+1" />
+                                    <p ng-bind-html="answer"></p>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
 
-			    	    	<span class="label label-info" ng-show="question.type==1"> Freie Frage</span>
-			    	    	<span class="label label-danger" ng-show="question.type>1 && !question.correct_answer"> Keine Antwort</span>
-			    	    </p>
-			    	</blockquote>
+        <div class="col-md-4 hidden-xs hidden-sm">
+            <div class="panel panel-default" ng-show="ctrl.exam" style="position:fixed;width:300px;">
+                <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-fw fa-flask"></i> {{ ctrl.exam.subject }}</h3></div>
+                <ul class="list-group">
+                    <li class="list-group-item">{{ ctrl.exam.semester }}. Semester<span ng-show="ctrl.exam.sort">, {{ ctrl.exam.sort }}</span></li>
+                    <li class="list-group-item"><i class="fa fa-fw fa-calendar"></i> {{ ctrl.exam.date }}</li>
+                    <li class="list-group-item" ng-show="ctrl.exam.professor"><i class="fa fa-fw fa-user-md"></i> {{ ctrl.exam.professor }}</li>
+                    <li class="list-group-item" ng-show="ctrl.exam.notes"><i class="fa fa-fw fa-pencil-square-o"></i> {{ ctrl.exam.notes }}</li>
 
-	    	    	<div class="form-group" ng-repeat="answer in q.answers track by $index" ng-show="q.type>1 && answer">
-			    	    <div class="col-sm-offset-1 col-sm-10">
-			    	    	<div class="radio" ng-click="save_answer($parent.$index, $index+1)">
-			    	        	<label>
-			    	        		<input type="radio" name="answers{{$parent.$index}}" ng-checked="q.answers.result==$index+1" ng-value="$index+1" />
-			    	        		<p ng-bind-html="answer"></p>
-			    	        	</label>
-			    	    	</div>
-			    	    </div>
-			    	</div>
-	    	    </div>
-	    	    <hr>
-	    	</div>
-	    </div>
+                    <li class="list-group-item">
+                        <p class="strong">Frage {{ ctrl.current_index + 1 }} von {{ ctrl.exam.question_count }}</p>
 
-	    <div class="col-md-4 hidden-xs hidden-sm">
-	    	<div class="panel panel-default" ng-show="exam" style="position:fixed;width:300px;">
-	    		<div class="panel-heading"><h3 class="panel-title"><i class="fa fa-fw fa-flask"></i> {{ exam.subject }}</h3></div>
-	    		<ul class="list-group">
-	    			<li class="list-group-item">{{ exam.semester }}. Semester<span ng-show="exam.sort">, {{ exam.sort }}</span></li>
-	    			<li class="list-group-item"><i class="fa fa-fw fa-calendar"></i> {{ exam.date }}</li>
-	    			<li class="list-group-item" ng-show="exam.professor"><i class="fa fa-fw fa-user-md"></i> {{ exam.professor }}</li>
-	    			<li class="list-group-item" ng-show="exam.notes"><i class="fa fa-fw fa-pencil-square-o"></i> {{ exam.notes }}</li>
+                        <uib-progress><uib-bar value="(ctrl.current_index+1) / ctrl.exam.question_count * 100" type="success"></uib-bar></uib-progress>
 
-	    			<li class="list-group-item">
-	    				<p class="strong">Frage {{ current_index + 1 }} von {{ exam.question_count }}</p>
+                        <div class="exam-progress-comment text-success" ng-show="(1 > ctrl.Math.abs(ctrl.current_index+1 - ctrl.exam.question_count/2)) && (ctrl.current_index > 3)">
+                            Halbzeit!
+                        </div>
 
-						<progress><bar value="(current_index+1) / exam.question_count * 100" type="success"></bar></progress>
+                        <p ng-show="ctrl.exam.questions[ctrl.current_index].topic != '' && ctrl.exam.questions[ctrl.current_index].topic != 'Sonstiges'">
+                            <i class="fa fa-fw fa-angle-right"></i> {{ ctrl.exam.questions[ctrl.current_index].topic }}
+                        </p>
 
-						<div class="exam-progress-comment text-success" ng-show="(1 > Math.abs(current_index+1 - exam.question_count/2)) && (current_index > 3)">
-							Halbzeit!
-						</div>
+                        <div class="btn-toolbar" role="toolbar" ng-if="ctrl.user.group_id == 2 || ctrl.user.group_id == 3">
+                            <div class="btn-group pull-right" role="group">
+                                <a class="btn btn-default" href="edit-exam?id={{ ctrl.exam.exam_id }}&question_id={{ ctrl.exam.questions[ctrl.current_index].question_id }}">Bearbeiten</a>
+                            </div>
+                        </div>
+                    </li>
 
-						<p ng-show="exam.questions[current_index].topic != '' && exam.questions[current_index].topic != 'Sonstiges'">
-							<i class="fa fa-fw fa-angle-right"></i> {{ exam.questions[current_index].topic }}
-						</p>
+                    <li class="list-group-item">
+                        <div class="btn-toolbar" role="toolbar">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-fw fa-file-pdf-o"></i> PDF
+                                    <span class="caret"></span>
+                                </button>
 
-	    				<div class="btn-toolbar" role="toolbar" ng-if="user.group_id == 2 || user.group_id == 3">
-							<div class="btn-group pull-right" role="group">
-								<a class="btn btn-default" href="edit-exam?id={{ exam.exam_id }}&question_id={{ exam.questions[current_index].question_id }}">Bearbeiten</a>
-							</div>
-						</div>
-	    			</li>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li ng-class="{disabled: ctrl.exam.file_name == ''}">
+                                        <a href="/public/files/{{ ctrl.exam.file_name }}" target="_self" ng-if="ctrl.exam.file_name != ''">Originaldokument</a>
+                                        <a ng-if="ctrl.exam.file_name == ''">Originaldokument</a>
+                                    </li>
 
-	    			<li class="list-group-item">
+                                    <li><a href="exam-pdf?id={{ ctrl.exam.exam_id }}" target="_self">Klausur als PDF</a></li>
+                                    <li><a href="exam-solution-pdf?id={{ ctrl.exam.exam_id }}" target="_self">L&ouml;sungen als PDF</a></li>
+                                </ul>
+                            </div>
 
-	    				<div class="btn-toolbar" role="toolbar">
-							<div class="btn-group" role="group">
-								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-									<i class="fa fa-fw fa-file-pdf-o"></i> PDF
-									<span class="caret"></span>
-								</button>
+                            <div class="btn-group pull-right" role="group">
+                                <button type="button" class="btn btn-danger" ng-click="ctrl.hand_exam()">Klausur abgeben</button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
-								<ul class="dropdown-menu" role="menu">
-									<li ng-class="{disabled: exam.file_name == ''}">
-										<a href="/public/files/{{exam.file_name}}" target="_self" ng-if="exam.file_name != ''">Originaldokument</a>
-										<a ng-if="exam.file_name == ''">Originaldokument</a>
-									</li>
+    <div class="btn-toolbar mbottom-3x mmtop visible-xs visible-sm">
+        <button class="btn btn-default" ng-click="ctrl.scroll_to_top()">
+            <i class="fa fa-fw fa-arrow-circle-o-up"></i> Nach Oben
+        </button>
 
-									<li><a href="exam-pdf?id={{ exam.exam_id }}" target="_self">Klausur als PDF</a></li>
-									<li><a href="exam-solution-pdf?id={{ exam.exam_id }}" target="_self">Lösungen als PDF</a></li>
-								</ul>
-							</div>
-
-							<div class="btn-group pull-right" role="group">
-								<button type="button" class="btn btn-danger" ng-click="hand_exam()">Klausur abgeben</button>
-							</div>
-						</div>
-	    			</li>
-	    		</ul>
-	        </div>
-		</div>
-	</div>
-
-	<div class="btn-toolbar mbottom-3x mmtop visible-xs visible-sm">
-		<button class="btn btn-default" ng-click="scroll_to_top()">
-			<i class="fa fa-fw fa-arrow-circle-o-up"></i> Nach Oben
-		</button>
-
-		<div class="btn-group pull-right" role="group">
-			<button type="button" class="btn btn-danger" ng-click="hand_exam()">Klausur abgeben</button>
-		</div>
-	</div>
+        <div class="btn-group pull-right" role="group">
+            <button type="button" class="btn btn-danger" ng-click="ctrl.hand_exam()">Klausur abgeben</button>
+        </div>
+    </div>
 </div>

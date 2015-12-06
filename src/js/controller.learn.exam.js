@@ -1,48 +1,66 @@
-angular.module('learnModule')
-	.controller('examCtrl', function($scope, $rootScope, $routeParams, Auth, Page, API, $location, $modal) {
-		Page.set_title_and_nav('Klausur | Crucio', 'Lernen');
+class ExamController {
+    constructor(Page, Auth, API, $location, $uibModal, $routeParams, $timeout, $document) {
+        this.API = API;
+        this.$location = $location;
+        this.$document = $document;
+        this.$uibModal = $uibModal;
+        this.Math = Math;
 
-		$scope.user = Auth.getUser();
-		$scope.exam_id = $routeParams.id;
-		$scope.questionList = {'exam_id': $scope.exam_id, 'list': []};
+        Page.setTitleAndNav('Klausur | Crucio', 'Lernen');
 
-		$scope.Math = window.Math;
+        this.user = Auth.getUser();
+        this.exam_id = $routeParams.id;
+        this.questionList = { 'exam_id': this.exam_id, 'list': [] };
 
-		$scope.current_index = 0;
+        this.current_index = 0;
 
-		API.get('exams/' + $scope.exam_id).success(function(data) {
-			$scope.exam = data;
+        this.API.get('exams/' + this.exam_id).success((result) => {
+            this.exam = result;
 
-			var questions =  $scope.exam.questions;
-			for (i = 0; i < questions.length; i++) {
-				var q = questions[i];
-				$scope.questionList.list[i] = q;
-			}
-		});
+            for (const question of this.exam.questions) {
+                this.questionList.list.push(question);
+            }
+        });
 
+        $document.on('scroll', () => {
+            const positionTop = $document.scrollTop();
+            for (let i = 0; i < this.exam.questions.length; i++) {
+                const question = angular.element(document.getElementById('id' + i));
+                if (question.prop('offsetTop') > positionTop) {
+                    $timeout(() => {
+                        this.current_index = Math.max(i - 1, 0);
+                    }, 0);
+                    break;
+                }
+            }
+        });
+    }
 
-		$scope.save_answer = function(question_i, given_answer) {
-			$scope.questionList.list[question_i].given_result = String(given_answer);
-		};
+    save_answer(question_i, given_answer) {
+        this.questionList.list[question_i].given_result = String(given_answer);
+    }
 
-		$scope.scroll_to_top = function() {
-			$(window).scrollTop(0);
-		};
+    scroll_to_top() {
+        this.$document.scrollTopAnimated(0, 400);
+    }
 
-		$scope.hand_exam = function() {
-			sessionStorage.currentQuestionList = angular.toJson($scope.questionList);
-			$location.path('/analysis').search('id', null);
-		};
+    hand_exam() {
+        sessionStorage.currentQuestionList = angular.toJson(this.questionList);
+        this.$location.path('/analysis').search('id', null);
+    }
 
-		$scope.open_image_model = function (file_name) {
-			var modalInstance = $modal.open({
-		    	templateUrl: 'imageModalContent.html',
-		    	controller: 'ModalInstanceCtrl',
-				resolve: {
-				    image_url: function () {
-				        return file_name;
-				    }
-				}
-			});
-		};
-	});
+    open_image_model(file_name) {
+        this.$uibModal.open({
+            templateUrl: 'imageModalContent.html',
+            controller: 'ModalInstanceController',
+            controllerAs: 'ctrl',
+            resolve: {
+                image_url: () => {
+                    return file_name;
+                },
+            },
+        });
+    }
+}
+
+angular.module('learnModule').controller('ExamController', ExamController);

@@ -1,36 +1,44 @@
-angular.module('userModule')
-	.controller('loginCtrl', function($scope, Auth, Page, $route, API, ipCookie) {
-		$scope.user = Auth.getUser();
+class LoginController {
+    constructor(Auth, Page, API, $scope) {
+        this.Page = Page;
+        this.Auth = Auth;
+        this.API = API;
 
-		$scope.email = '';
-		$scope.remember_me = 1;
-		$scope.password = '';
+        this.user = this.Auth.tryGetUser();
 
-		$scope.login_error = false;
+        this.email = '';
+        this.remember_me = true;
+        this.password = '';
 
-		$scope.$watch("email", function( newValue, oldValue ) {
-			$scope.login_error = false;
-		}, true);
-		$scope.$watch("password", function( newValue, oldValue ) {
-			$scope.login_error = false;
-		}, true);
+        this.login_error = false;
 
-		$scope.login = function() {
-			if ($scope.email.indexOf("@") == -1)
-				$scope.email += '@studserv.uni-leipzig.de';
+        $scope.$watch(() => this.email, () => {
+            this.login_error = false;
+        }, true);
+        $scope.$watch(() => this.password, () => {
+            this.login_error = false;
+        }, true);
+    }
 
-			var data = {email: $scope.email.replace('@','(@)'), remember_me: $scope.remember_me, password: $scope.password};
-			API.post('users/action/login', data).success(function(data) {
-				if (data.login == 'success') {
-				    if ($scope.remember_me == 1)
-				    	ipCookie('CrucioUser', data.logged_in_user, { expires: 21 });
+    login() {
+        if (this.email && this.email.indexOf('@') == -1) {
+            this.email += '@studserv.uni-leipzig.de';
+        }
 
-			    	Auth.setUser(data.logged_in_user);
-			    	window.location.replace('/questions');
+        const data = {
+            email: this.email.replace('@', '(@)'),
+            remember_me: this.remember_me,
+            password: this.password,
+        };
 
-			    } else {
-			    	$scope.login_error = true;
-			    }
-			});
-		};
-	});
+        this.API.post('users/action/login', data).success((result) => {
+            if (result.login == 'success') {
+                this.Auth.login(result.logged_in_user, this.remember_me);
+            } else {
+                this.login_error = true;
+            }
+        });
+    }
+}
+
+angular.module('userModule').controller('LoginController', LoginController);

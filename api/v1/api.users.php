@@ -197,7 +197,7 @@ $app->group('/users', function () use ($app) {
 
 	$app->delete('/test-account', function() use ($app) {
 		$mysql = start_mysql();
-		$response = execute_mysql($mysql, "DELETE FROM users WHERE username = 'Lars Test'", []);
+		$response = execute_mysql($mysql, "DELETE FROM users WHERE email = 'siasola@gmail.com'", []);
 		print_response($app, $response);
 	});
 
