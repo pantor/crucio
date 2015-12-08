@@ -13,7 +13,7 @@
                                 <h4 class="modal-title" id="myModalLabel"><i class="fa fa-search"></i> Vergr&ouml;&szlig;erung</h4>
                             </div>
                             <div class="modal-body">
-                                <center><img class="img-thumbnail" ng-src="http://www.crucio-leipzig.de/public/files/{{ ctrl.image_url }}"></center>
+                                <center><img class="img-thumbnail" ng-src="/files/{{ ctrl.image_url }}"></center>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-success" ng-click="$close()">Schlie&szlig;en</button>
@@ -140,7 +140,7 @@
 
                 <ul class="dropdown-menu" role="menu">
                     <li ng-class="{disabled: ctrl.question.file_name == ''}">
-                        <a href="/public/files/{{ ctrl.question.file_name }}" target="_self" ng-if="ctrl.question.file_name != ''">Originaldokument</a>
+                        <a href="/files/{{ ctrl.question.file_name }}" target="_self" ng-if="ctrl.question.file_name != ''">Originaldokument</a>
                         <a ng-if="question.file_name == ''">Originaldokument</a>
                     </li>
 

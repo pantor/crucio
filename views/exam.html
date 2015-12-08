@@ -19,12 +19,12 @@
 
                                 <ul class="dropdown-menu" role="menu">
                                     <li ng-class="{disabled: ctrl.exam.file_name == ''}">
-                                        <a href="/public/files/{{ ctrl.exam.file_name }}" target="_self" ng-if="ctrl.exam.file_name != ''">Originaldokument</a>
+                                        <a href="/files/{{ ctrl.exam.file_name }}" target="_self" ng-if="ctrl.exam.file_name != ''">Originaldokument</a>
                                         <a ng-if="ctrl.exam.file_name == ''">Originaldokument</a>
                                     </li>
 
-                                    <li><a href="exam-pdf?id={{ ctrl.exam.exam_id }}" target="_self">Klausur als PDF</a></li>
-                                    <li><a href="exam-solution-pdf?id={{ ctrl.exam.exam_id }}" target="_self">L&ouml;sungen als PDF</a></li>
+                                    <li><a href="/api/v1/pdf/exam/{{ ctrl.exam.exam_id }}" target="_self">Klausur als PDF</a></li>
+                                    <li><a href="/api/v1/pdf/solution/{{ ctrl.exam.exam_id }}" target="_self">L&ouml;sungen als PDF</a></li>
                                 </ul>
                             </div>
 
@@ -43,7 +43,7 @@
                     <blockquote>
                         <p>
                             <a href data-toggle="modal" data-target="#myModal" ng-show="q.question_image_url" ng-click="ctrl.open_image_model(q.question_image_url)">
-                                <img class="img-thumbnail pull-right" width="250px" ng-src="http://www.crucio-leipzig.de/public/files/{{ q.question_image_url }}">
+                                <img class="img-thumbnail pull-right" width="250px" ng-src="/files/{{ q.question_image_url }}">
                             </a>
 
                             <script type="text/ng-template" id="imageModalContent.html">
@@ -51,7 +51,7 @@
                                     <h4 class="modal-title" id="myModalLabel"><i class="fa fa-search"></i> Vergr&ouml;&szlig;erung</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <center><img class="img-thumbnail" ng-src="http://www.crucio-leipzig.de/public/files/{{ ctrl.image_url }}"></center>
+                                    <center><img class="img-thumbnail" ng-src="/files/{{ ctrl.image_url }}"></center>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-success" ng-click="$close()">Schlie&szlig;en</button>
@@ -119,12 +119,12 @@
 
                                 <ul class="dropdown-menu" role="menu">
                                     <li ng-class="{disabled: ctrl.exam.file_name == ''}">
-                                        <a href="/public/files/{{ ctrl.exam.file_name }}" target="_self" ng-if="ctrl.exam.file_name != ''">Originaldokument</a>
+                                        <a href="/files/{{ ctrl.exam.file_name }}" target="_self" ng-if="ctrl.exam.file_name != ''">Originaldokument</a>
                                         <a ng-if="ctrl.exam.file_name == ''">Originaldokument</a>
                                     </li>
 
-                                    <li><a href="exam-pdf?id={{ ctrl.exam.exam_id }}" target="_self">Klausur als PDF</a></li>
-                                    <li><a href="exam-solution-pdf?id={{ ctrl.exam.exam_id }}" target="_self">L&ouml;sungen als PDF</a></li>
+                                    <li><a href="/api/v1/pdf/exam/{{ ctrl.exam.exam_id }}" target="_self">Klausur als PDF</a></li>
+                                    <li><a href="/api/v1/pdf/solution/{{ ctrl.exam.exam_id }}" target="_self">L&ouml;sungen als PDF</a></li>
                                 </ul>
                             </div>
 

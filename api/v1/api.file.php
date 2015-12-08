@@ -5,7 +5,7 @@ $app->group('/file', function() {
     $this->post('/upload', function($request, $response, $args) {
 		$name = basename($_FILES['file']['name']);
         $tmp_dir = $_FILES['file']['tmp_name'];
-        $upload_base = '../files/';
+        $upload_base = '../../files/';
         $upload_name = ''.(microtime(true) * 10000).'';
 
         $file_type = '';
@@ -23,15 +23,13 @@ $app->group('/file', function() {
         $upload_dir = $upload_base.$upload_name;
         $data['upload_name'] = $upload_name;
 
-
         $error = !move_uploaded_file($tmp_dir, $upload_dir);
-
         $data['status'] = 'success';
         if ($error) {
         	$data['status'] = 'error';
         }
 
-        return createResponse($response, $data);
+        return createResponse($response, $data, false);
 	});
 
 });

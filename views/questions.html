@@ -62,13 +62,13 @@
                                                 </button>
 
                                                 <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                                                    <li><a href="api/v1/pdf/exam/{{ exam.exam_id }}" target="_self">Klausur als PDF</a></li>
-                                                    <li><a href="api/v1/pdf/solution/{{ exam.exam_id }}" target="_self">L&ouml;sungen als PDF</a></li>
+                                                    <li><a href="/api/v1/pdf/exam/{{ exam.exam_id }}" target="_self">Klausur als PDF</a></li>
+                                                    <li><a href="/api/v1/pdf/solution/{{ exam.exam_id }}" target="_self">L&ouml;sungen als PDF</a></li>
 
                                                     <li class="divider"></li>
 
                                                     <li ng-class="{disabled: exam.file_name == ''}">
-                                                        <a href="/public/files/{{ exam.file_name }}" target="_self" ng-if="exam.file_name != ''">
+                                                        <a href="/files/{{ exam.file_name }}" target="_self" ng-if="exam.file_name != ''">
                                                             Originaldokument
                                                         </a>
                                                         <a ng-if="exam.file_name == ''">

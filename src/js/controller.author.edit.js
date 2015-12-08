@@ -20,7 +20,7 @@ class EditController {
         this.is_saving = 0;
 
         this.uploader = new FileUploader({ url: '/api/v1/file/upload' });
-        this.uploader.onSuccessItem = function (fileItem, response) {
+        this.uploader.onSuccessItem = (fileItem, response) => {
             this.exam.file_name = response.upload_name;
         };
         this.uploader_array = [];
@@ -77,7 +77,7 @@ class EditController {
         this.uploader_array = [];
         for (let i = 0; i < this.exam.questions.length; i++) {
             const uploader = new this.FileUploader({ url: '/api/v1/file/upload', formData: i });
-            uploader.onSuccessItem = function (fileItem, response) {
+            uploader.onSuccessItem = (fileItem, response) => {
                 const index = fileItem.formData;
                 this.exam.questions[index].question_image_url = response.upload_name;
             };

@@ -3,7 +3,7 @@
 <html ng-app="crucioApp" id="ng-app">
     <head>
       <title>Crucio | Fachschaft Medizin Leipzig</title>
-        <?php include 'parts/header.php'; ?>
+        <?php include('parts/header.php'); ?>
 
         <!-- Smooth Scrollling-->
         <script>
@@ -141,6 +141,6 @@
             </div>
         </div>
 
-        <?php include 'parts/footer.html'; ?>
+        <?php include('parts/footer.php'); ?>
     </body>
 </html>

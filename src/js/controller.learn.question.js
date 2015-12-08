@@ -94,9 +94,7 @@ class QuestionController {
         string = string.slice(0, -1);
 
         const data = { 'tags': string, 'question_id': this.question_id, 'user_id': this.user.user_id };
-        this.API.post('tags', data).success((result) => {
-            console.log(result);
-        });
+        this.API.post('tags', data);
     }
 
     // If show solution button is clicked

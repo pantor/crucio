@@ -11,7 +11,6 @@ class ActivateController {
         } else {
             const data = { 'token': this.token };
             this.API.post('users/action/activate', data).success((result) => {
-                console.log(result);
                 if (result.status == 'error_unknown') {
                     this.success = 0;
                     this.error_no_token = 0;

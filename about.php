@@ -2,7 +2,7 @@
 <html ng-app="crucioApp" id="ng-app">
     <head>
         <title>Impressum | Crucio</title>
-        <?php include 'parts/header.php'; ?>
+        <?php include('parts/header.php'); ?>
     </head>
 
     <body class="body" ng-controller="AboutController as ctrl">
@@ -71,6 +71,6 @@
             </div>
         </div>
 
-        <?php require_once('parts/footer.php'); ?>
+        <?php include('parts/footer.php'); ?>
     </body>
 </html>

@@ -25,7 +25,10 @@ $app->group('/users', function() {
 	});
 
 	$this->post('', function($request, $response, $args) {
+    	$mysql = startMysql();
+
 		$body = $request->getParsedBody();
+
 		$username = $body['username'];
 		$email = str_replace('(@)', '@', sanitize($body['email']));
 		$clean_email = $email;
@@ -35,7 +38,6 @@ $app->group('/users', function() {
 		$course_id = $body['course'];
 		$activation_token = 0;
 
-		$mysql = startMysql();
 		global $website_url;
 
 		$validate = true;
@@ -59,7 +61,7 @@ $app->group('/users', function() {
 			$activation_message = $website_url.'activate-account?token='.$activation_token;
 			$hooks = ["searchStrs" => ["#ACTIVATION-MESSAGE", "#ACTIVATION-KEY", "#USERNAME#"],
 			    "subjectStrs" => [$activation_message, $activation_token, $username]];
-			send_template_mail('new-registration.html', $clean_email, 'Willkommen bei Crucio', $hooks);
+			sendTemplateMail('new-registration.html', $clean_email, 'Willkommen bei Crucio', $hooks);
 
 			$data = executeMysql($mysql, "INSERT INTO users (username, username_clean, password, email, activationtoken, last_activation_request, sign_up_date, course_id, semester) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", [$username, $clean_username, $secure_pass, $clean_email, $activation_token, time(), time(), $course_id, $semester]);
 
@@ -233,7 +235,7 @@ $app->group('/users', function() {
 			        //Setup our custom hooks
 			        $hooks = ["searchStrs" => ["#CONFIRM-URL#", "#DENY-URL#", "#USERNAME#"], "subjectStrs" => [$confirm_url, $deny_url, $userdetails['username']]];
 
-			        send_template_mail('lost-password-request.html', $email, 'Neues Passwort I', $hooks);
+			        sendTemplateMail('lost-password-request.html', $email, 'Neues Passwort I', $hooks);
 
 			        flag_lostpassword_request($mysql, $userdetails['username'], 1);
 			        $data['status'] = 'success';
@@ -258,7 +260,7 @@ $app->group('/users', function() {
 				//Setup our custom hooks
 				$hooks = ["searchStrs" => ["#GENERATED-PASS#","#USERNAME#"], "subjectStrs" => [$rand_pass, $userdetails['username']]];
 
-				send_template_mail('your-lost-password.html', $userdetails['email'], 'Neues Passwort II', $hooks);
+				sendTemplateMail('your-lost-password.html', $userdetails['email'], 'Neues Passwort II', $hooks);
 
 				$new_activation_token = generate_activation_token($mysql);
 				$data = executeMysql($mysql, "UPDATE users SET password = ?, activationtoken = ? WHERE activationtoken = ?", [$secure_pass, $new_activation_token, sanitize($body['token'])]);
