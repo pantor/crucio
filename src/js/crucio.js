@@ -85,7 +85,7 @@ angular.module('crucioApp', [
         }
 
         const url = $location.url();
-        if (routeInArray(routesThatLogin, url) && isLoggedIn) {
+        if (routeInArray(routesThatLogin, url) && isLoggedIn && user.remember_user) {
             $window.location.replace('/questions');
         }
 

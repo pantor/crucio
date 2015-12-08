@@ -155,7 +155,7 @@ $app->group('/users', function() {
 			$data['status'] = 'error_email_taken';
         }
 
-		if ($response['status'] == 'success') {
+		if ($data['status'] == 'success') {
 			$data = executeMysql($mysql, "UPDATE users SET email = ?, semester = ?, course_id = ? WHERE user_id = ?", [$email, $body['semester'], $body['course_id'], $user_id]);
         }
 
@@ -174,7 +174,7 @@ $app->group('/users', function() {
 			    if ($entered_pass_new == $old_hash_pw)
 			        $data['status'] = 'error_same_passwords';
 
-			    if ($response['status'] == 'success') {
+			    if ($data['status'] == 'success') {
 			    	$secure_pass = generate_hash($body['password']);
 			    	$data = executeMysql($mysql, "UPDATE users SET password = ? WHERE user_id = ?", [$secure_pass, $user_id], null);
 			    }

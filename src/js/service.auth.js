@@ -1,13 +1,11 @@
 class Auth {
-    constructor($window, $cookies) {
+    constructor($cookies, $window) {
         this.$window = $window;
         this.$cookies = $cookies;
-
-        // this.user = undefined;
     }
 
     getUser() {
-        this.user = this.tryGetUser();
+        this.tryGetUser();
         if (!this.user) {
             this.$window.location.replace('/');
         }
@@ -16,24 +14,23 @@ class Auth {
     }
 
     tryGetUser() {
-        if (angular.isDefined(this.user)) { // Check if user is in already in user object
-            // Pass...
-        } else if (angular.isDefined(this.$cookies.getObject('CrucioUser'))) { // Check if cookies
-            this.user = this.$cookies.getObject('CrucioUser');
+        if (angular.isUndefined(this.user)) { // Check if user is in already in user object
+            if (angular.isDefined(this.$cookies.getObject('CrucioUser'))) { // Check if cookies
+                this.setUser(this.$cookies.getObject('CrucioUser'));
+            }
         }
 
         return this.user;
     }
 
     login(newUser, rememberUser) {
-        this.setUser(newUser, rememberUser);
+        newUser.remember_user = rememberUser;
+        this.setUser(newUser, true);
+
         this.$window.location.assign('/questions');
     }
 
     logout() {
-        // delete user;
-        sessionStorage.removeItem('user');
-        localStorage.removeItem('user');
         this.$cookies.remove('CrucioUser');
         this.$window.location.assign(this.$window.location.origin);
     }
@@ -42,8 +39,8 @@ class Auth {
         this.user = newUser;
 
         if (saveNewCookie || angular.isDefined(this.$cookies.getObject('CrucioUser'))) {
-            const now = new Date();
-            const exp = new Date(now.getFullYear(), now.getMonth() + 1, now.getDate());
+            const exp = new Date();
+            exp.setDate(exp.getDate() + 21);
             this.$cookies.putObject('CrucioUser', this.user, { expires: exp });
         }
     }

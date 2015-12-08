@@ -39,7 +39,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-10 col-sm-offset-1">
-                        <div ng-if="ctrl.error_no_token || ctrl.error_unknown" class="container-center-align-sm" style="padding: 60px;">
+                        <div ng-if="ctrl.error_no_token ||�ctrl.error_unknown" class="container-center-align-sm" style="padding: 60px;">
                             <h3>Fehler bei der Aktivierung.</h3>
 
                             <hr>
