@@ -19,7 +19,7 @@ class EditController {
         this.number_changed = 0;
         this.is_saving = 0;
 
-        this.uploader = new FileUploader({ url: '/public/php/upload-file.php' });
+        this.uploader = new FileUploader({ url: '/api/v1/file/upload' });
         this.uploader.onSuccessItem = function (fileItem, response) {
             this.exam.file_name = response.upload_name;
         };
@@ -35,7 +35,7 @@ class EditController {
 
         $scope.$on('$locationChangeStart', (event) => {
             if (this.has_changed == 1) {
-                const confirmClose = confirm('Die Änderungen an deiner Klausur bleiben dann ungespeichert. Wirklich verlassen?');
+                const confirmClose = confirm('Die Änderungen an der Klausur bleiben dann ungespeichert. Wirklich verlassen?');
                 if (!confirmClose) {
                     event.preventDefault();
                 }
@@ -61,7 +61,7 @@ class EditController {
             this.remakeUploaderArray();
 
             if (this.exam.questions.length === 0) {
-                this.add_question(0, false);
+                this.addQuestion(false);
             }
 
             if (!this.exam.subject) {
@@ -76,16 +76,16 @@ class EditController {
     remakeUploaderArray() {
         this.uploader_array = [];
         for (let i = 0; i < this.exam.questions.length; i++) {
-            const uploader = new this.FileUploader({ url: '/public/php/upload-file.php', formData: i });
+            const uploader = new this.FileUploader({ url: '/api/v1/file/upload', formData: i });
             uploader.onSuccessItem = function (fileItem, response) {
-                const j = fileItem.formData;
-                this.exam.questions[j].question_image_url = response.upload_name;
+                const index = fileItem.formData;
+                this.exam.questions[index].question_image_url = response.upload_name;
             };
             this.uploader_array.push(uploader);
         }
     }
 
-    add_question(show) {
+    addQuestion(show) {
         const question = {
             'question': '',
             'type': 5,
@@ -102,7 +102,7 @@ class EditController {
         this.remakeUploaderArray();
     }
 
-    delete_question(index) {
+    deleteQuestion(index) {
         const question_id = this.exam.questions[index].question_id;
 
         if (question_id) {
@@ -118,15 +118,11 @@ class EditController {
         }
 
         if (this.exam.questions.length === 0) {
-            this.add_question(1);
+            this.addQuestion(1);
         }
     }
 
-    leave_edit() {
-        this.$location.path(this.next_route);
-    }
-
-    save_exam() {
+    saveExam() {
         let validate = true;
         if (!this.exam.subject) {
             validate = false;
@@ -195,7 +191,7 @@ class EditController {
         }
     }
 
-    delete_exam() {
+    deleteExam() {
         this.API.delete('exams/' + this.exam.exam_id).success(() => {
             this.$location.url('/author');
         });

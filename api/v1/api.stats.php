@@ -1,9 +1,9 @@
 <?php
 
-$app->group('/stats', function () use ($app) {
+$app->group('/stats', function() {
 
-	$app->get('/general', function() use ($app) {
-		$mysql = start_mysql();
+	$this->get('/general', function($request, $response, $args) {
+		$mysql = startMysql();
 		$stats['time'] = time();
 
 		$stats['user_count'] = get_count($mysql, "users");
@@ -66,64 +66,64 @@ $app->group('/stats', function () use ($app) {
 		$stats['result_dep_time_today'] = $result_dep_time_today;
 
 
-		$response['stats'] = $stats;
-		print_response($app, $response);
+		$data['stats'] = $stats;
+		return createResponse($response, $data);
 	});
 
-	$app->get('/search-queries', function() use ($app) {
-		$mysql = start_mysql();
-		$response = get_all($mysql, "SELECT s.*, u.username FROM search_queries s, users u WHERE s.user_id = u.user_id ORDER BY s.date DESC LIMIT 100", [], 'search_queries');
-		print_response($app, $response);
+	$this->get('/search-queries', function($request, $response, $args) {
+		$mysql = startMysql();
+		$data = get_all($mysql, "SELECT s.*, u.username FROM search_queries s, users u WHERE s.user_id = u.user_id ORDER BY s.date DESC LIMIT 100", [], 'search_queries');
+		return createResponse($response, $data);
 	});
 
-	$app->get('/results-dep-time', function() use ($app) {
-		$mysql = start_mysql();
+	$this->get('/results-dep-time', function($request, $response, $args) {
+		$mysql = startMysql();
 
 		$results_dep_time = [];
 		for($i = 0; $i<48; $i++)
 			$results_dep_time[] = get_count($mysql, "results WHERE (?+1)*30*60 > (date % 60*60*24) AND (date % 60*60*24) >= ?*30*60", [$i, $i]);
-		$response['results_dep_time'] = $results_dep_time;
+		$data['results_dep_time'] = $results_dep_time;
 
-		print_response($app, $response);
+		return createResponse($response, $data);
 	});
 
-	$app->post('/activities', function() use ($app) {
-		$data = json_decode($app->request()->getBody());
+	$this->post('/activities', function($request, $response, $args) {
+		$body =  $request->getParsedBody();
 
-		$mysql = start_mysql();
+		$mysql = startMysql();
 		$activities = [];
 
-		if (!$data->search_query) {
+		if (!$body->search_query) {
 			$result = get_all($mysql, "SELECT 'search_query' activity, s.*, u.username FROM search_queries s, users u WHERE s.user_id = u.user_id ORDER BY s.date DESC LIMIT 100", [], 'search_query');
 			$activities = array_merge($activities, $result['search_query']);
 		}
 
-		if (!$data->result) {
+		if (!$body->result) {
 			$result = get_all($mysql, "SELECT 'result' activity, r.*, q.*, u.username FROM results r, users u, questions q WHERE r.user_id = u.user_id AND r.question_id = q.question_id ORDER BY r.date DESC LIMIT 100", [], 'result');
 			$activities = array_merge($activities, $result['result']);
 		}
 
-		if (!$data->register) {
+		if (!$body->register) {
 			$result = get_all($mysql, "SELECT 'register' activity, u.*, u.sign_up_date as date FROM users u ORDER BY u.sign_up_date DESC LIMIT 100", [], 'register');
 			$activities = array_merge($activities, $result['register']);
 		}
 
-		if (!$data->login) {
+		if (!$body->login) {
 			$result = get_all($mysql, "SELECT 'login' activity, u.*, u.last_sign_in as date FROM users u ORDER BY u.last_sign_in DESC LIMIT 100", [], 'login');
 			$activities = array_merge($activities, $result['login']);
 		}
 
-		if (!$data->comment) {
+		if (!$body->comment) {
 			$result = get_all($mysql, "SELECT 'comment' activity, c.*, u.username FROM comments c, users u WHERE c.user_id = u.user_id ORDER BY c.date DESC LIMIT 100", [], 'comment');
 			$activities = array_merge($activities, $result['comment']);
 		}
 
-		if (!$data->exam_new) {
+		if (!$body->exam_new) {
 			$result = get_all($mysql, "SELECT 'exam_new' activity, e.*, e.date as year, e.date_added as date, u.username FROM exams e, users u WHERE e.user_id_added = u.user_id ORDER BY e.date_added DESC LIMIT 100", [], 'exam_new');
 			$activities = array_merge($activities, $result['exam_new']);
 		}
 
-		if (!$data->exam_update) {
+		if (!$body->exam_update) {
 			$result = get_all($mysql, "SELECT 'exam_update' activity, e.*, e.date as year, e.date_updated as date, u.username FROM exams e, users u WHERE e.user_id_added = u.user_id ORDER BY e.date_updated DESC LIMIT 100", [], 'exam_update');
 			$activities = array_merge($activities, $result['exam_update']);
 		}
@@ -132,8 +132,8 @@ $app->group('/stats', function () use ($app) {
 		    return $b['date'] - $a['date'];
 		});
 
-		$response['activities'] = array_slice($activities, 0, 101);
-		print_response($app, $response);
+		$data['activities'] = array_slice($activities, 0, 101);
+		return createResponse($response, $data);
 	});
 });
 

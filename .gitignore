@@ -1,9 +1,6 @@
-# Created by https://www.gitignore.io
-
-
-### Node ###
-# Dependency directory
+### Dependency directories ###
 node_modules
+vendor
 
 
 ### Website ###

@@ -71,6 +71,8 @@ class QuestionController {
                 for (const element of array) {
                     this.question.tags.push({ 'text': element });
                 }
+            } else {
+                this.question.tags = [];
             }
 
             if (this.given_result) {
@@ -92,7 +94,9 @@ class QuestionController {
         string = string.slice(0, -1);
 
         const data = { 'tags': string, 'question_id': this.question_id, 'user_id': this.user.user_id };
-        this.API.post('tags', data);
+        this.API.post('tags', data).success((result) => {
+            console.log(result);
+        });
     }
 
     // If show solution button is clicked

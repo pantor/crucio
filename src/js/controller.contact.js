@@ -21,7 +21,7 @@ class ContactController {
         }, true);
     }
 
-    validate_email(email) {
+    validateMail(email) {
         const regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if (regex.test(email)) {
             return false;
@@ -30,7 +30,7 @@ class ContactController {
         return true;
     }
 
-    send_mail() {
+    sendMail() {
         const text = this.text;
 
         let validationPassed = 1;
@@ -38,7 +38,7 @@ class ContactController {
             validationPassed = 0;
             this.error_no_name = 1;
         }
-        if (this.validate_email(this.email)) {
+        if (this.validateMail(this.email)) {
             validationPassed = 0;
             this.error_no_email = 1;
         }

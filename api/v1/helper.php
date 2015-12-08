@@ -1,8 +1,8 @@
 <?php
 
-function start_mysql() {
+function startMysql() {
 	try {
-		$config = include(dirname(__FILE__).'/../config.php'); // Global path for PDF
+		$config = include(dirname(__FILE__).'/../config.php');
 
 		$mysql = new PDO('mysql:host='.$config['host'].';dbname='.$config['dbname'], $config['user'], $config['password']);
 		$mysql->exec("set names utf8");
@@ -12,7 +12,7 @@ function start_mysql() {
 	}
 }
 
-function execute_mysql($mysql, $query, $parameters, $callback = null) {
+function executeMysql($mysql, $query, $parameters, $callback = null) {
 	$stmt = $mysql->prepare($query);
 	try {
 		$stmt->execute($parameters);
@@ -21,36 +21,39 @@ function execute_mysql($mysql, $query, $parameters, $callback = null) {
 		if ($callback) {
 			$response += $callback($stmt, $mysql);
         }
-	} catch(PDOException $e){
+	} catch(PDOException $ex) {
 		$response['status'] = 'error';
 		$response['error'] = 'statement error';
 	}
 	return $response;
 }
 
-function print_response($app, $data, $status = true) {
-	if ($status) {
-		$data['status'] = 'success';
-	}
+function createResponse($response, $data, $status_in_data = true, $status = 200) {
+    if ($status_in_data) {
+        $data['status'] = 'success';
+    }
 
-	$response = $app->response();
-	$response['Content-Type'] = 'application/json';
-	$response['access-control-allow-origin'] = '*';
-	$response['charset'] = 'iso-8859-1';
-	$response['X-Powered-By'] = 'Crucio';
-	$response->status(200);
-	$response->body(json_encode($data));
+    $response = $response->withStatus($status);
+    $response = $response->withHeader('Content-type', 'application/json');
+    $response = $response->withHeader('charset', 'iso-8859-1');
+
+    $response->write(json_encode($data));
+    return $response;
 }
 
+
+// ---------
+
+
 function get_all($mysql, $query, $parameters, $name = 'result') {
-	return execute_mysql($mysql, $query, $parameters, function($stmt, $mysql) use ($name) {
+	return executeMysql($mysql, $query, $parameters, function($stmt, $mysql) use ($name) {
 		$response[$name] = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		return $response;
 	});
 }
 
 function get_fetch($mysql, $query, $parameters, $name = 'result') {
-	return execute_mysql($mysql, $query, $parameters, function($stmt, $mysql) use ($name) {
+	return executeMysql($mysql, $query, $parameters, function($stmt, $mysql) use ($name) {
 		$response[$name] = $stmt->fetch(PDO::FETCH_ASSOC);
 		return $response;
 	});
@@ -61,15 +64,12 @@ function get_count($mysql, $sub_query, $parameters = []) {
 }
 
 function get_count_with_pre($mysql, $pre_query, $sub_query, $parameters = []) {
-	$stmt = $mysql->prepare("SELECT ".$pre_query." AS 'c' FROM ".$sub_query);
-	try {
-		$stmt->execute($parameters);
-		$result = $stmt->fetch(PDO::FETCH_ASSOC)['c'];
-	} catch(PDOException $e){
-		$result = 'error';
-	}
-	return $result;
+    return get_fetch($mysql, "SELECT ".$pre_query." AS 'c' FROM ".$sub_query, $parameters)['result']['c'];
 }
+
+
+// ---------
+
 
 function validate_activation_token($mysql, $token, $is_not_active) {
 	if ($is_not_active) {
@@ -99,12 +99,12 @@ function fetch_user_details_by_token($mysql, $token) {
 }
 
 function flag_lostpassword_request($mysql, $username, $value) {
-	return execute_mysql($mysql, "UPDATE users SET LostpasswordRequest = ? WHERE username_clean = ? LIMIT 1", [$value, sanitize($username)]);
+	return executeMysql($mysql, "UPDATE users SET LostpasswordRequest = ? WHERE username_clean = ? LIMIT 1", [$value, sanitize($username)]);
 }
 
 
+// --------
 
-// -- -- -- --
 
 function sanitize($str) {
 	return strtolower(strip_tags(trim($str)));
@@ -143,7 +143,16 @@ function generate_activation_token($mysql) {
 
 // ------ Mail ------
 
-function send_mail($destination, $subject, $message, $sender_name = 'Crucio', $sender_email = 'noreply@crucio-leipzig.de') {
+function sendTemplateMail($template, $destination, $subject, $additionalHooks, $sender_name = 'Crucio', $sender_email = 'noreply@crucio-leipzig.de') {
+	$emailDate = date('l \\t\h\e jS');
+	$message = file_get_contents('../mail-templates/'.$template);
+	$message = str_replace(array("#WEBSITENAME#", "#WEBSITEURL#", "#DATE#"), array('Crucio', $website_url, $emailDate), $message);
+	$message = str_replace($additionalHooks['searchStrs'], $additionalHooks['subjectStrs'], $message);
+
+	return sendMail($destination, $subject, $message, $sender_name, $sender_email);
+}
+
+function sendMail($destination, $subject, $message, $sender_name, $sender_email) {
 	$header = "MIME-Version: 1.0\r\n";
 	$header .= "Content-Type: text/html\r\n";
 	$header .= 'FROM: '.$sender_name.' <'.$sender_email.'>';
@@ -153,15 +162,6 @@ function send_mail($destination, $subject, $message, $sender_name = 'Crucio', $s
 	$response['status'] = 'success';
 	$response['sender'] = $sender_name;
 	return $response;
-}
-
-function send_template_mail($template, $destination, $subject, $additionalHooks, $sender_name = 'Crucio', $sender_email = 'noreply@crucio-leipzig.de') {
-	$emailDate = date('l \\t\h\e jS');
-	$message = file_get_contents('../mail-templates/'.$template);
-	$message = str_replace(array("#WEBSITENAME#", "#WEBSITEURL#", "#DATE#"), array('Crucio', $website_url, $emailDate), $message);
-	$message = str_replace($additionalHooks["searchStrs"], $additionalHooks["subjectStrs"], $message);
-
-	return send_mail($destination, $subject, $message, $sender_name, $sender_email);
 }
 
 ?>

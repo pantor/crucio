@@ -47,7 +47,7 @@
                                     <td class="hidden-xs hidden-sm">{{ exam.answered_questions }} / {{ exam.question_count }}</td>
                                     <td style="min-width: 250px;">
                                         <div class="btn-group" role="group">
-                                            <a type="button" class="btn btn-default" href ng-click="ctrl.learn_exam(exam.exam_id)">
+                                            <a type="button" class="btn btn-default" href ng-click="ctrl.learnExam(exam.exam_id)">
                                                 Fragen
                                             </a>
 
@@ -62,8 +62,8 @@
                                                 </button>
 
                                                 <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                                                    <li><a href="exam-pdf?id={{ exam.exam_id }}" target="_self">Klausur als PDF</a></li>
-                                                    <li><a href="exam-solution-pdf?id={{ exam.exam_id }}" target="_self">L&ouml;sungen als PDF</a></li>
+                                                    <li><a href="api/v1/pdf/exam/{{ exam.exam_id }}" target="_self">Klausur als PDF</a></li>
+                                                    <li><a href="api/v1/pdf/solution/{{ exam.exam_id }}" target="_self">L&ouml;sungen als PDF</a></li>
 
                                                     <li class="divider"></li>
 
@@ -85,7 +85,7 @@
 
                                                 <ul class="dropdown-menu dropdown-menu-right" role="menu">
                                                     <li ng-class="{disabled: exam.answered_questions == 0}">
-                                                        <a href ng-click="ctrl.reset_abstract_results($index)">Klausur zurücksetzen</a>
+                                                        <a href ng-click="ctrl.resetAbstractResults($index)">Klausur zurücksetzen</a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -109,7 +109,7 @@
                                     <tbody>
                                         <tr ng-repeat="(name, cat) in ctrl.subject_list">
                                             <td style="width: 30px;">
-                                                <input type="checkbox" ng-model="q" ng-click="ctrl.toggle_selection(name, 'all', q)">
+                                                <input type="checkbox" ng-model="q" ng-click="ctrl.toggleSelection(name, 'all', q)">
                                             </td>
                                             <td>
                                                 <div ng-if="cat.length == 0">
@@ -126,7 +126,7 @@
                                                         <ul>
                                                             <li ng-repeat="c in cat">
                                                                 <label class="checkbox" style="font-weight: normal;">
-                                                                    <input type="checkbox" ng-checked="ctrl.selection_subject_list[name].indexOf(c) > -1" ng-click="ctrl.toggle_selection(name, c)">
+                                                                    <input type="checkbox" ng-checked="ctrl.selection_subject_list[name].indexOf(c) > -1" ng-click="ctrl.toggleSelection(name, c)">
                                                                     {{ c }}
                                                                 </label>
                                                             </li>
@@ -206,7 +206,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 col-md-3 control-label"></label>
                             <div class="col-sm-9 col-md-9">
-                                <button class="btn btn-success" type="button" ng-click="ctrl.learn_subjects()" ng-disabled="ctrl.selection_number_questions == 0">
+                                <button class="btn btn-success" type="button" ng-click="ctrl.learnSubjects()" ng-disabled="ctrl.selection_number_questions == 0">
                                     <i class="fa fa-fw fa-graduation-cap"></i> Lernen
                                 </button>
                             </div>
@@ -272,14 +272,14 @@
                             </thead>
 
                             <tbody>
-                                <tr ng-repeat="exam in ctrl.exams" ng-show="ctrl.exam_in_selection($index)">
+                                <tr ng-repeat="exam in ctrl.exams" ng-show="ctrl.examInSelection($index)">
                                     <td id="semester">{{ exam.semester }}</td>
                                     <td id="subject">{{ exam.subject | cut:true:38:'...' }}</td>
                                     <td>{{ exam.date }}</td>
                                     <td class="hidden-xs hidden-sm">{{ exam.answered_questions }} / {{ exam.question_count }}</td>
                                     <td style="min-width: 250px;">
                                         <div class="btn-group" role="group">
-                                            <a type="button" class="btn btn-default" href ng-click="ctrl.learn_exam(exam.exam_id)">
+                                            <a type="button" class="btn btn-default" href ng-click="ctrl.learnExam(exam.exam_id)">
                                                 Fragen
                                             </a>
 
@@ -294,8 +294,8 @@
                                                 </button>
 
                                                 <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                                                    <li><a href="exam-pdf?id={{ exam.exam_id }}" target="_self">Klausur als PDF</a></li>
-                                                    <li><a href="exam-solution-pdf?id={{ exam.exam_id }}" target="_self">L&ouml;sungen als PDF</a></li>
+                                                    <li><a href="api/v1/pdf/exam/{{ exam.exam_id }}" target="_self">Klausur als PDF</a></li>
+                                                    <li><a href="api/v1/pdf/solution/{{ exam.exam_id }}" target="_self">L&ouml;sungen als PDF</a></li>
 
                                                     <li class="divider"></li>
 
@@ -312,7 +312,7 @@
                                                 </button>
                                                 <ul class="dropdown-menu dropdown-menu-right" role="menu">
                                                     <li ng-class="{disabled: exam.answered_questions == 0}">
-                                                        <a href ng-click="ctrl.reset_results($index)">Klausur zur&uuml;cksetzen</a>
+                                                        <a href ng-click="ctrl.resetResults($index)">Klausur zur&uuml;cksetzen</a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -320,7 +320,7 @@
                                     </td>
                                 </tr>
 
-                                <tr class="search-sf" ng-show="ctrl.exam_in_selection_count() == 0"><td class="text-muted" colspan="6">Nichts gefunden.</td></tr>
+                                <tr class="search-sf" ng-show="ctrl.examInSelectionCount() == 0"><td class="text-muted" colspan="6">Nichts gefunden.</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -340,11 +340,11 @@
                                 <div class="panel-body">
                                     <div class="row mmtop">
                                         <div class="col-sm-12 mtop">
-                                            <form class="input-group" submit="search_question()">
+                                            <form class="input-group" submit="ctrl.searchQuestion()">
                                                 <input class="form-control" type="text" ng-model="ctrl.question_search_query" placeholder="...">
 
                                                 <span class="input-group-btn">
-                                                    <button class="btn btn-default" ng-click="ctrl.search_question()">
+                                                    <button class="btn btn-default" ng-click="ctrl.searchQuestion()">
                                                         <i class="fa fa-search"></i>
                                                     </button>
                                                 </span>

@@ -1,0 +1,298 @@
+<div class="container">
+	<div class="row mtop-navbar-row">
+	    <div class="col-md-3 sidebar">
+	    	<ul class="nav nav-pills nav-stacked mbottom-2x">
+				<li class="active"><a showtab="" data-target="#stats" data-toggle="tab"><i class="fa fa-bar-chart fa-fw"></i>  &Uuml;bersicht</a></li>
+				<hr>
+				<li><a showtab="" data-target="#users" data-toggle="tab"><i class="fa fa-users fa-fw"></i>  Nutzer</a></li>
+				<li><a showtab="" data-target="#questions" data-toggle="tab"><i class="fa fa-question-circle fa-fw"></i>  Fragen</a></li>
+				<li><a showtab="" data-target="#results" data-toggle="tab"><i class="fa fa-exclamation-triangle fa-fw"></i>  Antworten</a></li>
+				<li><a showtab="" data-target="#activity" data-toggle="tab"><i class="fa fa-bicycle fa-fw"></i>  Aktivit&auml;t</a></li>
+				<li><a showtab="" data-target="#queries" data-toggle="tab"><i class="fa fa-search fa-fw"></i>  Suchanfragen</a></li>
+			</ul>
+			<hr class="visible-xs visible-sm">
+	    </div>
+
+	    <div class="col-md-9">
+	    	<div class="tab-content">
+	    		<div class="tab-pane active" id="stats">
+		    		<h4>Antworten</h4>
+					<div class="row">
+						<div class="col-xs-12 col-sm-4">
+							<div class="stats-box">
+								<h5>{{ ctrl.stats.result_count }}</h5>
+								<p><i class="fa fa-exclamation-triangle fa-fw"></i> Insgesamt | {{ ctrl.stats.result_count / ctrl.stats.user_count | number:0  }} pro Nutzer</p>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-4">
+							<div class="stats-box">
+								<h5>{{ ctrl.stats.result_count_today }}</h5>
+								<p><i class="fa fa-exclamation-triangle fa-fw"></i> 24 Stunden</p>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-4">
+							<div class="stats-box">
+								<h5>{{ ctrl.stats.result_per_minute | number : 2 }}</h5>
+								<p><i class="fa fa-exclamation-triangle fa-fw"></i> pro Minute</p>
+							</div>
+						</div>
+					</div>
+
+					<hr>
+
+					<h4>Nutzer</h4>
+					<div class="row">
+						<div class="col-xs-12 col-sm-4">
+							<div class="stats-box">
+								<h5>{{ ctrl.stats.user_count }}</h5>
+								<p><i class="fa fa-users fa-fw"></i> Insgesamt</p>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-4">
+							<div class="stats-box">
+								<h5>{{ ctrl.stats.user_count_login_today }}</h5>
+								<p><i class="fa fa-users fa-fw"></i> Angemeldet 24 Stunden</p>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-4">
+							<div class="stats-box">
+								<h5>{{ ctrl.stats.user_count_register_today }}</h5>
+								<p><i class="fa fa-users fa-fw"></i> Registriert 24 Stunden</p>
+							</div>
+						</div>
+					</div>
+
+					<hr>
+
+					<div class="row">
+						<div class="col-xs-12 col-sm-4">
+							<div class="stats-box">
+								<h5>{{ ctrl.stats.question_count }}</h5>
+								<p> <i class="fa fa-question-circle fa-fw"></i> Fragen | {{ ctrl.stats.visible_question_count }} sichtbar</p>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-4">
+							<div class="stats-box">
+								<h5>{{ ctrl.stats.exam_count }}</h5>
+								<p> <i class="fa fa-list fa-fw"></i> Klausuren | {{ ctrl.stats.visible_exam_count }} sichtbar</p>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-4">
+							<div class="stats-box">
+								<h5>{{ ctrl.stats.comment_count }}</h5>
+								<p> <i class="fa fa-comments fa-fw"></i> Kommentare</p>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-4">
+							<div class="stats-box">
+								<h5>{{ ctrl.stats.tag_count }}</h5>
+								<p> <i class="fa fa-tags fa-fw"></i> Markierungen</p>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-4">
+							<div class="stats-box">
+								<h5>{{ ctrl.stats.search_count }}</h5>
+								<p> <i class="fa fa-search fa-fw"></i> Suchanfragen</p>
+							</div>
+						</div>
+					</div>
+
+					<br><br><br>
+				</div>
+
+	    		<div class="tab-pane" id="users">
+					<div class="row">
+						<div class="col-xs-12 col-sm-4">
+							<div class="stats-box">
+								<h5>{{ ctrl.stats.user_count }}</h5>
+								<p><i class="fa fa-users fa-fw"></i> Insgesamt</p>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-4">
+							<div class="stats-box">
+								<h5>{{ ctrl.stats.user_count_login_today }}</h5>
+								<p><i class="fa fa-users fa-fw"></i> Angemeldet 24 Stunden</p>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-4">
+							<div class="stats-box">
+								<h5>{{ ctrl.stats.user_count_register_today }}</h5>
+								<p><i class="fa fa-users fa-fw"></i> Registriert 24 Stunden</p>
+							</div>
+						</div>
+					</div>
+
+					<hr>
+
+					<h4>Semester</h4>
+					<div class="row">
+						<div class="col-xs-6 col-sm-4">
+							<center>
+								<canvas doughnutchart data="::chart_users" width="200" height="200"></canvas>
+								<p>Nutzer</p>
+							</center>
+						</div>
+
+						<div class="col-xs-12 col-sm-4">
+							<div style="line-height: 24px; margin-top: 20px;">
+								<div class="dot pull-left" style="background-color: #e74c3c; margin-top:3px; margin-right: 14px;"></div> 1. Semester<br>
+								<div class="dot pull-left" style="background-color: #e67e22; margin-top:3px; margin-right: 14px;"></div> 2. Semester<br>
+								<div class="dot pull-left" style="background-color: #f1c40f; margin-top:3px; margin-right: 14px;"></div> 3. Semester<br>
+								<div class="dot pull-left" style="background-color: #2ecc71; margin-top:3px; margin-right: 14px;"></div> 4. Semester<br>
+								<div class="dot pull-left" style="background-color: #1abc9c; margin-top:3px; margin-right: 14px;"></div> 5. Semester<br>
+								<div class="dot pull-left" style="background-color: #3498db; margin-top:3px; margin-right: 14px;"></div> 6. Semester<br>
+								<div class="dot pull-left" style="background-color: #34495e; margin-top:3px; margin-right: 14px;"></div> >6. Semester<br>
+							</div>
+						</div>
+					</div>
+
+					<center>
+						<h5>Nutzer</h5>
+						<canvas linechart data="::chart_time_user" width="600" height="300"></canvas>
+					</center>
+
+					<br><br><br>
+				</div>
+
+	    		<div class="tab-pane" id="questions">
+		    		<div class="row">
+						<div class="col-xs-12 col-sm-4">
+							<div class="stats-box">
+								<h5>{{ ctrl.stats.question_count }}</h5>
+								<p> <i class="fa fa-question-circle fa-fw"></i> {{ ctrl.stats.visible_question_count }} sichtbar</p>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-4">
+							<div class="stats-box">
+								<h5>{{ ctrl.stats.question_worked_count }}</h5>
+								<p> <i class="fa fa-question-circle fa-fw"></i> Insgesamt Gel&ouml;st</p>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-4">
+							<div class="stats-box">
+								<h5>{{ ctrl.stats.question_worked_count_today }}</h5>
+								<p> <i class="fa fa-question-circle fa-fw"></i> 24 Stunden Gel&ouml;st</p>
+							</div>
+						</div>
+
+					</div>
+
+					<hr>
+
+					<div class="row mbottom-2x">
+						<center>
+							<canvas barchart data="::chart_questions" width="600" height="400"></canvas>
+						</center>
+					</div>
+				</div>
+
+	    		<div class="tab-pane" id="results">
+		    		<h4>Antworten</h4>
+					<div class="row">
+						<div class="col-xs-12 col-sm-4">
+							<div class="stats-box">
+								<h5>{{ ctrl.stats.result_count }}</h5>
+								<p>
+									<i class="fa fa-exclamation-triangle fa-fw"></i>
+									Insgesamt | {{ ctrl.stats.result_count / ctrl.stats.user_count | number:0  }} pro Nutzer
+								</p>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-4">
+							<div class="stats-box">
+								<h5>{{ ctrl.stats.result_count_today }}</h5>
+								<p><i class="fa fa-exclamation-triangle fa-fw"></i> 24 Stunden</p>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-4">
+							<div class="stats-box">
+								<h5>{{ ctrl.stats.result_per_minute | number : 2 }}</h5>
+								<p><i class="fa fa-exclamation-triangle fa-fw"></i> pro Minute</p>
+							</div>
+						</div>
+					</div>
+
+					<hr>
+
+					<center>
+						<canvas linechart data="::ctrl.chart_time_result_today" width="800" height="400"></canvas>
+					</center>
+					<h6>Antworten pro Stunde im Verlauf der letzten Stunden</h6>
+
+					<br><br><br>
+				</div>
+
+	    		<div class="tab-pane" id="activity">
+		    		<h4>Aktivit&auml;t <small>Aktualisieren braucht immer etwas...</small></h4>
+		    		<div class="btn-toolbar">
+		    			<div class="btn-group">
+						    <label class="btn btn-danger" ng-model="ctrl.update_activity" btn-checkbox>LIVE</label>
+						</div>
+
+		    			<div class="btn-group mbottom-2x">
+						    <label class="btn btn-default" ng-model="ctrl.show_activity.result" ng-disabled="!ctrl.update_activity" uib-btn-checkbox>Antworten</label>
+						    <label class="btn btn-default" ng-model="ctrl.show_activity.register" ng-disabled="!ctrl.update_activity" uib-btn-checkbox>Registrierungen</label>
+						    <label class="btn btn-default" ng-model="ctrl.show_activity.login" ng-disabled="!ctrl.update_activity" uib-btn-checkbox>Anmeldungen</label>
+						    <label class="btn btn-default" ng-model="ctrl.show_activity.search_query" ng-disabled="!ctrl.update_activity" uib-btn-checkbox>Suchen</label>
+						    <label class="btn btn-default" ng-model="ctrl.show_activity.comment" ng-disabled="!ctrl.update_activity" uib-btn-checkbox>Kommentare</label>
+						    <label class="btn btn-default" ng-model="ctrl.show_activity.exam_new" ng-disabled="!ctrl.update_activity" uib-btn-checkbox>Neue...</label>
+						    <label class="btn btn-default" ng-model="ctrl.show_activity.exam_update" ng-disabled="!ctrl.update_activity" uib-btn-checkbox>Veränderte Klausuren</label>
+						</div>
+					</div>
+
+					<table class="table">
+						<tbody>
+							<tr ng-repeat="act in ctrl.activities">
+								<td>
+									<span class="text-muted"><i class="fa fa-clock-o fa-fw"></i> <span timeago="{{act.date * 1000}}"></span></span>
+								</td>
+								<td ng-if="act.activity == 'search_query'">
+									<strong>{{ act.username }}</strong> hat nach {{ act.query }} gesucht</td>
+								<td ng-if="act.activity == 'result'">
+									<strong>{{ act.username }}</strong> hat Frage #{{ act.question_id }}
+									<span ng-show="act.correct==0"><strong class="text-danger">falsch</strong></span>
+									<span ng-show="act.correct==1"><strong class="text-success">richtig</strong></span>
+									beantwortet
+								</td>
+								<td ng-if="act.activity == 'register'">
+									<strong>{{ act.username }}</strong> hat sich registriert
+								</td>
+								<td ng-if="act.activity == 'login'">
+									<strong>{{ act.username }}</strong> hat sich angemeldet
+								</td>
+								<td ng-if="act.activity == 'comment'">
+									<strong>{{ act.username }}</strong> hat einen Kommentar zur Frage #{{ act.question_id }} geschrieben
+								</td>
+								<td ng-if="act.activity == 'exam_new'">
+									<strong>{{ act.username }}</strong> hat Klausur #{{ act.exam_id }} hinzugef&uuml;gt
+								</td>
+								<td ng-if="act.activity == 'exam_update'">
+									<strong>{{ act.username }}</strong> hat Klausur #{{ act.exam_id }} ver&auml;ndert
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+	    		<div class="tab-pane" id="queries">
+					<h4>Alle Suchanfragen</h4>
+					<table class="table">
+						<thead>
+							<th><i class="fa fa-user fa-fw"></i> Name</th>
+						    <th>Suche</th>
+						    <th><i class="fa fa-clock-o fa-fw"></i> Datum</th>
+						</thead>
+
+						<tbody>
+							<tr ng-repeat="query in ctrl.search_queries">
+								<td>{{ query.username }}</td>
+								<td>{{ query.query }}</td>
+								<td><span timeago="{{query.date * 1000}}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+	    	</div>
+	    </div>
+	</div>
+</div>

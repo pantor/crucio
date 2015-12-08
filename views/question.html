@@ -20,7 +20,7 @@
                             </div>
                         </script>
 
-                        <span ng-bind-html="ctrl.question.question | newline_to_br"></span>
+                        <span ng-bind-html="ctrl.question.question | newlineToBr"></span>
 
                         <span class="label label-info" ng-show="ctrl.question.type == 1"> Freie Frage</span>
                         <span class="label label-warning" ng-show="ctrl.question.type > 1 && ctrl.question.correct_answer == 0"> Keine Antwort</span>
@@ -66,9 +66,9 @@
                         <li class="list-group-item" ng-if="ctrl.questionList.list">
                             <p class="strong">Frage {{ ctrl.index + 1 }} von {{ ctrl.length }}</p>
 
-                            <ui-progress><ui-bar value="(ctrl.index+1) / ctrl.length * 100" type="success"></ui-bar></ui-progress>
+                            <uib-progressbar value="(ctrl.index + 1) / ctrl.length * 100" type="success"></uib-progressbar>
 
-                            <div class="exam-progress-comment text-success" ng-show="(1 > Math.abs(ctrl.current_index+1 - ctrl.question.question_count/2)) && (ctrl.current_index > 3)">
+                            <div class="exam-progress-comment text-success" ng-show="(1 > Math.abs(ctrl.index + 1 - ctrl.length/2)) && (ctrl.index > 3)">
                                 Halbzeit!
                             </div>
 
@@ -89,7 +89,7 @@
 
         <div class="btn-toolbar mmtop">
             <div class="btn-group">
-                <a class="btn btn-default mtop" ng-if="ctrl.questionList.list" ng-disabled="ctrl.index==0" href="question?id={{ ctrl.questionList.list[ctrl.index-1]['question_id'] }}">
+                <a class="btn btn-default mtop" ng-if="ctrl.questionList.list" ng-disabled="ctrl.index == 0" href="question?id={{ ctrl.questionList.list[ctrl.index-1].question_id }}">
                     <i class="fa fa-backward"></i>
                 </a>
 
@@ -101,7 +101,7 @@
                     Erkl&auml;rung
                 </button>
 
-                <a class="btn btn-default mtop" ng-if="ctrl.questionList.list" ng-disabled="ctrl.index==ctrl.length-1" href="question?id={{ ctrl.questionList.list[ctrl.index+1]['question_id'] }}">
+                <a class="btn btn-default mtop" ng-if="ctrl.questionList.list" ng-disabled="ctrl.index == ctrl.length-1" href="question?id={{ ctrl.questionList.list[ctrl.index+1].question_id }}">
                     <i class="fa fa-forward"></i>
                 </a>
             </div>
@@ -144,8 +144,8 @@
                         <a ng-if="question.file_name == ''">Originaldokument</a>
                     </li>
 
-                    <li><a href="exam-pdf?id={{ ctrl.question.exam_id }}" target="_self">Klausur als PDF</a></li>
-                    <li><a href="exam-solution-pdf?id={{ ctrl.question.exam_id }}" target="_self">L&ouml;sungen als PDF</a></li>
+                    <li><a href="api/v1/pdf/exam/{{ ctrl.question.exam_id }}" target="_self">Klausur als PDF</a></li>
+                    <li><a href="api/v1/pdf/solution/{{ ctrl.question.exam_id }}" target="_self">L&ouml;sungen als PDF</a></li>
                 </ul>
             </div>
         </div>
@@ -177,7 +177,7 @@
                             </div>
                             <div class="col-lg-2 col-md-3 col-sm-4">
                                 <!--div class="checkbox">
-                                    <label><input id="subscriptCommentsCheckbox" type="checkbox" <?php if($subscription['subscription']){ echo 'checked="true"'; } ?>> Antworten per Mail</label>
+                                    <label><input id="subscriptCommentsCheckbox" type="checkbox"> Antworten per Mail</label>
                                 </div-->
                                 <br>
                                 <button class="btn btn-primary btn-block" ng-click="ctrl.add_comment()" ng-disabled="!ctrl.commentText">Kommentieren</button>

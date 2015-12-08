@@ -1,14 +1,14 @@
 <?php
 
-$app->group('/admin', function () use ($app) {
+$app->group('/admin', function() {
 
-	$app->post('/change-semester/:phrase', function($phrase) use ($app) {
-    	$mysql = start_mysql();
-    	
-		$data = json_decode($app->request()->getBody());
+	$this->post('/change-semester/{phrase}', function($request, $response, $args) {
+    	$mysql = startMysql();
 
-		$response = execute_mysql($mysql, "UPDATE users SET semester = semester + ?", [$data->number]);
-		print_response($app, $response);
+		$body =  $request->getParsedBody();
+
+		$data = executeMysql($mysql, "UPDATE users SET semester = semester + ?", [$body['number']]);
+		return createResponse($response, $data);
 	});
 });
 

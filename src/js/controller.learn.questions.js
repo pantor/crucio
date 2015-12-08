@@ -67,8 +67,8 @@ class QuestionsController {
 
         this.API.get('exams/user_id/' + this.user.user_id).success((result) => {
             this.exams = result.exam;
-            this.distinct_semesters = Selection.find_distinct(this.exams, 'semester');
-            this.distinct_subjects = Selection.find_distinct(this.exams, 'subject');
+            this.distinct_semesters = Selection.findDistinct(this.exams, 'semester');
+            this.distinct_subjects = Selection.findDistinct(this.exams, 'subject');
 
             // Find Exams for Abstract
             this.abstract_exams = [];
@@ -147,7 +147,7 @@ class QuestionsController {
         });
     }
 
-    learn_exam(examId) {
+    learnExam(examId) {
         const random = 1;
         this.API.get('exams/action/prepare/' + examId + '/' + random).success((result) => {
             const questionList = { 'list': result.list };
@@ -157,7 +157,7 @@ class QuestionsController {
         });
     }
 
-    learn_subjects() {
+    learnSubjects() {
         const data = { selection_subject_list: this.selection_subject_list, selection_number_questions: this.selection_number_questions };
         this.API.post('learn/prepare', data).success((result) => {
             const questionList = { 'list': result.list };
@@ -167,21 +167,21 @@ class QuestionsController {
         });
     }
 
-    reset_results(index) {
+    resetResults(index) {
         const examId = this.exams[index].exam_id;
         this.exams[index].answered_questions = 0;
         const data = {};
         this.API.delete('results/' + this.user.user_id + '/' + examId, data);
     }
 
-    reset_abstract_results(index) {
+    resetAbstractResults(index) {
         const examId = this.abstract_exams[index].exam_id;
         this.abstract_exams[index].answered_questions = 0;
         const data = {};
         this.API.delete('results/' + this.user.user_id + '/' + examId, data);
     }
 
-    toggle_selection(subject, category, checked = false) {
+    toggleSelection(subject, category, checked = false) {
         const selection = this.selection_subject_list;
         const subjects = this.subject_list;
 
@@ -224,7 +224,7 @@ class QuestionsController {
         }
     }
 
-    search_question() {
+    searchQuestion() {
         this.search_results = [];
 
         const query_question = this.question_search_query;
@@ -248,20 +248,12 @@ class QuestionsController {
         }
     }
 
-    exam_in_selection(index) {
-        return this.Selection.is_element_included(this.exams[index], this.exam_search);
+    examInSelection(index) {
+        return this.Selection.isElementIncluded(this.exams[index], this.exam_search);
     }
 
-    exam_in_selection_count() {
+    examInSelectionCount() {
         return this.Selection.count(this.exams, this.exam_search);
-    }
-
-    comment_in_selection(index) {
-        return this.Selection.is_element_included(this.comments[index], this.comment_search);
-    }
-
-    comment_in_selection_count() {
-        return this.Selection.count(this.comments, this.comment_search);
     }
 }
 

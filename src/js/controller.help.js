@@ -7,9 +7,9 @@ class HelpController {
 
         this.user = Auth.getUser();
 
-        const route_params = $location.search();
-        this.question_id = route_params.question_id;
-        this.subject = route_params.s;
+        const routeParams = $location.search();
+        this.question_id = routeParams.question_id;
+        this.subject = routeParams.s;
         if (this.subject == 'Antwort') {
             this.subject = 'Falsche Antwort';
         }
@@ -24,7 +24,7 @@ class HelpController {
         this.is_working = false;
     }
 
-    send_mail() {
+    sendMail() {
         const text = this.text;
 
         let validation_passed = 1;

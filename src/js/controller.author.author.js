@@ -19,7 +19,7 @@ class AuthorController {
             if (this.questions_by_comment) {
                 for (const comments of this.questions_by_comment) {
                     for (const comment of comments) {
-                        if (this.Selection.is_element_included(comment, newValue)) { // Check if comment satisfies search query
+                        if (this.Selection.isElementIncluded(comment, newValue)) { // Check if comment satisfies search query
                             let found_idx = -1;
                             for (let j = 0; j < this.questions_by_comment_display.length; j++) {
                                 if (this.questions_by_comment_display[j][0].question == comment.question) {
@@ -43,11 +43,9 @@ class AuthorController {
         this.API.get('exams').success((result) => {
             this.exams = result.exams;
 
-            console.log(this.exams);
-
-            this.distinct_semesters = this.Selection.find_distinct(this.exams, 'semester');
-            this.distinct_subjects = this.Selection.find_distinct(this.exams, 'subject');
-            this.distinct_authors = this.Selection.find_distinct(this.exams, 'author');
+            this.distinct_semesters = this.Selection.findDistinct(this.exams, 'semester');
+            this.distinct_subjects = this.Selection.findDistinct(this.exams, 'subject');
+            this.distinct_authors = this.Selection.findDistinct(this.exams, 'author');
 
             this.ready = 1;
         });
@@ -59,8 +57,8 @@ class AuthorController {
             this.distinct_users = [];
             this.distinct_users_added = [];
 
-            this.distinct_users = this.Selection.find_distinct(this.comments, 'username');
-            this.distinct_users_added = this.Selection.find_distinct(this.comments, 'username_added');
+            this.distinct_users = this.Selection.findDistinct(this.comments, 'username');
+            this.distinct_users_added = this.Selection.findDistinct(this.comments, 'username_added');
 
             this.questions_by_comment = [];
             for (const c of this.comments) {
@@ -103,7 +101,7 @@ class AuthorController {
     }
 
     comment_in_selection(index) {
-        return this.Selection.is_element_included(this.comments[index], this.comment_search);
+        return this.Selection.isElementIncluded(this.comments[index], this.comment_search);
     }
 
     comment_in_selection_count() {
@@ -111,7 +109,7 @@ class AuthorController {
     }
 
     exam_in_selection(index) {
-        return this.Selection.is_element_included(this.exams[index], this.exam_search);
+        return this.Selection.isElementIncluded(this.exams[index], this.exam_search);
     }
 
     exam_in_selection_count() {

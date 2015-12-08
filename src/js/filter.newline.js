@@ -1,5 +1,5 @@
 angular.module('crucioApp')
-    .filter('newline_to_br', function () {
+    .filter('newlineToBr', function () {
         return function (text) {
             if (angular.isDefined(text)) {
                 return text.replace(/\n/g, '<br>');

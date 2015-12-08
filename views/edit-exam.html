@@ -12,7 +12,7 @@
         <div class="col-sm-4" >
             <div class="fixed-wrapper fixed-wrapper-sm-4">
                 <div class="btn-toolbar mmtop">
-                    <button class="btn btn-success mtop" ng-click="ctrl.save_exam()">
+                    <button class="btn btn-success mtop" ng-click="ctrl.saveExam()">
                         <i ng-show="!ctrl.is_saving" class="fa fa-fw fa-save"></i>
                         <i ng-show="ctrl.is_saving" class="fa fa-circle-o-notch fa-spin"></i> {{ ctrl.has_changed ? 'Speichern' : 'Gespeichert' }}
                     </button>
@@ -22,7 +22,7 @@
                     </div>
 
                     <div class="btn-group pull-right mtop">
-                        <button class="btn btn-success" ng-click="ctrl.add_question(1)"><i class="fa fa-plus"></i> Frage</button>
+                        <button class="btn btn-success" ng-click="ctrl.addQuestion(1)"><i class="fa fa-plus"></i> Frage</button>
                     </div>
                 </div>
 
@@ -275,7 +275,7 @@
 
                         <div class="form-group">
                             <div class="col-md-8 col-md-offset-2">
-                                <button class="btn btn-danger mtop" ng-click="ctrl.delete_question($index)"><i class="fa fa-trash-o"></i> Frage l&ouml;schen</button>
+                                <button class="btn btn-danger mtop" ng-click="ctrl.deleteQuestion($index)"><i class="fa fa-trash-o"></i> Frage l&ouml;schen</button>
                             </div>
                         </div>
                     </div>
@@ -294,7 +294,7 @@
 
                 <div class="modal-body">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
-                    <button class="btn btn-danger pull-right" data-dismiss="modal" ng-click="ctrl.delete_exam()">L&ouml;schen</button>
+                    <button class="btn btn-danger pull-right" data-dismiss="modal" ng-click="ctrl.deleteExam()">L&ouml;schen</button>
                 </div>
             </div>
         </div>

@@ -1,47 +1,47 @@
 <?php
 
-$app->group('/results', function () use ($app) {
+$app->group('/results', function() {
 
-	$app->get('', function() use ($app) {
-		$mysql = start_mysql();
+	$this->get('', function($request, $response, $args) {
+		$mysql = startMysql();
 
-		$user_id = $app->request()->params('user_id');
+		$user_id = $request->getQueryParams()['user_id'];
 		$user_id_sql_where = "";
 		if ($user_id) {
     		$user_id_sql_where = "AND r.user_id = $user_id ";
 		}
 
-		$response = get_all($mysql,
+		$data = get_all($mysql,
 		    "SELECT r.*
 		    FROM results r
 		    WHERE 1 = 1 "
 		        .$user_id_sql_where
 		    ,
         [], 'results');
-		print_response($app, $response);
+		return createResponse($response, $data);
 	});
 
-	$app->post('', function() use ($app) {
-		$data = json_decode($app->request()->getBody());
+	$this->post('', function($request, $response, $args) {
+		$body =  $request->getParsedBody();
 
-		$mysql = start_mysql();
+		$mysql = startMysql();
 
-		$attempt_count = get_count($mysql, "results r WHERE r.user_id = ? AND r.question_id = ?", [$data->user_id, $data->question_id]);
+		$attempt_count = get_count($mysql, "results r WHERE r.user_id = ? AND r.question_id = ?", [$body['user_id'], $body['question_id']]);
 
-		$response = execute_mysql($mysql, "INSERT INTO results (user_id, question_id, attempt, correct, given_result, date, resetted) VALUES (?, ?, ?, ?, ?, ?, '0')", [$data->user_id, $data->question_id, $attempt_count + 1, $data->correct, $data->given_result, time()]);
-		print_response($app, $response);
+		$data = executeMysql($mysql, "INSERT INTO results (user_id, question_id, attempt, correct, given_result, date, resetted) VALUES (?, ?, ?, ?, ?, ?, '0')", [$body['user_id'], $body['question_id'], $attempt_count + 1, $body['correct'], $body['given_result'], time()]);
+		return createResponse($response, $data);
 	});
 
-	$app->delete('/:user_id', function($user_id) use ($app) {
-		$mysql = start_mysql();
-		$response = execute_mysql($mysql, "UPDATE results SET resetted = '1' WHERE user_id = ?", [$user_id]);
-		print_response($app, $response);
+	$this->delete('/{user_id}', function($request, $response, $args) {
+		$mysql = startMysql();
+		$data = executeMysql($mysql, "UPDATE results SET resetted = '1' WHERE user_id = ?", [$user_id]);
+		return createResponse($response, $data);
 	});
 
-	$app->delete('/:user_id/:exam_id', function($user_id, $exam_id) use ($app) {
-		$mysql = start_mysql();
-		$response = execute_mysql($mysql, "UPDATE results r, questions q SET r.resetted = '1' WHERE r.question_id = q.question_id AND q.exam_id = ? AND r.user_id = ?", [$exam_id, $user_id]);
-		print_response($app, $response);
+	$this->delete('/{user_id}/{exam_id}', function($request, $response, $args) {
+		$mysql = startMysql();
+		$data = executeMysql($mysql, "UPDATE results r, questions q SET r.resetted = '1' WHERE r.question_id = q.question_id AND q.exam_id = ? AND r.user_id = ?", [$exam_id, $user_id]);
+		return createResponse($response, $data);
 	});
 });
 

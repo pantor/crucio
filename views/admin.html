@@ -70,32 +70,32 @@
                             </thead>
 
                             <tbody>
-                                <tr ng-repeat="user in ::ctrl.users" ng-show="ctrl.user_in_selection($index)">
+                                <tr ng-repeat="user in ::ctrl.users" ng-show="ctrl.userInSelection($index)">
                                     <td id="group">
-                                        <button class="btn btn-danger admin-group-btn" ng-if="user.group_id==2" ng-click="ctrl.change_group($index)">
+                                        <button class="btn btn-danger admin-group-btn" ng-if="user.group_id==2" ng-click="ctrl.changeGroup($index)">
                                             {{ user.group_name }}
                                         </button>
 
-                                        <button class="btn btn-info admin-group-btn" ng-if="user.group_id==3" ng-click="ctrl.change_group($index)">
+                                        <button class="btn btn-info admin-group-btn" ng-if="user.group_id==3" ng-click="ctrl.changeGroup($index)">
                                             {{ user.group_name }}
                                         </button>
 
-                                        <button class="btn btn-default admin-group-btn" ng-if="user.group_id==1" ng-click="ctrl.change_group($index)">
+                                        <button class="btn btn-default admin-group-btn" ng-if="user.group_id==1" ng-click="ctrl.changeGroup($index)">
                                             {{ user.group_name }}
                                         </button>
                                     </td>
                                     <td>{{ ::user.username }}</td>
                                     <td id="semester">{{ user.semester }}</td>
                                     <td id="login">
-                                        <span ng-if="user.last_sign_in > 0 && !ctrl.is_today(user.last_sign_in) && !ctrl.is_yesterday(user.last_sign_in)">
+                                        <span ng-if="user.last_sign_in > 0 && !ctrl.isToday(user.last_sign_in) && !ctrl.isYesterday(user.last_sign_in)">
                                             {{ ::user.last_sign_in * 1000 | date: 'dd.MM.yyyy, HH:mm' }}
                                         </span>
 
-                                        <span ng-if="user.last_sign_in > 0 && ctrl.is_today(user.last_sign_in)" class="label label-success">
+                                        <span ng-if="user.last_sign_in > 0 && ctrl.isToday(user.last_sign_in)" class="label label-success">
                                             Heute, {{ ::user.last_sign_in * 1000 | date: 'HH:mm' }}
                                         </span>
 
-                                        <span ng-if="user.last_sign_in > 0 && ctrl.is_yesterday(user.last_sign_in)">
+                                        <span ng-if="user.last_sign_in > 0 && ctrl.isYesterday(user.last_sign_in)">
                                             Gestern, {{ ::user.last_sign_in * 1000 | date: 'HH:mm' }}
                                         </span>
 
@@ -108,7 +108,7 @@
                                     </a></td>
                                 </tr>
 
-                                <tr class="search-sf" ng-show="ctrl.user_in_selection_count() == 0"><td class="text-muted" colspan="6">Nichts gefunden.</td></tr>
+                                <tr class="search-sf" ng-show="ctrl.userInSelectionCount() == 0"><td class="text-muted" colspan="6">Nichts gefunden.</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -119,7 +119,7 @@
                     <h4>F&uuml;r fremde E-Mail-Adressen<small> die nicht ______@studserv.uni-leipzig.de entsprechen</small></h4>
                     <div class="row">
                         <center>
-                            <form class="input-group col-xs-10 col-sm-6" ng-submit="ctrl.add_mail()">
+                            <form class="input-group col-xs-10 col-sm-6" ng-submit="ctrl.addMail()">
                                 <input class="form-control" ng-model="ctrl.new_whitelist_mail" type="text" placeholder="Mail-Adresse...">
                                 <span class="input-group-btn">
                                     <button class="btn btn-default"><i class="fa fa-plus"></i></button>
@@ -141,7 +141,7 @@
                             <tr ng-repeat="email in ctrl.whitelist">
                                 <td><i ng-show="email.used > 0" class="fa fa-check"></i></td>
                                 <td>{{ email.mail_address }}</td>
-                                <td><button ng-click="ctrl.remove_mail($index)" type="button" class="close">&times;</button></td>
+                                <td><button ng-click="ctrl.removeMail($index)" type="button" class="close">&times;</button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -185,7 +185,7 @@
                             </tr>
                         </tbody>
 
-                        <tbody class="search-sf" ng-show="ctrl.comment_in_selection_count() == 0">
+                        <tbody class="search-sf" ng-show="ctrl.commentInSelectionCount() == 0">
                             <td class="text-muted" colspan="6">Nichts gefunden.</td>
                         </tbody>
                     </table>
@@ -196,19 +196,19 @@
                     <h4 class="mbottom-2x">Bitte sehr vorsichtig sein!</h4>
                     <div class="btn-toolbar">
                         <div class="btn-group">
-                            <button class="btn btn-default" ng-click="ctrl.increase_semester()">Semester +1</button>
-                            <button class="btn btn-default" ng-click="ctrl.decrease_semester()">-1</button>
+                            <button class="btn btn-default" ng-click="ctrl.increaseSemester()">Semester +1</button>
+                            <button class="btn btn-default" ng-click="ctrl.decreaseSemester()">-1</button>
                         </div>
                     </div>
-                    
+
                     <hr>
-                    
+
                     <div class="btn-toolbar">
-                        <button class="btn btn-default" ng-click="ctrl.remove_test_account()">Test Account l&ouml;schen</button>
+                        <button class="btn btn-default" ng-click="ctrl.removeTestAccount()">Test Account l&ouml;schen</button>
                     </div>
-                    
+
                     <hr>
-                    
+
                     <div class="btn-toolbar">
                         <a class="btn btn-default" href="https://www.google.com/analytics/web/#report/visitors-overview/a47836301w79202201p81910001/" target="_self"><i class="fa fa-fw fa-external-link"></i> Google Analytics</a>
                         <a class="btn btn-default" href="https://github.com/crucioproject/Crucio" target="_self"><i class="fa fa-fw fa-external-link"></i> Github</a>
@@ -219,11 +219,11 @@
                 <div class="tab-pane" id="stats">
                     <div class="btn-toolbar">
                         <a class="btn btn-default pull-right" href="https://www.google.com/analytics/web/#report/visitors-overview/a47836301w79202201p81910001/" target="_self"><i class="fa fa-fw fa-external-link"></i> Google Analytics</a>
-                        <a class="btn btn-default pull-right" href="tools/stats" target="_self"><i class="fa fa-fw fa-external-link"></i> Live Statistik</a>
+                        <a class="btn btn-default pull-right" href="global-statistic"><i class="fa fa-fw fa-external-link"></i> Live Statistik</a>
                     </div>
-                    
+
                     <hr>
-                    
+
                     <div class="row">
                         <div class="col-xs-6 col-sm-4">
                             <div class="stats-box">

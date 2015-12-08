@@ -1,7 +1,8 @@
 class AdminController {
-    constructor(Page, Auth, API, Selection, $scope) {
+    constructor(Page, Auth, API, Selection, $scope, $uibModal) {
         this.API = API;
         this.Selection = Selection;
+        this.$uibModal = $uibModal;
 
         Page.setTitleAndNav('Verwaltung | Crucio', 'Admin');
 
@@ -19,7 +20,7 @@ class AdminController {
             if (this.questions_by_comment) {
                 for (const comments of this.questions_by_comment) {
                     for (const comment of comments) {
-                        if (this.Selection.is_element_included(comment, newValue)) { // Check if comment satisfies search query
+                        if (this.Selection.isElementIncluded(comment, newValue)) { // Check if comment satisfies search query
                             let found_idx = -1;
                             for (let j = 0; j < this.questions_by_comment_display.length; j++) {
                                 if (this.questions_by_comment_display[j][0].question == comment.question) {
@@ -42,7 +43,7 @@ class AdminController {
 
         this.API.get('users').success((result) => {
             this.users = result.users;
-            this.distinct_semesters = this.Selection.find_distinct(this.users, 'semester');
+            this.distinct_semesters = this.Selection.findDistinct(this.users, 'semester');
             this.distinct_semesters.sort((a, b) => { return a - b; });
             this.distinct_groups = ['Standard', 'Admin', 'Autor'];
 
@@ -51,8 +52,8 @@ class AdminController {
 
         this.API.get('comments').success((result) => {
             this.comments = result.comments;
-            this.distinct_questions = this.Selection.find_distinct(this.comments, 'question_id');
-            this.distinct_users = this.Selection.find_distinct(this.comments, 'username');
+            this.distinct_questions = this.Selection.findDistinct(this.comments, 'question_id');
+            this.distinct_users = this.Selection.findDistinct(this.comments, 'username');
 
             this.questions_by_comment = [];
             for (const c of this.comments) {
@@ -82,7 +83,7 @@ class AdminController {
         });
     }
 
-    add_mail() {
+    addMail() {
         const email = this.new_whitelist_mail;
         if (email.length) {
             this.whitelist.push({ username: '', mail_address: email });
@@ -92,7 +93,7 @@ class AdminController {
         }
     }
 
-    remove_mail(index) {
+    removeMail(index) {
         const email = this.whitelist[index].mail_address;
         if (email.length) {
             this.whitelist.splice(index, 1);
@@ -100,7 +101,7 @@ class AdminController {
         }
     }
 
-    change_group(index) {
+    changeGroup(index) {
         const user_id = this.users[index].user_id;
         let group_id = this.users[index].group_id;
 
@@ -124,7 +125,7 @@ class AdminController {
         this.API.put('users/' + user_id + '/group', data);
     }
 
-    is_today(date) {
+    isToday(date) {
         const today = new Date();
 
         const date_c = new Date(date * 1000);
@@ -134,7 +135,7 @@ class AdminController {
         return false;
     }
 
-    is_yesterday(date) {
+    isYesterday(date) {
         const today = new Date();
         const diff = today - 1000 * 60 * 60 * 24;
         const yesterday = new Date(diff);
@@ -146,33 +147,33 @@ class AdminController {
         return false;
     }
 
-    user_in_selection(index) {
-        return this.Selection.is_element_included(this.users[index], this.user_search);
+    userInSelection(index) {
+        return this.Selection.isElementIncluded(this.users[index], this.user_search);
     }
 
-    user_in_selection_count() {
+    userInSelectionCount() {
         return this.Selection.count(this.users, this.user_search);
     }
 
-    comment_in_selection_count() {
+    commentInSelectionCount() {
         return this.Selection.count(this.comments, this.comment_search);
     }
 
-    increase_semester() {
+    increaseSemester() {
         const data = { 'number': '1' };
         this.API.post('admin/change-semester/dFt(45i$hBmk*I', data).success((result) => {
             alert(result.status);
         });
     }
 
-    decrease_semester() {
+    decreaseSemester() {
         const data = { 'number': '-1' };
         this.API.post('admin/change-semester/dFt(45i$hBmk*I', data).success((result) => {
             alert(result.status);
         });
     }
 
-    remove_test_account() {
+    removeTestAccount() {
         this.API.delete('users/test-account').success((result) => {
             alert(result.status);
         });

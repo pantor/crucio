@@ -37,24 +37,16 @@ angular.module('crucioApp', [
 ])
     .config(function ($routeProvider, $locationProvider) {
         $routeProvider
-            /* .when('', { templateUrl: 'index.php' })
-            .when('/', { templateUrl: 'index.php' })
-            .when('/forgot-password', { templateUrl: 'forgot-password.php' })
-            .when('/register', { templateUrl: 'register.php' })
-            .when('/activate-account', { templateUrl: 'activate-account.php' })
-            .when('/contact', { templateUrl: 'contact.php' })
-            .when('/about', { templateUrl: 'about.php' })
-            .when('/stats', { templateUrl: 'stats.php' }) */
-
             .when('/questions', { templateUrl: 'views/questions.html', controller: 'QuestionsController', controllerAs: 'ctrl' })
             .when('/author', { templateUrl: 'views/author.html', controller: 'AuthorController', controllerAs: 'ctrl' })
             .when('/admin', { templateUrl: 'views/admin.html', controller: 'AdminController', controllerAs: 'ctrl' })
+            .when('/global-statistic', { templateUrl: 'views/global-statistic.html', controller: 'GlobalStatisticController', controllerAs: 'ctrl' })
             .when('/account', { templateUrl: 'views/account.html', controller: 'AccountController', controllerAs: 'ctrl' })
             .when('/settings', { templateUrl: 'views/settings.html', controller: 'SettingsController', controllerAs: 'ctrl' })
             .when('/edit-exam', { templateUrl: 'views/edit-exam.html', controller: 'EditController', controllerAs: 'ctrl' })
             .when('/question', { templateUrl: 'views/question.html', controller: 'QuestionController', controllerAs: 'ctrl' })
             .when('/exam', { templateUrl: 'views/exam.html', controller: 'ExamController', controllerAs: 'ctrl' })
-            .when('/statistics', { templateUrl: 'views/statistics.html', controller: 'StatisticsController', controllerAs: 'ctrl' })
+            .when('/statistic', { templateUrl: 'views/statistic.html', controller: 'StatisticController', controllerAs: 'ctrl' })
             .when('/analysis', { templateUrl: 'views/analysis.html', controller: 'AnalysisController', controllerAs: 'ctrl' })
             .when('/help', { templateUrl: 'views/help.html', controller: 'HelpController', controllerAs: 'ctrl' })
             .when('/403', { templateUrl: 'views/403.html', controller: 'ErrorController', controllerAs: 'ctrl' })
@@ -71,7 +63,7 @@ angular.module('crucioApp', [
         // enumerate routes that don't need authentication
         const routesThatLogin = ['/', '/register', '/forgot-password', '/activate-account'];
         const routesForAuthor = ['/author', '/edit-exam'];
-        const routesForAdmin = ['/admin']; // + Author Routes
+        const routesForAdmin = ['/admin', '/global-statistic']; // + Author Routes
 
         const user = Auth.tryGetUser();
 

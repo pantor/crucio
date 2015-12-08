@@ -1,7 +1,7 @@
 class Selection {
     constructor() { }
 
-    is_element_included(element, searchDictionary) {
+    isElementIncluded(element, searchDictionary) {
         for (const key in searchDictionary) {
             if (key == 'query') {
                 let queryString = '';
@@ -36,7 +36,7 @@ class Selection {
 
         let counter = 0;
         for (const entry of list) {
-            if (this.is_element_included(entry, searchDictionary)) {
+            if (this.isElementIncluded(entry, searchDictionary)) {
                 counter++;
             }
         }
@@ -44,7 +44,7 @@ class Selection {
         return counter;
     }
 
-    find_distinct(list, searchKey) {
+    findDistinct(list, searchKey) {
         const result = [];
         for (const entry of list) {
             if (result.indexOf(entry[searchKey]) === -1) {

@@ -58,7 +58,7 @@
                                 </div>
                             </script>
 
-                            <span ng-bind-html="q.question | newline_to_br"></span>
+                            <span ng-bind-html="q.question | newlineToBr"></span>
 
                             <span class="label label-info" ng-show="question.type==1"> Freie Frage</span>
                             <span class="label label-danger" ng-show="question.type>1 && !question.correct_answer"> Keine Antwort</span>
@@ -92,7 +92,7 @@
                     <li class="list-group-item">
                         <p class="strong">Frage {{ ctrl.current_index + 1 }} von {{ ctrl.exam.question_count }}</p>
 
-                        <uib-progress><uib-bar value="(ctrl.current_index+1) / ctrl.exam.question_count * 100" type="success"></uib-bar></uib-progress>
+                        <uib-progressbar value="(ctrl.current_index+1) / ctrl.exam.question_count * 100" type="success"></uib-progressbar>
 
                         <div class="exam-progress-comment text-success" ng-show="(1 > ctrl.Math.abs(ctrl.current_index+1 - ctrl.exam.question_count/2)) && (ctrl.current_index > 3)">
                             Halbzeit!

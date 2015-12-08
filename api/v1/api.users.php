@@ -1,54 +1,54 @@
 <?php
 
-$app->group('/users', function () use ($app) {
+$app->group('/users', function() {
 
-	$app->get('', function() use ($app) {
-		$mysql = start_mysql();
-		$response = get_all($mysql, 
-		    "SELECT u.*, g.name AS 'group_name' 
-		    FROM users u 
-		    INNER JOIN groups g ON g.group_id = u.group_id 
-		    ORDER BY g.name ASC, u.user_id DESC", 
+	$this->get('', function($request, $response, $args) {
+		$mysql = startMysql();
+		$data = get_all($mysql,
+		    "SELECT u.*, g.name AS 'group_name'
+		    FROM users u
+		    INNER JOIN groups g ON g.group_id = u.group_id
+		    ORDER BY g.name ASC, u.user_id DESC",
         [], 'users');
-		print_response($app, $response);
+		return createResponse($response, $data);
 	});
 
-	$app->get('/:user_id', function($user_id) use ($app) {
-		$mysql = start_mysql();
-		$response = get_all($mysql, 
-		    "SELECT u.*, g.name 
-		    FROM users u 
-		    INNER JOIN groups g ON g.group_id = u.group_id 
-		    WHERE u.user_id = ?", 
-        [$user_id], 'users');
-		print_response($app, $response);
+	$this->get('/{user_id}', function($request, $response, $args) {
+		$mysql = startMysql();
+		$data = get_all($mysql,
+		    "SELECT u.*, g.name
+		    FROM users u
+		    INNER JOIN groups g ON g.group_id = u.group_id
+		    WHERE u.user_id = ?",
+        [$args['user_id']], 'users');
+		return createResponse($response, $data);
 	});
 
-	$app->post('', function() use ($app) {
-		$data = json_decode($app->request()->getBody());
-		$username = $data->username;
-		$email = str_replace('(@)', '@', sanitize($data->email));
+	$this->post('', function($request, $response, $args) {
+		$body = $request->getParsedBody();
+		$username = $body['username'];
+		$email = str_replace('(@)', '@', sanitize($body['email']));
 		$clean_email = $email;
-		$clean_password = trim($data->password);
+		$clean_password = trim($body['password']);
 		$clean_username = sanitize($username);
-		$semester = $data->semester;
-		$course_id = $data->course;
+		$semester = $body['semester'];
+		$course_id = $body['course'];
 		$activation_token = 0;
 
-		$mysql = start_mysql();
+		$mysql = startMysql();
 		global $website_url;
 
 		$validate = true;
 		if (!strlen($username)) {
-			$response['status'] = 'error';
+			$data['status'] = 'error';
 			$validate = false;
 		}
 		if (get_count($mysql, "users WHERE username_clean = ?", [sanitize($clean_username)]) > 0) {
-			$response['status'] = 'error_username_taken';
+			$data['status'] = 'error_username_taken';
 			$validate = false;
 		}
 		if (get_count($mysql, "users WHERE email = ?", [sanitize($clean_email)]) > 0) {
-			$response['status'] = 'error_email_taken';
+			$data['status'] = 'error_email_taken';
 			$validate = false;
 		}
 
@@ -61,43 +61,43 @@ $app->group('/users', function () use ($app) {
 			    "subjectStrs" => [$activation_message, $activation_token, $username]];
 			send_template_mail('new-registration.html', $clean_email, 'Willkommen bei Crucio', $hooks);
 
-			$response = execute_mysql($mysql, "INSERT INTO users (username, username_clean, password, email, activationtoken, last_activation_request, sign_up_date, course_id, semester) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", [$username, $clean_username, $secure_pass, $clean_email, $activation_token, time(), time(), $course_id, $semester]);
+			$data = executeMysql($mysql, "INSERT INTO users (username, username_clean, password, email, activationtoken, last_activation_request, sign_up_date, course_id, semester) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", [$username, $clean_username, $secure_pass, $clean_email, $activation_token, time(), time(), $course_id, $semester]);
 
-		    $response['status'] = 'success';
+		    $data['status'] = 'success';
 		}
 
-		print_response($app, $response, false);
+		return createResponse($response, $data, false);
 	});
 
-	$app->post('/action/login', function() use ($app) {
-		$data = json_decode($app->request()->getBody());
+	$this->post('/action/login', function($request, $response, $args) {
+		$body =  $request->getParsedBody();
 
-		$email = str_replace('(@)', '@', trim($data->email));
-		$password = trim($data->password);
-		$remember_choice = !empty( $data->remember_me ) ? trim( $data->remember_me ) : 0;
+		$email = str_replace('(@)', '@', trim($body['email']));
+		$password = trim($body['password']);
+		$remember_choice = !empty( $body['remember_me'] ) ? trim( $body['remember_me'] ) : 0;
 
-		$mysql = start_mysql();
+		$mysql = startMysql();
 
 		if ($email == '')
-		    $response['error'] = 'error_no_email';
+		    $data['error'] = 'error_no_email';
 		if ($password == '')
-		    $response['error'] = 'error_no_password';
+		    $data['error'] = 'error_no_password';
 
-		if (count($response['error']) == 0) {
+		if (count($data['error']) == 0) {
 			if (get_count($mysql, "users WHERE email = ?", [sanitize($email)]) == 0) {
-		    	$response['error'] = 'Name oder Passwort falsch.';
+		    	$data['error'] = 'Name oder Passwort falsch.';
 
 		    } else {
 		    	$userdetails = fetch_user_details_by_mail($mysql, $email);
 
 		    	if ($userdetails['active'] == 0) {
-		    		$response['error'] = 'Account nicht aktiviert.';
+		    		$data['error'] = 'Account nicht aktiviert.';
 
 		    	} else {
 		    		$entered_pass = generate_hash($password, $userdetails['password']);
 
 		    		if ($entered_pass != $userdetails['password']) {
-		    			$response['error'] = 'Name oder Passwort falsch.';
+		    			$data['error'] = 'Name oder Passwort falsch.';
 
 		    		} else {
 		    			$userdetails['display_username'] = $userdetails['username'];
@@ -105,112 +105,119 @@ $app->group('/users', function () use ($app) {
 		    			$userdetails['hash_pw'] = $userdetails['password'];
 		    			$userdetails['remember_me'] = $remember_choice;
 
-		    			$response = execute_mysql($mysql, "UPDATE users SET last_sign_in = ? WHERE user_id = ?", [time(), $userdetails['user_id']]);
+		    			$data = executeMysql($mysql, "UPDATE users SET last_sign_in = ? WHERE user_id = ?", [time(), $userdetails['user_id']]);
 
-		    			$response['login'] = 'success';
-		    			$response['logged_in_user'] = $userdetails;
+		    			$data['login'] = 'success';
+		    			$data['logged_in_user'] = $userdetails;
 		    		}
 		    	}
 		    }
 		}
 
-		print_response($app, $response);
+		return createResponse($response, $data);
 	});
 
-	$app->post('/action/activate', function() use ($app) {
-		$data = json_decode($app->request()->getBody());
-		$token = $data->token;
+	$this->post('/action/activate', function($request, $response, $args) {
+		$mysql = startMysql();
 
-		$mysql = start_mysql();
+        $body =  $request->getParsedBody();
+		$token = $body['token'];
 
-		$response['token'] = get_count($mysql, "users WHERE activationtoken = ?", [$token]) ;
+		$data['token'] = get_count($mysql, "users WHERE activationtoken = ?", [$token]) ;
 		if ((get_count($mysql, "users WHERE activationtoken = ?", [$token]) != 1)) {
-			$response['status'] = 'error_unknown';
+			$data['status'] = 'error_unknown';
 
 		} else {
-			execute_mysql($mysql, "UPDATE users SET active = 1 WHERE activationtoken = ? LIMIT 1", [$token]);
-			$response['status'] = 'success';
+			executeMysql($mysql, "UPDATE users SET active = 1 WHERE activationtoken = ? LIMIT 1", [$token]);
+			$data['status'] = 'success';
 		}
 
-	    print_response($app, $response, false);
+	    return createResponse($response, $data, false);
 	});
 
-	$app->put('/:user_id/account', function($user_id) use ($app) {
-		$mysql = start_mysql();
-		$data = json_decode($app->request()->getBody());
+	$this->put('/{user_id}/account', function($request, $response, $args) {
+		$mysql = startMysql();
+
+		$body =  $request->getParsedBody();
+
+		$user_id = $args['user_id'];
 		$user = get_fetch($mysql, "SELECT u.* FROM users u WHERE u.user_id = ? LIMIT 1", [$user_id])['result'];
 
 		$old_hash_pw = $user['password'];
 		$old_email = $user['email'];
 
-		$email = str_replace('(@)', '@', sanitize($data->email));
+		$email = str_replace('(@)', '@', sanitize($body['email']));
 
-		$response['status'] = 'success';
-		if ((get_count($mysql, "users WHERE email = ?", [sanitize($clean_email)]) > 0) && $email != $old_email)
-			$response['status'] = 'error_email_taken';
+		$data['status'] = 'success';
+		if ((get_count($mysql, "users WHERE email = ?", [sanitize($clean_email)]) > 0) && $email != $old_email) {
+			$data['status'] = 'error_email_taken';
+        }
 
-		if ($response['status']=='success')
-			$response = execute_mysql($mysql, "UPDATE users SET email = ?, semester = ?, course_id = ? WHERE user_id = ?", [$email, $data->semester, $data->course_id, $user_id]);
+		if ($response['status'] == 'success') {
+			$data = executeMysql($mysql, "UPDATE users SET email = ?, semester = ?, course_id = ? WHERE user_id = ?", [$email, $body['semester'], $body['course_id'], $user_id]);
+        }
 
-		$current_password_length = strlen($data->current_password);
-		$new_password_length = strlen($data->password);
+		$current_password_length = strlen($body['current_password']);
+		$new_password_length = strlen($body['password']);
 
 		if ($current_password_length > 0) {
 			if ($new_password_length > 6) {
 
-			    $entered_pass = generate_hash($data->current_password, $old_hash_pw);
-			    $entered_pass_new = generate_hash($data->password, $old_hash_pw);
-				
+			    $entered_pass = generate_hash($body['current_password'], $old_hash_pw);
+			    $entered_pass_new = generate_hash($body['password'], $old_hash_pw);
+
 			    if ($entered_pass != $old_hash_pw)
-			        $response['status'] = 'error_incorrect_password';
+			        $data['status'] = 'error_incorrect_password';
 
 			    if ($entered_pass_new == $old_hash_pw)
-			        $response['status'] = 'error_same_passwords';
+			        $data['status'] = 'error_same_passwords';
 
 			    if ($response['status'] == 'success') {
-			    	$secure_pass = generate_hash($data->password);
-			    	$response = execute_mysql($mysql, "UPDATE users SET password = ? WHERE user_id = ?", [$secure_pass, $user_id], null);
+			    	$secure_pass = generate_hash($body['password']);
+			    	$data = executeMysql($mysql, "UPDATE users SET password = ? WHERE user_id = ?", [$secure_pass, $user_id], null);
 			    }
 			} else {
-				$response['status'] = 'error_password_length';
+				$data['status'] = 'error_password_length';
 			}
 		}
 
-		print_response($app, $response, false);
+		return createResponse($response, $data, false);
 	});
 
-	$app->put('/:user_id/settings', function($user_id) use ($app) {
-		$data = json_decode($app->request()->getBody());
+	$this->put('/{user_id}/settings', function($request, $response, $args) {
+		$body =  $request->getParsedBody();
 
-		$mysql = start_mysql();
-		$response = execute_mysql($mysql, "UPDATE users SET highlightExams = ?, showComments = ?, repetitionValue = ?, useAnswers = ?, useTags = ? WHERE user_id = ?", [$data->highlightExams, $data->showComments, $data->repetitionValue, $data->useAnswers, $data->useTags, $user_id]);
-		print_response($app, $response);
+		$mysql = startMysql();
+		$data = executeMysql($mysql, "UPDATE users SET highlightExams = ?, showComments = ?, repetitionValue = ?, useAnswers = ?, useTags = ? WHERE user_id = ?", [$body['highlightExams'], $body['showComments'], $body['repetitionValue'], $body['useAnswers'], $body['useTags'], $args['user_id']]);
+		return createResponse($response, $data);
 	});
 
-	$app->put('/:user_id/group', function($user_id) use ($app) {
-		$data = json_decode($app->request()->getBody());
+	$this->put('/{user_id}/group', function($request, $response, $args) {
+		$body =  $request->getParsedBody();
 
-		$mysql = start_mysql();
-		$response = execute_mysql($mysql, "UPDATE users SET group_id = ? WHERE user_id = ?", [$data->group_id, $user_id]);
-		print_response($app, $response);
+		$mysql = startMysql();
+		$data = executeMysql($mysql, "UPDATE users SET group_id = ? WHERE user_id = ?", [$body['group_id'], $args['user_id']]);
+
+		return createResponse($response, $data);
 	});
 
-	$app->delete('/test-account', function() use ($app) {
-		$mysql = start_mysql();
-		$response = execute_mysql($mysql, "DELETE FROM users WHERE email = 'siasola@gmail.com'", []);
-		print_response($app, $response);
+	$this->delete('/test-account', function($request, $response, $args) {
+		$mysql = startMysql();
+		$data = executeMysql($mysql, "DELETE FROM users WHERE email = 'siasola@gmail.com'", []);
+
+		return createResponse($response, $data);
 	});
 
 
-	$app->group('/password', function () use ($app) {
+	$this->group('/password', function() {
 
-		$app->post('/reset', function() use ($app) {
-			$mysql = start_mysql();
-			$data = json_decode($app->request()->getBody());
-			$email = str_replace('(@)', '@', $data->email);
+		$this->post('/reset', function($request, $response, $args) {
+			$mysql = startMysql();
+			$body =  $request->getParsedBody();
+			$email = str_replace('(@)', '@', $body['email']);
 
 			if (get_count($mysql, "users WHERE email = ?", [sanitize($email)]) == 0)
-				$response['status'] = 'error_email';
+				$data['status'] = 'error_email';
 
 			if (count($response) == 0) {
 			    $userdetails = fetch_user_details_by_mail($mysql, $email);
@@ -229,24 +236,24 @@ $app->group('/users', function () use ($app) {
 			        send_template_mail('lost-password-request.html', $email, 'Neues Passwort I', $hooks);
 
 			        flag_lostpassword_request($mysql, $userdetails['username'], 1);
-			        $response['status'] = 'success';
+			        $data['status'] = 'success';
 			    }
 			}
 
-			print_response($app, $response, false);
+			return createResponse($response, $data, false);
 		});
 
-		$app->post('/confirm', function() use ($app) {
-			$mysql = start_mysql();
-			$data = json_decode($app->request()->getBody());
+		$this->post('/confirm', function($request, $response, $args) {
+			$mysql = startMysql();
+			$body =  $request->getParsedBody();
 
-			if($data->token == "" || !validate_activation_token($mysql, $data->token, TRUE)) {
-				$response['status'] = 'error_token';
+			if($body['token'] == '' || !validate_activation_token($mysql, $body['token'], TRUE)) {
+				$data['status'] = 'error_token';
 
 			} else {
 				$rand_pass = get_unique_code(15);
 				$secure_pass = generate_hash($rand_pass);
-				$userdetails = fetch_user_details_by_token($mysql, $data->token);
+				$userdetails = fetch_user_details_by_token($mysql, $body['token']);
 
 				//Setup our custom hooks
 				$hooks = ["searchStrs" => ["#GENERATED-PASS#","#USERNAME#"], "subjectStrs" => [$rand_pass, $userdetails['username']]];
@@ -254,33 +261,33 @@ $app->group('/users', function () use ($app) {
 				send_template_mail('your-lost-password.html', $userdetails['email'], 'Neues Passwort II', $hooks);
 
 				$new_activation_token = generate_activation_token($mysql);
-				$response = execute_mysql($mysql, "UPDATE users SET password = ?, activationtoken = ? WHERE activationtoken = ?", [$secure_pass, $new_activation_token, sanitize($data->token)]);
+				$data = executeMysql($mysql, "UPDATE users SET password = ?, activationtoken = ? WHERE activationtoken = ?", [$secure_pass, $new_activation_token, sanitize($body['token'])]);
 
 				flag_lostpassword_request($mysql, $userdetails["username_clean"], 0);
-				$response['mail'] = $userdetails;
-				$response['status'] = 'success';
+				$data['mail'] = $userdetails;
+				$data['status'] = 'success';
 			}
 
-			print_response($app, $response, false);
+			return createResponse($response, $data, false);
 		});
 
-		$app->post('/deny', function() use ($app) {
-			$mysql = start_mysql();
-			$data = json_decode($app->request()->getBody());
-			
-			if ($data->token == "" || !validate_activation_token($mysql, $data->token, TRUE)) {
-				$response['status'] = 'error_token';
+		$this->post('/deny', function($request, $response, $args) {
+			$mysql = startMysql();
+			$body =  $request->getParsedBody();
+
+			if ($body['token'] == '' || !validate_activation_token($mysql, $body['token'], TRUE)) {
+				$data['status'] = 'error_token';
 
 			} else {
-				$userdetails = fetch_user_details($mysql, NULL, $data->token);
+				$userdetails = fetch_user_details($mysql, NULL, $body['token']);
 				flag_lostpassword_request($mysql, $userdetails['username_clean'], 0);
 
-				$response['status'] = 'success';
+				$data['status'] = 'success';
 			}
 
-			print_response($app, $response, false);
+			return createResponse($response, $data, false);
 		});
 	});
 });
-  
+
 ?>

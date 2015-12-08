@@ -46,7 +46,7 @@ class ForgotPasswordController {
         }, true);
     }
 
-    reset_password() {
+    resetPassword() {
         let validate = true;
         if (!this.user) {
             validate = false;
