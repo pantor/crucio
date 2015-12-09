@@ -119,14 +119,14 @@ class QuestionsController {
             }
 
             this.questions_by_tag = {};
-            for (const distinct_tag of this.distinct_tags) {
-                this.questions_by_tag[distinct_tag] = [];
+            for (const distinctTag of this.distinct_tags) {
+                this.questions_by_tag[distinctTag] = [];
             }
-            for (const distinct_tag of this.distinct_tags) {
+            for (const distinctTag of this.distinct_tags) {
                 for (const entry of this.tags) {
                     for (const tagText of entry.tags.split(',')) {
-                        if (distinct_tag == tagText) {
-                            this.questions_by_tag[distinct_tag].push(entry);
+                        if (distinctTag == tagText) {
+                            this.questions_by_tag[distinctTag].push(entry);
                         }
                     }
                 }

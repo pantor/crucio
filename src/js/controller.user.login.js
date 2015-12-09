@@ -1,8 +1,9 @@
 class LoginController {
-    constructor(Auth, Page, API, $scope) {
+    constructor(Auth, Page, API, $scope, $document) {
         this.Page = Page;
         this.Auth = Auth;
         this.API = API;
+        this.$document = $document;
 
         this.user = this.Auth.tryGetUser();
 
@@ -38,6 +39,10 @@ class LoginController {
                 this.login_error = true;
             }
         });
+    }
+
+    scrollToFeatures() {
+        this.$document.scrollTopAnimated(1050, 600);
     }
 }
 

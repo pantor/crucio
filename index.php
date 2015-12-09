@@ -4,22 +4,11 @@
     <head>
         <title>Crucio | Fachschaft Medizin Leipzig</title>
         <?php include('parts/header.php'); ?>
-
-        <!-- Smooth Scrollling-->
-        <script>
-        $(function() { $('a[href*=#]:not([href=#])').click(function() {
-            if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
-                var target = $(this.hash);
-                target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
-                if (target.length) { $('html,body').animate({ scrollTop: target.offset().top }, 400); return false; }
-            }
-        }); });
-        </script>
     </head>
 
-    <body class="body">
+    <body class="body" ng-controller="LoginController as ctrl">
         <div class="wrap">
-            <div class="container-top-bar" ng-controller="LoginController as ctrl" style="margin-bottom: 0px;">
+            <div class="container-top-bar" style="margin-bottom: 0px;">
                 <div class="container">
                     <form class="row" ng-submit="ctrl.login()">
                         <div class="col-md-4 col-md-offset-1">
@@ -66,40 +55,39 @@
                         </p>
 
                         <a class="btn btn-lg" href="register" target="_self">Registrieren</a>
-                        <a class="btn btn-lg" href="#more" target="_self">Mehr Infos</a>
+                        <a class="btn btn-lg" ng-click="ctrl.scrollToFeatures()">Mehr Infos</a>
                     </div>
                 </div>
 
-                <img src="public/images/med_3x.png" class="center-block img-responsive image-med-exam">
+                <img src="public/images/med_3x.png" class="center-block img-responsive image-med-exam" alt="Klausuren lernen">
             </div>
 
             <div class="container-light-grey container-padding-2">
                 <div class="sturamed">
-                  <p>Crucio - Ein Projekt eures</p>
-                  <a href="http://www.sturamed-leipzig.de"><img src="public/images/sturamed.svg" width="245px"></a>
+                    <p>Crucio - Ein Projekt eures</p>
+                    <a href="http://www.sturamed-leipzig.de"><img src="public/images/sturamed.svg" width="245px" alt="Sturamed Leipzig"></a>
                 </div>
             </div>
 
-            <a name="more"></a>
             <div class="container container-padding-6">
                 <div class="row">
-                <div class="col-sm-4 info-block-crucio">
-                    <i class="fa fa-book"></i>
-                    <h2>Lernen</h2>
-                    <p>Mit Crucio kannst du Fragen & &Uuml;bungsklausuren anschauen, lernen, wiederholen und erkl&auml;ren lassen. Hier sind alle Fragen, die bisher an der Uni Leipzig gesammelt wurden, vereint. Damit sind die Fragen mit dem Studium in Leipzig abgestimmt, sodass du perfekt f&uuml;r die n&auml;chsten Klausuren vorbereitet bist.</p>
-                </div>
+                    <div class="col-sm-4 info-block-crucio">
+                        <i class="fa fa-book"></i>
+                        <h2>Lernen</h2>
+                        <p>Mit Crucio kannst du Fragen & &Uuml;bungsklausuren anschauen, lernen, wiederholen und erkl&auml;ren lassen. Hier sind alle Fragen, die bisher an der Uni Leipzig gesammelt wurden, vereint. Damit sind die Fragen mit dem Studium in Leipzig abgestimmt, sodass du perfekt f&uuml;r die n&auml;chsten Klausuren vorbereitet bist.</p>
+                    </div>
 
-                <div class="col-sm-4 info-block-crucio">
-                    <i class="fa fa-inbox"></i>
-                    <h2>&Uuml;bersicht</h2>
-                    <p>Crucio ist ein zentraler Ort f&uuml;r Fragen und &Uuml;bungsklausuren an & von der Universit&auml;t Leipzig. Die &Uuml;bungsklausuren sind automatisch nach deinem Semester sortiert, du kannst aber nat&uuml;rlich nach Fachbereich oder einzelnen Fragen suchen. So kannst du dir deine Zeit und Nerven f&uuml;r Inhalte aufheben.</p>
-                </div>
+                    <div class="col-sm-4 info-block-crucio">
+                        <i class="fa fa-inbox"></i>
+                        <h2>&Uuml;bersicht</h2>
+                        <p>Crucio ist ein zentraler Ort f&uuml;r Fragen und &Uuml;bungsklausuren an & von der Universit&auml;t Leipzig. Die &Uuml;bungsklausuren sind automatisch nach deinem Semester sortiert, du kannst aber nat&uuml;rlich nach Fachbereich oder einzelnen Fragen suchen. So kannst du dir deine Zeit und Nerven f&uuml;r Inhalte aufheben.</p>
+                    </div>
 
-                <div class="col-sm-4 info-block-crucio">
-                    <i class="fa fa-bar-chart-o"></i>
-                    <h2>Statistik</h2>
-                    <p>Mit Crucio kannst du genau analysieren, welche Fragen aus welchem Fachbereich du richtig oder falsch gel&ouml;st hast. Oder wo deine Schwachpunkte bei einer bestimmten Klausur sind, damit es beim n&auml;chsten Mal umso besser klappt. <br><small>Noch nicht verf&uuml;gbar.</small></p>
-                </div>
+                    <div class="col-sm-4 info-block-crucio">
+                        <i class="fa fa-bar-chart-o"></i>
+                        <h2>Statistik</h2>
+                        <p>Mit Crucio kannst du genau analysieren, welche Fragen aus welchem Fachbereich du richtig oder falsch gel&ouml;st hast. Oder wo deine Schwachpunkte bei einer bestimmten Klausur sind, damit es beim n&auml;chsten Mal umso besser klappt. <br><small>Noch nicht verf&uuml;gbar.</small></p>
+                    </div>
                 </div>
             </div>
 
@@ -112,22 +100,22 @@
 
             <div class="container container-padding-6">
                 <div class="row">
-                <div class="col-sm-4 info-block-crucio">
-                    <i class="fa fa-comments-o"></i>
-                    <h2>Austauschen</h2>
-                    <p>Wenn du Schwierigkeiten hast und eine Frage nicht verstehst, kannst du einfach die Kommentarfunktion auf Crucio nutzen. Die Autoren oder freundliche Kommilitonen k&ouml;nnen dann sicher weiterhelfen...</p>
-                </div>
+                    <div class="col-sm-4 info-block-crucio">
+                        <i class="fa fa-comments-o"></i>
+                        <h2>Austauschen</h2>
+                        <p>Wenn du Schwierigkeiten hast und eine Frage nicht verstehst, kannst du einfach die Kommentarfunktion auf Crucio nutzen. Die Autoren oder freundliche Kommilitonen k&ouml;nnen dann sicher weiterhelfen...</p>
+                    </div>
 
-                <div class="col-sm-4 info-block-crucio">
-                    <i class="fa fa-car"></i>
-                    <h2>&Uuml;berall</h2>
-                    <p>Du kannst Klausuren und deren L&ouml;sungszettel seperat ausdrucken. Au&szlig;erdem ist Crucio f&uuml;r Smartphones und Tablets angepasst. So kannst du &uuml;berall entfallende Antworten nachschauen oder unterwegs weiterlernen. F&uuml;ge doch Crucio zu deinem Startbildschirm hinzu!</p>
-                </div>
+                    <div class="col-sm-4 info-block-crucio">
+                        <i class="fa fa-car"></i>
+                        <h2>&Uuml;berall</h2>
+                        <p>Du kannst Klausuren und deren L&ouml;sungszettel seperat ausdrucken. Au&szlig;erdem ist Crucio f&uuml;r Smartphones und Tablets angepasst. So kannst du &uuml;berall entfallende Antworten nachschauen oder unterwegs weiterlernen. F&uuml;ge doch Crucio zu deinem Startbildschirm hinzu!</p>
+                    </div>
 
-                <div class="col-sm-4 info-block-crucio">
-                    <i class="fa fa-pencil"></i>
-                    <h2>Mitmachen</h2>
-                    <p>Crucio lebt von deiner Anteilnahme! Wenn du dich engagieren willst, kannst du Fragen & Klausuren eintragen, Fehler korrigieren oder Erkl&auml;rungen schreiben. Melde dich einfach digital unter 'Kontakt' oder bei uns in der Fachschaft Medizin.</p>
+                    <div class="col-sm-4 info-block-crucio">
+                        <i class="fa fa-pencil"></i>
+                        <h2>Mitmachen</h2>
+                        <p>Crucio lebt von deiner Anteilnahme! Wenn du dich engagieren willst, kannst du Fragen & Klausuren eintragen, Fehler korrigieren oder Erkl&auml;rungen schreiben. Melde dich einfach digital unter 'Kontakt' oder bei uns in der Fachschaft Medizin.</p>
                     </div>
                 </div>
             </div>

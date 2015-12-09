@@ -21,16 +21,16 @@ class AdminController {
                 for (const comments of this.questions_by_comment) {
                     for (const comment of comments) {
                         if (this.Selection.isElementIncluded(comment, newValue)) { // Check if comment satisfies search query
-                            let found_idx = -1;
+                            let foundIdx = -1;
                             for (let j = 0; j < this.questions_by_comment_display.length; j++) {
                                 if (this.questions_by_comment_display[j][0].question == comment.question) {
-                                    found_idx = j;
+                                    foundIdx = j;
                                     break;
                                 }
                             }
 
-                            if (found_idx > -1) { // Add to array at found index
-                                this.questions_by_comment_display[found_idx].push(comment);
+                            if (foundIdx > -1) { // Add to array at found index
+                                this.questions_by_comment_display[foundIdx].push(comment);
                             } else { // Create new array
                                 this.questions_by_comment_display.push([comment]);
                             }
@@ -102,46 +102,46 @@ class AdminController {
     }
 
     changeGroup(index) {
-        const user_id = this.users[index].user_id;
-        let group_id = this.users[index].group_id;
+        const userId = this.users[index].user_id;
+        let groupId = this.users[index].group_id;
 
-        if (user_id == 1) {
+        if (userId == 1) {
             return false;
         }
 
-        if (group_id == 2) {
-            group_id = 1;
+        if (groupId == 2) {
+            groupId = 1;
             this.users[index].group_name = 'Standard';
-        } else if (group_id == 3) {
-            group_id = 2;
+        } else if (groupId == 3) {
+            groupId = 2;
             this.users[index].group_name = 'Admin';
         } else {
-            group_id = 3;
+            groupId = 3;
             this.users[index].group_name = 'Autor';
         }
 
-        const data = { 'group_id': group_id };
-        this.users[index].group_id = group_id;
-        this.API.put('users/' + user_id + '/group', data);
+        const data = { 'group_id': groupId };
+        this.users[index].group_id = groupId;
+        this.API.put('users/' + userId + '/group', data);
     }
 
-    isToday(date) {
+    isToday(dateString) {
         const today = new Date();
 
-        const date_c = new Date(date * 1000);
-        if (today.toDateString() == date_c.toDateString()) {
+        const date = new Date(dateString * 1000);
+        if (today.toDateString() == date.toDateString()) {
             return true;
         }
         return false;
     }
 
-    isYesterday(date) {
+    isYesterday(dateString) {
         const today = new Date();
         const diff = today - 1000 * 60 * 60 * 24;
         const yesterday = new Date(diff);
 
-        const date_c = new Date(date * 1000);
-        if (yesterday.toDateString() == date_c.toDateString()) {
+        const date = new Date(dateString * 1000);
+        if (yesterday.toDateString() == date.toDateString()) {
             return true;
         }
         return false;

@@ -79,6 +79,5 @@
         </div>
 
         <?php include('parts/scripts.php'); ?>
-        <?php include('parts/scripts.php'); ?>
     </body>
 </html>

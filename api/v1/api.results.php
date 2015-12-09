@@ -34,13 +34,13 @@ $app->group('/results', function() {
 
 	$this->delete('/{user_id}', function($request, $response, $args) {
 		$mysql = startMysql();
-		$data = executeMysql($mysql, "UPDATE results SET resetted = '1' WHERE user_id = ?", [$user_id]);
+		$data = executeMysql($mysql, "UPDATE results SET resetted = '1' WHERE user_id = ?", [$args['user_id']]);
 		return createResponse($response, $data);
 	});
 
 	$this->delete('/{user_id}/{exam_id}', function($request, $response, $args) {
 		$mysql = startMysql();
-		$data = executeMysql($mysql, "UPDATE results r, questions q SET r.resetted = '1' WHERE r.question_id = q.question_id AND q.exam_id = ? AND r.user_id = ?", [$exam_id, $user_id]);
+		$data = executeMysql($mysql, "UPDATE results r, questions q SET r.resetted = '1' WHERE r.question_id = q.question_id AND q.exam_id = ? AND r.user_id = ?", [$args['exam_id'], $args['user_id']]);
 		return createResponse($response, $data);
 	});
 });

@@ -3,18 +3,6 @@
     <head>
         <title>Kontakt | Crucio</title>
         <?php include('parts/header.php'); ?>
-
-        <script type="text/ng-template" id="myModalContent.html">
-            <div class="modal-header">
-              <h4 class="modal-title" id="myModalLabel">Nachricht abgeschickt.</h4>
-            </div>
-            <div class="modal-body">
-              <p><i class="fa fa-check"></i> Danke f&uuml;r deine Nachricht. Wir k&uuml;mmern uns so schnell es geht.</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-success" ng-click="$close()">Schlie&szlig;en</button>
-            </div>
-        </script>
     </head>
 
     <body class="body" ng-controller="ContactController as ctrl">
@@ -97,5 +85,17 @@
 
         <?php include('parts/footer.php'); ?>
         <?php include('parts/scripts.php'); ?>
+
+        <script type="text/ng-template" id="myModalContent.html">
+            <div class="modal-header">
+              <h4 class="modal-title" id="myModalLabel">Nachricht abgeschickt.</h4>
+            </div>
+            <div class="modal-body">
+              <p><i class="fa fa-check"></i> Danke f&uuml;r deine Nachricht. Wir k&uuml;mmern uns so schnell es geht.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-success" ng-click="$close()">Schlie&szlig;en</button>
+            </div>
+        </script>
     </body>
 </html>

@@ -103,10 +103,10 @@ class EditController {
     }
 
     deleteQuestion(index) {
-        const question_id = this.exam.questions[index].question_id;
+        const questionId = this.exam.questions[index].question_id;
 
-        if (question_id) {
-            this.API.delete('questions/' + question_id);
+        if (questionId) {
+            this.API.delete('questions/' + questionId);
         }
 
         this.exam.questions.splice(index, 1);
@@ -139,8 +139,8 @@ class EditController {
         if (validate) {
             this.is_saving = 1;
 
-            const exam_data = this.exam;
-            this.API.put('exams/' + this.exam_id, exam_data);
+            const examData = this.exam;
+            this.API.put('exams/' + this.exam_id, examData);
 
             for (const question of this.exam.questions) {
                 let validateQuestion = true;

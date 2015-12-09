@@ -27,12 +27,12 @@ class HelpController {
     sendMail() {
         const text = this.text;
 
-        let validation_passed = 1;
+        let validationPassed = 1;
         if (this.text.length === 0) {
-            validation_passed = 0;
+            validationPassed = 0;
         }
 
-        if (validation_passed) {
+        if (validationPassed) {
             this.is_working = true;
 
             if (this.question_id) {

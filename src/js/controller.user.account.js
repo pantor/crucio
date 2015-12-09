@@ -37,7 +37,7 @@ class AccountController {
         }, true);
     }
 
-    save_user() {
+    saveUser() {
         let validate = true;
         if (!this.Validate.email(this.user.email)) {
             validate = false;

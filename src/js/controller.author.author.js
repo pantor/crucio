@@ -20,16 +20,16 @@ class AuthorController {
                 for (const comments of this.questions_by_comment) {
                     for (const comment of comments) {
                         if (this.Selection.isElementIncluded(comment, newValue)) { // Check if comment satisfies search query
-                            let found_idx = -1;
+                            let foundIdx = -1;
                             for (let j = 0; j < this.questions_by_comment_display.length; j++) {
                                 if (this.questions_by_comment_display[j][0].question == comment.question) {
-                                    found_idx = j;
+                                    foundIdx = j;
                                     break;
                                 }
                             }
 
-                            if (found_idx > -1) { // Add to array at found index
-                                this.questions_by_comment_display[found_idx].push(comment);
+                            if (foundIdx > -1) { // Add to array at found index
+                                this.questions_by_comment_display[foundIdx].push(comment);
                             } else { // Create new array
                                 this.questions_by_comment_display.push([comment]);
                             }

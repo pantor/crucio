@@ -99,10 +99,10 @@ class QuestionController {
 
     // If show solution button is clicked
     show_solution() {
-        const correct_answer = this.correct_answer();
-        let correct = (correct_answer == this.given_result) ? 1 : 0;
+        const correctAnswer = this.correct_answer();
+        let correct = (correctAnswer == this.given_result) ? 1 : 0;
 
-        if (correct_answer === 0) {
+        if (correctAnswer === 0) {
             correct = -1;
         }
 
@@ -129,12 +129,12 @@ class QuestionController {
     }
 
     // Saves the answer
-    save_answer(given_answer) {
-        this.given_result = given_answer;
+    save_answer(givenAnswer) {
+        this.given_result = givenAnswer;
 
         if (this.questionList) {
             if (Object.keys(this.questionList).length) {
-                this.questionList.list[this.index].given_result = given_answer;
+                this.questionList.list[this.index].given_result = givenAnswer;
                 sessionStorage.currentQuestionList = angular.toJson(this.questionList);
             }
         }
@@ -151,19 +151,19 @@ class QuestionController {
     }
 
     // Colors the given answers and shows the correct solution
-    mark_answer(given_answer) {
+    mark_answer(givenAnswer) {
         this.mark_answer_free = true;
         const type = this.question.type;
-        const correct_answer = this.correct_answer();
+        const correctAnswer = this.correct_answer();
         if (type > 1) {
-            this.check_answer(given_answer);
+            this.check_answer(givenAnswer);
 
-            if (given_answer == correct_answer) {
-                this.correctAnswer = given_answer;
+            if (givenAnswer == correctAnswer) {
+                this.correctAnswer = givenAnswer;
                 this.answerButtonClass = 'btn-success';
             } else {
-                this.wrongAnswer = given_answer;
-                this.correctAnswer = correct_answer;
+                this.wrongAnswer = givenAnswer;
+                this.correctAnswer = correctAnswer;
                 this.answerButtonClass = 'btn-danger';
             }
         } else if (type == 1) {
@@ -184,22 +184,22 @@ class QuestionController {
     }
 
     delete_comment(index) {
-        const comment_id = this.question.comments[index].comment_id;
-        this.API.delete('comments/' + comment_id);
+        const commentId = this.question.comments[index].comment_id;
+        this.API.delete('comments/' + commentId);
         this.question.comments.splice(index, 1);
     }
 
-    increase_user_voting(current_user_voting, comment_id) {
-        const result = Math.min(current_user_voting + 1, 1);
+    increase_user_voting(currentUserVoting, commentId) {
+        const result = Math.min(currentUserVoting + 1, 1);
         const data = { 'user_voting': result };
-        this.API.post('comments/' + comment_id + '/user/' + this.user.user_id, data);
+        this.API.post('comments/' + commentId + '/user/' + this.user.user_id, data);
         return result;
     }
 
-    decrease_user_voting(current_user_voting, comment_id) {
-        const result = Math.max(current_user_voting - 1, -1);
+    decrease_user_voting(currentUserVoting, commentId) {
+        const result = Math.max(currentUserVoting - 1, -1);
         const data = { 'user_voting': result };
-        this.API.post('comments/' + comment_id + '/user/' + this.user.user_id, data);
+        this.API.post('comments/' + commentId + '/user/' + this.user.user_id, data);
         return result;
     }
 
