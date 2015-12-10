@@ -94,38 +94,38 @@ $app->group('/stats', function() {
 		$activities = [];
 
 		if (!$body->search_query) {
-			$result = get_all($mysql, "SELECT 'search_query' activity, s.*, u.username FROM search_queries s, users u WHERE s.user_id = u.user_id ORDER BY s.date DESC LIMIT 100", [], 'search_query');
-			$activities = array_merge($activities, $result['search_query']);
+			$result = get_all($mysql, "SELECT 'search_query' activity, s.*, u.username FROM search_queries s, users u WHERE s.user_id = u.user_id ORDER BY s.date DESC LIMIT 100", []);
+			$activities = array_merge($activities, $result['result']);
 		}
 
 		if (!$body->result) {
-			$result = get_all($mysql, "SELECT 'result' activity, r.*, q.*, u.username FROM results r, users u, questions q WHERE r.user_id = u.user_id AND r.question_id = q.question_id ORDER BY r.date DESC LIMIT 100", [], 'result');
+			$result = get_all($mysql, "SELECT 'result' activity, r.*, q.*, u.username FROM results r, users u, questions q WHERE r.user_id = u.user_id AND r.question_id = q.question_id ORDER BY r.date DESC LIMIT 100", []);
 			$activities = array_merge($activities, $result['result']);
 		}
 
 		if (!$body->register) {
-			$result = get_all($mysql, "SELECT 'register' activity, u.*, u.sign_up_date as date FROM users u ORDER BY u.sign_up_date DESC LIMIT 100", [], 'register');
-			$activities = array_merge($activities, $result['register']);
+			$result = get_all($mysql, "SELECT 'register' activity, u.*, u.sign_up_date as date FROM users u ORDER BY u.sign_up_date DESC LIMIT 100", []);
+			$activities = array_merge($activities, $result['result']);
 		}
 
 		if (!$body->login) {
-			$result = get_all($mysql, "SELECT 'login' activity, u.*, u.last_sign_in as date FROM users u ORDER BY u.last_sign_in DESC LIMIT 100", [], 'login');
-			$activities = array_merge($activities, $result['login']);
+			$result = get_all($mysql, "SELECT 'login' activity, u.*, u.last_sign_in as date FROM users u ORDER BY u.last_sign_in DESC LIMIT 100", []);
+			$activities = array_merge($activities, $result['result']);
 		}
 
 		if (!$body->comment) {
-			$result = get_all($mysql, "SELECT 'comment' activity, c.*, u.username FROM comments c, users u WHERE c.user_id = u.user_id ORDER BY c.date DESC LIMIT 100", [], 'comment');
-			$activities = array_merge($activities, $result['comment']);
+			$result = get_all($mysql, "SELECT 'comment' activity, c.*, u.username FROM comments c, users u WHERE c.user_id = u.user_id ORDER BY c.date DESC LIMIT 100", []);
+			$activities = array_merge($activities, $result['result']);
 		}
 
 		if (!$body->exam_new) {
-			$result = get_all($mysql, "SELECT 'exam_new' activity, e.*, e.date as year, e.date_added as date, u.username FROM exams e, users u WHERE e.user_id_added = u.user_id ORDER BY e.date_added DESC LIMIT 100", [], 'exam_new');
-			$activities = array_merge($activities, $result['exam_new']);
+			$result = get_all($mysql, "SELECT 'exam_new' activity, e.*, e.date as year, e.date_added as date, u.username FROM exams e, users u WHERE e.user_id_added = u.user_id ORDER BY e.date_added DESC LIMIT 100", []);
+			$activities = array_merge($activities, $result['result']);
 		}
 
 		if (!$body->exam_update) {
-			$result = get_all($mysql, "SELECT 'exam_update' activity, e.*, e.date as year, e.date_updated as date, u.username FROM exams e, users u WHERE e.user_id_added = u.user_id ORDER BY e.date_updated DESC LIMIT 100", [], 'exam_update');
-			$activities = array_merge($activities, $result['exam_update']);
+			$result = get_all($mysql, "SELECT 'exam_update' activity, e.*, e.date as year, e.date_updated as date, u.username FROM exams e, users u WHERE e.user_id_added = u.user_id ORDER BY e.date_updated DESC LIMIT 100", []);
+			$activities = array_merge($activities, $result['result']);
 		}
 
 		usort($activities, function($a, $b) {

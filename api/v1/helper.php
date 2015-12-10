@@ -129,7 +129,6 @@ function get_unique_code($length = "") {
     }
 }
 
-// Generate an activation key
 function generate_activation_token($mysql) {
 	$gen;
 	do {
