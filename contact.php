@@ -45,7 +45,7 @@
             </div>
 
             <div class="container container-register">
-                <div class="form-horizontal">
+                <form class="form-horizontal">
                     <div class="form-group">
                         <label class="col-sm-2">Name</label>
                         <div class="col-sm-6">
@@ -79,7 +79,7 @@
                             </button>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
 

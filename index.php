@@ -28,7 +28,7 @@
                         <div class="col-md-2">
                             <div class="form-group element has-feedback {{ ctrl.login_error ? 'has-error' : '' }}">
                                 <input class="form-control" ng-model="ctrl.password" type="password" placeholder="Passwort">
-                                <i class="fa fa-remove form-control-feedback" ng-show="ctrl.login_error" style="margin-top:9px;"></i>
+                                <i class="fa fa-remove form-control-feedback" ng-show="ctrl.login_error" style="margin-top:9px;" ng-cloak></i>
                                 <label for="passwordInput">
                                     <a href="forgot-password" target="_self">Passwort vergessen?</a>
                                 </label>

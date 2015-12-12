@@ -260,7 +260,7 @@ th {
     border: 1px solid #ddd !important;
   }
 }
-@font-face {
+/* @font-face {
   font-family: 'Glyphicons Halflings';
 
   src: url('../fonts/glyphicons-halflings-regular.eot');
@@ -1064,7 +1064,7 @@ th {
 }
 .glyphicon-menu-up:before {
   content: "\e260";
-}
+} */
 * {
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
@@ -4693,7 +4693,7 @@ fieldset[disabled] .navbar-inverse .btn-link:hover,
 fieldset[disabled] .navbar-inverse .btn-link:focus {
   color: #444;
 }
-.breadcrumb {
+/* .breadcrumb {
   padding: 8px 15px;
   margin-bottom: 20px;
   list-style: none;
@@ -4710,8 +4710,8 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 }
 .breadcrumb > .active {
   color: #777;
-}
-.pagination {
+} */
+/* .pagination {
   display: inline-block;
   padding-left: 0;
   margin: 20px 0;
@@ -4844,7 +4844,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   color: #777;
   cursor: not-allowed;
   background-color: #fff;
-}
+} */
 .label {
   display: inline;
   padding: .2em .6em .3em;
@@ -6237,7 +6237,7 @@ button.close {
   border-right-width: 0;
   border-left-color: #fff;
 }
-.carousel {
+/* .carousel {
   position: relative;
 }
 .carousel-inner {
@@ -6460,7 +6460,7 @@ button.close {
   .carousel-indicators {
     bottom: 20px;
   }
-}
+} */
 .clearfix:before,
 .clearfix:after,
 .dl-horizontal dd:before,

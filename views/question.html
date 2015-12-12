@@ -4,21 +4,9 @@
             <div class="col-md-9">
                 <blockquote>
                     <p>
-                        <a href data-toggle="modal" data-target="#myModal" ng-show="ctrl.question.question_image_url" ng-click="ctrl.open_image_model()">
+                        <a href data-toggle="modal" data-target="#myModal" ng-show="ctrl.question.question_image_url" ng-click="ctrl.openImageModal()">
                             <img class="img-thumbnail pull-right" width="250px" ng-src="http://www.crucio-leipzig.de/public/files/{{ ctrl.question.question_image_url }}">
                         </a>
-
-                        <script type="text/ng-template" id="imageModalContent.html">
-                            <div class="modal-header">
-                                <h4 class="modal-title" id="myModalLabel"><i class="fa fa-search"></i> Vergr&ouml;&szlig;erung</h4>
-                            </div>
-                            <div class="modal-body">
-                                <center><img class="img-thumbnail" ng-src="/files/{{ ctrl.image_url }}"></center>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-success" ng-click="$close()">Schlie&szlig;en</button>
-                            </div>
-                        </script>
 
                         <span ng-bind-html="ctrl.question.question | newlineToBr"></span>
 
@@ -32,7 +20,7 @@
                         <div class="btn-group pull-left hidden-xs" style="margin-left: -50px; margin-top:6px;">
                             <button type="button" class="btn btn-default btn-xs showme" ng-model="ctrl.strike[$index+1]" uib-btn-checkbox><i class="fa fa-fw fa-strikethrough"></i></button>
                         </div>
-                        <div class="radio" ng-click="ctrl.save_answer($index + 1)">
+                        <div class="radio" ng-click="ctrl.saveAnswer($index + 1)">
                             <label>
                                 <input type="radio" name="answers" ng-checked="ctrl.checked_answer==$index+1" ng-value="$index+1"/>
                                 <p class="question-answer {{ctrl.correctAnswer == $index + 1 ? 'text-success strong bg-success':''}} {{ctrl.wrongAnswer == $index+1 ? 'text-danger strong bg-danger':''}} {{ctrl.strike[$index + 1] == 1 && ctrl.correctAnswer != $index + 1? 'text-danger strike':''}}" ng- ng-bind-html="answer"></p>
@@ -93,7 +81,7 @@
                     <i class="fa fa-backward"></i>
                 </a>
 
-                <button class="btn mtop" ng-class="ctrl.answerButtonClass" ng-disabled="ctrl.answerButtonClass != 'btn-primary' || (ctrl.question.type==1 && ctrl.question.answers[0].length==0) || (ctrl.question.type>1 && question.correct_answer==0)" ng-click="ctrl.show_solution()">
+                <button class="btn mtop" ng-class="ctrl.answerButtonClass" ng-disabled="ctrl.answerButtonClass != 'btn-primary' || (ctrl.question.type == 1 && ctrl.question.answers[0].length == 0) || (ctrl.question.type>1 && question.correct_answer == 0)" ng-click="ctrl.showSolution()">
                     L&ouml;sung anzeigen
                 </button>
 
@@ -180,7 +168,7 @@
                                     <label><input id="subscriptCommentsCheckbox" type="checkbox"> Antworten per Mail</label>
                                 </div-->
                                 <br>
-                                <button class="btn btn-primary btn-block" ng-click="ctrl.add_comment()" ng-disabled="!ctrl.commentText">Kommentieren</button>
+                                <button class="btn btn-primary btn-block" ng-click="ctrl.addComment()" ng-disabled="!ctrl.commentText">Kommentieren</button>
                             </div>
                         </div>
                     </div>
@@ -193,14 +181,14 @@
                         <div class="row">
                             <div class="col-md-3 col-sm-3 col-xs-4">
                                 <div class="comment-voting pull-left">
-                                    <div><a ng-click="comment.user_voting = ctrl.increase_user_voting(comment.user_voting, comment.comment_id)" href>
+                                    <div><a ng-click="comment.user_voting = ctrl.increaseUserVoting(comment.user_voting, comment.comment_id)" href>
                                         <i class="fa fa-chevron-up text-muted" ng-class="comment.user_voting == '1' ? 'text-success' : ''"></i>
                                     </a></div>
 
                                     <div class="comment-voting-number"><small class="text-muted">{{ comment.voting + comment.user_voting }}</small></div>
 
                                     <div class="comment-voting-down">
-                                        <a ng-click="comment.user_voting = ctrl.decrease_user_voting(comment.user_voting, comment.comment_id)" href>
+                                        <a ng-click="comment.user_voting = ctrl.decreaseUserVoting(comment.user_voting, comment.comment_id)" href>
                                             <i class="fa fa-chevron-down text-muted" ng-class="comment.user_voting == '-1' ? 'text-danger' : ''"></i>
                                         </a>
                                     </div>
@@ -220,7 +208,7 @@
                             </div>
                             <div class="col-md-3 col-sm-4 col-xs-4" ng-if="ctrl.user.group_id == 2 || ctrl.user.user_id == comment.user_id">
                                 <div class="btn-group pull-right">
-                                    <button type="button" class="close" ng-click="ctrl.delete_comment($index)">&times;</button>
+                                    <button type="button" class="close" ng-click="ctrl.deleteComment($index)">&times;</button>
                                 </div>
                             </div>
                         </div>
@@ -230,3 +218,15 @@
         </div>
     </div>
 </div>
+
+<script type="text/ng-template" id="imageModalContent.html">
+    <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel"><i class="fa fa-search"></i> Vergr&ouml;&szlig;erung</h4>
+    </div>
+    <div class="modal-body">
+        <center><img class="img-thumbnail" ng-src="/files/{{ ctrl.image_url }}"></center>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-success" ng-click="$close()">Schlie&szlig;en</button>
+    </div>
+</script>

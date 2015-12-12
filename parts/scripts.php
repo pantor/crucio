@@ -1,25 +1,4 @@
-<script src="public/js/jquery.min.js"></script>
-<script src="public/js/bootstrap.min.js"></script>
-
-<script src="public/js/angular.min.js"></script>
-<script src="public/js/angular-route.min.js"></script>
-<script src="public/js/angular-cookies.min.js"></script>
-<script src="public/js/angular-sanitize.min.js"></script>
-<script src="public/js/angular-scroll.min.js"></script>
-<script src="public/js/angular-file-upload.min.js"></script>
-
-<script src="public/js/textAngular.min.js"></script>
-<script src="public/js/textAngularSetup.js"></script>
-<script src="public/js/ui-bootstrap-tpls.min.js"></script>
-<script src="public/js/loading-bar.min.js"></script>
-<script src="public/js/ng-tags-input.min.js"></script>
-
-<script src="public/js/rzslider.min.js"></script>
-<script src="public/js/Chart.min.js"></script>
-<script src="public/js/angles.js"></script>
-<script src="public/js/spin.min.js"></script>
-<script src="public/js/angular-spinner.min.js"></script>
-
+<script src="public/js/vendor.min.js"></script>
 <script src="public/js/crucio.min.js"></script>
 
 <script>

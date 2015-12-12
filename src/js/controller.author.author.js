@@ -85,7 +85,7 @@ class AuthorController {
         });
     }
 
-    new_exam() {
+    newExam() {
         const data = {
             'subject': '',
             'professor': '',
@@ -102,19 +102,19 @@ class AuthorController {
         });
     }
 
-    comment_in_selection(index) {
+    commentInSelection(index) {
         return this.Selection.isElementIncluded(this.comments[index], this.comment_search);
     }
 
-    comment_in_selection_count() {
+    commentInSelectionCount() {
         return this.Selection.count(this.comments, this.comment_search);
     }
 
-    exam_in_selection(index) {
+    examInSelection(index) {
         return this.Selection.isElementIncluded(this.exams[index], this.exam_search);
     }
 
-    exam_in_selection_count() {
+    examInSelectionCount() {
         return this.Selection.count(this.exams, this.exam_search);
     }
 }

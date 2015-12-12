@@ -1,6 +1,7 @@
 class ForgotPasswordController {
-    constructor(Auth, API, $location, $scope) {
+    constructor(Auth, API, $location, $scope, $uibModal) {
         this.API = API;
+        this.$uibModal = $uibModal;
 
         this.user = Auth.tryGetUser();
 
@@ -26,7 +27,16 @@ class ForgotPasswordController {
             const data = { 'token': this.confirm };
             this.API.post('users/password/confirm', data).success((result) => {
                 this.status = result.status;
-                $('#forgotConfirmModal').modal('show');
+                this.$uibModal.open({
+                    templateUrl: 'forgotConfirmModalContent.html',
+                    controller: 'ModalInstanceController',
+                    controllerAs: 'ctrl',
+                    resolve: {
+                        image_url: () => {
+                            return this.status;
+                        },
+                    },
+                });
             });
         }
 
@@ -36,7 +46,16 @@ class ForgotPasswordController {
             const data = { 'token': this.deny };
             API.post('users/password/deny', data).success((result) => {
                 this.status = result.status;
-                $('#forgotDenyModal').modal('show');
+                this.$uibModal.open({
+                    templateUrl: 'forgotDenyModalContent.html',
+                    controller: 'ModalInstanceController',
+                    controllerAs: 'ctrl',
+                    resolve: {
+                        image_url: () => {
+                            return this.status;
+                        },
+                    },
+                });
             });
         }
 
@@ -69,7 +88,9 @@ class ForgotPasswordController {
                     if (result.status == 'success') {
                         this.error_email = 0;
                         this.error_already_requested = 0;
-                        $('#forgotSucessModal').modal('show');
+                        this.$uibModal.open({
+                            templateUrl: 'forgotSucessModalContent.html',
+                        });
                     } else if (result.status == 'error_email') {
                         this.error_email = 1;
                     } else if (result.status == 'error_already_requested') {

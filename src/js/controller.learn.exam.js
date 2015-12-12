@@ -39,8 +39,8 @@ class ExamController {
         return (Math.abs(index + 1 - this.exam.question_count / 2) < 1) && (index > 3);
     }
 
-    saveAnswer(index, given_answer) {
-        this.questionList.list[index].given_result = String(given_answer);
+    saveAnswer(index, givenAnswer) {
+        this.questionList.list[index].given_result = String(givenAnswer);
     }
 
     scrollToTop() {

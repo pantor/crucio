@@ -76,11 +76,11 @@ class QuestionController {
             }
 
             if (this.given_result) {
-                this.check_answer(this.given_result);
+                this.checkAnswer(this.given_result);
             }
 
             if (this.show_answer) {
-                this.mark_answer(this.given_result);
+                this.markAnswer(this.given_result);
             }
         });
     }
@@ -98,8 +98,8 @@ class QuestionController {
     }
 
     // If show solution button is clicked
-    show_solution() {
-        const correctAnswer = this.correct_answer();
+    showSolution() {
+        const correctAnswer = this.correctAnswer();
         let correct = (correctAnswer == this.given_result) ? 1 : 0;
 
         if (correctAnswer === 0) {
@@ -125,11 +125,11 @@ class QuestionController {
             }
         }
 
-        this.mark_answer(this.given_result);
+        this.markAnswer(this.given_result);
     }
 
     // Saves the answer
-    save_answer(givenAnswer) {
+    saveAnswer(givenAnswer) {
         this.given_result = givenAnswer;
 
         if (this.questionList) {
@@ -141,22 +141,22 @@ class QuestionController {
     }
 
     // Checks the answer box
-    check_answer(answer) {
+    checkAnswer(answer) {
         this.checked_answer = answer;
     }
 
     // Returns correct answer
-    correct_answer() {
+    correctAnswer() {
         return this.question.correct_answer;
     }
 
     // Colors the given answers and shows the correct solution
-    mark_answer(givenAnswer) {
+    markAnswer(givenAnswer) {
         this.mark_answer_free = true;
         const type = this.question.type;
-        const correctAnswer = this.correct_answer();
+        const correctAnswer = this.correctAnswer();
         if (type > 1) {
-            this.check_answer(givenAnswer);
+            this.checkAnswer(givenAnswer);
 
             if (givenAnswer == correctAnswer) {
                 this.correctAnswer = givenAnswer;
@@ -171,7 +171,7 @@ class QuestionController {
         }
     }
 
-    add_comment() {
+    addComment() {
         const now = new Date() / 1000;
         const data = { 'comment': this.commentText, 'question_id': this.question_id, 'reply_to': 0, 'username': this.user.username, 'date': now };
         this.API.post('comments/' + this.user.user_id, data).success((result) => {
@@ -183,27 +183,27 @@ class QuestionController {
         });
     }
 
-    delete_comment(index) {
+    deleteComment(index) {
         const commentId = this.question.comments[index].comment_id;
         this.API.delete('comments/' + commentId);
         this.question.comments.splice(index, 1);
     }
 
-    increase_user_voting(currentUserVoting, commentId) {
+    increaseUserVoting(currentUserVoting, commentId) {
         const result = Math.min(currentUserVoting + 1, 1);
         const data = { 'user_voting': result };
         this.API.post('comments/' + commentId + '/user/' + this.user.user_id, data);
         return result;
     }
 
-    decrease_user_voting(currentUserVoting, commentId) {
+    decreaseUserVoting(currentUserVoting, commentId) {
         const result = Math.max(currentUserVoting - 1, -1);
         const data = { 'user_voting': result };
         this.API.post('comments/' + commentId + '/user/' + this.user.user_id, data);
         return result;
     }
 
-    open_image_model() {
+    openImageModal() {
         this.$uibModal.open({
             templateUrl: 'imageModalContent.html',
             controller: 'ModalInstanceController',

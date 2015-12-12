@@ -24,7 +24,6 @@ gulp.task('js', function () {
     return gulp.src(['src/js/crucio.js', 'src/js/**/*.js'])
         .pipe(eslint({
             globals: {
-                '$': true,
                 'angular': true,
                 'subject_list': true,
             },
@@ -35,7 +34,7 @@ gulp.task('js', function () {
                 'angular/document-service': 0,
                 'angular/log': 0,
                 'no-console': 1,
-                'camelcase': 0,
+                'camelcase': 1,
                 'no-loop-func' : 1,
                 'eqeqeq': 0,
                 'func-names': 0,
@@ -50,6 +49,19 @@ gulp.task('js', function () {
         .pipe(uglify({ mangle: false }))
         .pipe(rename({ suffix: '.min' }))
         .pipe(convertEncoding({ to: 'iso-8859-15' }))
+        .pipe(gulp.dest('public/js/'));
+});
+
+gulp.task('js-vendor', function () {
+    return gulp.src([
+        'src/js-vendor/spin.min.js',
+        'src/js-vendor/Chart.min.js',
+        'src/js-vendor/angular.min.js',
+        'src/js-vendor/textAngular.min.js',
+        'src/js-vendor/**/*.js',
+    ])
+        .pipe(concat('vendor.min.js'))
+        .pipe(uglify({ mangle: false }))
         .pipe(gulp.dest('public/js/'));
 });
 

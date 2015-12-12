@@ -5,72 +5,6 @@
         <?php include('parts/header.php'); ?>
     </head>
 
-    <div class="modal fade" id="forgotSucessModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">Passwort zur&uuml;cksetzen</h4>
-                </div>
-
-                <div class="modal-body">
-                    <p><i class="fa fa-check"></i> Wir werden dein Passwort zur&uuml;cksetzen. Schau mal in deinen Mail Account.</p>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Zur&uuml;ck</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="forgotConfirmModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">Neues Passwort</h4>
-                </div>
-
-                <div class="modal-body">
-                    <p ng-show="ctrl.status == 'success'">
-                        <i class="fa fa-check"></i> Wir haben dir ein neues Passwort zugeschickt. Schau mal in deinen Mail Account.
-                    </p>
-
-                    <p ng-show="ctrl.status == 'error_token'">
-                        <i class="fa fa-remove"></i> Da stimmt was nicht, irgendwie ist das nicht der richtige Schl&uuml;ssel.
-                    </p>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Zur&uuml;ck</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="forgotDenyModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">Doch kein neues Passwort...</h4>
-                </div>
-
-                <div class="modal-body">
-                    <p ng-show="ctrl.status == 'success'">
-                        <i class="fa fa-check"></i> Du hast die Anfage abgebrochen. Kein Problem.
-                    </p>
-
-                    <p ng-show="ctrl.status == 'error_token'">
-                        <i class="fa fa-remove"></i> Da stimmt was nicht, irgendwie ist das nicht der richtige Schl&uuml;ssel.
-                    </p>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Zur&uuml;ck</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <body class="body" ng-controller="ForgotPasswordController as ctrl">
         <div class="wrap">
             <div class="container-white container-top-bar">
@@ -137,5 +71,59 @@
 
         <?php include('parts/footer.php'); ?>
         <?php include('parts/scripts.php'); ?>
+
+        <script type="text/ng-template" id="forgotSucessModalContent.html">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Passwort zur&uuml;cksetzen</h4>
+            </div>
+
+            <div class="modal-body">
+                <p><i class="fa fa-check"></i> Wir werden dein Passwort zur&uuml;cksetzen. Schau mal in deinen Mail Account.</p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="$close()">Zur&uuml;ck</button>
+            </div>
+        </script>
+
+        <script type="text/ng-template" id="forgotConfirmModalContent.html">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Neues Passwort</h4>
+            </div>
+
+            <div class="modal-body">
+                <p ng-show="ctrl.image_url == 'success'">
+                    <i class="fa fa-check"></i> Wir haben dir ein neues Passwort zugeschickt. Schau mal in deinen Mail Account.
+                </p>
+
+                <p ng-show="ctrl.image_url == 'error_token'">
+                    <i class="fa fa-remove"></i> Da stimmt was nicht, irgendwie ist das nicht der richtige Schl&uuml;ssel.
+                </p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="$close()">Zur&uuml;ck</button>
+            </div>
+        </script>
+
+        <script type="text/ng-template" id="forgotDenyModalContent.html">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Doch kein neues Passwort...</h4>
+            </div>
+
+            <div class="modal-body">
+                <p ng-show="ctrl.image_url == 'success'">
+                    <i class="fa fa-check"></i> Du hast die Anfage abgebrochen. Kein Problem.
+                </p>
+
+                <p ng-show="ctrl.image_url == 'error_token'">
+                    <i class="fa fa-remove"></i> Da stimmt was nicht, irgendwie ist das nicht der richtige Schl&uuml;ssel.
+                </p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="$close()">Zur&uuml;ck</button>
+            </div>
+        </script>
     </body>
 </html>

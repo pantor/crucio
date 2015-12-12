@@ -1,5 +1,5 @@
 class AnalysisController {
-    constructor(Page, Auth, API) {
+    constructor(Page, Auth, API, Analysis) {
         this.API = API;
 
         Page.setTitleAndNav('Analyse | Crucio', 'Lernen');
@@ -34,16 +34,6 @@ class AnalysisController {
             }
         }
 
-        function getArrayByKey(array, name) {
-            const result = [];
-            for (const e of array) {
-                if (e[name]) {
-                    result.push(e);
-                }
-            }
-            return result;
-        }
-
         this.get_random = function (min, max) {
             if (min > max) {
                 return -1;
@@ -61,46 +51,20 @@ class AnalysisController {
             return min + parseInt(r * (max - min + 1), 0);
         };
 
-        this.workedQuestionList = getArrayByKey(this.questionList.list, 'given_result');
-        this.exam_id = this.questionList.exam_id;
-
-        this.all_question_count = this.questionList.list.length;
-        this.worked_question_count = this.workedQuestionList.length;
-
-        this.correct_q_count = 0;
-        this.wrong_q_count = 0;
-        this.seen_q_count = 0;
-        this.solved_q_count = 0;
-        this.free_q_count = 0;
-        this.no_answer_q_count = 0;
-
         this.random = this.get_random(0, 1000);
 
-        for (const question2 of this.workedQuestionList) {
-            if (question2.correct_answer == question2.given_result && question2.given_result > 0 && question2.correct_answer > 0) {
-                this.correct_q_count++;
-            }
+        this.exam_id = this.questionList.exam_id;
+        this.workedQuestionList = Analysis.getWorkedQuestionList(this.questionList);
 
-            if (question2.correct_answer != question2.given_result && question2.given_result > 0 && question2.correct_answer > 0) {
-                this.wrong_q_count++;
-            }
-
-            if (question2.given_result > 0) {
-                this.solved_q_count++;
-            }
-
-            if (question2.given_result > -2) {
-                this.seen_q_count++;
-            }
-
-            if (question2.type == 1) {
-                this.free_q_count++;
-            }
-
-            if (question2.correct_answer === 0 && question2.type != 1) {
-                this.no_answer_q_count++;
-            }
-        }
+        const analysisResult = Analysis.analzyseQuestionList(this.workedQuestionList);
+        this.correct_q_count = analysisResult.correct_q_count;
+        this.wrong_q_count = analysisResult.wrong_q_count;
+        this.seen_q_count = analysisResult.seen_q_count;
+        this.solved_q_count = analysisResult.solved_q_count;
+        this.free_q_count = analysisResult.free_q_count;
+        this.no_answer_q_count = analysisResult.no_answer_q_count;
+        this.all_question_count = this.questionList.list.length;
+        this.worked_question_count = this.workedQuestionList.length;
 
         if (this.exam_id) {
             this.API.get('exams/' + this.exam_id).success((result) => {

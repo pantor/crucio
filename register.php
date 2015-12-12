@@ -6,24 +6,6 @@
     </head>
 
     <body class="body" ng-controller="RegisterController as ctrl">
-        <div class="modal fade" id="registerSucessModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="myModalLabel">Registrierung</h4>
-                    </div>
-
-                    <div class="modal-body">
-                        <p><i class="fa fa-check"></i> Du hast dich erfolgreich registriert. Schau mal in deinen Mail Account.</p>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Zur&uuml;ck</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="wrap">
             <div class="container-white">
                 <div class="container container-top-bar">
@@ -55,7 +37,7 @@
             </div>
 
             <div class="container container-register">
-                <div class="form-horizontal">
+                <form class="form-horizontal">
                     <div class="form-group">
                         <label class="col-sm-3 control-label">Name</label>
                         <div class="col-sm-4">
@@ -108,9 +90,11 @@
                         <div class="col-sm-4">
                             <input class="form-control span5" ng-model="ctrl.passwordc" type="password"/>
                         </div>
-                        <span class="label validation-error label-danger" id="passwordc-validation-error" ng-show="ctrl.password != ctrl.passwordc || ctrl.error_passwordc">Passwort nicht gleich</span>
+                        <span class="label validation-error label-danger" id="passwordc-validation-error" ng-show="ctrl.password != ctrl.passwordc || ctrl.error_passwordc">
+                            Passwort nicht gleich
+                        </span>
                     </div>
-                </div>
+                </form>
             </div>
 
             <div class="container-light-grey container-padding-4">
@@ -130,5 +114,19 @@
 
         <?php include('parts/footer.php'); ?>
         <?php include('parts/scripts.php'); ?>
+
+        <script type="text/ng-template" id="registerModalContent.html">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Registrierung</h4>
+            </div>
+
+            <div class="modal-body">
+                <p><i class="fa fa-check"></i> Du hast dich erfolgreich registriert. Schau mal in deinen Mail Account.</p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="$close()">Zur&uuml;ck</button>
+            </div>
+        </script>
     </body>
 </html>

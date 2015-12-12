@@ -1,7 +1,7 @@
 class ContactController {
-    constructor(Auth, API, $location, $scope, $modal) {
+    constructor(Auth, API, $location, $scope, $uibModal) {
         this.API = API;
-        this.$modal = $modal;
+        this.$uibModal = $uibModal;
 
         this.user = Auth.tryGetUser();
         this.text = '';
@@ -56,7 +56,7 @@ class ContactController {
     }
 
     open() {
-        this.$modal.open({ templateUrl: 'myModalContent.html' });
+        this.$uibModal.open({ templateUrl: 'myModalContent.html' });
     }
 }
 

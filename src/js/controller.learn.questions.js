@@ -229,9 +229,8 @@ class QuestionsController {
     searchQuestion() {
         this.search_results = [];
 
-        const query_question = this.question_search_query;
         this.question_field_message = '';
-        if (query_question.length) {
+        if (this.question_search_query.length) {
             this.show_spinner = true;
 
             const data = { 'query': this.question_search_query, 'visibility': 1, 'limit': 101 };

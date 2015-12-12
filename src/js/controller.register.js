@@ -1,9 +1,10 @@
 class RegisterController {
-    constructor(Auth, Page, API, Validate, $scope) {
+    constructor(Auth, Page, API, Validate, $scope, $uibModal) {
         this.Page = Page;
         this.Auth = Auth;
         this.API = API;
         this.Validate = Validate;
+        this.$uibModal = $uibModal;
 
         this.user = Auth.tryGetUser();
 
@@ -66,7 +67,9 @@ class RegisterController {
                 this.is_working = 0;
 
                 if (result.status == 'success') {
-                    $('#registerSucessModal').modal('show');
+                    this.$uibModal.open({
+                        templateUrl: 'registerModalContent.html',
+                    });
                 } else if (result.status == 'error_username_taken') {
                     this.error_duplicate_name = 1;
                 } else if (result.status == 'error_email_taken') {

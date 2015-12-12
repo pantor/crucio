@@ -8,6 +8,7 @@
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.3.13",
+    "bootstrap-sass": "^3.3.6",
     "eslint-config-airbnb": "^2.0.0",
     "eslint-config-angular": "^0.4.0",
     "eslint-plugin-angular": "^0.14.0",

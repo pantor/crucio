@@ -22,7 +22,7 @@
                         <div class="col-md-8 col-sm-8">
                             <div class="btn-toolbar" role="toolbar">
                                 <div class="btn-group mtop">
-                                    <a class="btn btn-success" id="newfeedform" ng-click="ctrl.new_exam()">Neue Klausur</a>
+                                    <a class="btn btn-success" id="newfeedform" ng-click="ctrl.newExam()">Neue Klausur</a>
                                 </div>
 
                                 <div class="btn-group mtop" uib-dropdown>
@@ -91,7 +91,7 @@
                         </thead>
 
                         <tbody>
-                            <tr ng-repeat="exam in ctrl.exams" ng-show="ctrl.exam_in_selection($index)">
+                            <tr ng-repeat="exam in ctrl.exams" ng-show="ctrl.examInSelection($index)">
                                 <td>
                                     <span ng-if="exam.visibility==0" class="label label-danger"><i class="fa fa-eye-slash"></i></span>
                                     <span ng-if="exam.visibility==1" class="label label-success"><i class="fa fa-eye"></i></span>
@@ -104,7 +104,7 @@
                                 <td><a href="edit-exam?id={{ exam.exam_id }}"><i class="fa fa-pencil"></i></a></td>
                             </tr>
 
-                            <tr class="search-sf" ng-show="ctrl.exam_in_selection_count() == 0"><td class="text-muted" colspan="6">Nichts gefunden.</td></tr>
+                            <tr class="search-sf" ng-show="ctrl.examInSelectionCount() == 0"><td class="text-muted" colspan="6">Nichts gefunden.</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -174,7 +174,7 @@
                             </tr>
                         </tbody>
 
-                        <tbody class="search-sf" ng-show="ctrl.comment_in_selection_count() == 0">
+                        <tbody class="search-sf" ng-show="ctrl.commentInSelectionCount() == 0">
                             <td class="text-muted" colspan="6">Nichts gefunden.</td>
                         </tbody>
                     </table>
