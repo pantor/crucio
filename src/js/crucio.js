@@ -26,7 +26,6 @@ angular.module('crucioApp', [
     'angular-loading-bar',
     'angularFileUpload',
     'angularSpinner',
-    // 'angular-google-analytics',
     'textAngular',
     'angles',
     'rzModule',
@@ -58,6 +57,8 @@ angular.module('crucioApp', [
 
         // use the HTML5 History API
         $locationProvider.html5Mode(true);
+
+        // $compileProvider.debugInfoEnabled(false);
     })
 
     .run(function (Auth, $location, $window) {

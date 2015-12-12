@@ -29,7 +29,7 @@
                             </div>
 
                             <div class="btn-group pull-right" role="group">
-                                <button type="button" class="btn btn-danger" ng-click="ctrl.hand_exam()">Klausur abgeben</button>
+                                <button type="button" class="btn btn-danger" ng-click="ctrl.handExam()">Klausur abgeben</button>
                             </div>
                         </div>
                     </li>
@@ -42,7 +42,7 @@
                 <div class="form-horizontal" id="id{{ $index }}">
                     <blockquote>
                         <p>
-                            <a href data-toggle="modal" data-target="#myModal" ng-show="q.question_image_url" ng-click="ctrl.open_image_model(q.question_image_url)">
+                            <a href data-toggle="modal" data-target="#myModal" ng-show="q.question_image_url" ng-click="ctrl.openImageModal(q.question_image_url)">
                                 <img class="img-thumbnail pull-right" width="250px" ng-src="/files/{{ q.question_image_url }}">
                             </a>
 
@@ -65,11 +65,11 @@
                         </p>
                     </blockquote>
 
-                    <div class="form-group" ng-repeat="answer in q.answers track by $index" ng-show="q.type>1 && answer">
+                    <div class="form-group" ng-repeat="answer in q.answers track by $index" ng-show="q.type > 1 && answer">
                         <div class="col-sm-offset-1 col-sm-10">
-                            <div class="radio" ng-click="ctrl.save_answer($parent.$index, $index+1)">
+                            <div class="radio" ng-click="ctrl.saveAnswer($parent.$index, $index + 1)">
                                 <label>
-                                    <input type="radio" name="answers{{ $parent.$index }}" ng-checked="q.answers.result == $index+1" ng-value="$index+1" />
+                                    <input type="radio" name="answers{{ $parent.$index }}" ng-checked="q.answers.result == $index + 1" ng-value="$index + 1" />
                                     <p ng-bind-html="answer"></p>
                                 </label>
                             </div>
@@ -92,9 +92,9 @@
                     <li class="list-group-item">
                         <p class="strong">Frage {{ ctrl.current_index + 1 }} von {{ ctrl.exam.question_count }}</p>
 
-                        <uib-progressbar value="(ctrl.current_index+1) / ctrl.exam.question_count * 100" type="success"></uib-progressbar>
+                        <uib-progressbar value="(ctrl.current_index + 1) / ctrl.exam.question_count * 100" type="success"></uib-progressbar>
 
-                        <div class="exam-progress-comment text-success" ng-show="(1 > ctrl.Math.abs(ctrl.current_index+1 - ctrl.exam.question_count/2)) && (ctrl.current_index > 3)">
+                        <div class="exam-progress-comment text-success" ng-show="ctrl.isHalftime(ctrl.current_index)">
                             Halbzeit!
                         </div>
 
@@ -129,7 +129,7 @@
                             </div>
 
                             <div class="btn-group pull-right" role="group">
-                                <button type="button" class="btn btn-danger" ng-click="ctrl.hand_exam()">Klausur abgeben</button>
+                                <button type="button" class="btn btn-danger" ng-click="ctrl.handExam()">Klausur abgeben</button>
                             </div>
                         </div>
                     </li>
@@ -139,12 +139,12 @@
     </div>
 
     <div class="btn-toolbar mbottom-3x mmtop visible-xs visible-sm">
-        <button class="btn btn-default" ng-click="ctrl.scroll_to_top()">
+        <button class="btn btn-default" ng-click="ctrl.scrollToTop()">
             <i class="fa fa-fw fa-arrow-circle-o-up"></i> Nach Oben
         </button>
 
         <div class="btn-group pull-right" role="group">
-            <button type="button" class="btn btn-danger" ng-click="ctrl.hand_exam()">Klausur abgeben</button>
+            <button type="button" class="btn btn-danger" ng-click="ctrl.handExam()">Klausur abgeben</button>
         </div>
     </div>
 </div>

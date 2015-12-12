@@ -6,6 +6,8 @@ class GlobalStatisticController {
 
         this.user = Auth.getUser();
 
+        this.activeTab = 'stats';
+
         this.update_activity = false;
         this.show_activity = { search_query: !true, result: !true, login: !true, register: !true, comment: !true, exam_new: !true, exam_update: !true };
 
@@ -15,26 +17,6 @@ class GlobalStatisticController {
                 this.stats = result.stats;
 
                 if (first) {
-                    this.chart_users = [
-                        { value: Number(this.stats.user_count_semester[0]), color: '#e74c3c', label: '1. Semester' },
-                        { value: Number(this.stats.user_count_semester[1]), color: '#e67e22', label: '2. Semester' },
-                        { value: Number(this.stats.user_count_semester[2]), color: '#f1c40f', label: '3. Semester' },
-                        { value: Number(this.stats.user_count_semester[3]), color: '#2ecc71', label: '4. Semester' },
-                        { value: Number(this.stats.user_count_semester[4]), color: '#1abc9c', label: '5. Semester' },
-                        { value: Number(this.stats.user_count_semester[5]), color: '#3498db', label: '6. Semester' },
-                        { value: Number(this.stats.user_count_semester[6]), color: '#34495e', label: '>6. Semester' },
-                    ];
-
-                    this.chart_exams = [
-                        { value: Number(this.stats.exam_count_semester[0]), color: '#e74c3c', label: '1. Semester' },
-                        { value: Number(this.stats.exam_count_semester[1]), color: '#e67e22', label: '2. Semester' },
-                        { value: Number(this.stats.exam_count_semester[2]), color: '#f1c40f', label: '3. Semester' },
-                        { value: Number(this.stats.exam_count_semester[3]), color: '#2ecc71', label: '4. Semester' },
-                        { value: Number(this.stats.exam_count_semester[4]), color: '#1abc9c', label: '5. Semester' },
-                        { value: Number(this.stats.exam_count_semester[5]), color: '#3498db', label: '6. Semester' },
-                        { value: Number(this.stats.exam_count_semester[6]), color: '#34495e', label: '>6. Semester' },
-                    ];
-
                     this.chart_questions = {
                         labels: ['Gesamt', 'Sichtbar', 'Mit Lösung', 'Mit Erklärung', 'Mit Kategorie', 'Freie Frage'],
                         datasets: [{

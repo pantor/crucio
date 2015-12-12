@@ -8,6 +8,8 @@ class AuthorController {
 
         this.user = Auth.getUser();
 
+        this.activeTab = 'exams';
+
         this.subject_list = subject_list;
 
         this.exam_search = { 'subject': '', 'semester': '', 'author': this.user.username, 'query': '', 'query_keys': ['subject', 'author', 'date'] };

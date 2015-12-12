@@ -2,21 +2,20 @@
     <div class="row mtop-navbar-row">
         <div class="col-md-3 sidebar">
             <ul class="nav nav-pills nav-stacked mbottom-2x">
-                <li class="active"><a data-target="#abstract" data-toggle="tab"><i class="fa fa-inbox fa-fw"></i>  Übersicht</a></li>
+                <li ng-class="{active: ctrl.activeTab == 'abstract'}"><a ng-click="ctrl.activeTab = 'abstract'"><i class="fa fa-inbox fa-fw"></i>  Übersicht</a></li>
                 <hr>
-                <li><a data-target="#subjects" data-toggle="tab"><i class="fa fa-flask fa-fw"></i>  Fächer</a></li>
-                <li><a data-target="#exams" data-toggle="tab"><i class="fa fa-list fa-fw"></i>  Klausuren</a></li>
-                <li><a data-target="#search" data-toggle="tab"><i class="fa fa-search fa-fw"></i>  Suche</a></li>
-                <li><a data-target="#tags" data-toggle="tab"><i class="fa fa-tags fa-fw"></i>  Markierungen</a></li>
-                <li><a data-target="#comments" data-toggle="tab"><i class="fa fa-comments fa-fw"></i>  Kommentare</a></li>
+                <li ng-class="{active: ctrl.activeTab == 'subjects'}"><a ng-click="ctrl.activeTab = 'subjects'"><i class="fa fa-flask fa-fw"></i>  Fächer</a></li>
+                <li ng-class="{active: ctrl.activeTab == 'exams'}"><a ng-click="ctrl.activeTab = 'exams'"><i class="fa fa-list fa-fw"></i>  Klausuren</a></li>
+                <li ng-class="{active: ctrl.activeTab == 'search'}"><a ng-click="ctrl.activeTab = 'search'"><i class="fa fa-search fa-fw"></i>  Suche</a></li>
+                <li ng-class="{active: ctrl.activeTab == 'tags'}"><a ng-click="ctrl.activeTab = 'tags'"><i class="fa fa-tags fa-fw"></i>  Markierungen</a></li>
+                <li ng-class="{active: ctrl.activeTab == 'comments'}"><a ng-click="ctrl.activeTab = 'comments'"><i class="fa fa-comments fa-fw"></i>  Kommentare</a></li>
             </ul>
             <hr class="visible-xs visible-sm">
         </div>
 
         <div class="col-md-9">
             <div class="tab-content">
-
-                <div class="tab-pane active" id="abstract">
+                <div ng-show="ctrl.activeTab == 'abstract'">
                     <h4 class="mbottom-2x">Klausuren<small></small></h4>
 
                     <div ng-if="ctrl.abstract_exams.length == 0" class="container-center-align-sm">
@@ -55,8 +54,8 @@
                                                 Klausuransicht
                                             </a>
 
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                            <div class="btn-group" uib-dropdown>
+                                                <button type="button" class="btn btn-default" uib-dropdown-toggle>
                                                     <i class="fa fa-fw fa-file-pdf-o"></i> PDF
                                                     <span class="caret"></span>
                                                 </button>
@@ -78,8 +77,8 @@
                                                 </ul>
                                             </div>
 
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                            <div class="btn-group" uib-dropdown>
+                                                <button type="button" class="btn btn-default" uib-dropdown-toggle>
                                                     <span class="caret"></span>
                                                 </button>
 
@@ -98,7 +97,7 @@
                 </div>
 
 
-                <div class="tab-pane" id="subjects">
+                <div ng-show="ctrl.activeTab == 'subjects'">
                     <h4 class="mbottom-2x">Fächer & Kategorien <small>Hier kannst du dir deine eigene Klausur zusammenstellen.</small></h4>
 
                     <div class="form-horizontal" style="margin-bottom: 30px;">
@@ -215,14 +214,14 @@
                 </div>
 
 
-                <div class="tab-pane" id="exams">
+                <div ng-show="ctrl.activeTab == 'exams'">
                     <h4 class="mbottom">Alle Klausuren <small></small></h4>
 
                     <div class="row mmtop">
                         <div class="col-sm-6">
                             <div class="btn-toolbar" role="toolbar">
-                                <div class="btn-group mtop">
-                                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                                <div class="btn-group mtop" uib-dropdown>
+                                    <button class="btn btn-default" type="button" uib-dropdown-toggle>
                                         {{ ctrl.exam_search.semester ? ctrl.exam_search.semester + '. Semester' : 'Alle Semester' }} <span class="caret"></span>
                                     </button>
 
@@ -235,8 +234,8 @@
                                     </ul>
                                 </div>
 
-                                <div class="btn-group mtop">
-                                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                                <div class="btn-group mtop" uib-dropdown>
+                                    <button class="btn btn-default" type="button" uib-dropdown-toggle>
                                         {{ ctrl.exam_search.subject ? ctrl.exam_search.subject : 'Alle Fächer' }} <span class="caret"></span>
                                     </button>
 
@@ -287,8 +286,8 @@
                                                 Klausuransicht
                                             </a>
 
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                            <div class="btn-group" uib-dropdown>
+                                                <button type="button" class="btn btn-default" uib-dropdown-toggle>
                                                     <i class="fa fa-fw fa-file-pdf-o"></i> PDF
                                                     <span class="caret"></span>
                                                 </button>
@@ -306,8 +305,8 @@
                                                 </ul>
                                             </div>
 
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                            <div class="btn-group" uib-dropdown>
+                                                <button type="button" class="btn btn-default" uib-dropdown-toggle>
                                                     <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu dropdown-menu-right" role="menu">
@@ -327,7 +326,7 @@
                 </div>
 
 
-                <div class="tab-pane" id="search">
+                <div ng-show="ctrl.activeTab == 'search'">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel panel-default">
@@ -385,7 +384,7 @@
                 </div>
 
 
-                <div class="tab-pane" id="tags">
+                <div ng-show="ctrl.activeTab == 'tags'">
                     <h4 class="mbottom">Deine Markierungen <small></small></h4>
 
                     <div ng-if="ctrl.tags.length == 0" class="container-center-align-sm">
@@ -431,7 +430,7 @@
                 </div>
 
 
-                <div class="tab-pane" id="comments">
+                <div ng-show="ctrl.activeTab == 'comments'">
                     <h4 class="mbottom">Deine Kommentare <small></small></h4>
 
                     <div ng-if="ctrl.comments.length == 0" class="container-center-align-sm">

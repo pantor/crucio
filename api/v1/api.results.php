@@ -22,9 +22,8 @@ $app->group('/results', function() {
 	});
 
 	$this->post('', function($request, $response, $args) {
-		$body =  $request->getParsedBody();
-
 		$mysql = startMysql();
+		$body =  $request->getParsedBody();
 
 		$attempt_count = get_count($mysql, "results r WHERE r.user_id = ? AND r.question_id = ?", [$body['user_id'], $body['question_id']]);
 

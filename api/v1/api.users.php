@@ -138,7 +138,6 @@ $app->group('/users', function() {
 
 	$this->put('/{user_id}/account', function($request, $response, $args) {
 		$mysql = startMysql();
-
 		$body =  $request->getParsedBody();
 
 		$user_id = $args['user_id'];

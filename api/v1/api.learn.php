@@ -4,8 +4,8 @@ $app->group('/learn', function() {
 
 	$this->post('/number-questions', function($request, $response, $args) {
 		$mysql = startMysql();
-
 		$body =  $request->getParsedBody();
+
 		$subject_list = $body['selection_subject_list'];
 		$result = 0;
 
@@ -25,8 +25,8 @@ $app->group('/learn', function() {
 
 	$this->post('/prepare', function($request, $response, $args) {
 		$mysql = startMysql();
-
 		$body = $request->getParsedBody();
+
 		$subject_list = $body['selection_subject_list'];
 		$selection_number_questions = $body['selection_number_questions'];
 

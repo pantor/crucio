@@ -133,9 +133,9 @@ $app->group('/exams', function() {
 
 
 	$this->post('', function($request, $response, $args) {
+		$mysql = startMysql();
 		$body = $request->getParsedBody();
 
-		$mysql = startMysql();
 		$data = executeMysql($mysql,
 		    "INSERT INTO exams ( subject, professor, semester, date, sort, date_added, date_updated, user_id_added, duration, notes)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
@@ -149,9 +149,9 @@ $app->group('/exams', function() {
 
 
 	$this->put('/{exam_id}', function($request, $response, $args) {
+		$mysql = startMysql();
 		$body = $request->getParsedBody();
 
-		$mysql = startMysql();
 		$data = executeMysql($mysql,
 		    "UPDATE exams
             SET subject = ?, professor = ?, semester = ?, date = ?, sort = ?, duration = ?, notes = ?, file_name = ?, visibility = ?, date_updated = ?

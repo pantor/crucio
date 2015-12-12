@@ -2,20 +2,20 @@
 	<div class="row mtop-navbar-row">
 	    <div class="col-md-3 sidebar">
 	    	<ul class="nav nav-pills nav-stacked mbottom-2x">
-				<li class="active"><a showtab="" data-target="#stats" data-toggle="tab"><i class="fa fa-bar-chart fa-fw"></i>  &Uuml;bersicht</a></li>
+				<li ng-class="{active: ctrl.activeTab == 'stats'}"><a ng-click="ctrl.activeTab = 'stats'"><i class="fa fa-bar-chart fa-fw"></i>  &Uuml;bersicht</a></li>
 				<hr>
-				<li><a showtab="" data-target="#users" data-toggle="tab"><i class="fa fa-users fa-fw"></i>  Nutzer</a></li>
-				<li><a showtab="" data-target="#questions" data-toggle="tab"><i class="fa fa-question-circle fa-fw"></i>  Fragen</a></li>
-				<li><a showtab="" data-target="#results" data-toggle="tab"><i class="fa fa-exclamation-triangle fa-fw"></i>  Antworten</a></li>
-				<li><a showtab="" data-target="#activity" data-toggle="tab"><i class="fa fa-bicycle fa-fw"></i>  Aktivit&auml;t</a></li>
-				<li><a showtab="" data-target="#queries" data-toggle="tab"><i class="fa fa-search fa-fw"></i>  Suchanfragen</a></li>
+				<li ng-class="{active: ctrl.activeTab == 'users'}"><a ng-click="ctrl.activeTab = 'users'"><i class="fa fa-users fa-fw"></i>  Nutzer</a></li>
+				<li ng-class="{active: ctrl.activeTab == 'questions'}"><a ng-click="ctrl.activeTab = 'questions'"><i class="fa fa-question-circle fa-fw"></i>  Fragen</a></li>
+				<li ng-class="{active: ctrl.activeTab == 'results'}"><a ng-click="ctrl.activeTab = 'results'"><i class="fa fa-exclamation-triangle fa-fw"></i>  Antworten</a></li>
+				<li ng-class="{active: ctrl.activeTab == 'activity'}"><a ng-click="ctrl.activeTab = 'activity'"><i class="fa fa-bicycle fa-fw"></i>  Aktivit&auml;t</a></li>
+				<li ng-class="{active: ctrl.activeTab == 'queries'}"><a ng-click="ctrl.activeTab = 'queries'"><i class="fa fa-search fa-fw"></i>  Suchanfragen</a></li>
 			</ul>
 			<hr class="visible-xs visible-sm">
 	    </div>
 
 	    <div class="col-md-9">
 	    	<div class="tab-content">
-	    		<div class="tab-pane active" id="stats">
+	    		<div ng-show="ctrl.activeTab == 'stats'">
 		    		<h4>Antworten</h4>
 					<div class="row">
 						<div class="col-xs-12 col-sm-4">
@@ -100,7 +100,8 @@
 					<br><br><br>
 				</div>
 
-	    		<div class="tab-pane" id="users">
+
+	    		<div ng-show="ctrl.activeTab == 'users'">
 					<div class="row">
 						<div class="col-xs-12 col-sm-4">
 							<div class="stats-box">
@@ -121,40 +122,10 @@
 							</div>
 						</div>
 					</div>
-
-					<hr>
-
-					<h4>Semester</h4>
-					<div class="row">
-						<div class="col-xs-6 col-sm-4">
-							<center>
-								<canvas doughnutchart data="::chart_users" width="200" height="200"></canvas>
-								<p>Nutzer</p>
-							</center>
-						</div>
-
-						<div class="col-xs-12 col-sm-4">
-							<div style="line-height: 24px; margin-top: 20px;">
-								<div class="dot pull-left" style="background-color: #e74c3c; margin-top:3px; margin-right: 14px;"></div> 1. Semester<br>
-								<div class="dot pull-left" style="background-color: #e67e22; margin-top:3px; margin-right: 14px;"></div> 2. Semester<br>
-								<div class="dot pull-left" style="background-color: #f1c40f; margin-top:3px; margin-right: 14px;"></div> 3. Semester<br>
-								<div class="dot pull-left" style="background-color: #2ecc71; margin-top:3px; margin-right: 14px;"></div> 4. Semester<br>
-								<div class="dot pull-left" style="background-color: #1abc9c; margin-top:3px; margin-right: 14px;"></div> 5. Semester<br>
-								<div class="dot pull-left" style="background-color: #3498db; margin-top:3px; margin-right: 14px;"></div> 6. Semester<br>
-								<div class="dot pull-left" style="background-color: #34495e; margin-top:3px; margin-right: 14px;"></div> >6. Semester<br>
-							</div>
-						</div>
-					</div>
-
-					<center>
-						<h5>Nutzer</h5>
-						<canvas linechart data="::chart_time_user" width="600" height="300"></canvas>
-					</center>
-
-					<br><br><br>
 				</div>
 
-	    		<div class="tab-pane" id="questions">
+
+	    		<div ng-show="ctrl.activeTab == 'questions'">
 		    		<div class="row">
 						<div class="col-xs-12 col-sm-4">
 							<div class="stats-box">
@@ -174,19 +145,11 @@
 								<p> <i class="fa fa-question-circle fa-fw"></i> 24 Stunden Gel&ouml;st</p>
 							</div>
 						</div>
-
-					</div>
-
-					<hr>
-
-					<div class="row mbottom-2x">
-						<center>
-							<canvas barchart data="::chart_questions" width="600" height="400"></canvas>
-						</center>
 					</div>
 				</div>
 
-	    		<div class="tab-pane" id="results">
+
+	    		<div ng-show="ctrl.activeTab == 'results'">
 		    		<h4>Antworten</h4>
 					<div class="row">
 						<div class="col-xs-12 col-sm-4">
@@ -222,7 +185,8 @@
 					<br><br><br>
 				</div>
 
-	    		<div class="tab-pane" id="activity">
+
+	    		<div ng-show="ctrl.activeTab == 'activity'">
 		    		<h4>Aktivit&auml;t <small>Aktualisieren braucht immer etwas...</small></h4>
 		    		<div class="btn-toolbar">
 		    			<div class="btn-group">
@@ -274,7 +238,8 @@
 					</table>
 				</div>
 
-	    		<div class="tab-pane" id="queries">
+
+	    		<div ng-show="ctrl.activeTab == 'queries'">
 					<h4>Alle Suchanfragen</h4>
 					<table class="table">
 						<thead>

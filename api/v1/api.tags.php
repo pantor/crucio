@@ -33,7 +33,6 @@ $app->group('/tags', function() {
 
 	$this->post('', function($request, $response, $args) {
 		$mysql = startMysql();
-
 		$body = $request->getParsedBody();
 
 		if ($body['tags'] == '') {

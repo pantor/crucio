@@ -32,16 +32,16 @@
                         <div class="btn-group pull-left hidden-xs" style="margin-left: -50px; margin-top:6px;">
                             <button type="button" class="btn btn-default btn-xs showme" ng-model="ctrl.strike[$index+1]" uib-btn-checkbox><i class="fa fa-fw fa-strikethrough"></i></button>
                         </div>
-                        <div class="radio" ng-click="ctrl.save_answer($index+1)">
+                        <div class="radio" ng-click="ctrl.save_answer($index + 1)">
                             <label>
                                 <input type="radio" name="answers" ng-checked="ctrl.checked_answer==$index+1" ng-value="$index+1"/>
-                                <p class="question-answer {{ctrl.correctAnswer == $index+1 ? 'text-success strong bg-success':''}} {{ctrl.wrongAnswer == $index+1 ? 'text-danger strong bg-danger':''}} {{ctrl.strike[$index+1] == 1 && ctrl.correctAnswer != $index+1? 'text-danger strike':''}}" ng- ng-bind-html="answer"></p>
+                                <p class="question-answer {{ctrl.correctAnswer == $index + 1 ? 'text-success strong bg-success':''}} {{ctrl.wrongAnswer == $index+1 ? 'text-danger strong bg-danger':''}} {{ctrl.strike[$index + 1] == 1 && ctrl.correctAnswer != $index + 1? 'text-danger strike':''}}" ng- ng-bind-html="answer"></p>
                             </label>
                         </div>
                     </div>
                 </div>
 
-                <div class="form-group" ng-show="ctrl.question.type==1">
+                <div class="form-group" ng-show="ctrl.question.type == 1">
                     <div class="col-sm-offset-1 col-sm-10">
                         <div class="radio">
                             <label>
@@ -93,15 +93,15 @@
                     <i class="fa fa-backward"></i>
                 </a>
 
-                <button class="btn mtop" ng-class="ctrl.answerButtonClass" ng-disabled="ctrl.answerButtonClass!='btn-primary' || (ctrl.question.type==1 && ctrl.question.answers[0].length==0) || (ctrl.question.type>1 && question.correct_answer==0)" ng-click="ctrl.show_solution()">
+                <button class="btn mtop" ng-class="ctrl.answerButtonClass" ng-disabled="ctrl.answerButtonClass != 'btn-primary' || (ctrl.question.type==1 && ctrl.question.answers[0].length==0) || (ctrl.question.type>1 && question.correct_answer==0)" ng-click="ctrl.show_solution()">
                     L&ouml;sung anzeigen
                 </button>
 
-                <button class="btn btn-default mtop" ng-disabled="!ctrl.question.explanation" ng-click="ctrl.show_explanation=1-ctrl.show_explanation" data-toggle="button">
+                <button class="btn btn-default mtop" ng-disabled="!ctrl.question.explanation" ng-click="ctrl.show_explanation = 1 - ctrl.show_explanation" data-toggle="button">
                     Erkl&auml;rung
                 </button>
 
-                <a class="btn btn-default mtop" ng-if="ctrl.questionList.list" ng-disabled="ctrl.index == ctrl.length-1" href="question?id={{ ctrl.questionList.list[ctrl.index+1].question_id }}">
+                <a class="btn btn-default mtop" ng-if="ctrl.questionList.list" ng-disabled="ctrl.index == ctrl.length - 1" href="question?id={{ ctrl.questionList.list[ctrl.index+1].question_id }}">
                     <i class="fa fa-forward"></i>
                 </a>
             </div>
@@ -112,8 +112,8 @@
                 Bearbeiten
             </a>
 
-            <div class="btn-group pull-right mtop">
-                <a class="btn btn-default dropdown-toggle" data-toggle="dropdown">Melden <span class="caret"></span></a>
+            <div class="btn-group pull-right mtop" uib-dropdown>
+                <a class="btn btn-default" uib-dropdown-toggle>Melden <span class="caret"></span></a>
 
                 <ul class="dropdown-menu">
                     <li><a href="/help?question_id={{ ctrl.question_id }}" tabindex="-1">
@@ -132,8 +132,8 @@
                 </ul>
             </div>
 
-            <div class="btn-group pull-right mtop hidden-xs" role="group">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            <div class="btn-group pull-right mtop hidden-xs" role="group" uib-dropdown>
+                <button type="button" class="btn btn-default" uib-dropdown-toggle>
                     <i class="fa fa-fw fa-file-pdf-o"></i> PDF
                     <span class="caret"></span>
                 </button>

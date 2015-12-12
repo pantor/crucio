@@ -4,7 +4,6 @@ class ExamController {
         this.$location = $location;
         this.$document = $document;
         this.$uibModal = $uibModal;
-        this.Math = Math;
 
         Page.setTitleAndNav('Klausur | Crucio', 'Lernen');
 
@@ -36,27 +35,31 @@ class ExamController {
         });
     }
 
-    save_answer(question_i, given_answer) {
-        this.questionList.list[question_i].given_result = String(given_answer);
+    isHalftime(index) {
+        return (Math.abs(index + 1 - this.exam.question_count / 2) < 1) && (index > 3);
     }
 
-    scroll_to_top() {
+    saveAnswer(index, given_answer) {
+        this.questionList.list[index].given_result = String(given_answer);
+    }
+
+    scrollToTop() {
         this.$document.scrollTopAnimated(0, 400);
     }
 
-    hand_exam() {
+    handExam() {
         sessionStorage.currentQuestionList = angular.toJson(this.questionList);
         this.$location.path('/analysis').search('id', null);
     }
 
-    open_image_model(file_name) {
+    openImageModal(fileName) {
         this.$uibModal.open({
             templateUrl: 'imageModalContent.html',
             controller: 'ModalInstanceController',
             controllerAs: 'ctrl',
             resolve: {
                 image_url: () => {
-                    return file_name;
+                    return fileName;
                 },
             },
         });

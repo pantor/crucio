@@ -8,6 +8,8 @@ class QuestionsController {
 
         this.user = Auth.getUser();
 
+        this.activeTab = 'abstract';
+
         this.exam_search = { 'subject': '', 'semester': '', 'query': '', 'query_keys': ['subject', 'semester', 'date'] };
         this.comment_search = { 'query': '', 'query_keys': ['comment', 'username', 'question_id'] };
         this.tag_search = { 'query': '', 'query_keys': ['tag'] };

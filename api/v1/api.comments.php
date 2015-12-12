@@ -54,7 +54,6 @@ $app->group('/comments', function() {
 
     $this->post('/{user_id}', function($request, $response, $args) {
 		$mysql = startMysql();
-
 		$body =  $request->getParsedBody();
 
 		$data = executeMysql($mysql,
@@ -69,7 +68,6 @@ $app->group('/comments', function() {
 
 	$this->post('/{comment_id}/user/{user_id}', function($request, $response, $args) {
 		$mysql = startMysql();
-
 		$body =  $request->getParsedBody();
 
 		$data = executeMysql($mysql,

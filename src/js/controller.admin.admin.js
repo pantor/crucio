@@ -8,6 +8,8 @@ class AdminController {
 
         this.user = Auth.getUser();
 
+        this.activeTab = 'users';
+
         this.user_search = { 'semester': '', 'group': '', 'login': '', 'query': '', 'query_keys': ['group_name', 'username'] };
         this.comment_search = { 'question_id': '', 'username': '', 'query': '', 'query_keys': ['question', 'comment', 'username', 'question_id'] };
 

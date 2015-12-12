@@ -127,8 +127,8 @@ $app->group('/questions', function() {
 
 	$this->post('', function($request, $response, $args) {
     	$mysql = startMysql();
-
 		$body =  $request->getParsedBody();
+
 		$data = executeMysql($mysql,
 		    "INSERT INTO questions (question, answers, correct_answer, exam_id, date_added, user_id_added, explanation, question_image_url, type, topic)
 		    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
@@ -143,8 +143,8 @@ $app->group('/questions', function() {
 
 	$this->put('/{question_id}', function($request, $response, $args) {
     	$mysql = startMysql();
-
 		$body = $request->getParsedBody();
+
 		$data = executeMysql($mysql,
 		    "UPDATE questions SET question = ?, answers = ?, correct_answer = ?, exam_id = ?, explanation = ?, question_image_url = ?, type = ?, topic = ?
             WHERE question_id = ?",

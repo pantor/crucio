@@ -88,9 +88,9 @@ $app->group('/stats', function() {
 	});
 
 	$this->post('/activities', function($request, $response, $args) {
+		$mysql = startMysql();
 		$body =  $request->getParsedBody();
 
-		$mysql = startMysql();
 		$activities = [];
 
 		if (!$body->search_query) {

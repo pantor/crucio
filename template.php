@@ -40,9 +40,9 @@
                                         <a href="admin">Admin</a>
                                     </li>
 
-                                    <li ng-class="{active: logoutCtrl.Page.nav == 'Name'}" class="dropdown">
-                                        <a class="dropdown-toggle"  data-toggle="dropdown" role="button" href>
-                                            {{ logoutCtrl.user.username }} <b class="caret"></b>
+                                    <li ng-class="{active: logoutCtrl.Page.nav == 'Name'}" class="dropdown" uib-dropdown>
+                                        <a role="button" href uib-dropdown-toggle>
+                                            <span ng-bind="logoutCtrl.user.username"></span> <b class="caret"></b>
                                         </a>
 
                                         <ul class="dropdown-menu" role="menu">
