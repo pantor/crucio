@@ -3,14 +3,35 @@
 $app->group('/pdf', function() {
 
     $this->get('/{view}/{exam_id}', function($request, $response, $args) {
-        $mysql = startMysql();
+        $mysql = init();
 
         $exam_id = $args['exam_id'];
 
-        $exam = get_fetch($mysql, "SELECT e.* FROM exams e WHERE e.exam_id = ? LIMIT 1", [$exam_id])['result'];
-        $author = get_fetch($mysql, "SELECT u.* FROM users u WHERE u.user_id = ? LIMIT 1", [$exam['user_id_added']])['result'];
-        $questions = get_all($mysql, "SELECT q.* FROM questions q WHERE q.exam_id = ?", [$exam_id])['result'];
+        $stmt_exam = $mysql->prepare(
+            "SELECT e.*
+            FROM exams e
+            WHERE e.exam_id = :exam_id
+            LIMIT 1"
+		);
+		$stmt_exam->bindValue(':exam_id', $exam_id, PDO::PARAM_INT);
+		$exam = getFetch($stmt_exam);
 
+		$stmt_author = $mysql->prepare(
+            "SELECT u.*
+            FROM users u
+            WHERE u.user_id = :user_id_added
+            LIMIT 1"
+		);
+		$stmt_author->bindValue(':user_id_added', $exam['user_id_added'], PDO::PARAM_INT);
+		$author = getFetch($stmt_author);
+
+		$stmt_questions = $mysql->prepare(
+            "SELECT q.*
+            FROM questions q
+            WHERE q.exam_id = :exam_id"
+		);
+		$stmt_questions->bindValue(':exam_id', $exam_id, PDO::PARAM_INT);
+		$questions = getAll($stmt_questions);
         foreach ($questions as &$question) {
             $question['answers'] = unserialize($question['answers']);
         }

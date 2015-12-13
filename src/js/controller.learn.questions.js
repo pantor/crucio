@@ -67,7 +67,8 @@ class QuestionsController {
             this.slider_options = { floor: 0, ceil: max };
         }, true);
 
-        this.API.get('exams/user_id/' + this.user.user_id).success((result) => {
+        const exam_data = { 'visibility': 1 };
+        this.API.get('exams/user_id/' + this.user.user_id, exam_data).success((result) => {
             this.exams = result.exam;
             this.distinct_semesters = Selection.findDistinct(this.exams, 'semester');
             this.distinct_subjects = Selection.findDistinct(this.exams, 'subject');

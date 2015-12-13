@@ -3,10 +3,15 @@
 $app->group('/admin', function() {
 
 	$this->post('/change-semester/{phrase}', function($request, $response, $args) {
-    	$mysql = startMysql();
-		$body =  $request->getParsedBody();
+    	$mysql = init();
+		$body = $request->getParsedBody();
 
-		$data = executeMysql($mysql, "UPDATE users SET semester = semester + ?", [$body['number']]);
+		$stmt = $mysql->prepare(
+    		"UPDATE users SET semester = semester + :add"
+        );
+        $stmt->bindValue(':add', $body['number'], PDO::PARAM_INT);
+        $data = execute($stmt);
+
 		return createResponse($response, $data);
 	});
 });

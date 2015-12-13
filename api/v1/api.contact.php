@@ -3,7 +3,7 @@
 $app->group('/contact', function () {
 
 	$this->post('/send-mail', function($request, $response, $args) {
-		$body =  $request->getParsedBody();
+		$body = $request->getParsedBody();
 
 		$name = trim($body['name']);
 		$email = str_replace('(@)', '@', trim($body['email']));
@@ -20,7 +20,7 @@ $app->group('/contact', function () {
 	});
 
 	$this->post('/send-mail-question', function($request, $response, $args) {
-		$body =  $request->getParsedBody();
+		$body = $request->getParsedBody();
 
 		$name = trim($body['name']);
 		$email = str_replace('(@)', '@', trim($body['email']));

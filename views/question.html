@@ -146,14 +146,14 @@
     <div class="panel panel-default mbottom-2x">
         <div class="panel-heading">
             <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne">
+                <a ng-click="ctrl.commentsCollapsed = !ctrl.commentsCollapsed">
                     <i class="fa fa-comments fa-fw"></i>Kommentare
                     <div class="pull-right"><span class="badge">{{ ctrl.question.comments.length }}</span></div>
                 </a>
             </h4>
         </div>
 
-        <div class="panel panel-collapse collapse {{ ctrl.user.showComments == 0 ? 'in':'' }}" id="collapseOne">
+        <div class="panel panel-collapse collapse" uib-collapse="ctrl.commentsCollapsed">
             <div class="panel-body">
                 <form method="post">
                     <input type="hidden" name="question_id" ng-value="question_id">

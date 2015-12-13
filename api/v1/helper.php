@@ -1,6 +1,6 @@
 <?php
 
-function startMysql() {
+function init() {
 	try {
 		$config = include(dirname(__FILE__).'/../config.php');
 
@@ -12,32 +12,39 @@ function startMysql() {
 	}
 }
 
-function executeMysql($mysql, $query, $parameters, $callback = null) {
-	$stmt = $mysql->prepare($query);
-	try {
-		$stmt->execute($parameters);
-		$response['status'] = 'success';
+function execute($stmt) {
+	$stmt->execute();
+	return [];
+}
 
-		if ($callback) {
-			$response += $callback($stmt, $mysql);
-        }
-	} catch(PDOException $ex) {
-		$response['status'] = 'error';
-		$response['error'] = 'statement error';
-	}
-	return $response;
+function getAll($stmt) {
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getFetch($stmt) {
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+function getCount($mysql, $sub_query, $parameters = []) {
+	return getCountWithPre($mysql, "COUNT(*)", $sub_query, $parameters);
+}
+
+function getCountWithPre($mysql, $pre_query, $sub_query, $parameters = []) {
+    $stmt = $mysql->prepare(
+        "SELECT $pre_query AS 'result' FROM $sub_query"
+    );
+    $stmt->execute($parameters);
+    return $stmt->fetch(PDO::FETCH_ASSOC)['result'];
 }
 
 function createResponse($response, $data, $status_in_data = true, $status = 200) {
-    if ($status_in_data) {
-        $data['status'] = 'success';
-    }
-
     $response = $response->withStatus($status);
     $response = $response->withHeader('Content-type', 'application/json');
     $response = $response->withHeader('charset', 'iso-8859-1');
 
-    $response->write(json_encode($data));
+    $response->write( json_encode($data) );
     return $response;
 }
 
@@ -45,61 +52,46 @@ function createResponse($response, $data, $status_in_data = true, $status = 200)
 // ---------
 
 
-function get_all($mysql, $query, $parameters, $name = 'result') {
-	return executeMysql($mysql, $query, $parameters, function($stmt, $mysql) use ($name) {
-		$response[$name] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		return $response;
-	});
-}
-
-function get_fetch($mysql, $query, $parameters, $name = 'result') {
-	return executeMysql($mysql, $query, $parameters, function($stmt, $mysql) use ($name) {
-		$response[$name] = $stmt->fetch(PDO::FETCH_ASSOC);
-		return $response;
-	});
-}
-
-function get_count($mysql, $sub_query, $parameters = []) {
-	return get_count_with_pre($mysql, "COUNT(*)", $sub_query, $parameters);
-}
-
-function get_count_with_pre($mysql, $pre_query, $sub_query, $parameters = []) {
-    return get_fetch($mysql, "SELECT ".$pre_query." AS 'c' FROM ".$sub_query, $parameters)['result']['c'];
-}
-
-
-// ---------
-
-
-function validate_activation_token($mysql, $token, $is_not_active) {
+function validateActivationToken($mysql, $token, $is_not_active) {
 	if ($is_not_active) {
-		return ( get_count($mysql, "users WHERE activationtoken = ?", [$token]) > 0 );
+		return ( getCount($mysql, "users WHERE activationtoken = ?", [$token]) > 0 );
 	} else {
-		return ( get_count($mysql, "users WHERE active = 0 AND activationtoken = ?", [$token]) > 0 );
+		return ( getCount($mysql, "users WHERE active = 0 AND activationtoken = ?", [$token]) > 0 );
 	}
 }
 
-function fetch_user_details($mysql, $username = null, $token = null) {
-	if ($username != null) {
-		$response = get_fetch($mysql, "SELECT * FROM users WHERE username_clean = ? LIMIT 1", [sanitize($username)]);
-	} else {
-		$response = get_fetch($mysql, "SELECT * FROM users WHERE activationtoken = ? LIMIT 1", [sanitize($token)]);
-    }
-	return $response['result'];
+function fetchUserDetails($mysql, $token = null, $email = null) {
+    $stmt = $mysql->prepare(
+	    "SELECT *
+	    FROM users
+	    WHERE email = :email
+	        OR activationtoken = :token"
+	);
+	$stmt->bindValue(':email', sanitize($email));
+	$stmt->bindValue(':token', sanitize($token));
+
+	return getFetch($stmt);
 }
 
-function fetch_user_details_by_mail($mysql, $email) {
-	$response = get_fetch($mysql, "SELECT * FROM users WHERE email = ? LIMIT 1", [sanitize($email)]);
-	return $response['result'];
+function fetchUserDetailsByMail($mysql, $email) {
+	return fetchUserDetails($mysql, null, $email);
 }
 
-function fetch_user_details_by_token($mysql, $token) {
-	$response = get_fetch($mysql, "SELECT * FROM users WHERE activationtoken = ? LIMIT 1", [sanitize($token)]);
-	return $response['result'];
+function fetchUserDetailsByToken($mysql, $token) {
+	return fetchUserDetails($mysql, $token, null);
 }
 
-function flag_lostpassword_request($mysql, $username, $value) {
-	return executeMysql($mysql, "UPDATE users SET LostpasswordRequest = ? WHERE username_clean = ? LIMIT 1", [$value, sanitize($username)]);
+function flagLostpasswordRequest($mysql, $username, $value) {
+    $stmt = $mysql->prepare(
+	    "UPDATE users
+	    SET LostpasswordRequest = :request
+	    WHERE username_clean = :username
+	    LIMIT 1"
+	);
+	$stmt->bindValue(':request', $value);
+	$stmt->bindValue(':username', sanitize($username));
+
+	return execute($stmt);
 }
 
 
@@ -110,7 +102,7 @@ function sanitize($str) {
 	return strtolower(strip_tags(trim($str)));
 }
 
-function generate_hash($plainText, $salt = null) {
+function generateHash($plainText, $salt = null) {
 	if ($salt === null) {
 		$salt = substr(md5(uniqid(rand(), true)), 0, 25);
 	} else {
@@ -120,7 +112,7 @@ function generate_hash($plainText, $salt = null) {
 	return $salt . sha1($salt . $plainText);
 }
 
-function get_unique_code($length = "") {
+function getUniqueCode($length = "") {
 	$code = md5(uniqid(rand(), true));
 	if ($length != '') {
 		return substr($code, 0, $length);
@@ -129,11 +121,11 @@ function get_unique_code($length = "") {
     }
 }
 
-function generate_activation_token($mysql) {
+function generateActivationToken($mysql) {
 	$gen;
 	do {
 		$gen = md5(uniqid(mt_rand(), false));
-	} while (get_count($mysql, "users WHERE activationtoken = ?", [$gen]) > 0);
+	} while (getCount($mysql, "users WHERE activationtoken = ?", [$gen]) > 0);
 
 	return $gen;
 }

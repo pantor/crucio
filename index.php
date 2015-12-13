@@ -12,11 +12,11 @@
                 <div class="container">
                     <form class="row" ng-submit="ctrl.login()">
                         <div class="col-md-4 col-md-offset-1">
-                            <h1><a href="/"><i class="fa fa-check-square-o"></i> Crucio </a></h1>
+                            <h1><a href="/"><i class="fa fa-check-square-o"></i> Crucio</a></h1>
                         </div>
 
                         <div class="col-md-3">
-                            <div class="form-group element has-feedback {{ ctrl.login_error ? 'has-error' : '' }}">
+                            <div class="form-group element has-feedback" ng-class="{'has-error': ctrl.login_error}">
                                 <input class="form-control" ng-model="ctrl.email" type="email" placeholder="E-Mail-Adresse" autofocus>
                                 <label class="checkbox">
                                     <input type="checkbox" ng-model="ctrl.remember_me" style="margin-top:2px;">
@@ -26,7 +26,7 @@
                         </div>
 
                         <div class="col-md-2">
-                            <div class="form-group element has-feedback {{ ctrl.login_error ? 'has-error' : '' }}">
+                            <div class="form-group element has-feedback" ng-class="{'has-error': ctrl.login_error}">
                                 <input class="form-control" ng-model="ctrl.password" type="password" placeholder="Passwort">
                                 <i class="fa fa-remove form-control-feedback" ng-show="ctrl.login_error" style="margin-top:9px;" ng-cloak></i>
                                 <label for="passwordInput">

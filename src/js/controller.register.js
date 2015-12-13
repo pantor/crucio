@@ -1,6 +1,5 @@
 class RegisterController {
-    constructor(Auth, Page, API, Validate, $scope, $uibModal) {
-        this.Page = Page;
+    constructor(Auth, API, Validate, $scope, $uibModal) {
         this.Auth = Auth;
         this.API = API;
         this.Validate = Validate;

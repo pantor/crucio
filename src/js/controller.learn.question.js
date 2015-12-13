@@ -15,6 +15,8 @@ class QuestionController {
         this.question_id = $routeParams.id;
         this.reset_session = $routeParams.reset_session;
 
+        this.commentsCollapsed = Number(this.user.showComments);
+
         if (!this.question_id) {
             this.$window.location.replace('/questions');
         }

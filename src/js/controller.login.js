@@ -1,6 +1,5 @@
 class LoginController {
-    constructor(Auth, Page, API, $scope, $document) {
-        this.Page = Page;
+    constructor(Auth, API, $scope, $document) {
         this.Auth = Auth;
         this.API = API;
         this.$document = $document;
@@ -22,8 +21,8 @@ class LoginController {
     }
 
     login() {
-        if (this.email && this.email.indexOf('@') == -1) {
-            this.email += '@studserv.uni-leipzig.de';
+        if (!this.email) {
+            this.email = '';
         }
 
         const data = {
@@ -33,6 +32,7 @@ class LoginController {
         };
 
         this.API.post('users/action/login', data).success((result) => {
+            console.log(result);
             if (result.login == 'success') {
                 this.Auth.login(result.logged_in_user, this.remember_me);
             } else {
