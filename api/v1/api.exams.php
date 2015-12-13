@@ -127,7 +127,6 @@ $app->group('/exams', function() {
 		foreach ($data['list'] as &$question) {
             $question['answers'] = unserialize($question['answers']);
         }
-
 		return createResponse($response, $data);
 	});
 
@@ -143,7 +142,6 @@ $app->group('/exams', function() {
 			$response['exam_id'] = $mysql->lastInsertId();
 			return $response;
 		});
-
 		return createResponse($response, $data);
 	});
 
@@ -157,15 +155,14 @@ $app->group('/exams', function() {
             SET subject = ?, professor = ?, semester = ?, date = ?, sort = ?, duration = ?, notes = ?, file_name = ?, visibility = ?, date_updated = ?
             WHERE exam_id = ?",
 		[$body['subject'], $body['professor'], $body['semester'], $body['date'], $body['sort'], $body['duration'], $body['notes'], $body['file_name'], $body['visibility'], time(), $args['exam_id']]);
-
 		return createResponse($response, $data);
 	});
 
 
-	$this->delete('/:exam_id', function($exam_id) {
+	$this->delete('/{exam_id}', function($request, $response, $args) {
 		$mysql = startMysql();
-		$data = executeMysql($mysql, "DELETE FROM exams WHERE exam_id = ?", [$exam_id]);
 
+		$data = executeMysql($mysql, "DELETE FROM exams WHERE exam_id = ?", [$args['exam_id']]);
 		return createResponse($response, $data);
 	});
 });

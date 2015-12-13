@@ -132,7 +132,7 @@ $app->group('/questions', function() {
 		$data = executeMysql($mysql,
 		    "INSERT INTO questions (question, answers, correct_answer, exam_id, date_added, user_id_added, explanation, question_image_url, type, topic)
 		    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-		[$body->question, serialize($body['answers']), $body['correct_answer'], $body['exam_id'], time(), $body['user_id_added'], $body['explanation'], $body['question_image_url'], $body['type'], $body['topic']], function($stmt, $mysql) {
+		[$body['question'], serialize($body['answers']), $body['correct_answer'], $body['exam_id'], time(), $body['user_id_added'], $body['explanation'], $body['question_image_url'], $body['type'], $body['topic']], function($stmt, $mysql) {
 			$data['question_id'] = $mysql->lastInsertId();
 			return $data;
 		});
