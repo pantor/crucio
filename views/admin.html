@@ -13,33 +13,38 @@
 
         <div class="col-md-9">
             <div class="tab-content">
-                <div ng-show="ctrl.activeTab == 'users' && ctrl.ready">
+                <div ng-show="ctrl.activeTab == 'users' && ctrl.users">
                     <div class="row mmtop">
                         <div class="col-md-8 col-sm-8">
                             <div class="btn-toolbar" role="toolbar">
                                 <div class="btn-group mtop" uib-dropdown>
                                     <button class="btn btn-default" type="button" uib-dropdown-toggle>
-                                        {{ ctrl.user_search.semester ? ctrl.user_search.semester + '. Semester' : 'Alle Semester' }} <span class="caret"></span>
+                                        <span ng-show="ctrl.user_search.semester">{{ ctrl.user_search.semester }}. Semester</span>
+                                        <span ng-show="!ctrl.user_search.semester">Alle Semester</span>
+                                        <span class="caret"></span>
                                     </button>
 
                                     <ul class="dropdown-menu" role="menu">
-                                        <li ng-repeat="sem in ctrl.distinct_semesters">
-                                            <a href ng-click="ctrl.user_search.semester=sem">{{ sem }}. Semester</a>
+                                        <li ng-repeat="ds in ctrl.distinct_semesters">
+                                            <a href ng-click="ctrl.user_search.semester = ds.semester; ctrl.loadUsers()">{{ ds.semester }}. Semester</a>
                                         </li>
 
                                         <li class="divider"></li>
-                                        <li><a href ng-click="ctrl.user_search.semester=''">Alle Semester</a></li>
+                                        <li><a href ng-click="ctrl.user_search.semester = null; ctrl.loadUsers()">Alle Semester</a></li>
                                     </ul>
                                 </div>
+
                                 <div class="btn-group mtop" uib-dropdown>
                                     <button class="btn btn-default" type="button" uib-dropdown-toggle>
                                         {{ user_search.group ? user_search.group : 'Alle Gruppen' }} <span class="caret"></span>
                                     </button>
 
                                     <ul class="dropdown-menu" role="menu">
-                                        <li ng-repeat="group_child in ctrl.distinct_groups"><a href ng-click="ctrl.user_search.group=group_child">{{ group_child }}</a></li>
+                                        <li ng-repeat="g in ctrl.distinct_groups">
+                                            <a href ng-click="ctrl.user_search.group = g.group_id; ctrl.loadUsers()">{{ g.name }}</a>
+                                        </li>
                                         <li class="divider"></li>
-                                        <li><a href ng-click="ctrl.user_search.group=''">Alle Gruppen</a></li>
+                                        <li><a href ng-click="ctrl.user_search.group = null; ctrl.loadUsers()">Alle Gruppen</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -47,9 +52,9 @@
 
                         <div class="col-md-4 col-sm-4">
                             <div class="input-group mtop">
-                                <input class="form-control" type="text" ng-model="ctrl.user_search.query">
+                                <input class="form-control" type="text" ng-model="ctrl.user_search.query" ng-change="ctrl.loadUsers()">
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default"><i class="fa fa-search"></i></button>
+                                    <button class="btn btn-default" ng-click="ctrl.loadUsers()"><i class="fa fa-search"></i></button>
                                 </span>
                             </div>
                         </div>
@@ -69,24 +74,16 @@
                             </thead>
 
                             <tbody>
-                                <tr ng-repeat="user in ::ctrl.users" ng-show="ctrl.userInSelection($index)">
-                                    <td id="group">
-                                        <button class="btn btn-danger admin-group-btn" ng-if="user.group_id==2" ng-click="ctrl.changeGroup($index)">
-                                            {{ user.group_name }}
-                                        </button>
-
-                                        <button class="btn btn-info admin-group-btn" ng-if="user.group_id==3" ng-click="ctrl.changeGroup($index)">
-                                            {{ user.group_name }}
-                                        </button>
-
-                                        <button class="btn btn-default admin-group-btn" ng-if="user.group_id==1" ng-click="ctrl.changeGroup($index)">
+                                <tr ng-repeat="user in ctrl.users">
+                                    <td>
+                                        <button class="btn btn-xs btn-admin-group" ng-click="ctrl.changeGroup($index)" ng-class="{ 'btn-danger': user.group_id == 2, 'btn-info': user.group_id == 3, 'btn-default': user.group_id == 1 }">
                                             {{ user.group_name }}
                                         </button>
                                     </td>
                                     <td>{{ ::user.username }}</td>
-                                    <td id="semester">{{ user.semester }}</td>
-                                    <td id="login">
-                                        <span ng-if="user.last_sign_in > 0 && !ctrl.isToday(user.last_sign_in) && !ctrl.isYesterday(user.last_sign_in)">
+                                    <td>{{ user.semester }}</td>
+                                    <td>
+                                        <span ng-if="user.last_sign_in > 0 && !ctrl.isToday(user.last_sign_in) && !ctrl.isToday(user.last_sign_in, 24)">
                                             {{ ::user.last_sign_in * 1000 | date: 'dd.MM.yyyy, HH:mm' }}
                                         </span>
 
@@ -94,7 +91,7 @@
                                             Heute, {{ ::user.last_sign_in * 1000 | date: 'HH:mm' }}
                                         </span>
 
-                                        <span ng-if="user.last_sign_in > 0 && ctrl.isYesterday(user.last_sign_in)">
+                                        <span ng-if="user.last_sign_in > 0 && ctrl.isToday(user.last_sign_in, 24)">
                                             Gestern, {{ ::user.last_sign_in * 1000 | date: 'HH:mm' }}
                                         </span>
 
@@ -107,7 +104,7 @@
                                     </a></td>
                                 </tr>
 
-                                <tr class="search-sf" ng-show="ctrl.userInSelectionCount() == 0"><td class="text-muted" colspan="6">Nichts gefunden.</td></tr>
+                                <tr class="search-sf" ng-show="!ctrl.users.length"><td class="text-muted" colspan="6">Nichts gefunden.</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -119,7 +116,7 @@
                     <div class="row">
                         <center>
                             <form class="input-group col-xs-10 col-sm-6" ng-submit="ctrl.addMail()">
-                                <input class="form-control" ng-model="ctrl.new_whitelist_mail" type="text" placeholder="Mail-Adresse...">
+                                <input class="form-control" ng-model="ctrl.new_whitelist_mail" type="email" placeholder="Mail-Adresse...">
                                 <span class="input-group-btn">
                                     <button class="btn btn-default"><i class="fa fa-plus"></i></button>
                                 </span>
@@ -137,9 +134,9 @@
                         </thead>
 
                         <tbody>
-                            <tr ng-repeat="email in ctrl.whitelist">
-                                <td><i ng-show="email.used > 0" class="fa fa-check"></i></td>
-                                <td>{{ email.mail_address }}</td>
+                            <tr ng-repeat="mail in ctrl.whitelist">
+                                <td><i ng-show="mail.used > 0" class="fa fa-check"></i></td>
+                                <td>{{ mail.mail_address }}</td>
                                 <td><button ng-click="ctrl.removeMail($index)" type="button" class="close">&times;</button></td>
                             </tr>
                         </tbody>
@@ -151,11 +148,11 @@
                     <h4 class="mbottom-2x">Alle Kommentare</h4>
 
                     <div class="row mmtop">
-                        <div class="col-md-6 col-sm-6 col-sm-offset-6 col-md-offset-6">
+                        <div class="col-xs-12">
                             <div class="input-group mtop">
-                                <input class="form-control" type="text" ng-model="ctrl.comment_search.query">
+                                <input class="form-control" type="text" ng-model="ctrl.comment_search.query" ng-change="ctrl.loadComments()">
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default"><i class="fa fa-search"></i></button>
+                                    <button class="btn btn-default" ng-click="ctrl.loadComments()"><i class="fa fa-search"></i></button>
                                 </span>
                             </div>
                         </div>
@@ -174,17 +171,17 @@
 
                         <tbody ng-repeat="comment_array in ctrl.questions_by_comment_display">
                             <tr ng-repeat="c in comment_array">
-                                <td ng-show="$index==0" rowspan="{{ comment_array.length }}" style="min-width:140px;">
+                                <td ng-show="$index == 0" rowspan="{{ comment_array.length }}" style="min-width:140px;">
                                     <span ng-bind-html="c.question"></span>
                                 </td>
                                 <td>{{ c.username }}</td>
                                 <td>{{ c.comment }}</td>
-                                <td><span timeago="{{c.date * 1000}}"></td>
+                                <td><span timeago="{{ c.date * 1000 }}"></td>
                                 <td><a href="question?id={{ c.question_id }}&reset_session=1"><i class="fa fa-chevron-right"></i></a></td>
                             </tr>
                         </tbody>
 
-                        <tbody class="search-sf" ng-show="ctrl.commentInSelectionCount() == 0">
+                        <tbody class="search-sf" ng-show="!ctrl.questions_by_comment_display.length">
                             <td class="text-muted" colspan="6">Nichts gefunden.</td>
                         </tbody>
                     </table>
@@ -195,8 +192,8 @@
                     <h4 class="mbottom-2x">Bitte sehr vorsichtig sein!</h4>
                     <div class="btn-toolbar">
                         <div class="btn-group">
-                            <button class="btn btn-default" ng-click="ctrl.increaseSemester()">Semester +1</button>
-                            <button class="btn btn-default" ng-click="ctrl.decreaseSemester()">-1</button>
+                            <button class="btn btn-default" ng-click="ctrl.changeSemester(+1)">Semester +1</button>
+                            <button class="btn btn-default" ng-click="ctrl.changeSemester(-1)">-1</button>
                         </div>
                     </div>
 

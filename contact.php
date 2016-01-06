@@ -7,7 +7,7 @@
 
     <body class="body" ng-controller="ContactController as ctrl">
         <div class="wrap">
-            <div class="container-white container-top-bar">
+            <div class="container-top-bar">
                 <div class="container ">
                     <div class="row">
                         <div class="col-md-7 col-md-offset-1 col-sm-5 col-sm-offset-1">
@@ -36,46 +36,51 @@
                 </div>
             </div>
 
-            <div class="container-light-grey container-padding-4">
+            <div class="container-light-grey container-padding-2">
                 <div class="container container-text container-text-dark">
-                    <p style="margin-top: 0;">
-                        Bei Angelegenheiten wie z.B. Problemen bei der Registrierung, einer anderen E-Mail-Adresse oder weiteren Klausuren k&ouml;nnt ihr euch hier an uns wenden.
-                    </p>
+                    <p>Bei Angelegenheiten wie z.B. Problemen bei der Registrierung, einer anderen E-Mail-Adresse oder weiteren Klausuren k&ouml;nnt ihr euch hier an uns wenden.</p>
                 </div>
             </div>
 
             <div class="container container-register">
-                <form class="form-horizontal">
+                <form class="form-horizontal" name="form" ng-submit="ctrl.sendMail()">
                     <div class="form-group">
                         <label class="col-sm-2">Name</label>
                         <div class="col-sm-6">
-                            <input ng-model="ctrl.name" type="text" class="form-control">
+                            <input class="form-control" name="name" ng-model="ctrl.name" type="text" required />
                         </div>
-                        <span class="label validation-error label-danger" ng-show="ctrl.error_no_name">Kein Name</span>
+                        <div ng-messages="form.name.$error" ng-show="form.name.$touched" ng-cloak>
+                            <span class="label validation-error label-danger" ng-message="required">Kein Name</span>
+                        </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-sm-2">E-Mail-Adresse</label>
                         <div class="col-sm-6">
-                            <input ng-model="ctrl.email" type="text" class="form-control">
+                            <input class="form-control" name="email" ng-model="ctrl.mail" type="email" required />
                         </div>
-                        <span class="label validation-error label-danger" ng-show="ctrl.error_no_email">Keine g&uuml;ltige E-Mail-Adresse</span>
+                        <div ng-messages="form.email.$error" ng-show="form.email.$touched" ng-cloak>
+                            <span class="label validation-error label-danger" ng-message="required">Kein E-Mail-Adresse</span>
+                            <span class="label validation-error label-danger" ng-message="email">Ung&uuml;ltige E-Mail-Adresse</span>
+                        </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-sm-2">Nachricht</label>
                         <div class="col-sm-6">
-                            <textarea ng-model="ctrl.text" class="form-control" rows="4"></textarea>
+                            <textarea class="form-control" name="text" ng-model="ctrl.text" rows="4" required></textarea>
                         </div>
-                        <span class="label validation-error label-danger"></span>
+                        <div ng-messages="form.text.$error" ng-show="form.text.$touched" ng-cloak>
+                            <span class="label validation-error label-danger" ng-message="required">Keine Nachricht</span>
+                        </div>
                     </div>
 
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <button class="btn btn-primary" ng-click="ctrl.sendMail()">
-                                <i ng-show="ctrl.is_working" class="fa fa-circle-o-notch fa-spin"></i>
-                                <span ng-show="!ctrl.email_send">Senden</span>
-                                <span ng-show="ctrl.email_send">Gesendet</span>
+                            <button class="btn btn-primary" type="submit" ng-disabled="form.$invalid">
+                                <i ng-show="ctrl.isWorking" class="fa fa-circle-o-notch fa-spin"></i>
+                                <span ng-show="!ctrl.emailSend">Senden</span>
+                                <span ng-show="ctrl.emailSend">Gesendet</span>
                             </button>
                         </div>
                     </div>

@@ -8,13 +8,13 @@
             <label class="col-sm-3 control-label">Allgemein</label>
             <div class="col-sm-8">
                 <div class="checkbox">
-                    <label><input type="checkbox" ng-model="ctrl.user.highlightExams" ng-true-value="'1'" ng-false-value="'0'">
+                    <label><input type="checkbox" ng-model="ctrl.user.highlightExams" ng-change="ctrl.formChanged()" ng-true-value="1" ng-false-value="0">
                         Empfohlene Fragen und Klausuren hervorheben
                     </label>
                 </div>
 
                 <div class="checkbox">
-                    <label> <input type="checkbox" ng-model="ctrl.user.showComments" ng-true-value="'1'" ng-false-value="'0'">
+                    <label> <input type="checkbox" ng-model="ctrl.user.showComments" ng-change="ctrl.formChanged()" ng-true-value="1" ng-false-value="0">
                         Kommentare automatisch ausblenden
                     </label>
                 </div>
@@ -25,13 +25,13 @@
             <label class="col-sm-3 control-label">Datenschutz</label>
             <div class="col-sm-8">
                 <div class="checkbox">
-                    <label><input type="checkbox" ng-model="ctrl.user.useAnswers" ng-true-value="'1'" ng-false-value="'0'">
+                    <label><input type="checkbox" ng-model="ctrl.user.useAnswers" ng-change="ctrl.formChanged()" ng-true-value="1" ng-false-value="0">
                         Meine Antworten verwenden, um schwere Fragen herauszufinden
                     </label>
                 </div>
 
                 <div class="checkbox">
-                    <label><input type="checkbox" ng-model="ctrl.user.useTags" ng-true-value="'1'" ng-false-value="'0'">
+                    <label><input type="checkbox" ng-model="ctrl.user.useTags" ng-change="ctrl.formChanged()" ng-true-value="1" ng-false-value="0">
                         Meine Markierungen verwenden, um Fragen zu katalogisieren
                     </label>
                 </div>
@@ -50,10 +50,10 @@
         <div class="form-group">
             <div class="col-sm-offset-3 col-sm-8">
                 <button class="btn btn-primary" id="submitButton" ng-click="ctrl.updateUser()">
-                    <i ng-show="ctrl.is_working" class="fa fa-circle-o-notch fa-spin"></i>
-                    <span ng-show="!ctrl.is_saved && !ctrl.has_error">Speichern</span>
-                    <span ng-show="ctrl.is_saved">Gespeichert</span>
-                    <span ng-show="ctrl.has_error">Speichern nicht m&ouml;glich</span>
+                    <i ng-show="ctrl.isWorking" class="fa fa-circle-o-notch fa-spin"></i>
+                    <span ng-show="!ctrl.isSaved && !ctrl.hasError">Speichern</span>
+                    <span ng-show="ctrl.isSaved">Gespeichert</span>
+                    <span ng-show="ctrl.hasError">Speichern nicht m&ouml;glich</span>
                 </button>
             </div>
         </div>

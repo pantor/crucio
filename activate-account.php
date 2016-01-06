@@ -7,7 +7,7 @@
 
     <body class="body" ng-controller="ActivateController as ctrl">
         <div class="wrap">
-            <div class="container-white container-top-bar">
+            <div class="container-top-bar">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-7 col-md-offset-1 col-sm-5 col-sm-offset-1">
@@ -39,16 +39,16 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-10 col-sm-offset-1">
-                        <div ng-if="ctrl.error_no_token || ctrl.error_unknown" class="container-center-align-sm" style="padding: 60px;">
+                        <div ng-if="ctrl.errorNoToken || ctrl.errorUnknown" class="container-center-align-sm" style="padding: 60px;">
                             <h3>Fehler bei der Aktivierung.</h3>
 
                             <hr>
 
-                            <div ng-if="ctrl.error_no_token" class="alert alert-danger">
+                            <div ng-if="ctrl.errorNoToken" class="alert alert-danger">
                                 Der Schl&uuml;ssel konnte deinen Account nicht aktivieren. Wir haben einfach keinen Schl&uuml;ssel gefunden.
                             </div>
 
-                            <div ng-if="ctrl.error_unknown" class="alert alert-danger">
+                            <div ng-if="ctrl.errorUnknown" class="alert alert-danger">
                                 Der Schl&uuml;ssel konnte deinen Account nicht aktivieren. <br> Entweder passt der Schl&uuml;ssel nicht oder dein Account ist bereits aktiviert.
                             </div>
                         </div>

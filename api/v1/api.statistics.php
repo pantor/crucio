@@ -2,6 +2,32 @@
 
 $app->group('/stats', function() {
 
+    $this->get('/summary', function($request, $response, $args) {
+		$mysql = init();
+
+		$time = time();
+		$stats['time'] = $time;
+
+		$stmt = $mysql->prepare("SELECT COUNT(*) AS 'count' FROM users WHERE visibility = 1");
+
+		$stats['user_count'] = getCount($mysql, 'users');
+		$stats['exam_count'] = getCount($mysql, 'exams');
+		$stats['visible_exam_count'] = getCount($mysql, 'exams WHERE visibility = 1');
+		$stats['question_count'] = getCount($mysql, 'questions');
+		$stats['visible_question_count'] = getCount($mysql, "questions, exams WHERE exams.visibility = 1 AND questions.exam_id = exams.exam_id");
+
+		$stats['result_count'] = getCount($mysql, 'results');
+		$stats['result_count_today'] = getCount($mysql, 'results WHERE date > ?', [$time - 24*60*60]);
+		$stats['result_per_minute'] = getCount($mysql, 'results WHERE date > ?', [$time - 30*60]) / (30.); // Last Half Hour
+
+		$stats['comment_count'] = getCount($mysql, 'comments');
+		$stats['tag_count'] = getCount($mysql, 'tags');
+
+
+		$data['stats'] = $stats;
+		return createResponse($response, $data);
+	});
+
 	$this->get('/general', function($request, $response, $args) {
 		$mysql = init();
 
@@ -18,10 +44,8 @@ $app->group('/stats', function() {
 		$stats['question_explanation_count'] = getCount($mysql, "questions WHERE explanation != ''");
 		$stats['question_free_count'] = getCount($mysql, 'questions WHERE type = 1');
 		$stats['question_without_answer_count'] = getCount($mysql, 'questions WHERE correct_answer < 1 AND type > 1');
-		$stats['question_topic_count'] = getCount($mysql, "questions WHERE topic != '' AND topic != 'Sonstiges'");
+		$stats['question_category_count'] = getCount($mysql, "questions WHERE category_id > 0");
 		$stats['visible_question_count'] = getCount($mysql, "questions, exams WHERE exams.visibility = 1 AND questions.exam_id = exams.exam_id");
-		$stats['question_worked_count'] = getCountWithPre($mysql, "COUNT(DISTINCT question_id)", "results");
-		$stats['question_worked_count_today'] = getCountWithPre($mysql, "COUNT(DISTINCT question_id)", "results WHERE date > ?", [time() - 1*24*60*60]);
 
 		$stats['result_count'] = getCount($mysql, 'results');
 		$stats['result_count_hour'] = getCount($mysql, 'results WHERE date > ?', [$time - 60*60]);
@@ -32,20 +56,6 @@ $app->group('/stats', function() {
 
 		$stats['comment_count'] = getCount($mysql, 'comments');
 		$stats['tag_count'] = getCount($mysql, 'tags');
-		$stats['search_count'] = getCount($mysql, 'search_queries');
-
-		$user_count_semester = [];
-		$exam_count_semester = [];
-		$result_count_semester = [];
-		for ($i = 1; $i < 7; $i++) {
-			$user_count_semester[] = getCount($mysql, 'users WHERE semester = ?', [$i]);
-			$exam_count_semester[] = getCount($mysql, 'exams WHERE semester = ?', [$i]);
-		}
-		$user_count_semester[] = getCount($mysql, 'users WHERE semester > 6');
-		$exam_count_semester[] = getCount($mysql, 'exams WHERE semester > 6');
-		$result_count_semester[] = getCount($mysql, 'results WHERE semester > 6');
-		$stats['user_count_semester'] = $user_count_semester;
-		$stats['exam_count_semester'] = $exam_count_semester;
 
 		$resolution = 1.5 * 60;
 		$days = 2;
@@ -61,97 +71,73 @@ $app->group('/stats', function() {
 		return createResponse($response, $data);
 	});
 
-	$this->get('/search-queries', function($request, $response, $args) {
+	$this->get('/activities', function($request, $response, $args) {
 		$mysql = init();
-
-        $stmt = $mysql->prepare(
-            'SELECT s.*, u.username FROM search_queries s, users u WHERE s.user_id = u.user_id ORDER BY s.date DESC LIMIT 100'
-        );
-
-		$data['search_queries'] = getAll($stmt);
-		return createResponse($response, $data);
-	});
-
-	$this->get('/results-dep-time', function($request, $response, $args) {
-		$mysql = init();
-
-		$results_dep_time = [];
-		for ($i = 0; $i<48; $i++) {
-			$results_dep_time[] = getCount($mysql, "results WHERE (?+1)*30*60 > (date % 60*60*24) AND (date % 60*60*24) >= ?*30*60", [$i, $i]);
-        }
-
-		$data['results_dep_time'] = $results_dep_time;
-		return createResponse($response, $data);
-	});
-
-	$this->post('/activities', function($request, $response, $args) {
-		$mysql = init();
-		$body = $request->getParsedBody();
+		$query_params = $request->getQueryParams();
 
 		$activities = [];
 
-		if (!$body->search_query) {
-    		$stmt = $mysql->prepare(
-        		"SELECT 'search_query' activity, s.*, u.username
-        		FROM search_queries s, users u WHERE s.user_id = u.user_id ORDER BY s.date DESC LIMIT 100"
-            );
-			$activities = array_merge( $activities, getAll($stmt) );
-		}
-
-		if (!$body->result) {
+		if ($query_params['result']) {
     		$stmt = $mysql->prepare(
         		"SELECT 'result' activity, r.*, q.*, u.username
-        		FROM results r, users u, questions q
-        		WHERE r.user_id = u.user_id AND r.question_id = q.question_id
-        		ORDER BY r.date DESC LIMIT 100"
+        		FROM results r
+        		INNER JOIN users u ON u.user_id = r.user_id
+        		INNER JOIN questions q ON q.question_id = r.question_id
+        		ORDER BY r.date DESC
+        		LIMIT 100"
             );
 			$activities = array_merge( $activities, getAll($stmt) );
 		}
 
-		if (!$body->register) {
+		if ($query_params['register']) {
     		$stmt = $mysql->prepare(
         		"SELECT 'register' activity, u.*, u.sign_up_date as date
         		FROM users u
-        		ORDER BY u.sign_up_date DESC LIMIT 100"
+        		ORDER BY u.sign_up_date DESC
+        		LIMIT 100"
             );
 			$activities = array_merge( $activities, getAll($stmt) );
 		}
 
-		if (!$body->login) {
+		if ($query_params['login']) {
     		$stmt = $mysql->prepare(
         		"SELECT 'login' activity, u.*, u.last_sign_in as date
         		FROM users u
-        		ORDER BY u.last_sign_in DESC LIMIT 100"
+        		ORDER BY u.last_sign_in DESC
+        		LIMIT 100"
             );
 			$activities = array_merge( $activities, getAll($stmt) );
 		}
 
-		if (!$body->comment) {
+		if ($query_params['comment']) {
     		$stmt = $mysql->prepare(
         		"SELECT 'comment' activity, c.*, u.username
-        		FROM comments c, users u
-        		WHERE c.user_id = u.user_id
-        		ORDER BY c.date DESC LIMIT 100"
+        		FROM comments c
+        		INNER JOIN users u ON u.user_id = c.user_id
+        		ORDER BY c.date DESC
+        		LIMIT 100"
             );
 			$activities = array_merge( $activities, getAll($stmt) );
 		}
 
-		if (!$body->exam_new) {
+		if ($query_params['exam_new']) {
     		$stmt = $mysql->prepare(
         		"SELECT 'exam_new' activity, e.*, e.date as year, e.date_added as date, u.username
-        		FROM exams e, users u
-        		WHERE e.user_id_added = u.user_id
-        		ORDER BY e.date_added DESC LIMIT 100"
+        		FROM exams e
+        		INNER JOIN users u ON u.user_id = e.user_id_added
+        		ORDER BY e.date_added DESC
+        		LIMIT 100"
             );
 			$activities = array_merge( $activities, getAll($stmt) );
 		}
 
-		if (!$body->exam_update) {
+		if ($query_params['exam_update']) {
     		$stmt = $mysql->prepare(
         		"SELECT 'exam_update' activity, e.*, e.date as year, e.date_updated as date, u.username
-        		FROM exams e, users u
-        		WHERE e.user_id_added = u.user_id
-        		ORDER BY e.date_updated DESC LIMIT 100"
+        		FROM exams e
+        		INNER JOIN users u ON u.user_id = e.user_id_added
+        		ORDER BY e.date_updated DESC
+        		LIMIT 100"
             );
 			$activities = array_merge( $activities, getAll($stmt) );
 		}

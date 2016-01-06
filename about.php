@@ -7,11 +7,23 @@
 
     <body class="body" ng-controller="AboutController as ctrl">
         <div class="wrap">
-            <div class="container-white container-top-bar">
+            <div class="container-top-bar">
                 <div class="container ">
                     <div class="row">
                         <div class="col-md-7 col-md-offset-1 col-sm-5 col-sm-offset-1">
                             <h1><a href="/" target="_self"><i class="fa fa-check-square-o"></i> Crucio</a></h1>
+                        </div>
+
+                        <div class="col-xs-6 col-md-2 col-sm-3">
+                            <a class="btn btn-block btn-index-top" href="/" target="_self">
+                                <i class="fa fa-sign-in fa-fw hidden-xs"></i> Anmelden
+                            </a>
+                        </div>
+
+                        <div class="col-xs-6 col-md-2 col-sm-3">
+                            <a class="btn btn-block btn-index-top" href="/register" target="_self">
+                                <i class="fa fa-pencil-square-o fa-fw hidden-xs"></i> Registrieren
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -27,25 +39,17 @@
                 </div>
             </div>
 
-            <div class="container-light-grey container-padding-4">
-                <div class="container">
-                    <dl class="dl-horizontal" style="margin-bottom: 0;">
-                        <dt>Inhaber</dt>
-                        <dd>
-                            <address>
-                                <strong>StuRaMed Leipzig</strong><br>
-                                Liebigstra&szlig;e 27<br>
-                                04103 Leipzig<br>
-                            </address>
-                        </dd>
+            <div class="container-light-grey container-padding-2">
+                <div class="container container-text">
+                    <center>
+                        <address>
+                            <strong>StuRaMed Leipzig</strong><br>
+                            Liebigstra&szlig;e 27<br>
+                            04103 Leipzig<br>
+                        </address>
 
-                        <dt>Entwicklung</dt>
-                        <dd>
-                            <address>
-                                Crucio wurde entwickelt von <a href="http://www.pantorix.de">Pantorix</a>. <strong>&copy; 2015 Pantorix.</strong>
-                            </address>
-                        </dd>
-                    </dl>
+                        <p>Crucio wurde entwickelt von Pantorix. <strong>&copy; 2015 Pantorix.</strong></p>
+                    </center>
                 </div>
             </div>
 
@@ -54,7 +58,7 @@
                     <dt>Version</dt>
                     <dd>
                         <address>
-                            Crucio ist noch in der <strong><span class="text-danger">0.7-Beta</span></strong>-Version, daher werdet ihr sicherlich einige Fehler entdecken. Die k&ouml;nnt ihr in <a href="https://github.com/crucioproject/Crucio/issues">Github</a> eintragen; und zwar m&ouml;glichst so, dass wir den Fehler reproduzieren k&ouml;nnen. Oder euch einfach bei uns melden...
+                            Crucio ist noch in der <strong><span class="text-danger">0.8-Beta</span></strong>-Version, daher werdet ihr sicherlich einige Fehler entdecken. Die k&ouml;nnt ihr in <a href="https://github.com/crucioproject/Crucio/issues">Github</a> eintragen; und zwar m&ouml;glichst so, dass wir den Fehler reproduzieren k&ouml;nnen. Oder euch einfach bei uns melden...
                         </address>
                     </dd>
 

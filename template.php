@@ -3,7 +3,7 @@
     <head>
         <?php include('parts/header.php'); ?>
 
-        <title ng-controller="TitleController as titleCtrl" ng-bind="titleCtrl.Page.title"></title>
+        <title>Crucio</title>
     </head>
 
     <body class="body-padding">
@@ -13,30 +13,30 @@
                     <div class="row">
                         <div class="col-sm-5 col-md-4 col-md-offset-1">
                             <div class="navbar-header">
-                                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                                <button type="button" class="navbar-toggle" ng-click="isNavShown = !isNavShown">
                                     <span class="icon-bar"></span>
                                     <span class="icon-bar"></span>
                                     <span class="icon-bar"></span>
                                 </button>
 
-                                <a class="navbar-brand" href="questions">
+                                <a class="navbar-brand" href="learn">
                                     <h1><i class="fa fa-check-square-o"></i>  Crucio</h1>
                                 </a>
                             </div>
                         </div>
 
                         <div ng-if="logoutCtrl.user.username" class="col-sm-7">
-                            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <div class="collapse navbar-collapse" uib-collapse="!isNavShown">
                                 <ul class="nav navbar-nav navbar-right">
-                                    <li class="navbar-element" ng-class="{active: logoutCtrl.Page.nav == 'Lernen'}">
-                                        <a href="questions">Lernen</a>
+                                    <li class="navbar-element" ng-class="{ 'active': logoutCtrl.Page.nav == 'Lernen' }">
+                                        <a href="learn">Lernen</a>
                                     </li>
 
-                                    <li class="navbar-element" ng-class="{active: logoutCtrl.Page.nav == 'Autor'}" ng-if="logoutCtrl.user.group_id == 2 || logoutCtrl.user.group_id == 3">
+                                    <li class="navbar-element" ng-class="{ 'active': logoutCtrl.Page.nav == 'Autor' }" ng-if="logoutCtrl.user.group_id == 2 || logoutCtrl.user.group_id == 3">
                                         <a href="author">Autoren</a>
                                     </li>
 
-                                    <li class="navbar-element" ng-class="{active: logoutCtrl.Page.nav == 'Admin'}" ng-if="logoutCtrl.user.group_id == 2">
+                                    <li class="navbar-element" ng-class="{ 'active': logoutCtrl.Page.nav == 'Admin' }" ng-if="logoutCtrl.user.group_id == 2">
                                         <a href="admin">Admin</a>
                                     </li>
 

@@ -1,8 +1,3 @@
-<style>
-    sup { vertical-align: super; }
-    sub { vertical-align: sub; }
-</style>
-
 <div class="container" ng-show="ctrl.ready == 0" style="padding-top: 100px;">
     <div class="spinner" us-spinner="{length: 0, radius: 18, color: '#333', shadow: false}" spinner-on="ctrl.ready == 0"></div>
 </div>
@@ -13,8 +8,10 @@
             <div class="fixed-wrapper fixed-wrapper-sm-4">
                 <div class="btn-toolbar mmtop">
                     <button class="btn btn-success mtop" ng-click="ctrl.saveExam()">
-                        <i ng-show="!ctrl.is_saving" class="fa fa-fw fa-save"></i>
-                        <i ng-show="ctrl.is_saving" class="fa fa-circle-o-notch fa-spin"></i> {{ ctrl.has_changed ? 'Speichern' : 'Gespeichert' }}
+                        <i ng-show="!ctrl.isSaving" class="fa fa-fw fa-save"></i>
+                        <i ng-show="ctrl.isSaving" class="fa fa-circle-o-notch fa-spin"></i>
+                        <span ng-show="ctrl.hasChanged">Speichern</span>
+                        <span ng-show="!ctrl.hasChanged">Gespeichert</span>
                     </button>
 
                     <div class="btn-group pull-right mtop" role="group">
@@ -30,20 +27,18 @@
 
                 <div class="edit-exam-wrapper" >
                     <ul class="list-group exam-edit-list-group">
-                        <a class="list-group-item" ng-class="{active: ctrl.open_question_index == -1}" ng-click="ctrl.open_question_index = -1" href>
+                        <a class="list-group-item" ng-class="{ active: ctrl.openQuestionIndex == -1 }" ng-click="ctrl.openQuestionIndex = -1" href>
                             <h4 class="list-group-item-heading">Allgemeine Infos <i class="fa fa-chevron-right pull-right"></i></h4>
                             <p class="list-group-item-text">
                                 <i class="fa fa-fw fa-flask"></i> {{ ctrl.exam.subject }} <i class="fa fa-fw"></i><i class="fa fa-fw fa-calendar"></i> {{ ctrl.exam.date }}
                             </p>
                         </a>
-
-                        <a class="list-group-item question-item" ng-class="{active: ctrl.open_question_index == $index}" ng-click="ctrl.open_question_index = $index" ng-repeat="q in ctrl.exam.questions" href>
-                            <div ng-show="q.type == 1" class="dot dot-info pull-left" style="margin-top:2px; margin-left:-4px;"></div>
-                            <div ng-show="q.type > 1 && q.correct_answer == 0" class="dot dot-danger pull-left" style="margin-top:2px; margin-left:-4px;"></div>
-                            <!--span ng-show="(q.topic == '' || q.topic == 'Sonstiges') && ctrl.subject_list[exam.subject].length > 1" class="label label-danger">Kategorie</span-->
+                        <a class="list-group-item question-item" ng-class="{active: ctrl.openQuestionIndex == $index}" ng-click="ctrl.openQuestionIndex = $index" ng-repeat="q in ctrl.questions" href>
+                            <div ng-show="q.type == 1" class="dot dot-info pull-left" style="margin-top: 2px; margin-left: -4px;"></div>
+                            <div ng-show="q.type > 1 && q.correct_answer == 0" class="dot dot-danger pull-left" style="margin-top: 2px; margin-left: -4px;"></div>
                             <i class="fa fa-chevron-right pull-right"></i>
                             <span ng-show="q.question.length == 0 || q.question == '<br/>'">Neue Frage...</span>
-                            <span ng-bind-html="q.question | cut:true:44:'...'"></span>
+                            <span ng-bind-html="q.question | cut : true : 44 : '...'"></span>
                         </a>
                     </ul>
                 </div>
@@ -52,13 +47,13 @@
 
         <div class="col-sm-8">
             <div class="tab-content">
-                <div class="tab-pane" ng-class="{active: ctrl.open_question_index == -1}" id="info">
+                <div class="tab-pane" ng-class="{ active: ctrl.openQuestionIndex == -1 }" id="info">
                     <div class="form-horizontal mbotton-3x">
                         <div class="form-group">
                             <label class="col-md-2 col-sm-3 control-label">Fach</label>
                             <div class="col-md-8 col-sm-9">
-                                <select class="form-control" ng-model="ctrl.exam.subject">
-                                    <option ng-repeat="(name, cat) in ::ctrl.subject_list" ng-value="name">{{ name }}</option>
+                                <select class="form-control" ng-model="ctrl.exam.subject_id">
+                                    <option ng-repeat="s in ::ctrl.subject_list" value="{{ s.subject_id }}">{{ s.subject }}</option>
                                 </select>
                             </div>
                         </div>
@@ -125,7 +120,7 @@
                         <div class="form-group">
                             <label class="col-md-2 col-sm-3 control-label">Dokument</label>
                             <div class="col-md-8 col-sm-9">
-                                <div style="margin-top: 8px;margin-bottom: 10px;">
+                                <div class="mtop-8 mbottom">
                                     <input type="file" nv-file-select uploader="ctrl.uploader" accept="application/pdf"/><br/>
                                         <a href="/files/{{ ctrl.exam.file_name }}" target="_self" class="btn btn-primary" ng-show="ctrl.exam.file_name">
                                         <i class="fa fa-external-link fa-fw"></i> Originaldokument
@@ -152,22 +147,22 @@
 
                         <div class="form-group">
                             <label class="col-md-2 col-sm-3 control-label">Anzahl Fragen</label>
-                            <div class="col-md-8 col-sm-9" style="margin-top:8px;">{{ ctrl.exam.questions.length }}</div>
+                            <div class="col-md-8 col-sm-9 mtop-8">{{ ctrl.questions.length }}</div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-md-2 col-sm-3 control-label">Autor</label>
-                            <div class="col-md-8 col-sm-9" style="margin-top:8px;">{{ ::ctrl.exam.username }}</div>
+                            <div class="col-md-8 col-sm-9 mtop-8">{{ ::ctrl.exam.username }}</div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-md-2 col-sm-3 control-label">Eingetragen</label>
-                            <div class="col-md-8 col-sm-9" style="margin-top:8px;">{{ ctrl.exam.date_added * 1000 | date:'dd.MM.yyyy' }}</div>
+                            <div class="col-md-8 col-sm-9 mtop-8">{{ ctrl.exam.date_added * 1000 | date:'dd.MM.yyyy' }}</div>
                         </div>
 
                         <div class="form-group" ng-show="exam.exam_id">
                             <label class="col-md-2 col-sm-3 control-label">Aktualisiert</label>
-                            <div class="col-md-8 col-sm-9" style="margin-top:8px;">{{ ctrl.exam.date_updated * 1000 | date:'dd.MM.yyyy, HH:mm' }}</div>
+                            <div class="col-md-8 col-sm-9 mtop-8">{{ ctrl.exam.date_updated * 1000 | date:'dd.MM.yyyy, HH:mm' }}</div>
                         </div>
 
                         <hr>
@@ -182,7 +177,7 @@
                     </div>
                 </div>
 
-                <div class="tab-pane tab-question" ng-class="{active: ctrl.open_question_index == $index}" ng-repeat="q in ctrl.exam.questions" id="{{ $index+1 }}">
+                <div class="tab-pane tab-question" ng-class="{active: ctrl.openQuestionIndex == $index}" ng-repeat="q in ctrl.questions" id="{{ $index+1 }}">
                     <div class="form-horizontal mbottom-3x">
                         <div class="form-group">
                             <label class="col-md-2 col-sm-3 control-label">Typ</label>
@@ -203,10 +198,9 @@
                         <div class="form-group">
                             <label class="col-md-2 col-sm-3 control-label">Kategorie</label>
                             <div class="col-md-7 col-sm-8">
-                                <select class="form-control" ng-model="q.topic">
-                                    <option ng-if="q.topic != 'Sonstiges'" ng-value="Sonstiges">Sonstiges</option>
-                                    <option ng-if="ctrl.subject_list[ctrl.exam.subject].indexOf(q.topic) == -1" ng-value="q.topic">{{ q.topic }}</option>
-                                    <option ng-repeat="cat in ctrl.subject_list[exam.subject]" ng-value="cat">{{ cat }}</option>
+                                <select class="form-control" ng-model="q.category_id">
+                                    <option value="0">Sonstiges</option>
+                                    <option ng-repeat="c in ctrl.getCategories(ctrl.exam.subject_id)" value="{{ c.category_id }}">{{ c.category }}</option>
                                 </select>
                             </div>
                         </div>
@@ -218,9 +212,9 @@
                             <div class="col-sm-10">
                                 <text-angular ng-model="q.question" ta-disabled="false" ta-toolbar="[['bold','italics', 'subscript', 'superscript'], ['ul', 'ol'], ['times', 'sdot', 'asymp', 'radic'], ['arrow-left', 'arrow-right', 'arrow-left-right'], ['alpha', 'beta', 'gamma', 'delta', 'lambda', 'mu', 'pi', 'rho', 'omega', 'Omega'], ['undo', 'redo']]" class="text-angular-large"></text-angular>
 
-                                <div style="margin-top: 8px;margin-bottom: 10px;">
-                                    <input type="file" nv-file-select uploader="ctrl.uploader_array[$index]" accept="image/jpeg, image/png"/><br/>
-                                    <button ng-disabled="ctrl.uploader_array[$index].queue.length == 0" class="btn btn-default" ng-click="ctrl.uploader_array[$index].queue[0].upload()">
+                                <div class="mtop-8 mbottom">
+                                    <input type="file" nv-file-select uploader="ctrl.uploaderArray[$index]" accept="image/jpeg, image/png"/><br/>
+                                    <button ng-disabled="ctrl.uploaderArray[$index].queue.length == 0" class="btn btn-default" ng-click="ctrl.uploaderArray[$index].queue[0].upload()">
                                         <i class="fa fa-fw fa-upload"></i> Hochladen
                                     </button>
                                     <button class="btn btn-danger" ng-click="q.question_image_url=''">Bild l&ouml;schen</button>
@@ -232,10 +226,10 @@
 
                         <hr>
 
-                        <div class="form-group" style="margin-bottom: -10px;">
+                        <div class="form-group mmbottom">
                             <label class="col-sm-2">
                             </label>
-                            <div class="col-sm-10" style="margin-bottom: -10px;">
+                            <div class="col-sm-10 mmbottom">
                                 <text-angular-toolbar name="toolbarf{{$index}}" ta-toolbar="[['subscript', 'superscript'], ['times', 'sdot', 'asymp', 'radic'], ['alpha', 'beta', 'gamma', 'delta', 'lambda', 'mu', 'pi', 'rho', 'omega', 'Omega']]"></text-angular-toolbar>
                             </div>
                         </div>
@@ -256,7 +250,7 @@
                             <div class="col-sm-10">
                                 <div class="btn-group">
                                     <label class="btn btn-success" ng-model="q.correct_answer" uib-btn-radio="'0'">Unbekannt</label>
-                                    <label ng-repeat="a in [0,1,2,3,4,5]" ng-if="$index < q.type" class="btn btn-success" ng-model="q.correct_answer" uib-btn-radio="'{{ $index+1 }}'">{{ ::$index+1 }}</label>
+                                    <label ng-repeat="a in [0,1,2,3,4,5]" ng-if="$index < q.type" class="btn btn-success" ng-model="q.correct_answer" uib-btn-radio="'{{ $index+ 1 }}'">{{ ::$index + 1 }}</label>
                                 </div>
                             </div>
                         </div>

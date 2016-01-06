@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- ID NG-App for Internet Explorer Support -->
 <html ng-app="crucioApp" id="ng-app">
     <head>
         <title>Crucio | Fachschaft Medizin Leipzig</title>
@@ -8,7 +7,7 @@
 
     <body class="body" ng-controller="LoginController as ctrl">
         <div class="wrap">
-            <div class="container-top-bar" style="margin-bottom: 0px;">
+            <div class="container-top-bar" style="margin-bottom: 0;">
                 <div class="container">
                     <form class="row" ng-submit="ctrl.login()">
                         <div class="col-md-4 col-md-offset-1">
@@ -16,19 +15,19 @@
                         </div>
 
                         <div class="col-md-3">
-                            <div class="form-group element has-feedback" ng-class="{'has-error': ctrl.login_error}">
-                                <input class="form-control" ng-model="ctrl.email" type="email" placeholder="E-Mail-Adresse" autofocus>
+                            <div class="form-group element has-feedback" ng-class="{'has-error': ctrl.loginError}">
+                                <input class="form-control" ng-model="ctrl.email" ng-changed="ctrl.formChanged()" type="email" placeholder="E-Mail-Adresse" autofocus>
                                 <label class="checkbox">
-                                    <input type="checkbox" ng-model="ctrl.remember_me" style="margin-top:2px;">
+                                    <input type="checkbox" ng-model="ctrl.rememberMe" style="margin-top: 2px;">
                                     Angemeldet bleiben
                                 </label>
                             </div>
                         </div>
 
                         <div class="col-md-2">
-                            <div class="form-group element has-feedback" ng-class="{'has-error': ctrl.login_error}">
-                                <input class="form-control" ng-model="ctrl.password" type="password" placeholder="Passwort">
-                                <i class="fa fa-remove form-control-feedback" ng-show="ctrl.login_error" style="margin-top:9px;" ng-cloak></i>
+                            <div class="form-group element has-feedback" ng-class="{'has-error': ctrl.loginError}">
+                                <input class="form-control" ng-model="ctrl.password" ng-changed="ctrl.formChanged()" type="password" placeholder="Passwort">
+                                <i class="fa fa-remove form-control-feedback" ng-show="ctrl.loginError" style="margin-top: 9px;" ng-cloak></i>
                                 <label for="passwordInput">
                                     <a href="forgot-password" target="_self">Passwort vergessen?</a>
                                 </label>
@@ -65,7 +64,9 @@
             <div class="container-light-grey container-padding-2">
                 <div class="sturamed">
                     <p>Crucio - Ein Projekt eures</p>
-                    <a href="http://www.sturamed-leipzig.de"><img src="public/images/sturamed.svg" width="245px" alt="Sturamed Leipzig"></a>
+                    <a href="http://www.sturamed-leipzig.de">
+                        <img src="public/images/sturamed.svg" width="245px" alt="Sturamed Leipzig">
+                    </a>
                 </div>
             </div>
 

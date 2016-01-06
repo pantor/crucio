@@ -6,13 +6,14 @@ $app->group('/questions', function() {
 		$mysql = init();
 		$query_params = $request->getQueryParams();
 
-		$query = urldecode($query_params['query']);
-		$subquery_array = explode(' ', $query);
+		$subquery_array = explode(' ', $query_params['query']);
 		$sql_query = "";
 		for ($i = 0; $i < count($subquery_array); $i++) {
-    		$sql_query .= "AND ( LOWER(CONCAT(q.question, q.answers, q.explanation)) LIKE LOWER(:sub$i) ) ";
+    		$sql_query .= "AND ( q.question LIKE :sub$i
+    		    OR q.answers LIKE :sub$i
+    		    OR q.explanation LIKE :sub$i ) ";
 		}
-		$question_id = ( intval($query) > 0) ? intval($query) : null ; // Query is question id
+		// $question_id = ( intval($query_params['query']) > 0) ? intval($query) : null; // Query is question id
         $limit = ($query_params['limit']) ? intval($query_params['limit']) : 10000;
 
 		$stmt = $mysql->prepare(
@@ -23,15 +24,17 @@ $app->group('/questions', function() {
 		    WHERE e.visibility = IFNULL(:visibility, e.visibility)
 		        AND e.semester = IFNULL(:semester, e.semester)
 		        AND e.subject_id = IFNULL(:subject_id, e.subject_id)
+		        AND q.category_id = IFNULL(:category_id, q.category_id)
 		        $sql_query
 		        AND q.question_id = IFNULL(:question_id, q.question_id)
 		    LIMIT :limit"
 		);
-        $stmt->bindValue(':visibility', $query_params['visibility'], PDO::PARAM_INT);
-        $stmt->bindValue(':semester', $query_params['semester'], PDO::PARAM_INT);
+        $stmt->bindValue(':visibility', $query_params['visibility']);
+        $stmt->bindValue(':semester', $query_params['semester']);
         $stmt->bindValue(':subject_id', $query_params['subject_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':category_id', $query_params['category_id'], PDO::PARAM_INT);
         for ($i = 0; $i < count($subquery_array); $i++) {
-            $stmt->bindValue(':sub0', "%test%");
+            $stmt->bindValue(":sub$i", '%'.$subquery_array[$i].'%');
         }
         $stmt->bindValue(':question_id', $question_id, PDO::PARAM_INT);
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
@@ -39,6 +42,80 @@ $app->group('/questions', function() {
 		$data['result'] = getAll($stmt);
 		return createResponse($response, $data);
 	});
+
+
+	$this->get('/count', function($request, $response, $args) {
+		$mysql = init();
+		$query_params = $request->getQueryParams();
+
+		$selection = json_decode($query_params['selection']);
+
+		$sql = '0 = 1 ';
+		$sql_params = [];
+		foreach ($selection as $subject_id => $entry) {
+    		if ($entry->subject) {
+                $sql .= 'OR e.subject_id = ? ';
+                array_push($sql_params, $subject_id);
+    		}
+    		foreach ($entry->categories as $category_id => $data_category) {
+                if ($data_category) {
+                    $sql .= 'OR q.category_id = ? ';
+                    array_push($sql_params, $category_id);
+                }
+            }
+        }
+
+		$stmt = $mysql->prepare(
+		    "SELECT COUNT(*) as 'c'
+		    FROM questions q
+		    INNER JOIN exams e ON e.exam_id = q.exam_id
+		    WHERE $sql "
+		);
+
+		$data['count'] = getFetch($stmt, $sql_params)['c'];
+	    return createResponse($response, $data);
+	});
+
+	$this->get('/prepare-subjects', function($request, $response, $args) {
+        $mysql = init();
+		$query_params = $request->getQueryParams();
+
+		$selection = json_decode($query_params['selection']);
+		$limit = $query_params['limit'] ? intval($query_params['limit']) : 10000;
+
+		$sql = '0 = 1 ';
+		$sql_params = [];
+		foreach ($selection as $subject_id => $entry) {
+    		if ($entry->subject) {
+                $sql .= 'OR e.subject_id = ? ';
+                array_push($sql_params, $subject_id);
+    		}
+    		foreach ($entry->categories as $category_id => $data_category) {
+                if ($data_category) {
+                    $sql .= 'OR q.category_id = ? ';
+                    array_push($sql_params, $category_id);
+                }
+            }
+        }
+
+		$stmt = $mysql->prepare(
+		    "SELECT q.*
+		    FROM questions q
+		    INNER JOIN exams e ON e.exam_id = q.exam_id
+		    WHERE $sql
+		    ORDER BY rand()
+		    LIMIT :limit"
+		);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+
+        $list = getAll($stmt, $sql_params);
+        foreach ($list as &$question) {
+            $question['answers'] = unserialize($question['answers']);
+        }
+
+		$data['list'] = $list;
+	    return createResponse($response, $data);
+    });
 
 
 	$this->get('/{question_id}', function($request, $response, $args) {
@@ -69,7 +146,6 @@ $app->group('/questions', function() {
 		return createResponse($response, $data);
 	});
 
-
 	$this->get('/{question_id}/user/{user_id}', function($request, $response, $args) {
 		$mysql = init();
 
@@ -97,7 +173,7 @@ $app->group('/questions', function() {
         }
 
         $stmt_comments = $mysql->prepare(
-		    "SELECT c.*, u.username, SUM(IF(uc.user_id != :user_id0, uc.user_voting, 0)) as 'voting', SUM(IF(uc.user_id = :user_id1, uc.user_voting, 0)) as 'user_voting'
+		    "SELECT c.*, u.username, SUM(IF(uc.user_id != :user_id, uc.user_voting, 0)) as 'voting', SUM(IF(uc.user_id = :user_id, uc.user_voting, 0)) as 'user_voting'
             FROM comments c
             INNER JOIN users u ON c.user_id = u.user_id
             LEFT JOIN user_comments_data uc ON uc.comment_id = c.comment_id
@@ -105,12 +181,11 @@ $app->group('/questions', function() {
             GROUP BY c.comment_id
             ORDER BY c.comment_id ASC"
         );
-        $stmt_comments->bindValue(':user_id0', $args['user_id'], PDO::PARAM_INT);
-        $stmt_comments->bindValue(':user_id1', $args['user_id'], PDO::PARAM_INT);
+        $stmt_comments->bindValue(':user_id', $args['user_id'], PDO::PARAM_INT);
         $stmt_comments->bindValue(':question_id', $args['question_id'], PDO::PARAM_INT);
         $comments = getAll($stmt_comments);
 
-		$data = $question;
+		$data['question'] = $question;
 		$data['tags'] = $tags['tags'];
 		$data['comments'] = $comments;
 		return createResponse($response, $data);
@@ -122,7 +197,8 @@ $app->group('/questions', function() {
 		$body = $request->getParsedBody();
 
 		$stmt = $mysql->prepare(
-    		"INSERT INTO questions (question, answers, correct_answer, exam_id, date_added, user_id_added, explanation, question_image_url, type, topic)
+    		"INSERT INTO questions (question, answers, correct_answer, exam_id, date_added, user_id_added,
+    		    explanation, question_image_url, type, category_id)
 		    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
         );
         $stmt->bindValue(1, $body['question']);
@@ -134,9 +210,9 @@ $app->group('/questions', function() {
         $stmt->bindValue(7, $body['explanation']);
         $stmt->bindValue(8, $body['question_image_url']);
         $stmt->bindValue(9, $args['type']);
-        $stmt->bindValue(10, $args['topic']);
+        $stmt->bindValue(10, $args['category_id']);
 
-        $data = execute($stmt);
+        $data['status'] = execute($stmt);
         $data['question_id'] = $mysql->lastInsertId();
 		return createResponse($response, $data);
 	});
@@ -148,20 +224,21 @@ $app->group('/questions', function() {
 
 		$stmt = $mysql->prepare(
     		"UPDATE questions
-    		SET question = ?, answers = ?, correct_answer = ?, exam_id = ?, explanation = ?, question_image_url = ?, type = ?, topic = ?
-            WHERE question_id = ?"
+    		SET question = :question, answers = :answers, correct_answer = :correct_answer, exam_id = :exam_id,
+    		    explanation = :explanation, question_image_url = :question_image_url, type = :type, category_id = :category_id
+            WHERE question_id = :question_id"
         );
-        $stmt->bindValue(1, $body['question']);
-        $stmt->bindValue(2, serialize($body['answers']));
-        $stmt->bindValue(3, $body['correct_answer']);
-        $stmt->bindValue(4, $body['exam_id'], PDO::PARAM_INT);
-        $stmt->bindValue(5, $body['explanation']);
-        $stmt->bindValue(6, $body['question_image_url']);
-        $stmt->bindValue(7, $body['type']);
-        $stmt->bindValue(8, $body['topic']);
-        $stmt->bindValue(9, $args['question_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':question', $body['question']);
+        $stmt->bindValue(':answers', serialize($body['answers']));
+        $stmt->bindValue(':correct_answer', $body['correct_answer']);
+        $stmt->bindValue(':exam_id', $body['exam_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':explanation', $body['explanation']);
+        $stmt->bindValue(':question_image_url', $body['question_image_url']);
+        $stmt->bindValue(':type', $body['type']);
+        $stmt->bindValue(':category_id', $body['category_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':question_id', $args['question_id'], PDO::PARAM_INT);
 
-        $data = execute($stmt);
+        $data['status'] = execute($stmt);
 		return createResponse($response, $data);
 	});
 
@@ -170,11 +247,13 @@ $app->group('/questions', function() {
 		$mysql = init();
 
 		$stmt = $mysql->prepare(
-    		"DELETE FROM questions WHERE question_id = :question_id"
+    		"DELETE
+    		FROM questions
+    		WHERE question_id = :question_id"
         );
         $stmt->bindValue(':question_id', $args['question_id'], PDO::PARAM_INT);
 
-        $data = execute($stmt);
+        $data['status'] = execute($stmt);
 		return createResponse($response, $data);
 	});
 });

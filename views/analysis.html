@@ -1,7 +1,7 @@
 <div class="container">
     <div class="page-header">
         <div class="pull-right">
-            <a class="btn btn-default" href="/questions" type="button"><i class="fa fa-fw fa-home"></i> Zur &Uuml;bersicht</a>
+            <a class="btn btn-default" href="/learn" type="button"><i class="fa fa-fw fa-home"></i> Zur &Uuml;bersicht</a>
         </div>
         <h2>Analyse</h2>
     </div>
@@ -12,73 +12,73 @@
                 <dt>Zusammenfassung</dt>
                 <dd>
                     <uib-progress>
-                        <uib-bar value="ctrl.correct_q_count / ctrl.all_question_count * 100" type="success"></uib-bar>
-                        <uib-bar value="ctrl.wrong_q_count / ctrl.all_question_count * 100" type="danger"></uib-bar>
-                        <uib-bar value="ctrl.no_answer_q_count / ctrl.all_question_count * 100" type="warning"></uib-bar>
-                        <uib-bar value="ctrl.free_q_count / ctrl.all_question_count * 100" type="info"></uib-bar>
+                        <uib-bar value="ctrl.count.correct_q / ctrl.count.all_q * 100" type="success"></uib-bar>
+                        <uib-bar value="ctrl.count.wrong_q / ctrl.count.all_q * 100" type="danger"></uib-bar>
+                        <uib-bar value="ctrl.count.no_answer_q / ctrl.count.all_q * 100" type="warning"></uib-bar>
+                        <uib-bar value="ctrl.count.free_q / ctrl.count.all_q * 100" type="info"></uib-bar>
                     </uib-progress>
 
                     <p>
-                        Die Klausur umfasste <strong>{{ ctrl.all_question_count }} Frage{{ ctrl.all_question_count>1 ? 'n':'' }}</strong>, von denen du <strong>{{ ctrl.all_question_count == ctrl.worked_question_count ? 'alle bearbeitet':ctrl.worked_question_count+' bearbeitet' }}</strong> hast.
+                        Die Klausur umfasste <strong>{{ ctrl.count.all_q }} Frage{{ ctrl.count.all_q > 1 ? 'n':'' }}</strong>, von denen du <strong>{{ ctrl.count.all_q == ctrl.count.worked_q ? 'alle bearbeitet' : ctrl.count.worked_q + ' bearbeitet' }}</strong> hast.
 
-                        <span ng-if="ctrl.solved_q_count == 0">
+                        <span ng-if="ctrl.count.solved_q == 0">
                             Allerdings hast du <strong class="text-danger">keine Frage gel&ouml;st</strong>. Kann man nicht sehen, wohin wir k&auml;men, wenn wir gingen...
                         </span>
 
-                        <span ng-if="ctrl.solved_q_count > 0">
-                            <span ng-if="ctrl.free_q_count>0 || ctrl.no_answer_q_count>0">
+                        <span ng-if="ctrl.count.solved_q > 0">
+                            <span ng-if="ctrl.count.free_q > 0 || ctrl.count.no_answer_q > 0">
                                 Es
 
-                                <span ng-if="ctrl.free_q_count>0">
-                                    <span ng-if="ctrl.free_q_count>1">
-                                        waren <strong class="text-info">{{ ctrl.free_q_count }} freie Fragen</strong>
+                                <span ng-if="ctrl.count.free_q > 0">
+                                    <span ng-if="ctrl.count.free_q > 1">
+                                        waren <strong class="text-info">{{ ctrl.count.free_q }} freie Fragen</strong>
                                     </span>
-                                    <span ng-if="ctrl.free_q_count==1">
+                                    <span ng-if="ctrl.count.free_q == 1">
                                         war <strong class="text-info">eine freie Frage</strong>
                                     </span>
                                 </span>
 
-                                <span ng-if="ctrl.free_q_count>0 && ctrl.no_answer_q_count>0">und</span>
+                                <span ng-if="ctrl.count.free_q > 0 && ctrl.count.no_answer_q > 0">und</span>
 
-                                <span ng-if="ctrl.free_q_count==0">
-                                    <span ng-if="ctrl.no_answer_q_count>1">
+                                <span ng-if="ctrl.count.free_q == 0">
+                                    <span ng-if="ctrl.count.no_answer_q > 1">
                                         waren
                                     </span>
-                                    <span ng-if="ctrl.no_answer_q_count==1">
+                                    <span ng-if="ctrl.count.no_answer_q == 1">
                                         war
                                     </span>
                                 </span>
 
-                                <span ng-if="ctrl.no_answer_q_count > 1">
-                                    <strong class="text-warning">{{ ctrl.no_answer_q_count }} Fragen ohne gespeicherte Antwort</strong>
+                                <span ng-if="ctrl.count.no_answer_q > 1">
+                                    <strong class="text-warning">{{ ctrl.count.no_answer_q }} Fragen ohne gespeicherte Antwort</strong>
                                 </span>
-                                <span ng-if="ctrl.no_answer_q_count == 1">
+                                <span ng-if="ctrl.count.no_answer_q == 1">
                                     <strong class="text-warning">eine Frage ohne gespeicherte Antwort</strong>
                                 </span>
 
-                                dabei, insgesamt hast du so {{ ctrl.solved_q_count }} Frage{{ ctrl.solved_q_count > 1 ? 'n':'' }} gel&ouml;st.
+                                dabei, insgesamt hast du so {{ ctrl.count.solved_q }} Frage{{ ctrl.count.solved_q > 1 ? 'n':'' }} gel&ouml;st.
                             </span>
 
-                            <span ng-if="ctrl.correct_q_count == ctrl.solved_q_count">
+                            <span ng-if="ctrl.count.correct_q == ctrl.count.solved_q">
                                 Du konntest <strong class="text-success">alle Fragen richtig beantworten</strong>. Wenn du so weiter machst, wirst du mal Chefarzt.
                             </span>
 
-                            <span ng-if="ctrl.correct_q_count != ctrl.solved_q_count && ctrl.wrong_q_count != ctrl.solved_q_count && ctrl.no_answer_q_count != ctrl.solved_q_count">
+                            <span ng-if="ctrl.count.correct_q != ctrl.count.solved_q && ctrl.count.wrong_q != ctrl.count.solved_q && ctrl.count.no_answer_q != ctrl.count.solved_q">
                                 Du konntest
-                                <strong class="text-success">{{ ctrl.correct_q_count }} Frage{{ ctrl.correct_q_count>1 ? 'n':'' }} richtig beantworten</strong>,
+                                <strong class="text-success">{{ ctrl.count.correct_q }} Frage{{ ctrl.count.correct_q > 1 ? 'n':'' }} richtig beantworten</strong>,
 
                                 von
-                                <span ng-if="ctrl.wrong_q_count>1">den <strong class="text-danger">{{ ctrl.wrong_q_count }} falsch beantworteten Fragen</strong></span>
-                                <span ng-if="ctrl.wrong_q_count==1">der falsch beantworteten Frage</strong></span>
+                                <span ng-if="ctrl.count.wrong_q > 1">den <strong class="text-danger">{{ ctrl.count.wrong_q }} falsch beantworteten Fragen</strong></span>
+                                <span ng-if="ctrl.count.wrong_q == 1">der falsch beantworteten Frage</strong></span>
                                 wei&szlig;t du jetzt immerhin die Antwort.
 
-                                Das entspricht einer Quote von <strong>{{ (ctrl.correct_q_count / ctrl.solved_q_count * 100) | limitTo:2 }}%</strong>.
+                                Das entspricht einer Quote von <strong>{{ (ctrl.count.correct_q / ctrl.count.solved_q * 100) | limitTo:2 }}%</strong>.
 
-                                <span ng-if="ctrl.correct_q_count >= ctrl.wrong_q_count" ng-switch="(ctrl.random+1) % 2">
+                                <span ng-if="ctrl.count.correct_q >= ctrl.count.wrong_q" ng-switch="(ctrl.random + 1) % 2">
                                     <span ng-switch-when="0">Du wirst mal ein guter Arzt.</span>
                                     <span ng-switch-when="1">Da sieht man klar deine Ambitionen auf den Chefarztsessel.</span>
                                 </span>
-                                <span ng-if="ctrl.correct_q_count < ctrl.wrong_q_count" ng-switch="(ctrl.random+2) % 4">
+                                <span ng-if="ctrl.count.correct_q < ctrl.count.wrong_q" ng-switch="(ctrl.random + 2) % 4">
                                     <span ng-switch-when="0"></span>
                                     <span ng-switch-when="1">Den Patienten kriegen wir jetzt nur noch chirurgisch wieder heile.</span>
                                     <span ng-switch-when="2">Da hoffen wir mal, dass dein Patient kein Rechtsanwalt ist. :)</span>
@@ -86,11 +86,11 @@
                                 </span>
                             </span>
 
-                            <span ng-if="ctrl.wrong_q_count == ctrl.solved_q_count">
+                            <span ng-if="ctrl.count.wrong_q == ctrl.count.solved_q">
                                 Du konntest <strong class="text-danger">keine Frage richtig beantworten</strong>. Komm schon, ein Arzt hat ja auch Vorbildfunktion ;)
                             </span>
 
-                            <span ng-if="ctrl.no_answer_q_count == ctrl.solved_q_count">
+                            <span ng-if="ctrl.count.no_answer_q == ctrl.count.solved_q">
                                 Vielleicht kannst du uns mithelfen richtige Antworten herauszufinden?
                             </span>
                         </span>
@@ -98,8 +98,8 @@
                     <br>
                 </dd>
 
-                <dt style="margin-top:8px;" ng-if="ctrl.solved_q_count > 0">Details</dt>
-                <dd ng-if="ctrl.solved_q_count > 0">
+                <dt class="mtop-8" ng-if="ctrl.count.solved_q > 0">Details</dt>
+                <dd ng-if="ctrl.count.solved_q > 0">
                     <table class="table">
                         <thead>
                             <th></th>
@@ -108,7 +108,7 @@
                         </thead>
 
                         <tbody>
-                            <tr ng-repeat="question in ctrl.workedQuestionList">
+                            <tr ng-repeat="question in ctrl.workedCollection">
                                 <td>
                                     <div ng-if="question.correct_answer == 0" class="dot dot-warning"></div>
                                     <div ng-if="question.correct_answer == question.given_result && question.given_result > 0 && question.correct_answer > 0" class="dot dot-success"></div>
@@ -142,8 +142,8 @@
 
                 <hr>
 
-                <dt ng-if="ctrl.solved_q_count > 0">Legende</dt>
-                <dd ng-if="ctrl.solved_q_count > 0" style="line-height: 24px;">
+                <dt ng-if="ctrl.count.solved_q > 0">Legende</dt>
+                <dd ng-if="ctrl.count.solved_q > 0" style="line-height: 24px;">
                     <div class="dot dot-success pull-left" style="margin-top:3px; margin-right: 14px;"></div> Richtig gel&ouml;st<br>
                     <div class="dot dot-danger pull-left" style="margin-top:3px; margin-right: 14px;"></div> Falsch gel&ouml;st<br>
                     <div class="dot dot-warning pull-left" style="margin-top:3px; margin-right: 14px;"></div> Keine Antwort<br>

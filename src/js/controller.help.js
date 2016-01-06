@@ -1,70 +1,59 @@
 class HelpController {
-    constructor(Auth, Page, API, $location, $scope, $modal) {
-        this.API = API;
-        this.$modal = $modal;
+  constructor(Auth, Page, API, Validation, $location) {
+    this.API = API;
+    this.Validation = Validation;
 
-        Page.setTitleAndNav('Hilfe | Crucio', '');
+    Page.setTitleAndNav('Hilfe | Crucio', '');
 
-        this.user = Auth.getUser();
+    this.user = Auth.getUser();
 
-        const routeParams = $location.search();
-        this.question_id = routeParams.question_id;
-        this.subject = routeParams.s;
-        if (this.subject == 'Antwort') {
-            this.subject = 'Falsche Antwort';
-        }
-        this.text = '';
+    this.question_id = $location.search().question_id;
+    this.subject = $location.search().s;
 
-        if (this.question_id) {
-            this.API.get('questions/' + this.question_id).success((result) => {
-                this.question = result.question;
-            });
-        }
-
-        this.is_working = false;
+    if (this.question_id) {
+      this.API.get('questions/' + this.question_id).success(result => {
+        this.question = result.question;
+      });
     }
+  }
 
-    sendMail() {
-        const text = this.text;
+  sendMail() {
+    const validation = this.Validation.nonEmpty(this.text);
 
-        let validationPassed = 1;
-        if (this.text.length === 0) {
-            validationPassed = 0;
-        }
+    if (validation) {
+      this.isWorking = true;
 
-        if (validationPassed) {
-            this.is_working = true;
-
-            if (this.question_id) {
-                const data = {
-                    'name': this.user.username,
-                    'email': this.user.email.replace('@', '(@)'),
-                    'text': text,
-                    'question_id': this.question_id,
-                    'author': this.question.username,
-                    'question': this.question.question,
-                    'exam_id': this.question.exam_id,
-                    'subject': this.question.subject,
-                    'date': this.question.date,
-                    'author_email': this.question.email,
-                    'mail_subject': this.subject,
-                };
-
-                this.API.post('contact/send-mail-question', data).success(() => {
-                    this.is_working = false;
-                    this.email_send = true;
-                    this.open();
-                });
-            } else {
-                const data = { 'name': this.user.username, 'email': this.user.email.replace('@', '(@)'), 'text': text };
-                this.API.post('contact/send-mail', data).success(() => {
-                    this.is_working = false;
-                    this.email_send = true;
-                    this.open();
-                });
-            }
-        }
+      if (this.question_id) {
+        const data = {
+          text: this.text,
+          name: this.user.username,
+          email: this.user.email.replace('@', '(@)'),
+          question_id: this.question_id,
+          author: this.question.username,
+          question: this.question.question,
+          exam_id: this.question.exam_id,
+          subject: this.question.subject,
+          date: this.question.date,
+          author_email: this.question.email,
+          mail_subject: this.subject,
+        };
+        this.API.post('contact/send-mail-question', data).success(() => {
+          this.isWorking = false;
+          this.emailSend = true;
+        });
+      } else {
+        const data = {
+          text: this.text,
+          name: this.user.username,
+          email: this.user.email.replace('@', '(@)'),
+        };
+        this.API.post('contact/send-mail', data).success(() => {
+          this.isWorking = false;
+          this.emailSend = true;
+        });
+      }
     }
+  }
 }
 
 angular.module('crucioApp').controller('HelpController', HelpController);

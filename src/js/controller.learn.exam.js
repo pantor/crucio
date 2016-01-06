@@ -1,69 +1,82 @@
 class ExamController {
-    constructor(Page, Auth, API, $location, $uibModal, $routeParams, $timeout, $document) {
-        this.API = API;
-        this.$location = $location;
-        this.$document = $document;
-        this.$uibModal = $uibModal;
+  constructor(Page, Auth, API, Collection, $location, $uibModal, $routeParams, $timeout, $document, $window) {
+    this.API = API;
+    this.Collection = Collection;
+    this.$location = $location;
+    this.$document = $document;
+    this.$uibModal = $uibModal;
 
-        Page.setTitleAndNav('Klausur | Crucio', 'Lernen');
+    Page.setTitleAndNav('Klausur | Crucio', 'Lernen');
 
-        this.user = Auth.getUser();
-        this.exam_id = $routeParams.id;
-        this.questionList = { 'exam_id': this.exam_id, 'list': [] };
+    this.user = Auth.getUser();
+    this.examId = $routeParams.id;
+    this.collection = { type: 'exam', exam_id: this.examId };
+    this.currentIndex = 0;
 
-        this.current_index = 0;
+    $document.on('scroll', () => {
+      const positionTop = $document.scrollTop();
 
-        this.API.get('exams/' + this.exam_id).success((result) => {
-            this.exam = result;
+      const isIdAbovePosition = (i) => {
+        const question = angular.element($window.document.getElementById('id' + i));
+        if (question.prop('offsetTop') > positionTop) {
+          $timeout(() => {
+            this.currentIndex = Math.max(i - 1, 0);
+          }, 0);
+          return true;
+        }
+      };
 
-            for (const question of this.exam.questions) {
-                this.questionList.list.push(question);
-            }
-        });
+      for (let i = 0; i < this.collection.list.length; i++) {
+        if (isIdAbovePosition(i)) {
+          break;
+        }
+      }
 
-        $document.on('scroll', () => {
-            const positionTop = $document.scrollTop();
-            for (let i = 0; i < this.exam.questions.length; i++) {
-                const question = angular.element(document.getElementById('id' + i));
-                if (question.prop('offsetTop') > positionTop) {
-                    $timeout(() => {
-                        this.current_index = Math.max(i - 1, 0);
-                    }, 0);
-                    break;
-                }
-            }
-        });
-    }
+      /* this.currentIndex = this.collection.list.findIndex(e => {
+        const question = angular.element($window.document.getElementById('id' + i));
+        return (question.prop('offsetTop') > positionTop);
+      }); */
+    });
 
-    isHalftime(index) {
-        return (Math.abs(index + 1 - this.exam.question_count / 2) < 1) && (index > 3);
-    }
+    this.loadExam();
+  }
 
-    saveAnswer(index, givenAnswer) {
-        this.questionList.list[index].given_result = String(givenAnswer);
-    }
+  loadExam() {
+    this.API.get('exams/' + this.examId).success(result => {
+      this.exam = result.exam;
+      this.collection.list = result.questions;
+    });
+  }
 
-    scrollToTop() {
-        this.$document.scrollTopAnimated(0, 400);
-    }
+  isHalftime(index) {
+    return (Math.abs(index + 1 - this.questions.length / 2) < 1) && (index > 3);
+  }
 
-    handExam() {
-        sessionStorage.currentQuestionList = angular.toJson(this.questionList);
-        this.$location.path('/analysis').search('id', null);
-    }
+  saveAnswer(index, givenAnswer) {
+    this.collection.list[index].given_result = givenAnswer;
+  }
 
-    openImageModal(fileName) {
-        this.$uibModal.open({
-            templateUrl: 'imageModalContent.html',
-            controller: 'ModalInstanceController',
-            controllerAs: 'ctrl',
-            resolve: {
-                image_url: () => {
-                    return fileName;
-                },
-            },
-        });
-    }
+  scrollToTop() {
+    this.$document.scrollTopAnimated(0, 400);
+  }
+
+  handExam() {
+    this.Collection.set(this.collection);
+    this.$location.path('/analysis').search('id', null);
+  }
+
+  openImageModal(fileName) {
+    this.$uibModal.open({
+      templateUrl: 'imageModalContent.html',
+      controller: 'ModalInstanceController',
+      controllerAs: 'ctrl',
+      resolve: {
+        data: () => {
+          return fileName;
+        },
+      },
+    });
+  }
 }
 
-angular.module('learnModule').controller('ExamController', ExamController);
+angular.module('crucioApp').controller('ExamController', ExamController);

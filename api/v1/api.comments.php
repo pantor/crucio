@@ -6,39 +6,38 @@ $app->group('/comments', function() {
 		$mysql = init();
 		$query_params = $request->getQueryParams();
 
+		$limit = $query_params['limit'] ? intval($query_params['limit']) : 10000;
+		$query = strlen($query_params['query']) > 0 ? "%".$query_params['query']."%" : null;
+
 		$stmt = $mysql->prepare(
-		    "SELECT q.question, c.*, u.username
+		    "SELECT c.*, q.question, u.username
             FROM comments c
             INNER JOIN users u ON u.user_id = c.user_id
             INNER JOIN questions q ON q.question_id = c.question_id
             WHERE u.user_id = IFNULL(:user_id, u.user_id)
-            ORDER BY c.comment_id DESC"
+                AND c.question_id = IFNULL(:question_id, c.question_id)
+                AND ( c.comment LIKE IFNULL(:query, c.comment)
+		            OR q.question LIKE IFNULL(:query, q.question)
+		            OR q.question_id LIKE IFNULL(:query, q.question_id)
+		            OR u.username LIKE IFNULL(:query, u.username) )
+            ORDER BY c.comment_id DESC
+            LIMIT :limit"
 		);
 		$stmt->bindValue(':user_id', $query_params['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':question_id', $query_params['question_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':query', $query);
+		$stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 
 		$data['comments'] = getAll($stmt);
 		return createResponse($response, $data);
     });
 
-    $this->get('/{user_id}', function($request, $response, $args) {
+    $this->get('/author', function($request, $response, $args) {
 		$mysql = init();
+		$query_params = $request->getQueryParams();
 
-		$stmt = $mysql->prepare(
-		    "SELECT q.question, c.*, u.username
-            FROM comments c
-            INNER JOIN users u ON u.user_id = c.user_id
-            INNER JOIN questions q ON q.question_id = c.question_id
-            WHERE u.user_id = :user_id
-            ORDER BY c.comment_id ASC"
-		);
-		$stmt->bindValue(':user_id', $args['user_id'], PDO::PARAM_INT);
-
-        $data['comments'] = getAll($stmt);
-		return createResponse($response, $data);
-	});
-
-    $this->get('/author/{user_id}', function($request, $response, $args) {
-		$mysql = init();
+		$limit = $query_params['limit'] ? intval($query_params['limit']) : 10000;
+		$query = strlen($query_params['query']) > 0 ? "%".$query_params['query']."%" : null;
 
 		$stmt = $mysql->prepare(
 		    "SELECT c.*, u.username, q.question, q.exam_id, e.user_id_added, (
@@ -49,12 +48,55 @@ $app->group('/comments', function() {
             INNER JOIN users u ON u.user_id = c.user_id
             INNER JOIN questions q ON q.question_id = c.question_id
             INNER JOIN exams e ON e.exam_id = q.exam_id
-            ORDER BY c.comment_id DESC"
+            WHERE u.user_id = IFNULL(:user_id, u.user_id)
+                AND c.question_id = IFNULL(:question_id, c.question_id)
+                AND e.user_id_added = IFNULL(:author_id, e.user_id_added)
+                AND ( c.comment LIKE IFNULL(:query, c.comment)
+		            OR q.question LIKE IFNULL(:query, q.question)
+		            OR q.question_id LIKE IFNULL(:query, q.question_id)
+		            OR u.username LIKE IFNULL(:query, u.username) )
+            ORDER BY c.comment_id DESC
+            LIMIT :limit"
 		);
+		$stmt->bindValue(':user_id', $query_params['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':question_id', $query_params['question_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':author_id', $query_params['author_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':query', $query);
+		$stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 
 		$data['comments'] = getAll($stmt);
 		return createResponse($response, $data);
     });
+
+    $this->get('/distinct/users', function($request, $response, $args) {
+		$mysql = init();
+
+		$stmt = $mysql->prepare(
+		    "SELECT DISTINCT u.*
+		    FROM comments c
+		    INNER JOIN users u ON u.user_id = c.user_id
+		    ORDER BY u.user_id ASC"
+		);
+
+		$data['authors'] = getAll($stmt);
+		return createResponse($response, $data);
+	});
+
+    $this->get('/distinct/authors', function($request, $response, $args) {
+		$mysql = init();
+
+		$stmt = $mysql->prepare(
+		    "SELECT DISTINCT u.*
+		    FROM comments c
+		    INNER JOIN questions q ON q.question_id = c.question_id
+		    INNER JOIN exams e ON e.exam_id = q.exam_id
+		    INNER JOIN users u ON u.user_id = e.user_id_added
+		    ORDER BY u.user_id ASC"
+		);
+
+		$data['authors'] = getAll($stmt);
+		return createResponse($response, $data);
+	});
 
     $this->post('/{user_id}', function($request, $response, $args) {
 		$mysql = init();
@@ -70,7 +112,7 @@ $app->group('/comments', function() {
 		$stmt->bindValue(4, $body['question_id']);
 		$stmt->bindValue(5, $body['reply_to']);
 
-		$data = execute($stmt);
+		$data['status'] = execute($stmt);
 		$data['comment_id'] = $mysql->lastInsertId();
 		return createResponse($response, $data);
 	});
@@ -89,7 +131,7 @@ $app->group('/comments', function() {
 		$stmt->bindValue(3, $body['user_voting']);
 		$stmt->bindValue(4, $body['user_voting']);
 
-		$data = execute($stmt);
+		$data['status'] = execute($stmt);
 		return createResponse($response, $data);
 	});
 
@@ -103,7 +145,7 @@ $app->group('/comments', function() {
 		);
 		$stmt->bindValue(':comment_id', $args['comment_id'], PDO::PARAM_INT);
 
-		$data = execute($stmt);
+		$data['status'] = execute($stmt);
 		return createResponse($response, $data);
 	});
 });

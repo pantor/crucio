@@ -6,6 +6,9 @@ $app->group('/tags', function() {
 		$mysql = init();
 		$query_params = $request->getQueryParams();
 
+		$limit = $query_params['limit'] ? intval($query_params['limit']) : 10000;
+		$query = strlen($query_params['query']) > 0 ? "%".$query_params['query']."%" : null;
+
 		$stmt = $mysql->prepare(
 		    "SELECT DISTINCT t.*, q.question, q.exam_id, e.subject, u.username
             FROM tags t
@@ -15,10 +18,14 @@ $app->group('/tags', function() {
             WHERE t.tags != ''
                 AND t.user_id = IFNULL(:user_id, t.user_id)
                 AND t.question_id = IFNULL(:question_id, t.question_id)
-            ORDER BY t.question_id ASC"
+                AND t.tags = IFNULL(:query, t.tags)
+            ORDER BY t.question_id ASC
+            LIMIT :limit"
 		);
 		$stmt->bindValue(':user_id', $query_params['user_id'], PDO::PARAM_INT);
 		$stmt->bindValue(':question_id', $query_params['question_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':query', $query);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 
 		$data['tags'] = getAll($stmt);
 		return createResponse($response, $data);
@@ -30,21 +37,26 @@ $app->group('/tags', function() {
 
 		if ($body['tags'] == '') {
     		$stmt = $mysql->prepare(
-    		    "DELETE FROM tags WHERE question_id = :question_id AND user_id = :user_id"
+    		    "DELETE
+    		    FROM tags
+    		    WHERE question_id = :question_id
+    		        AND user_id = :user_id"
     		);
     		$stmt->bindValue(':question_id', $body['question_id'], PDO::PARAM_INT);
     		$stmt->bindValue(':user_id', $body['user_id'], PDO::PARAM_INT);
 		} else {
     		$stmt = $mysql->prepare(
-    		    "INSERT INTO tags (question_id, user_id, tags) VALUES (:question_id, :user_id, :tags0) ON DUPLICATE KEY UPDATE tags = :tags1"
+    		    "INSERT
+    		    INTO tags (question_id, user_id, tags)
+    		    VALUES (:question_id, :user_id, :tags)
+    		    ON DUPLICATE KEY UPDATE tags = :tags"
     		);
     		$stmt->bindValue(':question_id', $body['question_id'], PDO::PARAM_INT);
     		$stmt->bindValue(':user_id', $body['user_id'], PDO::PARAM_INT);
-    		$stmt->bindValue(':tags0', $body['tags']);
-    		$stmt->bindValue(':tags1', $body['tags']);
+    		$stmt->bindValue(':tags', $body['tags']);
         }
 
-        $data = execute($stmt);
+        $data['status'] = execute($stmt);
 		return createResponse($response, $data);
 	});
 });

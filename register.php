@@ -6,9 +6,9 @@
     </head>
 
     <body class="body" ng-controller="RegisterController as ctrl">
-        <div class="wrap">
-            <div class="container-white">
-                <div class="container container-top-bar">
+        <form class="wrap" name="form" ng-submit="ctrl.register()">
+            <div class="container-top-bar">
+                <div class="container">
                     <div class="row">
                         <div class="col-md-7 col-md-offset-1 col-sm-5 col-sm-offset-1">
                             <h1><a href="/" target="_self"><i class="fa fa-check-square-o"></i> Crucio</a></h1>
@@ -29,7 +29,7 @@
                 </div>
             </div>
 
-            <div class="container-back-image container-padding-4" style="margin-top:2px;">
+            <div class="container-back-image container-padding-4">
                 <div class="container container-text container-text-light">
                     <i class="fa fa-pencil-square-o fa-5x"></i>
                     <h4>Registrieren</h4>
@@ -37,23 +37,29 @@
             </div>
 
             <div class="container container-register">
-                <form class="form-horizontal">
+                <div class="form-horizontal">
                     <div class="form-group">
                         <label class="col-sm-3 control-label">Name</label>
                         <div class="col-sm-4">
-                            <input class="form-control span5" ng-model="ctrl.username" type="text" placeholder="Vorname Nachname"/>
+                            <input class="form-control" name="username" ng-model="ctrl.username" type="text" placeholder="Vorname Nachname" ng-minlength="3" required />
                         </div>
-                        <span class="label validation-error label-danger" ng-show="ctrl.error_no_name">Kein Name</span>
-                        <span class="label validation-error label-danger" ng-show="ctrl.error_duplicate_name">Name wird bereits verwendet</span>
+                        <div ng-messages="form.username.$error" ng-show="form.username.$touched" ng-cloak>
+                            <span class="label validation-error label-danger" ng-message="required">Kein Name</span>
+                            <span class="label validation-error label-danger" ng-message="minlength">Zu kurzer Name</span>
+                            <span class="label validation-error label-danger" ng-message="duplicate">Wird bereits verwendet</span>
+                        </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-sm-3 control-label">E-Mail</label>
                         <div class="col-sm-4">
-                            <input class="form-control span5" ng-model="ctrl.email" type="text" placeholder="________@studserv.uni-leipzig.de"/>
+                            <input class="form-control" name="email" ng-model="ctrl.mail" type="email" placeholder="________@studserv.uni-leipzig.de" ng-change="ctrl.formChanged()" required />
                         </div>
-                        <span class="label label-danger validation-error" ng-show="ctrl.error_no_email">Keine g&uuml;ltige E-Mail-Adresse</span>
-                        <span class="label label-danger validation-error" ng-show="ctrl.error_duplicate_email">E-Mail-Adresse wird bereits verwendet</span>
+                        <div ng-messages="form.email.$error" ng-show="form.email.$touched" ng-cloak>
+                            <span class="label validation-error label-danger" ng-message="required">Keine E-Mail-Adresse</span>
+                            <span class="label validation-error label-danger" ng-message="email || studserv">Ung&uuml;ltige E-Mail-Adresse</span>
+                            <span class="label validation-error label-danger" ng-message="duplicate">Wird bereits verwendet</span>
+                        </div>
                     </div>
 
                     <hr>
@@ -62,7 +68,7 @@
                         <label class="col-sm-3 control-label">Studienfach</label>
                         <div class="col-sm-3">
                             <div class="btn-group">
-                                <label class="btn btn-default" ng-model="ctrl.course" btn-radio="1">Humanmedizin</label>
+                                <label class="btn btn-default" ng-model="ctrl.course" uib-btn-radio="1">Humanmedizin</label>
                             </div>
                         </div>
                     </div>
@@ -70,31 +76,35 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label">Fachsemester</label>
                         <div class="col-sm-2">
-                            <input class="form-control" ng-model="ctrl.semester" type="number">
+                            <input class="form-control" name="semester" ng-model="ctrl.semester" type="number" min="1" max="50" required />
                         </div>
-                        <span class="label validation-error label-danger" id="semester-validation-error"></span>
+                        <div ng-messages="form.semester.$error" ng-show="form.semester.$touched" ng-cloak>
+                            <span class="label validation-error label-danger" ng-message="required || min || max">Kein Semester</span>
+                        </div>
                     </div>
 
                     <hr>
 
                     <div class="form-group">
                         <label class="col-sm-3 control-label">Passwort</label>
-                            <div class="col-sm-4">
-                                <input class="form-control span5" ng-model="ctrl.password" type="password"/>
-                            </div>
-                        <span class="label validation-error label-danger" ng-show="ctrl.error_no_password">Kein g&uuml;ltiges Passwort</span>
+                        <div class="col-sm-4">
+                            <input class="form-control" name="password" ng-model="ctrl.password" ng-change="ctrl.formChanged()" type="password" required />
+                        </div>
+                        <div ng-messages="form.password.$error" ng-show="form.password.$touched" ng-cloak>
+                            <span class="label validation-error label-danger" ng-message="required">Kein Passwort</span>
+                        </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-sm-3 control-label">Passwort best&auml;tigen</label>
                         <div class="col-sm-4">
-                            <input class="form-control span5" ng-model="ctrl.passwordc" type="password"/>
+                            <input class="form-control" name="passwordc" ng-model="ctrl.passwordc" ng-change="ctrl.formChanged()" type="password" required />
                         </div>
-                        <span class="label validation-error label-danger" id="passwordc-validation-error" ng-show="ctrl.password != ctrl.passwordc || ctrl.error_passwordc">
-                            Passwort nicht gleich
-                        </span>
+                        <div ng-messages="form.passwordc.$error" ng-show="form.passwordc.$touched" ng-cloak>
+                            <span class="label validation-error label-danger" ng-message="confirm">Passw&ouml;rter nicht gleich</span>
+                        </div>
                     </div>
-                </form>
+                </div>
             </div>
 
             <div class="container-light-grey container-padding-4">
@@ -105,12 +115,12 @@
                         Na, heute sind wir mal nicht so. Einfach nett zueinander sein und nichts b&ouml;ses machen. Ihr seid selbst f&uuml;r Fragen und Klausuren verantwortlich, die ihr hochladet. Und es w&auml;r cool, wenn wir deine Antworten dazu verwenden k&ouml;nnten besonders schwierige Fragen herauszufinden. Die k&ouml;nnen wir dir dann gesondert vorschlagen, so wird das Lernen noch effektiver. Falls du diese Auswertung deiner Daten nicht willst, kannst du sie unter deinen Einstellungen abschalten.
                     </p>
 
-                    <button class="btn btn-success btn-lg btn-green" ng-click="ctrl.register()">
-                        <i ng-show="ctrl.is_working" class="fa fa-circle-o-notch fa-spin" style="color:white;"></i> Registrieren
+                    <button class="btn btn-success btn-lg btn-green" type="submit" ng-disabled="form.$invalid">
+                        <i ng-show="ctrl.isWorking" class="fa fa-circle-o-notch fa-spin" style="color:white;"></i> Registrieren
                     </button>
                  </div>
             </div>
-        </div>
+        </form>
 
         <?php include('parts/footer.php'); ?>
         <?php include('parts/scripts.php'); ?>

@@ -1,9 +1,9 @@
 class StatisticController {
-    constructor(Auth, Page) {
-        Page.setTitleAndNav('Statistik | Crucio', 'Lernen');
+  constructor(Auth, Page) {
+    Page.setTitleAndNav('Statistik | Crucio', 'Lernen');
 
-        this.user = Auth.getUser();
-    }
+    this.user = Auth.getUser();
+  }
 }
 
-angular.module('learnModule').controller('StatisticController', StatisticController);
+angular.module('crucioApp').controller('StatisticController', StatisticController);

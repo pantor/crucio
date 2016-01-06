@@ -1,222 +1,169 @@
 class QuestionController {
-    constructor(Auth, Page, API, $scope, $routeParams, $location, $window, $uibModal) {
-        this.Auth = Auth;
-        this.API = API;
-        this.$location = $location;
-        this.$uibModal = $uibModal;
+  constructor(Auth, Page, API, Collection, $routeParams, $window, $uibModal) {
+    this.Auth = Auth;
+    this.API = API;
+    this.Collection = Collection;
+    this.$uibModal = $uibModal;
 
-        Page.setTitleAndNav('Frage | Crucio', 'Lernen');
+    Page.setTitleAndNav('Frage | Crucio', 'Lernen');
 
-        this.answerButtonClass = 'btn-primary';
+    this.user = Auth.getUser();
+    this.collection = this.Collection.get();
 
-        this.user = Auth.getUser();
-        this.questionList = angular.fromJson(sessionStorage.currentQuestionList);
+    this.question_id = Number($routeParams.id);
+    this.resetSession = Boolean($routeParams.reset_session);
 
-        this.question_id = $routeParams.id;
-        this.reset_session = $routeParams.reset_session;
+    this.commentsCollapsed = Boolean(this.user.showComments);
 
-        this.commentsCollapsed = Number(this.user.showComments);
+    if (!this.question_id) {
+      this.$window.location.replace('/questions');
+    }
 
-        if (!this.question_id) {
-            this.$window.location.replace('/questions');
+    this.noAnswer = true;
+    this.showExplanation = false;
+
+    if (this.resetSession) {
+      delete this.collection;
+      Collection.remove();
+    }
+
+    if (this.collection && Object.keys(this.collection).length) {
+      // this.index = this.collection.list.findIndex(e => e.question_id === this.question_id);
+      for (let i = 0; i < this.collection.list.length; i++) {
+        if (this.collection.list[i].question_id === this.question_id) {
+          this.index = i;
+          break;
         }
+      }
 
-        this.show_explanation = 0;
-        this.given_result = 0;
-        this.strike = {};
-
-        if (this.reset_session) {
-            this.questionList = {};
-            sessionStorage.currentQuestionList = angular.toJson(this.questionList);
-        }
-
-        function getIndexBy(array, name, value) {
-            for (let i = 0; i < array.length; i++) {
-                if (array[i][name] == value) {
-                    return i;
-                }
-            }
-        }
-
-        if (this.questionList) {
-            if (Object.keys(this.questionList).length) {
-                this.index = getIndexBy(this.questionList.list, 'question_id', this.question_id);
-                this.length = this.questionList.list.length;
-                this.show_answer = this.questionList.list[this.index].mark_answer;
-                this.given_result = this.questionList.list[this.index].given_result;
-                if (this.questionList.list[this.index].strike) {
-                    this.strike = this.questionList.list[this.index].strike;
-                }
-            }
-        }
-
-        $scope.$watch(() => this.strike, (newValue) => {
-            if (this.questionList) {
-                if (Object.keys(this.questionList).length) {
-                    this.questionList.list[this.index].strike = newValue;
-                    sessionStorage.currentQuestionList = angular.toJson(this.questionList);
-                }
-            }
-        }, true);
-
-        API.get('questions/' + this.question_id + '/user/' + this.user.user_id).success((result) => {
-            this.question = result;
-
-            for (let i = 0; i < this.question.comments.length; i++) {
-                this.question.comments[i].voting = (parseInt(this.question.comments[i].voting, 0) || 0);
-                this.question.comments[i].user_voting = (parseInt(this.question.comments[i].user_voting, 0) || 0);
-            }
-
-            if (this.question.tags) {
-                const array = this.question.tags.split(',');
-                this.question.tags = [];
-                for (const element of array) {
-                    this.question.tags.push({ 'text': element });
-                }
-            } else {
-                this.question.tags = [];
-            }
-
-            if (this.given_result) {
-                this.checkAnswer(this.given_result);
-            }
-
-            if (this.show_answer) {
-                this.markAnswer(this.given_result);
-            }
-        });
+      this.length = this.collection.list.length;
+      this.showAnswer = this.collection.list[this.index].mark_answer;
+      this.givenResult = this.collection.list[this.index].given_result;
+      this.strike = this.collection.list[this.index].strike;
     }
 
-    // If tag field is changed
-    updateTags() {
-        let string = '';
-        for (const tag of this.question.tags) {
-            string += tag.text + ',';
-        }
-        string = string.slice(0, -1);
+    this.loadQuestion();
+  }
 
-        const data = { 'tags': string, 'question_id': this.question_id, 'user_id': this.user.user_id };
-        this.API.post('tags', data);
+  loadQuestion() {
+    this.API.get('questions/' + this.question_id + '/user/' + this.user.user_id).success(result => {
+      this.question = result.question;
+      this.comments = result.comments;
+
+      this.tags = [];
+      if (result.tags) {
+        this.tags = result.tags.split(',').map(entry => { return { text: entry }; });
+      }
+
+      this.checkedAnswer = this.givenResult;
+
+      if (this.showAnswer) {
+        this.markAnswer(this.givenResult);
+      }
+    });
+  }
+
+  // If tag field is changed
+  updateTags() {
+    const string = this.tags.map(entry => entry.text).join(',');
+    const data = { tags: string, question_id: this.question_id, user_id: this.user.user_id };
+    this.API.post('tags', data, true);
+  }
+
+  saveStrike() {
+    if (this.collection && Object.keys(this.collection).length) {
+      this.collection.list[this.index].strike = this.strike;
+      this.Collection.set(this.collection);
+    }
+  }
+
+  // If show solution button is clicked
+  showSolution() {
+    const correctAnswer = this.question.correct_answer;
+    this.checkedAnswer = correctAnswer;
+    let correct = (correctAnswer === this.givenResult) ? 1 : 0;
+    if (correctAnswer === 0 || this.question.type === 1) {
+      correct = -1;
     }
 
-    // If show solution button is clicked
-    showSolution() {
-        const correctAnswer = this.correctAnswer();
-        let correct = (correctAnswer == this.given_result) ? 1 : 0;
+    const data = {
+      correct,
+      question_id: this.question_id,
+      user_id: this.user.user_id,
+      given_result: this.givenResult,
+    };
+    this.API.post('results', data, true);
 
-        if (correctAnswer === 0) {
-            correct = -1;
-        }
-
-        if (this.question.type == 1) {
-            correct = -1;
-        }
-
-        const data = {
-            'correct': correct,
-            'question_id': this.question_id,
-            'user_id': this.user.user_id,
-            'given_result': this.given_result,
-        };
-        this.API.post('results', data);
-
-        if (this.questionList) {
-            if (Object.keys(this.questionList).length) {
-                this.questionList.list[this.index].mark_answer = 1;
-                sessionStorage.currentQuestionList = angular.toJson(this.questionList);
-            }
-        }
-
-        this.markAnswer(this.given_result);
+    if (this.collection && Object.keys(this.collection).length) {
+      this.collection.list[this.index].mark_answer = 1;
+      this.Collection.set(this.collection);
     }
 
-    // Saves the answer
-    saveAnswer(givenAnswer) {
-        this.given_result = givenAnswer;
+    this.markAnswer(this.givenResult);
+  }
 
-        if (this.questionList) {
-            if (Object.keys(this.questionList).length) {
-                this.questionList.list[this.index].given_result = givenAnswer;
-                sessionStorage.currentQuestionList = angular.toJson(this.questionList);
-            }
-        }
+  saveAnswer(givenAnswer) {
+    this.givenResult = givenAnswer;
+
+    if (this.collection && Object.keys(this.collection).length) {
+      this.collection.list[this.index].given_result = this.givenResult;
+      this.Collection.set(this.collection);
     }
+  }
 
-    // Checks the answer box
-    checkAnswer(answer) {
-        this.checked_answer = answer;
+  // Colors the given answers and shows the correct solution
+  markAnswer(givenAnswer) {
+    this.isAnswerGiven = true;
+    const type = this.question.type;
+    if (type > 1) {
+      this.correctAnswer = this.question.correct_answer;
+      this.checkedAnswer = givenAnswer > 0 ? givenAnswer : this.correctAnswer;
+
+      this.isAnswerRight = (givenAnswer === this.correctAnswer);
+      this.isAnswerWrong = (givenAnswer !== this.correctAnswer);
+
+      if (givenAnswer !== this.correctAnswer) {
+        this.wrongAnswer = givenAnswer;
+      }
     }
+  }
 
-    // Returns correct answer
-    correctAnswer() {
-        return this.question.correct_answer;
-    }
+  addComment() {
+    const now = new Date() / 1000;
+    const data = { comment: this.commentText, question_id: this.question_id, reply_to: 0, username: this.user.username, date: now };
+    this.API.post('comments/' + this.user.user_id, data).success(result => {
+      data.voting = 0;
+      data.user_voting = 0;
+      data.comment_id = result.comment_id;
+      this.comments.push(data);
+      this.commentText = '';
+    });
+  }
 
-    // Colors the given answers and shows the correct solution
-    markAnswer(givenAnswer) {
-        this.mark_answer_free = true;
-        const type = this.question.type;
-        const correctAnswer = this.correctAnswer();
-        if (type > 1) {
-            this.checkAnswer(givenAnswer);
+  deleteComment(index) {
+    const commentId = this.comments[index].comment_id;
+    this.API.delete('comments/' + commentId);
+    this.comments.splice(index, 1);
+  }
 
-            if (givenAnswer == correctAnswer) {
-                this.correctAnswer = givenAnswer;
-                this.answerButtonClass = 'btn-success';
-            } else {
-                this.wrongAnswer = givenAnswer;
-                this.correctAnswer = correctAnswer;
-                this.answerButtonClass = 'btn-danger';
-            }
-        } else if (type == 1) {
-            this.answerButtonClass = 'btn-info';
-        }
-    }
+  changeUserVoting(comment, change) {
+    comment.user_voting = Math.min(Math.max(comment.user_voting + change, -1), 1);
+    const data = { user_voting: comment.user_voting };
+    this.API.post('comments/' + comment.comment_id + '/user/' + this.user.user_id, data, true);
+  }
 
-    addComment() {
-        const now = new Date() / 1000;
-        const data = { 'comment': this.commentText, 'question_id': this.question_id, 'reply_to': 0, 'username': this.user.username, 'date': now };
-        this.API.post('comments/' + this.user.user_id, data).success((result) => {
-            data.voting = 0;
-            data.user_voting = 0;
-            data.comment_id = result.comment_id;
-            this.question.comments.push(data);
-            this.commentText = '';
-        });
-    }
-
-    deleteComment(index) {
-        const commentId = this.question.comments[index].comment_id;
-        this.API.delete('comments/' + commentId);
-        this.question.comments.splice(index, 1);
-    }
-
-    increaseUserVoting(currentUserVoting, commentId) {
-        const result = Math.min(currentUserVoting + 1, 1);
-        const data = { 'user_voting': result };
-        this.API.post('comments/' + commentId + '/user/' + this.user.user_id, data);
-        return result;
-    }
-
-    decreaseUserVoting(currentUserVoting, commentId) {
-        const result = Math.max(currentUserVoting - 1, -1);
-        const data = { 'user_voting': result };
-        this.API.post('comments/' + commentId + '/user/' + this.user.user_id, data);
-        return result;
-    }
-
-    openImageModal() {
-        this.$uibModal.open({
-            templateUrl: 'imageModalContent.html',
-            controller: 'ModalInstanceController',
-            controllerAs: 'ctrl',
-            resolve: {
-                image_url: () => {
-                    return this.question.question_image_url;
-                },
-            },
-        });
-    }
+  openImageModal() {
+    this.$uibModal.open({
+      templateUrl: 'imageModalContent.html',
+      controller: 'ModalInstanceController',
+      controllerAs: 'ctrl',
+      resolve: {
+        data: () => {
+          return this.question.question_image_url;
+        },
+      },
+    });
+  }
 }
 
-angular.module('learnModule').controller('QuestionController', QuestionController);
+angular.module('crucioApp').controller('QuestionController', QuestionController);

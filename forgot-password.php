@@ -7,7 +7,7 @@
 
     <body class="body" ng-controller="ForgotPasswordController as ctrl">
         <div class="wrap">
-            <div class="container-white container-top-bar">
+            <div class="container-top-bar">
                 <div class="container ">
                     <div class="row">
                         <div class="col-md-7 col-md-offset-1 col-sm-5 col-sm-offset-1">
@@ -31,37 +31,38 @@
 
             <div class="container-back-image container-padding-4">
                 <div class="container container-text container-text-light">
-                    <i class="fa fa-question fa-5x"></i>
+                    <i class="fa fa-unlock fa-5x"></i>
                     <h4>Passwort vergessen</h4>
                 </div>
             </div>
 
-            <div class="container-light-grey container-padding-4">
+            <div class="container-light-grey container-padding-2">
                 <div class="container container-text container-text-dark">
-                    <p>
-                        Du kannst hier deine E-Mail-Adresse eintragen, wir schicken dir dann ein neues Passwort zu.<br>
-                        Bei Fragen kannst du uns gerne schreiben.
-                    </p>
+                    <p>Du kannst hier deine E-Mail-Adresse eintragen, wir schicken dir dann ein neues Passwort zu.<br>
+                        Bei Fragen kannst du uns gerne schreiben.</p>
                 </div>
             </div>
 
             <div class="container container-register">
-                <form class="form-horizontal" ng-submit="ctrl.resetPassword()">
+                <form class="form-horizontal" name="form" ng-submit="ctrl.resetPassword()">
                     <div class="form-group">
                         <label class="col-sm-3 control-label">E-Mail-Adresse</label>
                         <div class="col-sm-4">
-                            <input class="form-control" type="text" ng-model="ctrl.user.email" placeholder=""/>
+                            <input class="form-control" name="email" type="email" ng-model="ctrl.email" required />
                         </div>
-                        <span ng-show="ctrl.error_email" class="label validation-error label-danger">Keine g&uuml;ltige E-Mail-Adresse</span>
-                        <span ng-show="ctrl.error_already_requested" class="label validation-error label-danger">
-                            F&uuml;r die E-Mail-Adresse wurde bereits das Passwort zur&uuml;ckgesetzt.
-                        </span>
+                        <div ng-messages="form.email.$error" ng-show="form.email.$touched" ng-cloak>
+                            <span class="label validation-error label-danger" ng-message="required">Keine E-Mail-Adresse</span>
+                            <span class="label validation-error label-danger" ng-message="email">Keine E-Mail-Adresse</span>
+                            <span class="label validation-error label-danger" ng-message="already">
+                                F&uuml;r die E-Mail-Adresse wurde bereits das Passwort zur&uuml;ckgesetzt.
+                            </span>
+                        </div>
                     </div>
 
                     <div class="form-group">
                         <div class="col-sm-3 col-sm-offset-3">
-                            <button class="btn btn-primary">
-                                <i ng-show="ctrl.is_working" class="fa fa-circle-o-notch fa-spin"></i> Zur&uuml;cksetzen
+                            <button class="btn btn-primary" type="submit" ng-disabled="form.$invalid">
+                                <i ng-show="ctrl.isWorking" class="fa fa-circle-o-notch fa-spin"></i> Zur&uuml;cksetzen
                             </button>
                         </div>
                     </div>
@@ -92,11 +93,11 @@
             </div>
 
             <div class="modal-body">
-                <p ng-show="ctrl.image_url == 'success'">
+                <p ng-show="ctrl.data == 'success'">
                     <i class="fa fa-check"></i> Wir haben dir ein neues Passwort zugeschickt. Schau mal in deinen Mail Account.
                 </p>
 
-                <p ng-show="ctrl.image_url == 'error_token'">
+                <p ng-show="ctrl.data == 'error_token'">
                     <i class="fa fa-remove"></i> Da stimmt was nicht, irgendwie ist das nicht der richtige Schl&uuml;ssel.
                 </p>
             </div>
@@ -112,11 +113,11 @@
             </div>
 
             <div class="modal-body">
-                <p ng-show="ctrl.image_url == 'success'">
+                <p ng-show="ctrl.data == 'success'">
                     <i class="fa fa-check"></i> Du hast die Anfage abgebrochen. Kein Problem.
                 </p>
 
-                <p ng-show="ctrl.image_url == 'error_token'">
+                <p ng-show="ctrl.data == 'error_token'">
                     <i class="fa fa-remove"></i> Da stimmt was nicht, irgendwie ist das nicht der richtige Schl&uuml;ssel.
                 </p>
             </div>

@@ -1,8 +1,8 @@
 class ModalInstanceController {
-    constructor(image_url, $modalInstance) {
-        this.image_url = image_url;
-        this.$modalInstance = $modalInstance;
-    }
+  constructor(data, $modalInstance) {
+    this.data = data;
+    this.$modalInstance = $modalInstance;
+  }
 }
 
-angular.module('learnModule').controller('ModalInstanceController', ModalInstanceController);
+angular.module('crucioApp').controller('ModalInstanceController', ModalInstanceController);

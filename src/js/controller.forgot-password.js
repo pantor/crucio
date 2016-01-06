@@ -1,105 +1,69 @@
 class ForgotPasswordController {
-    constructor(Auth, API, $location, $scope, $uibModal) {
-        this.API = API;
-        this.$uibModal = $uibModal;
+  constructor(API, $location, $scope, $uibModal) {
+    this.API = API;
+    this.$scope = $scope;
+    this.$uibModal = $uibModal;
 
-        this.user = Auth.tryGetUser();
+    this.confirm = $location.search().confirm;
+    this.deny = $location.search().deny;
 
-        if (angular.isUndefined(this.user)) {
-            this.user = { 'email': '' };
-        }
+    this.reset = (!this.confirm && !this.deny);
 
-        this.confirm = $location.search().confirm;
-        this.deny = $location.search().deny;
+    if (this.confirm) {
+      this.reset = false;
 
-        this.is_working = 0;
-
-        this.error_email = 0;
-        this.error_already_requested = 0;
-
-        if (!this.confirm && !this.deny) {
-            this.reset = 1;
-        }
-
-        if (this.confirm) {
-            this.reset = 0;
-
-            const data = { 'token': this.confirm };
-            this.API.post('users/password/confirm', data).success((result) => {
-                this.status = result.status;
-                this.$uibModal.open({
-                    templateUrl: 'forgotConfirmModalContent.html',
-                    controller: 'ModalInstanceController',
-                    controllerAs: 'ctrl',
-                    resolve: {
-                        image_url: () => {
-                            return this.status;
-                        },
-                    },
-                });
-            });
-        }
-
-        if (this.deny) {
-            this.reset = 0;
-
-            const data = { 'token': this.deny };
-            API.post('users/password/deny', data).success((result) => {
-                this.status = result.status;
-                this.$uibModal.open({
-                    templateUrl: 'forgotDenyModalContent.html',
-                    controller: 'ModalInstanceController',
-                    controllerAs: 'ctrl',
-                    resolve: {
-                        image_url: () => {
-                            return this.status;
-                        },
-                    },
-                });
-            });
-        }
-
-        $scope.$watch(() => this.user.email, () => {
-            this.error_email = 0;
-            this.error_already_requested = 0;
-        }, true);
+      const data = { token: this.confirm };
+      this.API.put('users/password/confirm', data).success(result => {
+        this.status = result.status;
+        this.$uibModal.open({
+          templateUrl: 'forgotConfirmModalContent.html',
+          controller: 'ModalInstanceController',
+          controllerAs: 'ctrl',
+          resolve: {
+            data: () => {
+              return this.status;
+            },
+          },
+        });
+      });
     }
 
-    resetPassword() {
-        let validate = true;
-        if (!this.user) {
-            validate = false;
-            this.error_email = 1;
-        } else if (!this.user.email) {
-            validate = false;
-            this.error_email = 1;
-        }
+    if (this.deny) {
+      this.reset = false;
 
-        if (validate) {
-            this.is_working = 1;
-
-            const data = { 'email': this.user.email.replace('@', '(@)') };
-            this.API.post('users/password/reset', data).success((result) => {
-                this.is_working = 0;
-
-                if (!result) {
-                    this.error_email = 1;
-                } else {
-                    if (result.status == 'success') {
-                        this.error_email = 0;
-                        this.error_already_requested = 0;
-                        this.$uibModal.open({
-                            templateUrl: 'forgotSucessModalContent.html',
-                        });
-                    } else if (result.status == 'error_email') {
-                        this.error_email = 1;
-                    } else if (result.status == 'error_already_requested') {
-                        this.error_already_requested = 1;
-                    }
-                }
-            });
-        }
+      const data = { token: this.deny };
+      API.put('users/password/deny', data).success(result => {
+        this.status = result.status;
+        this.$uibModal.open({
+          templateUrl: 'forgotDenyModalContent.html',
+          controller: 'ModalInstanceController',
+          controllerAs: 'ctrl',
+          resolve: {
+            data: () => {
+              return this.status;
+            },
+          },
+        });
+      });
     }
+  }
+
+  resetPassword() {
+    this.$scope.form.email.$setValidity('already', true);
+    this.isWorking = true;
+
+    const data = { email: this.email.replace('@', '(@)') };
+    this.API.put('users/password/reset', data).success(result => {
+      if (result.status) {
+        this.$uibModal.open({
+          templateUrl: 'forgotSucessModalContent.html',
+        });
+      }
+
+      this.$scope.form.email.$setValidity('already', result.error !== 'error_already_requested');
+      this.isWorking = true;
+    });
+  }
 }
 
-angular.module('userModule').controller('ForgotPasswordController', ForgotPasswordController);
+angular.module('crucioApp').controller('ForgotPasswordController', ForgotPasswordController);

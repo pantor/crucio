@@ -16,15 +16,6 @@ $app->group('/pdf', function() {
 		$stmt_exam->bindValue(':exam_id', $exam_id, PDO::PARAM_INT);
 		$exam = getFetch($stmt_exam);
 
-		$stmt_author = $mysql->prepare(
-            "SELECT u.*
-            FROM users u
-            WHERE u.user_id = :user_id_added
-            LIMIT 1"
-		);
-		$stmt_author->bindValue(':user_id_added', $exam['user_id_added'], PDO::PARAM_INT);
-		$author = getFetch($stmt_author);
-
 		$stmt_questions = $mysql->prepare(
             "SELECT q.*
             FROM questions q
@@ -110,7 +101,7 @@ $app->group('/pdf', function() {
             	}
 
 
-            	// Print Answers
+            	// Print answers
             	if ($type > 1) {
             		$pdf->Ln(6);
             		for ($j = 0; $j < count($answers); $j++) {
@@ -128,7 +119,6 @@ $app->group('/pdf', function() {
 
             	$pdf->Ln(8);
             }
-            // $pdf->Output('crucio-klausur-'.$exam_id.'.pdf', 'I');
             $response->withBody( $pdf->Output('crucio-klausur-'.$exam_id.'.pdf', 'I') );
 
         } else if ($args['view'] == 'solution') {
@@ -165,7 +155,6 @@ $app->group('/pdf', function() {
             	// $pdf->MultiCell(140, 4, utf8_decode($questions[$i]['explanation']));
             	$pdf->Ln(5);
             }
-            // $pdf->Output('crucio-loesungen-'.$exam_id.'.pdf', 'I');
             $response->withBody( $pdf->Output('crucio-loesungen-'.$exam_id.'.pdf', 'I') );
         } else {
             $response = $response->withStatus(404);

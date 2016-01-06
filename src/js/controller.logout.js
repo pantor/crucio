@@ -1,14 +1,14 @@
 class LogoutController {
-    constructor(Auth, Page) {
-        this.Page = Page;
-        this.Auth = Auth;
+  constructor(Auth, Page) {
+    this.Page = Page;
+    this.Auth = Auth;
 
-        this.user = Auth.getUser();
-    }
+    this.user = Auth.getUser();
+  }
 
-    logout() {
-        this.Auth.logout();
-    }
+  logout() {
+    this.Auth.logout();
+  }
 }
 
-angular.module('userModule').controller('LogoutController', LogoutController);
+angular.module('crucioApp').controller('LogoutController', LogoutController);

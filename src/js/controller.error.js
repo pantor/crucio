@@ -1,9 +1,7 @@
 class ErrorController {
-    constructor(Auth, Page) {
-        Page.setTitleAndNav('Fehler | Crucio', '');
-
-        this.user = Auth.tryGetUser();
-    }
+  constructor(Page) {
+    Page.setTitleAndNav('Fehler | Crucio', '');
+  }
 }
 
 angular.module('crucioApp').controller('ErrorController', ErrorController);
