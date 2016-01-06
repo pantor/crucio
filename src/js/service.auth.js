@@ -14,7 +14,10 @@ class Auth {
 
   tryGetUser() {
     // Check if user is in already in user object and check if cookies
-    if (angular.isUndefined(this.user) && angular.isDefined(this.$cookies.getObject('CrucioUser'))) {
+    if (
+      angular.isUndefined(this.user)
+      && angular.isDefined(this.$cookies.getObject('CrucioUser'))
+    ) {
       this.setUser(this.$cookies.getObject('CrucioUser'));
     }
     return this.user;

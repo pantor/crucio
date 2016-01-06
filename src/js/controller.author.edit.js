@@ -26,7 +26,9 @@ class EditExamController {
 
     $scope.$on('$locationChangeStart', event => {
       if (this.hasChanged) {
-        const confirmClose = confirm('Die Änderungen an der Klausur bleiben dann ungespeichert. Wirklich verlassen?');
+        const confirmClose = confirm(
+          'Die Änderungen an der Klausur bleiben dann ungespeichert. Wirklich verlassen?'
+        );
         if (!confirmClose) {
           event.preventDefault();
         }

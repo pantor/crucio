@@ -18,13 +18,10 @@ gulp.task('sass', function () {
 });
 
 gulp.task('js', function () {
-  return gulp.src([
-    'src/js/crucio.js',
-    'src/js/**/*.js',
-  ])
+  return gulp.src(['src/js/crucio.js','src/js/**/*.js'])
     .pipe(eslint({
       extends: ['airbnb/base', 'angular'],
-      rules: { 'angular/controller-as-vm': 0, 'angular/no-service-method': 0, 'angular/log': 0 },
+      rules: { 'angular/controller-as-vm': 0, 'angular/no-service-method': 0, 'angular/log': 0, 'no-param-reassign': 1 },
       envs: ['browser', 'es6'],
     }))
     .pipe(eslint.format())

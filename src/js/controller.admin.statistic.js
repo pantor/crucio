@@ -8,7 +8,14 @@ class GlobalStatisticController {
     this.user = Auth.getUser();
 
     this.updateActivity = false;
-    this.showActivity = { result: false, login: false, register: false, comment: false, exam_new: false, exam_update: false };
+    this.showActivity = {
+      result: false,
+      login: false,
+      register: false,
+      comment: false,
+      exam_new: false,
+      exam_update: false,
+    };
 
     $interval(() => {
       if (this.updateActivity) {

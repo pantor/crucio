@@ -40,28 +40,28 @@ class Collection {
       worked_q: workedCollection.length,
     };
 
-    for (const question of workedCollection) {
-      if (question.correct_answer === question.given_result && question.given_result > 0 && question.correct_answer > 0) {
+    for (const q of workedCollection) {
+      if (q.correct_answer === q.given_result && q.given_result > 0 && q.correct_answer > 0) {
         result.correct_q++;
       }
 
-      if (question.correct_answer !== question.given_result && question.given_result > 0 && question.correct_answer > 0) {
+      if (q.correct_answer !== q.given_result && q.given_result > 0 && q.correct_answer > 0) {
         result.wrong_q++;
       }
 
-      if (question.given_result > 0) {
+      if (q.given_result > 0) {
         result.solved_q++;
       }
 
-      if (question.given_result > -2) {
+      if (q.given_result > -2) {
         result.seen_q++;
       }
 
-      if (question.type === 1) {
+      if (q.type === 1) {
         result.free_q++;
       }
 
-      if (question.correct_answer === 0 && question.type !== 1) {
+      if (q.correct_answer === 0 && q.type !== 1) {
         result.no_answer_q++;
       }
     }

@@ -41,8 +41,8 @@ function TimeAgo() {
           return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
         }
 
-        function substitute(stringOrFunction, number) {
-          const string = isFunction(stringOrFunction) ? stringOrFunction(number, distanceMillis) : stringOrFunction;
+        function substitute(object, number) { // object is either string or function
+          const string = isFunction(object) ? element(number, distanceMillis) : object;
           const value = (strings.numbers && strings.numbers[number]) || number;
           return string.replace(/%d/i, value);
         }

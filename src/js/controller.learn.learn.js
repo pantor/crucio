@@ -18,7 +18,7 @@ class LearnController {
     this.number_questions_in_choosen_subjects = 0;
 
     this.slider_options = { floor: 0, ceil: this.number_questions_in_choosen_subjects };
-    $timeout(() => { // Force slider rendering, a common problem see https://github.com/rzajac/angularjs-slider
+    $timeout(() => { // Force slider rendering, a common problem, see angularjs-slider github repo
       $scope.$broadcast('rzSliderForceRender');
     });
 
@@ -101,9 +101,9 @@ class LearnController {
       this.comments = result.comments;
 
       this.questions_by_comment = {};
-      for (const comment of this.comments) {
-        this.questions_by_comment[comment.question] = this.questions_by_comment[comment.question] || [];
-        this.questions_by_comment[comment.question].push(comment);
+      for (const c of this.comments) {
+        this.questions_by_comment[c.question] = this.questions_by_comment[c.question] || [];
+        this.questions_by_comment[c.question].push(c);
       }
     });
   }
@@ -116,7 +116,10 @@ class LearnController {
       if (this.selection_number_questions === 0) {
         this.selection_number_questions = Math.min(this.number_questions_in_choosen_subjects, 50);
       }
-      this.selection_number_questions = Math.min(this.selection_number_questions, this.number_questions_in_choosen_subjects);
+      this.selection_number_questions = Math.min(
+        this.selection_number_questions,
+        this.number_questions_in_choosen_subjects
+      );
     });
   }
 

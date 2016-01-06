@@ -1,5 +1,8 @@
 class ExamController {
-  constructor(Page, Auth, API, Collection, $location, $uibModal, $routeParams, $timeout, $document, $window) {
+  constructor(
+    Page, Auth, API, Collection,
+    $location, $uibModal, $routeParams, $timeout, $document, $window
+  ) {
     this.API = API;
     this.Collection = Collection;
     this.$location = $location;

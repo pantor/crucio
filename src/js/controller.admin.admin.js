@@ -90,7 +90,7 @@ class AdminController {
     groupId = (groupId % this.distinct_groups.length) + 1;
 
     this.users[index].group_id = groupId;
-    // this.users[index].group_name = this.distinct_groups.find(e => { e.group_id == groupId }).name;
+    // this.users[index].group_name = this.dg.find(e => { e.group_id == groupId }).name;
     for (const e of this.distinct_groups) {
       if (e.group_id === groupId) {
         this.users[index].group_name = e.name;

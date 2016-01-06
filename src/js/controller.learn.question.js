@@ -130,7 +130,13 @@ class QuestionController {
 
   addComment() {
     const now = new Date() / 1000;
-    const data = { comment: this.commentText, question_id: this.question_id, reply_to: 0, username: this.user.username, date: now };
+    const data = {
+      comment: this.commentText,
+      question_id: this.question_id,
+      reply_to: 0,
+      username: this.user.username,
+      date: now,
+    };
     this.API.post('comments/' + this.user.user_id, data).success(result => {
       data.voting = 0;
       data.user_voting = 0;

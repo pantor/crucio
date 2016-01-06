@@ -15,7 +15,11 @@ angular.module('crucioApp', [
 ])
   .config(function config($routeProvider, $locationProvider) {
     function routeGenerator(fileName, controllerPrefix) {
-      return { templateUrl: 'views/' + fileName + '.html', controller: controllerPrefix, controllerAs: 'ctrl' };
+      return {
+        templateUrl: 'views/' + fileName + '.html',
+        controller: controllerPrefix,
+        controllerAs: 'ctrl',
+      };
     }
 
     $routeProvider
