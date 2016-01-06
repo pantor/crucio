@@ -39,6 +39,7 @@ gulp.task('js', function () {
                 'no-loop-func' : 1,
                 'eqeqeq': 0,
                 'func-names': 0,
+                'object-shorthand': 1,
                 'indent': [2, 4],
             },
             envs: ['browser', 'es6'],

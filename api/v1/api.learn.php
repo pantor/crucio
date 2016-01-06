@@ -13,8 +13,10 @@ $app->group('/learn', function() {
 			if (count($value) == 0) {
 				$result += get_count($mysql, "questions q, exams e WHERE e.subject = ? AND q.exam_id = e.exam_id", [$key]);
 			} else {
-				foreach ($subject_list->$key as $cat) {
+				foreach ($subject_list[$key] as $cat) {
 					$result += get_count($mysql, "questions q, exams e WHERE e.subject = ? AND q.exam_id = e.exam_id AND q.topic = ?", [$key, $cat]);
+					$a = $key;
+                    $b = $subject_list;
 				}
 			}
 		}
@@ -49,7 +51,7 @@ $app->group('/learn', function() {
 				}
 
 			} else {
-				foreach ($subject_list->$key as $cat) {
+				foreach ($subject_list[$key] as $cat) {
 					$result = executeMysql($mysql,
 					    "SELECT DISTINCT q.*
 					    FROM questions q

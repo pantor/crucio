@@ -2,9 +2,9 @@
     <div class="row mtop-navbar-row">
         <div class="col-md-3 sidebar">
             <ul class="nav nav-pills nav-stacked mbottom-2x">
-                <li ng-class="{active: ctrl.activeTab == 'abstract'}"><a ng-click="ctrl.activeTab = 'abstract'"><i class="fa fa-inbox fa-fw"></i>  Übersicht</a></li>
+                <li ng-class="{active: ctrl.activeTab == 'abstract'}"><a ng-click="ctrl.activeTab = 'abstract'"><i class="fa fa-inbox fa-fw"></i>  &Uuml;bersicht</a></li>
                 <hr>
-                <li ng-class="{active: ctrl.activeTab == 'subjects'}"><a ng-click="ctrl.activeTab = 'subjects'"><i class="fa fa-flask fa-fw"></i>  Fächer</a></li>
+                <li ng-class="{active: ctrl.activeTab == 'subjects'}"><a ng-click="ctrl.activeTab = 'subjects'"><i class="fa fa-flask fa-fw"></i>  F&auml;cher</a></li>
                 <li ng-class="{active: ctrl.activeTab == 'exams'}"><a ng-click="ctrl.activeTab = 'exams'"><i class="fa fa-list fa-fw"></i>  Klausuren</a></li>
                 <li ng-class="{active: ctrl.activeTab == 'search'}"><a ng-click="ctrl.activeTab = 'search'"><i class="fa fa-search fa-fw"></i>  Suche</a></li>
                 <li ng-class="{active: ctrl.activeTab == 'tags'}"><a ng-click="ctrl.activeTab = 'tags'"><i class="fa fa-tags fa-fw"></i>  Markierungen</a></li>
@@ -24,7 +24,7 @@
                         <hr>
 
                         <h3>Hier ist dein Stift.</h3>
-                        <h5>Leider haben wir keine empfohlenen Klausuren für dich.<br> Du kannst aber links Klausuren heraussuchen und lernen;<br> alle angefangenen Klausuren werden dann hier angezeigt.</h5>
+                        <h5>Leider haben wir keine empfohlenen Klausuren f&uuml;r dich.<br> Du kannst aber links Klausuren heraussuchen und lernen;<br> alle angefangenen Klausuren werden dann hier angezeigt.</h5>
 
                         <br>
                     </div>
@@ -35,7 +35,7 @@
                                 <th><i class="fa fa-flask fa-fw"></i> Fach</th>
                                 <th><i class="fa fa-calendar fa-fw"></i> Termin</th>
                                 <th>Semester</th>
-                                <th class="hidden-xs hidden-sm">Gelöste Fragen</th>
+                                <th class="hidden-xs hidden-sm">Gelï¿½ste Fragen</th>
                                 <th><i class="fa fa-graduation-cap fa-fw"></i> Lernen</th>
                             </thead>
                             <tbody>
@@ -84,7 +84,7 @@
 
                                                 <ul class="dropdown-menu dropdown-menu-right" role="menu">
                                                     <li ng-class="{disabled: exam.answered_questions == 0}">
-                                                        <a href ng-click="ctrl.resetAbstractResults($index)">Klausur zurücksetzen</a>
+                                                        <a href ng-click="ctrl.resetAbstractResults($index)">Klausur zur&uuml;cksetzen</a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -98,11 +98,11 @@
 
 
                 <div ng-show="ctrl.activeTab == 'subjects'">
-                    <h4 class="mbottom-2x">Fächer & Kategorien <small>Hier kannst du dir deine eigene Klausur zusammenstellen.</small></h4>
+                    <h4 class="mbottom-2x">F&auml;cher & Kategorien <small>Hier kannst du dir deine eigene Klausur zusammenstellen.</small></h4>
 
                     <div class="form-horizontal" style="margin-bottom: 30px;">
                         <div class="form-group">
-                            <label class="col-sm-3 col-md-3 control-label">Fächer</label>
+                            <label class="col-sm-3 col-md-3 control-label">F&auml;cher</label>
                             <div class="col-sm-9 col-md-9">
                                 <table class="table">
                                     <tbody>
@@ -170,36 +170,6 @@
                             </div>
                         </div>
 
-                        <!--hr>
-
-                        <div class="form-group">
-                            <label class="col-sm-3 col-md-3 control-label">Auswahl</label>
-                            <div class="col-sm-9 col-md-9">
-                                <div class="radio disabled">
-                                    <label>
-                                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" disabled>
-                                        Durch den <i class="fa fa-magic"></i>-CrucioHexHex-Algorithmus
-                                        <span class="label label-danger" style="padding-bottom: 2px;">Kommt bald!</span>
-                                    </label>
-                                </div>
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="auswahl" value="1" ng-model="conditions" checked> Zufï¿½llig
-                                    </label>
-                                </div>
-                                <div class="radio disabled">
-                                    <label>
-                                        <input type="radio" name="auswahl" value="2" ng-model="conditions" disabled> Nur ungelï¿½ste Fragen
-                                    </label>
-                                </div>
-                                <div class="radio disabled">
-                                    <label>
-                                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" disabled> Besonders schwierige Fragen
-                                    </label>
-                                </div>
-                            </div>
-                        </div-->
-
                         <hr>
 
                         <div class="form-group">
@@ -236,7 +206,7 @@
 
                                 <div class="btn-group mtop" uib-dropdown>
                                     <button class="btn btn-default" type="button" uib-dropdown-toggle>
-                                        {{ ctrl.exam_search.subject ? ctrl.exam_search.subject : 'Alle Fächer' }} <span class="caret"></span>
+                                        {{ ctrl.exam_search.subject ? ctrl.exam_search.subject : 'Alle F&auml;cher' }} <span class="caret"></span>
                                     </button>
 
                                     <ul class="dropdown-menu" role="menu">
@@ -244,7 +214,7 @@
                                             <a href ng-click="ctrl.exam_search.subject = subject_child">{{ subject_child }}</a>
                                         </li>
                                         <li class="divider"></li>
-                                        <li><a href ng-click="ctrl.exam_search.subject=''">Alle Fächer</a></li>
+                                        <li><a href ng-click="ctrl.exam_search.subject=''">Alle F&auml;cher</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -266,14 +236,14 @@
                                 <th>Semester</th>
                                 <th><i class="fa fa-fw fa-flask"></i> Fach</th>
                                 <th><i class="fa fa-fw fa-calendar"></i>Termin</th>
-                                <th class="hidden-xs hidden-sm">Gelöste Fragen</th>
+                                <th class="hidden-xs hidden-sm">Gelï¿½ste Fragen</th>
                                 <th><i class="fa fa-graduation-cap fa-fw"></i> Lernen</th>
                             </thead>
 
                             <tbody>
                                 <tr ng-repeat="exam in ctrl.exams" ng-show="ctrl.examInSelection($index)">
-                                    <td id="semester">{{ exam.semester }}</td>
-                                    <td id="subject">{{ exam.subject | cut:true:38:'...' }}</td>
+                                    <td>{{ exam.semester }}</td>
+                                    <td>{{ exam.subject | cut:true:38:'...' }}</td>
                                     <td>{{ exam.date }}</td>
                                     <td class="hidden-xs hidden-sm">{{ exam.answered_questions }} / {{ exam.question_count }}</td>
                                     <td style="min-width: 250px;">
@@ -394,7 +364,7 @@
                         <h3>Du hast noch keine Markierungen erstellt.</h3>
                         <h5>
                             Wenn die eine Frage beantwortest, siehst du rechts unter dem Info-Feld eine Eingabe.<br>
-                            Gebe dort die Markierung ein und drücke Enter.
+                            Gebe dort die Markierung ein und drï¿½cke Enter.
                         </h5>
                         <br>
                     </div>
@@ -457,12 +427,12 @@
                                         <span ng-bind-html="comment_array[0].question"></span>
                                     </td>
                                     <td>{{ comment_array[0].comment }}</td>
-                                    <td><span timeago="{{ comment_array[0].date * 1000 }}"></td>
+                                    <td><span timeago="{{ comment_array[0].date * 1000 }}"></span></td>
                                     <td><a href="question?id={{ comment_array[0].question_id }}&reset_session=1"><i class="fa fa-chevron-right"></i></a></td>
                                 </tr>
                                 <tr ng-repeat="c in comment_array" ng-show="$index > 0">
                                     <td>{{ c.comment }}</td>
-                                    <td><span timeago="{{ c.date * 1000 }}"></td>
+                                    <td><span timeago="{{ c.date * 1000 }}"></span></td>
                                     <td><a href="question?id={{ c.question_id }}&reset_session=1"><i class="fa fa-chevron-right"></i></a></td>
                                 </tr>
                             </tbody>
