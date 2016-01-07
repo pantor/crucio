@@ -1,6 +1,7 @@
 {
     "require": {
         "slim/slim": "^3.0",
-        "tecnickcom/tcpdf": "^6.2"
+        "tecnickcom/tcpdf": "^6.2",
+        "phpmailer/phpmailer": "^5.2"
     }
 }

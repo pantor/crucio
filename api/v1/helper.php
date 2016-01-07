@@ -127,23 +127,35 @@ function generateActivationToken($mysql) {
 
 // ------ Mail ------
 
-function sendTemplateMail($template, $destination, $subject, $additionalHooks, $senderName = 'Crucio', $senderMail = 'noreply@crucio-leipzig.de') {
-    $emailDate = date('l \\t\h\e jS');
-    $message = file_get_contents('../mail-templates/'.$template);
-    $message = str_replace(array("#WEBSITENAME#", "#WEBSITEURL#", "#DATE#"), array('Crucio', $website_url, $emailDate), $message);
-    $message = str_replace($additionalHooks['searchStrs'], $additionalHooks['subjectStrs'], $message);
+function fillTemplate($hooks, $template) {
+    $from = array_map(function($entry) { return '#'.$entry.'#'; }, array_keys($hooks));
+    $to = array_values($hooks);
+    return str_replace($markedFrom, $to, $template);
+}
 
+function sendTemplateMail($templateName, $destination, $subject, $additionalHooks, $senderName = 'Crucio', $senderMail = 'noreply@crucio-leipzig.de') {
+    $basicHooks = [
+        'WEBSITENAME' => 'Crucio',
+        'WEBSITEURL' => $website_url,
+        'DATE' => date('l \\t\h\e jS'),
+    ];
+
+    $template = file_get_contents('../mail-templates/'.$templateName.'.html');
+    $message = fillTemplate(array_merge($basicHooks, $additionalHooks), $template);
     return sendMail($destination, $subject, $message, $senderName, $senderMail);
 }
 
 function sendMail($destination, $subject, $message, $senderName, $senderMail) {
-    $header = "MIME-Version: 1.0\r\n";
-    $header .= "Content-Type: text/html\r\n";
-    $header .= 'FROM: '.$senderName.' <'.$senderMail.'>';
+    $mail = new PHPMailer;
+    $mail->isSendmail();
+    $mail->setFrom($senderMail, $senderName);
+    // $mail->addReplyTo('replyto@example.com', 'First Last');
+    $mail->addAddress($destination);
+    $mail->Subject = $subject;
+    $mail->msgHTML($message);
+    // $mail->AltBody = 'This is a plain-text message body';
 
-    $data['status'] = mail($destination, $subject, $message, $header);
-    $data['sender'] = $senderName;
-    $data['destination'] = $destination;
+    $data['status'] = $mail->send();
     return $data;
 }
 

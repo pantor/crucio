@@ -188,10 +188,11 @@ $app->group('/users', function() {
 
 		$activation_message = $website_url.'activate-account?token='.$activation_token;
 		$hooks = [
-		    'searchStrs' => ["#ACTIVATION-MESSAGE", "#ACTIVATION-KEY", "#USERNAME#"],
-		    'subjectStrs' => [$activation_message, $activation_token, $username],
+    		'ACTIVATION-MESSAGE' => $activation_message,
+    		'ACTIVATION-KEY' => $activation_token,
+    		'USERNAME' => $username,
         ];
-        sendTemplateMail('new-registration.html', $email, 'Willkommen bei Crucio', $hooks);
+        sendTemplateMail('new-registration', $email, 'Willkommen bei Crucio', $hooks);
 
         $stmt = $mysql->prepare(
 		    "INSERT INTO users (username, username_clean, password, email, activationtoken, last_activation_request, sign_up_date, course_id, semester)
@@ -386,10 +387,11 @@ $app->group('/users', function() {
 	        $deny_url = $website_url.'forgot-password?deny='.$user['activationtoken'];
 
 	        $hooks = [
-	            'searchStrs' => ["#CONFIRM-URL#", "#DENY-URL#", "#USERNAME#"],
-	            'subjectStrs' => [$confirm_url, $deny_url, $user['username']],
+    	        'CONFIRM-URL' => $confirm_url,
+    	        'DENY-URL' => $deny_url,
+    	        'USERNAME' => $user['username'],
             ];
-	        sendTemplateMail('lost-password-request.html', $email, 'Neues Passwort I', $hooks);
+	        sendTemplateMail('lost-password-request', $email, 'Neues Passwort I', $hooks);
 
 	        $data['status'] = flagLostpasswordRequest($mysql, $user['username'], 1);
 			return createResponse($response, $data);
@@ -409,10 +411,10 @@ $app->group('/users', function() {
 			$user = fetchUserDetailsByToken($mysql, $body['token']);
 
 			$hooks = [
-			    'searchStrs' => ["#GENERATED-PASS#","#USERNAME#"],
-			    'subjectStrs' => [$rand_pass, $user['username']],
+    			'GENERATED-PASS' => $rand_pass,
+    			'USERNAME' => $user['username'],
             ];
-			sendTemplateMail('your-lost-password.html', $user['email'], 'Neues Passwort II', $hooks);
+			sendTemplateMail('your-lost-password', $user['email'], 'Neues Passwort II', $hooks);
 
 			$new_activation_token = generateActivationToken($mysql);
 

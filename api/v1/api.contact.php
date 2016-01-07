@@ -13,11 +13,12 @@ $app->group('/contact', function () {
         $destination = 'kontakt@crucio-leipzig.de, allgemeinerkontakt@crucio-leipzig.de';
 
         $hooks = [
-            'searchStrs' => ['#MESSAGE#', '#MAIL#', '#USERNAME#'],
-            'subjectStrs' => [$text, $email, $name],
+            'MESSAGE' => $text,
+            'MAIL' => $email,
+            'USERNAME' => $name,
         ];
 
-        $data['status'] = sendTemplateMail('contact.html', $destination, 'Allgemeine Anfrage', $hooks, $sender_name);
+        $data['status'] = sendTemplateMail('contact', $destination, 'Allgemeine Anfrage', $hooks, $sender_name);
         return createResponse($response, $data);
     });
 
@@ -40,33 +41,19 @@ $app->group('/contact', function () {
 		$destination = 'kontakt@crucio-leipzig.de, '.$body['author_email'];
 
 		$hooks = [
-		    'searchStrs' => [
-		        '#MESSAGE#',
-		        '#MAIL#',
-		        '#USERNAME#',
-		        '#AUTHOR#',
-		        '#QUESTION#',
-		        '#QUESTION_ID#',
-                '#SUBJECT#',
-                '#DATE2#',
-                '#EXAM_ID#',
-                '#MAIL_SUBJECT#'
-            ],
-			'subjectStrs' => [
-			    $text,
-			    $email,
-			    $name,
-			    $body['author'],
-			    $body['question'],
-			    $body['question_id'],
-			    $body['subject'],
-			    $body['date'],
-			    $body['exam_id'],
-			    $mail_subject_html
-            ],
+    		'MESSAGE' => $text,
+    		'MAIL' => $email,
+    		'USERNAME' => $name,
+    		'AUTHOR' => $body['author'],
+    		'QUESTION' => $body['question'],
+    		'QUESTION_ID' => $body['question_id'],
+    		'SUBJECT' => $body['subject'],
+    		'DATE2' => $body['date'],
+    		'EXAM_ID' => $body['exam_id'],
+    		'MAIL_SUBJECT' => $mail_subject_html,
         ];
 
-		$data['status'] = sendTemplateMail('contact-question.html', $destination, $subject, $hooks, $sender_name);
+		$data['status'] = sendTemplateMail('contact-question', $destination, $subject, $hooks, $sender_name);
 		return createResponse($response, $data);
 	});
 });
