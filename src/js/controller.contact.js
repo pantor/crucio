@@ -16,11 +16,11 @@ class ContactController {
 
     const data = { text: this.text, name: this.name, email: this.mail.replace('@', '(@)') };
     this.API.post('contact/send-mail', data).success(result => {
-      this.emailSend = result.status;
       if (result.status) {
         this.$uibModal.open({ templateUrl: 'myModalContent.html' });
       }
 
+      this.emailSend = result.status;
       this.isWorking = false;
     });
   }

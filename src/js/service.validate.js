@@ -8,7 +8,7 @@ class Validate {
   }
 
   username(username) {
-    // Check duplicate
+    // TODO: Check duplicate
     return (username.length > 4);
   }
 

@@ -127,22 +127,23 @@ function generateActivationToken($mysql) {
 
 // ------ Mail ------
 
-function sendTemplateMail($template, $destination, $subject, $additionalHooks, $sender_name = 'Crucio', $sender_email = 'noreply@crucio-leipzig.de') {
+function sendTemplateMail($template, $destination, $subject, $additionalHooks, $senderName = 'Crucio', $senderMail = 'noreply@crucio-leipzig.de') {
     $emailDate = date('l \\t\h\e jS');
     $message = file_get_contents('../mail-templates/'.$template);
     $message = str_replace(array("#WEBSITENAME#", "#WEBSITEURL#", "#DATE#"), array('Crucio', $website_url, $emailDate), $message);
     $message = str_replace($additionalHooks['searchStrs'], $additionalHooks['subjectStrs'], $message);
 
-    return sendMail($destination, $subject, $message, $sender_name, $sender_email);
+    return sendMail($destination, $subject, $message, $senderName, $senderMail);
 }
 
-function sendMail($destination, $subject, $message, $sender_name, $sender_email) {
+function sendMail($destination, $subject, $message, $senderName, $senderMail) {
     $header = "MIME-Version: 1.0\r\n";
     $header .= "Content-Type: text/html\r\n";
-    $header .= 'FROM: '.$sender_name.' <'.$sender_email.'>';
+    $header .= 'FROM: '.$senderName.' <'.$senderMail.'>';
 
     $data['status'] = mail($destination, $subject, $message, $header);
-    $data['sender'] = $sender_name;
+    $data['sender'] = $senderName;
+    $data['destination'] = $destination;
     return $data;
 }
 

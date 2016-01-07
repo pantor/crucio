@@ -29,13 +29,12 @@ class SettingsController {
     this.API.put('users/' + this.user.user_id + '/settings', data, true).success(result => {
       if (result.status) {
         this.Auth.setUser(this.user);
-        this.isSaved = true;
       } else {
         this.user = this.Auth.getUser();
-        this.isSaved = false;
         this.hasError = true;
       }
 
+      this.isSaved = result.status;
       this.isWorking = false;
     });
   }

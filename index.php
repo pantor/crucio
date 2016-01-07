@@ -54,7 +54,7 @@
                         </p>
 
                         <a class="btn btn-lg" href="register" target="_self">Registrieren</a>
-                        <a class="btn btn-lg" ng-click="ctrl.scrollToFeatures()">Mehr Infos</a>
+                        <a class="btn btn-lg" ng-click="ctrl.$document.scrollTopAnimated(1050, 600)">Mehr Infos</a>
                     </div>
                 </div>
 

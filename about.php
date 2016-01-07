@@ -48,7 +48,7 @@
                             04103 Leipzig<br>
                         </address>
 
-                        <p>Crucio wurde entwickelt von Pantorix. <strong>&copy; 2015 Pantorix.</strong></p>
+                        <p>Crucio wurde entwickelt von Pantorix. <strong>&copy; 2016 Pantorix.</strong></p>
                     </center>
                 </div>
             </div>

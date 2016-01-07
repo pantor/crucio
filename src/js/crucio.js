@@ -14,12 +14,8 @@ angular.module('crucioApp', [
   'duScroll',
 ])
   .config(function config($routeProvider, $locationProvider) {
-    function routeGenerator(fileName, controllerPrefix) {
-      return {
-        templateUrl: 'views/' + fileName + '.html',
-        controller: controllerPrefix,
-        controllerAs: 'ctrl',
-      };
+    function routeGenerator(fileName, controller) {
+      return { controller, controllerAs: 'ctrl', templateUrl: 'views/' + fileName + '.html' };
     }
 
     $routeProvider

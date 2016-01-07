@@ -23,16 +23,11 @@ class LoginController {
       password: this.password,
     };
     this.API.get('users/login', data).success(result => {
-      if (result.status) {
+      this.loginError = !result.status;
+      if (!this.loginError) {
         this.Auth.login(result.logged_in_user, this.rememberMe);
-      } else {
-        this.loginError = true;
       }
     });
-  }
-
-  scrollToFeatures() {
-    this.$document.scrollTopAnimated(1050, 600);
   }
 }
 
