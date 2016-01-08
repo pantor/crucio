@@ -197,20 +197,21 @@ $app->group('/questions', function() {
 		$body = $request->getParsedBody();
 
 		$stmt = $mysql->prepare(
-    		"INSERT INTO questions (question, answers, correct_answer, exam_id, date_added, user_id_added,
-    		    explanation, question_image_url, type, category_id)
-		    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+    		"INSERT INTO questions (question, answers, correct_answer, exam_id, date_added,
+    		    user_id_added, explanation, question_image_url, type, category_id)
+		    VALUES (:question, :answers, :correct_answer, :exam_id, :date, :user_id_added,
+		        :explanation, :question_image_url, :type, :category_id)"
         );
-        $stmt->bindValue(1, $body['question']);
-        $stmt->bindValue(2, serialize($body['answers']));
-        $stmt->bindValue(3, $body['correct_answer']);
-        $stmt->bindValue(4, $body['exam_id'], PDO::PARAM_INT);
-        $stmt->bindValue(5, time());
-        $stmt->bindValue(6, $body['user_id_added'], PDO::PARAM_INT);
-        $stmt->bindValue(7, $body['explanation']);
-        $stmt->bindValue(8, $body['question_image_url']);
-        $stmt->bindValue(9, $args['type']);
-        $stmt->bindValue(10, $args['category_id']);
+        $stmt->bindValue(':question', $body['question']);
+        $stmt->bindValue(':answers', serialize($body['answers']));
+        $stmt->bindValue(':correct_answer', $body['correct_answer']);
+        $stmt->bindValue(':exam_id', $body['exam_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':date', time());
+        $stmt->bindValue(':user_id_added', $body['user_id_added'], PDO::PARAM_INT);
+        $stmt->bindValue(':explanation', $body['explanation']);
+        $stmt->bindValue(':question_image_url', $body['question_image_url']);
+        $stmt->bindValue(':type', $args['type']);
+        $stmt->bindValue(':category_id', $args['category_id']);
 
         $data['status'] = execute($stmt);
         $data['question_id'] = $mysql->lastInsertId();
@@ -224,8 +225,9 @@ $app->group('/questions', function() {
 
 		$stmt = $mysql->prepare(
     		"UPDATE questions
-    		SET question = :question, answers = :answers, correct_answer = :correct_answer, exam_id = :exam_id,
-    		    explanation = :explanation, question_image_url = :question_image_url, type = :type, category_id = :category_id
+    		SET question = :question, answers = :answers, correct_answer = :correct_answer,
+    		    exam_id = :exam_id, explanation = :explanation,
+    		    question_image_url = :question_image_url, type = :type, category_id = :category_id
             WHERE question_id = :question_id"
         );
         $stmt->bindValue(':question', $body['question']);

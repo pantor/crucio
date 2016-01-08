@@ -45,9 +45,9 @@ class ExamController {
   }
 
   loadExam() {
-    this.API.get('exams/' + this.examId).success(result => {
-      this.exam = result.exam;
-      this.collection.list = result.questions;
+    this.API.get('exams/' + this.examId).then(result => {
+      this.exam = result.data.exam;
+      this.collection.list = result.data.questions;
     });
   }
 
@@ -57,10 +57,6 @@ class ExamController {
 
   saveAnswer(index, givenAnswer) {
     this.collection.list[index].given_result = givenAnswer;
-  }
-
-  scrollToTop() {
-    this.$document.scrollTopAnimated(0, 400);
   }
 
   handExam() {

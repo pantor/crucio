@@ -13,19 +13,15 @@ class LoginController {
   }
 
   login() {
-    if (!this.email) { // If undefined, replace will log an error
-      this.email = '';
-    }
-
     const data = {
-      email: this.email.replace('@', '(@)'),
+      email: this.email,
       remember_me: this.rememberMe,
       password: this.password,
     };
-    this.API.get('users/login', data).success(result => {
-      this.loginError = !result.status;
+    this.API.get('users/login', data).then(result => {
+      this.loginError = !result.data.status;
       if (!this.loginError) {
-        this.Auth.login(result.logged_in_user, this.rememberMe);
+        this.Auth.login(result.data.logged_in_user, this.rememberMe);
       }
     });
   }

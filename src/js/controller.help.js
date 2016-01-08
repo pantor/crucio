@@ -11,8 +11,8 @@ class HelpController {
     this.subject = $location.search().s;
 
     if (this.question_id) {
-      this.API.get('questions/' + this.question_id).success(result => {
-        this.question = result.question;
+      this.API.get('questions/' + this.question_id).then(result => {
+        this.question = result.data.question;
       });
     }
   }
@@ -27,7 +27,7 @@ class HelpController {
         const data = {
           text: this.text,
           name: this.user.username,
-          email: this.user.email.replace('@', '(@)'),
+          email: this.user.email,
           question_id: this.question_id,
           author: this.question.username,
           question: this.question.question,
@@ -37,7 +37,7 @@ class HelpController {
           author_email: this.question.email,
           mail_subject: this.subject,
         };
-        this.API.post('contact/send-mail-question', data).success(() => {
+        this.API.post('contact/send-mail-question', data).then(() => {
           this.isWorking = false;
           this.emailSend = true;
         });
@@ -45,9 +45,9 @@ class HelpController {
         const data = {
           text: this.text,
           name: this.user.username,
-          email: this.user.email.replace('@', '(@)'),
+          email: this.user.email,
         };
-        this.API.post('contact/send-mail', data).success(() => {
+        this.API.post('contact/send-mail', data).then(() => {
           this.isWorking = false;
           this.emailSend = true;
         });

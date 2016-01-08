@@ -10,10 +10,10 @@ class ActivateController {
       this.errorNoToken = true;
     } else {
       const data = { token: this.token };
-      this.API.put('users/activate', data).success(result => {
-        this.success = result.status;
-        this.errorNoToken = (result.error === 'error_no_token');
-        this.errorUnknown = (result.error === 'error_unknown');
+      this.API.put('users/activate', data).then(result => {
+        this.success = result.data.status;
+        this.errorNoToken = (result.data.error === 'error_no_token');
+        this.errorUnknown = (result.data.error === 'error_unknown');
       });
     }
   }

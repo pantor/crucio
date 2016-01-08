@@ -18,7 +18,7 @@
                 <div ng-show="ctrl.activeTab == 'abstract'">
                     <h4 class="mbottom-2x">Klausuren<small></small></h4>
 
-                    <div ng-if="!ctrl.abstract_exams.length && ctrl.ready" class="container-center-align-sm">
+                    <div ng-if="!ctrl.abstractExams.length && ctrl.ready" class="container-center-align-sm">
                         <i class="fa fa-pencil"></i>
 
                         <hr>
@@ -29,7 +29,7 @@
                         <br>
                     </div>
 
-                    <div ng-if="ctrl.abstract_exams.length && ctrl.ready">
+                    <div ng-if="ctrl.abstractExams.length && ctrl.ready">
                         <table  class="table">
                             <thead>
                                 <th><i class="fa fa-flask fa-fw"></i> Fach</th>
@@ -39,7 +39,7 @@
                                 <th><i class="fa fa-graduation-cap fa-fw"></i> Lernen</th>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="exam in ctrl.abstract_exams">
+                                <tr ng-repeat="exam in ctrl.abstractExams">
                                     <td id="subject">{{ exam.subject }}</td>
                                     <td>{{ exam.date }}</td>
                                     <td id="semester">{{ exam.semester }}</td>
@@ -106,7 +106,7 @@
                             <div class="col-sm-9">
                                 <table class="table">
                                     <tbody>
-                                        <tr ng-repeat="s in ctrl.subject_list">
+                                        <tr ng-repeat="s in ctrl.subjectList">
                                             <td style="width: 30px;">
                                                 <input type="checkbox" ng-model="ctrl.selection[s.subject_id].subject" ng-change="ctrl.loadNumberQuestions()">
                                             </td>
@@ -150,19 +150,19 @@
                                 <div class="row mtop-8">
                                     <div class="col-xs-5 col-sm-3">
                                         <strong>
-                                            <span ng-show="ctrl.selection_number_questions < ctrl.number_questions_in_choosen_subjects || ctrl.selection_number_questions == 0">
-                                                {{ ctrl.selection_number_questions }}
+                                            <span ng-show="ctrl.selectedQuestionNumber < ctrl.numberQuestionsInSelection || ctrl.selectedQuestionNumber == 0">
+                                                {{ ctrl.selectedQuestionNumber }}
                                             </span>
 
-                                            <span ng-show="ctrl.selection_number_questions == ctrl.number_questions_in_choosen_subjects && ctrl.selection_number_questions != 0">
+                                            <span ng-show="ctrl.selectedQuestionNumber >= ctrl.numberQuestionsInSelection && ctrl.selectedQuestionNumber != 0">
                                                 Alle
                                             </span>
                                         </strong>
-                                        von {{ ctrl.number_questions_in_choosen_subjects }}
+                                        von {{ ctrl.numberQuestionsInSelection }}
                                         <span class="text-muted pull-right"><small>Weniger</small></span>
                                     </div>
 
-                                    <rzslider class="col-xs-5 col-sm-8" rz-slider-model="ctrl.selection_number_questions" rz-slider-options="ctrl.slider_options"></rzslider>
+                                    <rzslider class="col-xs-5 col-sm-8" rz-slider-model="ctrl.selectedQuestionNumber" rz-slider-options="ctrl.sliderOptions"></rzslider>
 
 
                                     <div class="text-muted col-xs-2 col-sm-1"><small>Mehr</small></div>
@@ -175,7 +175,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 col-md-3 control-label"></label>
                             <div class="col-sm-9 col-md-9">
-                                <button class="btn btn-success" type="button" ng-click="ctrl.learnSubjects()" ng-disabled="ctrl.selection_number_questions == 0">
+                                <button class="btn btn-success" type="button" ng-click="ctrl.learnSubjects()" ng-disabled="ctrl.selectedQuestionNumber == 0">
                                     <i class="fa fa-fw fa-graduation-cap"></i> Lernen
                                 </button>
                             </div>
@@ -192,33 +192,33 @@
                             <div class="btn-toolbar" role="toolbar">
                                 <div class="btn-group mtop" uib-dropdown>
                                     <button class="btn btn-default" type="button" uib-dropdown-toggle>
-                                        <span ng-show="ctrl.exam_search.semester">{{ ctrl.exam_search.semester }}. Semester</span>
-                                        <span ng-show="!ctrl.exam_search.semester">Alle Semester</span>
+                                        <span ng-show="ctrl.examSearch.semester">{{ ctrl.examSearch.semester }}. Semester</span>
+                                        <span ng-show="!ctrl.examSearch.semester">Alle Semester</span>
                                         <span class="caret"></span>
                                     </button>
 
                                     <ul class="dropdown-menu" role="menu">
-                                        <li ng-repeat="ds in ctrl.distinct_semesters">
-                                            <a href ng-click="ctrl.exam_search.semester = ds.semester; ctrl.loadExams()">{{ ds.semester }}. Semester</a>
+                                        <li ng-repeat="ds in ctrl.distinctSemesters">
+                                            <a href ng-click="ctrl.examSearch.semester = ds.semester; ctrl.loadExams()">{{ ds.semester }}. Semester</a>
                                         </li>
                                         <li class="divider"></li>
-                                        <li><a href ng-click="ctrl.exam_search.semester = null; ctrl.loadExams()">Alle Semester</a></li>
+                                        <li><a href ng-click="ctrl.examSearch.semester = null; ctrl.loadExams()">Alle Semester</a></li>
                                     </ul>
                                 </div>
 
                                 <div class="btn-group mtop" uib-dropdown>
                                     <button class="btn btn-default" type="button" uib-dropdown-toggle>
-                                        <span ng-show="ctrl.exam_search.subject">{{ ctrl.exam_search.subject.name }}</span>
-                                        <span ng-show="!ctrl.exam_search.subject">Alle F&auml;cher</span>
+                                        <span ng-show="ctrl.examSearch.subject">{{ ctrl.examSearch.subject.name }}</span>
+                                        <span ng-show="!ctrl.examSearch.subject">Alle F&auml;cher</span>
                                         <span class="caret"></span>
                                     </button>
 
                                     <ul class="dropdown-menu" role="menu">
-                                        <li ng-repeat="ds in ctrl.distinct_subjects">
-                                            <a href ng-click="ctrl.exam_search.subject = ds; ctrl.loadExams()">{{ ds.name }}</a>
+                                        <li ng-repeat="ds in ctrl.distinctSubjects">
+                                            <a href ng-click="ctrl.examSearch.subject = ds; ctrl.loadExams()">{{ ds.name }}</a>
                                         </li>
                                         <li class="divider"></li>
-                                        <li><a href ng-click="ctrl.exam_search.subject = null; ctrl.loadExams()">Alle Fächer</a></li>
+                                        <li><a href ng-click="ctrl.examSearch.subject = null; ctrl.loadExams()">Alle Fächer</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -226,7 +226,7 @@
 
                         <div class="col-sm-6">
                             <div class="input-group mtop">
-                                <input class="form-control" type="text" ng-model="ctrl.exam_search.query" ng-change="ctrl.loadExams()">
+                                <input class="form-control" type="text" ng-model="ctrl.examSearch.query" ng-change="ctrl.loadExams()">
                                 <span class="input-group-btn">
                                     <button class="btn btn-default" type="button" ng-click="ctrl.loadExams()"><i class="fa fa-search"></i></button>
                                 </span>
@@ -318,33 +318,33 @@
                                             <div class="btn-toolbar" role="toolbar">
                                                 <div class="btn-group mtop" uib-dropdown>
                                                     <button class="btn btn-default" type="button" uib-dropdown-toggle>
-                                                        <span ng-show="ctrl.question_search.semester">{{ ctrl.question_search.semester }}. Semester</span>
-                                                        <span ng-show="!ctrl.question_search.semester">Alle Semester</span>
+                                                        <span ng-show="ctrl.questionSearch.semester">{{ ctrl.questionSearch.semester }}. Semester</span>
+                                                        <span ng-show="!ctrl.questionSearch.semester">Alle Semester</span>
                                                         <span class="caret"></span>
                                                     </button>
 
                                                     <ul class="dropdown-menu" role="menu">
-                                                        <li ng-repeat="ds in ctrl.distinct_semesters">
-                                                            <a href ng-click="ctrl.question_search.semester = ds.semester; ctrl.searchQuestion()">{{ ds.semester }}. Semester</a>
+                                                        <li ng-repeat="ds in ctrl.distinctSemesters">
+                                                            <a href ng-click="ctrl.questionSearch.semester = ds.semester; ctrl.searchQuestion()">{{ ds.semester }}. Semester</a>
                                                         </li>
                                                         <li class="divider"></li>
-                                                        <li><a href ng-click="ctrl.question_search.semester = null; ctrl.searchQuestion()">Alle Semester</a></li>
+                                                        <li><a href ng-click="ctrl.questionSearch.semester = null; ctrl.searchQuestion()">Alle Semester</a></li>
                                                     </ul>
                                                 </div>
 
                                                 <div class="btn-group mtop" uib-dropdown>
                                                     <button class="btn btn-default" type="button" uib-dropdown-toggle>
-                                                        <span ng-show="ctrl.question_search.subject">{{ ctrl.question_search.subject.name }}</span>
-                                                        <span ng-show="!ctrl.question_search.subject">Alle F&auml;cher</span>
+                                                        <span ng-show="ctrl.questionSearch.subject">{{ ctrl.questionSearch.subject.name }}</span>
+                                                        <span ng-show="!ctrl.questionSearch.subject">Alle F&auml;cher</span>
                                                         <span class="caret"></span>
                                                     </button>
 
                                                     <ul class="dropdown-menu" role="menu">
-                                                        <li ng-repeat="ds in ctrl.distinct_subjects">
-                                                            <a href ng-click="ctrl.question_search.subject = ds; ctrl.searchQuestion()">{{ ds.name }}</a>
+                                                        <li ng-repeat="ds in ctrl.distinctSubjects">
+                                                            <a href ng-click="ctrl.questionSearch.subject = ds; ctrl.searchQuestion()">{{ ds.name }}</a>
                                                         </li>
                                                         <li class="divider"></li>
-                                                        <li><a href ng-click="ctrl.question_search.subject = null; ctrl.searchQuestion()">Alle Fächer</a></li>
+                                                        <li><a href ng-click="ctrl.questionSearch.subject = null; ctrl.searchQuestion()">Alle Fächer</a></li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -352,7 +352,7 @@
 
                                         <div class="col-sm-8">
                                             <form class="input-group mtop" submit="ctrl.searchQuestion()">
-                                                <input class="form-control" type="text" ng-model="ctrl.question_search.query" placeholder="...">
+                                                <input class="form-control" type="text" ng-model="ctrl.questionSearch.query" placeholder="...">
 
                                                 <span class="input-group-btn">
                                                     <button class="btn btn-default" ng-click="ctrl.searchQuestion()">
@@ -424,7 +424,7 @@
                                 <th></th>
                             </thead>
 
-                            <tbody ng-repeat="(tag, tag_array) in ctrl.questions_by_tag">
+                            <tbody ng-repeat="(tag, tag_array) in ctrl.questionsByTag">
                                 <tr>
                                     <td rowspan="{{tag_array.length}}" style="min-width:140px;">
                                         <span class="tag-item pull-right">
@@ -467,7 +467,7 @@
                                 <th></th>
                             </thead>
 
-                            <tbody ng-repeat="(question, comment_array) in ctrl.questions_by_comment">
+                            <tbody ng-repeat="(question, comment_array) in ctrl.questionsByComment">
                                 <tr>
                                     <td rowspan="{{ comment_array.length }}" style="min-width:140px;">
                                         <span ng-bind-html="comment_array[0].question"></span>

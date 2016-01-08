@@ -28,14 +28,14 @@ $app->group('/results', function() {
         $stmt = $mysql->prepare(
 		    "INSERT
 		    INTO results (user_id, question_id, attempt, correct, given_result, date, resetted)
-		    VALUES (?, ?, ?, ?, ?, ?, '0')"
+		    VALUES (:user_id, :question_id, :attempt, :correct, :given_result, :date, '0')"
 		);
-		$stmt->bindValue(1, $body['user_id'], PDO::PARAM_INT);
-		$stmt->bindValue(2, $body['question_id'], PDO::PARAM_INT);
-		$stmt->bindValue(3, $attempt_count + 1);
-		$stmt->bindValue(4, $body['correct']);
-		$stmt->bindValue(5, $body['given_result']);
-		$stmt->bindValue(6, time());
+		$stmt->bindValue(':user_id', $body['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':question_id', $body['question_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':attempt', $attempt_count + 1);
+		$stmt->bindValue(':correct', $body['correct']);
+		$stmt->bindValue(':given_result', $body['given_result']);
+		$stmt->bindValue(':date', time());
 
 		$data['status'] = execute($stmt);
 		return createResponse($response, $data);

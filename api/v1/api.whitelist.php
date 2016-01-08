@@ -32,7 +32,7 @@ $app->group('/whitelist', function() {
 		    INTO whitelist ( mail_address )
 		    VALUES (:mail_address)"
 		);
-		$stmt->bindValue(':mail_address', str_replace('(@)', '@', sanitize($body['mail_address'])));
+		$stmt->bindValue(':mail_address', str_replace('(@)', '@', sanitize($body['email'])));
 
 		$data['status'] = execute($stmt);
 		return createResponse($response, $data);
@@ -46,7 +46,7 @@ $app->group('/whitelist', function() {
 		    FROM whitelist
 		    WHERE mail_address = :mail_address"
 		);
-		$stmt->bindValue(':mail_address', $args['mail_address']);
+		$stmt->bindValue(':mail_address', $args['email']);
 
         $data['status'] = execute($stmt);
 		return createResponse($response, $data);

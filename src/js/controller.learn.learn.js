@@ -9,32 +9,27 @@ class LearnController {
 
     this.user = Auth.getUser();
 
-    this.exam_search = { semester: this.user.semester };
-    this.comment_search = {};
-    this.question_search = {};
+    this.examSearch = { semester: this.user.semester };
+    this.commentSearch = {};
+    this.questionSearch = {};
 
-    this.selection_subject_list = {};
-    this.selection_number_questions = 0;
-    this.number_questions_in_choosen_subjects = 0;
+    this.selection = {};
+    this.selectedQuestionNumber = 0;
+    this.numberQuestionsInSelection = 0;
 
-    this.slider_options = { floor: 0, ceil: this.number_questions_in_choosen_subjects };
+    this.sliderOptions = { floor: 0, ceil: this.numberQuestionsInSelection };
     $timeout(() => { // Force slider rendering, a common problem, see angularjs-slider github repo
       $scope.$broadcast('rzSliderForceRender');
     });
 
-    $scope.$watch(() => this.number_questions_in_choosen_subjects, () => {
-      const max = Math.min(this.number_questions_in_choosen_subjects, 500);
-      this.slider_options = { floor: 0, ceil: max };
-    }, true);
 
-
-    this.API.get('exams/distinct').success(result => {
-      this.distinct_semesters = result.semesters;
-      this.distinct_subjects = result.subjects;
+    this.API.get('exams/distinct').then(result => {
+      this.distinctSemesters = result.data.semesters;
+      this.distinctSubjects = result.data.subjects;
     });
 
-    this.API.get('subjects').success(result => {
-      this.subject_list = result.subjects;
+    this.API.get('subjects').then(result => {
+      this.subjectList = result.data.subjects;
     });
 
     this.loadAbstract();
@@ -45,8 +40,8 @@ class LearnController {
 
   loadAbstract() {
     const data = { limit: 12 };
-    this.API.get('exams/abstract/' + this.user.user_id, data).success(result => {
-      this.abstract_exams = result.exams;
+    this.API.get('exams/abstract/' + this.user.user_id, data).then(result => {
+      this.abstractExams = result.data.exams;
       this.ready = 1;
     });
   }
@@ -54,37 +49,37 @@ class LearnController {
   loadExams() {
     const data = {
       user_id: this.user.user_id,
-      semester: this.exam_search.semester,
-      subject_id: this.exam_search.subject && this.exam_search.subject.subject_id,
-      query: this.exam_search.query,
+      semester: this.examSearch.semester,
+      subject_id: this.examSearch.subject && this.examSearch.subject.subject_id,
+      query: this.examSearch.query,
       visibility: 1,
     };
-    this.API.get('exams', data).success(result => {
-      this.exams = result.exams;
+    this.API.get('exams', data).then(result => {
+      this.exams = result.data.exams;
     });
   }
 
   loadTags() {
     const data = { user_id: this.user.user_id };
-    this.API.get('tags', data).success(result => {
-      this.tags = result.tags;
+    this.API.get('tags', data).then(result => {
+      this.tags = result.data.tags;
 
-      this.distinct_tags = [];
+      this.distinctTags = [];
       for (const entry of this.tags) {
         for (const tagText of entry.tags.split(',')) {
-          if (!this.distinct_tags.includes(tagText)) {
-            this.distinct_tags.push(tagText);
+          if (!this.distinctTags.includes(tagText)) {
+            this.distinctTags.push(tagText);
           }
         }
       }
 
-      this.questions_by_tag = {};
-      for (const distinctTag of this.distinct_tags) {
-        this.questions_by_tag[distinctTag] = [];
+      this.questionsByTag = {};
+      for (const distinctTag of this.distinctTags) {
+        this.questionsByTag[distinctTag] = [];
         for (const entry of this.tags) {
           for (const tagText of entry.tags.split(',')) {
             if (distinctTag === tagText) {
-              this.questions_by_tag[distinctTag].push(entry);
+              this.questionsByTag[distinctTag].push(entry);
             }
           }
         }
@@ -94,31 +89,34 @@ class LearnController {
 
   loadComments() {
     const data = {
-      query: this.comment_search.query,
+      query: this.commentSearch.query,
       user_id: this.user.user_id,
     };
-    this.API.get('comments', data).success(result => {
-      this.comments = result.comments;
+    this.API.get('comments', data).then(result => {
+      this.comments = result.data.comments;
 
-      this.questions_by_comment = {};
+      this.questionsByComment = {};
       for (const c of this.comments) {
-        this.questions_by_comment[c.question] = this.questions_by_comment[c.question] || [];
-        this.questions_by_comment[c.question].push(c);
+        this.questionsByComment[c.question] = this.questionsByComment[c.question] || [];
+        this.questionsByComment[c.question].push(c);
       }
     });
   }
 
   loadNumberQuestions() {
     const data = { selection: this.selection };
-    this.API.get('questions/count', data, true).success(result => {
-      this.number_questions_in_choosen_subjects = result.count;
+    this.API.get('questions/count', data, true).then(result => {
+      this.numberQuestionsInSelection = result.data.count;
 
-      if (this.selection_number_questions === 0) {
-        this.selection_number_questions = Math.min(this.number_questions_in_choosen_subjects, 50);
+      const sliderMax = Math.min(this.numberQuestionsInSelection, 500);
+      this.sliderOptions = { floor: 0, ceil: sliderMax };
+
+      if (!this.selectedQuestionNumber) {
+        this.selectedQuestionNumber = 50;
       }
-      this.selection_number_questions = Math.min(
-        this.selection_number_questions,
-        this.number_questions_in_choosen_subjects
+      this.selectedQuestionNumber = Math.min(
+        this.selectedQuestionNumber,
+        this.numberQuestionsInSelection
       );
     });
   }
@@ -127,18 +125,18 @@ class LearnController {
     this.searchResults = []; // Reset search results on empty query
     this.hasSearched = false;
 
-    if (this.question_search.query) {
+    if (this.questionSearch.query) {
       this.showSpinner = true;
 
       const data = {
-        query: this.question_search.query,
-        subject_id: this.question_search.subject && this.question_search.subject.subject_id,
-        semester: this.question_search.semester,
+        query: this.questionSearch.query,
+        subject_id: this.questionSearch.subject && this.questionSearch.subject.subject_id,
+        semester: this.questionSearch.semester,
         visibility: 1,
         limit: 100,
       };
-      this.API.get('questions', data, true).success(result => {
-        this.searchResults = result.result;
+      this.API.get('questions', data, true).then(result => {
+        this.searchResults = result.data.result;
 
         this.showSpinner = false;
         this.hasSearched = true;
@@ -148,17 +146,17 @@ class LearnController {
 
   learnExam(examId) {
     const data = { random: true };
-    this.API.get('exams/action/prepare/' + examId, data).success(result => {
-      const collection = { list: result.list, exam_id: examId };
+    this.API.get('exams/action/prepare/' + examId, data).then(result => {
+      const collection = { list: result.data.list, exam_id: examId };
       this.Collection.set(collection);
       this.$location.path('/question').search('id', collection.list[0].question_id);
     });
   }
 
   learnSubjects() {
-    const data = { selection: this.selection, limit: this.selection_number_questions };
-    this.API.get('questions/prepare-subjects', data).success(result => {
-      const collection = { list: result.list, selection: data.selection };
+    const data = { selection: this.selection, limit: this.selectedQuestionNumber };
+    this.API.get('questions/prepare-subjects', data).then(result => {
+      const collection = { list: result.data.list, selection: data.selection };
       this.Collection.set(collection);
       this.$location.path('/question').search('id', collection.list[0].question_id);
     });

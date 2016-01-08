@@ -13,8 +13,8 @@ class ForgotPasswordController {
       this.reset = false;
 
       const data = { token: this.confirm };
-      this.API.put('users/password/confirm', data).success(result => {
-        this.status = result.status;
+      this.API.put('users/password/confirm', data).then(result => {
+        this.status = result.data.status;
         this.$uibModal.open({
           templateUrl: 'forgotConfirmModalContent.html',
           controller: 'ModalInstanceController',
@@ -32,8 +32,8 @@ class ForgotPasswordController {
       this.reset = false;
 
       const data = { token: this.deny };
-      API.put('users/password/deny', data).success(result => {
-        this.status = result.status;
+      API.put('users/password/deny', data).then(result => {
+        this.status = result.data.status;
         this.$uibModal.open({
           templateUrl: 'forgotDenyModalContent.html',
           controller: 'ModalInstanceController',
@@ -52,15 +52,15 @@ class ForgotPasswordController {
     this.$scope.form.email.$setValidity('already', true);
     this.isWorking = true;
 
-    const data = { email: this.email.replace('@', '(@)') };
-    this.API.put('users/password/reset', data).success(result => {
-      if (result.status) {
+    const data = { email: this.email };
+    this.API.put('users/password/reset', data).then(r => {
+      if (r.data.status) {
         this.$uibModal.open({
           templateUrl: 'forgotSucessModalContent.html',
         });
       }
 
-      this.$scope.form.email.$setValidity('already', result.error !== 'error_already_requested');
+      this.$scope.form.email.$setValidity('already', r.data.error !== 'error_already_requested');
       this.isWorking = true;
     });
   }

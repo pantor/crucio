@@ -120,7 +120,7 @@ $app->group('/stats', function() {
 			$activities = array_merge( $activities, getAll($stmt) );
 		}
 
-		if ($query_params['exam_new']) {
+		if ($query_params['examNew']) {
     		$stmt = $mysql->prepare(
         		"SELECT 'exam_new' activity, e.*, e.date as year, e.date_added as date, u.username
         		FROM exams e
@@ -131,7 +131,7 @@ $app->group('/stats', function() {
 			$activities = array_merge( $activities, getAll($stmt) );
 		}
 
-		if ($query_params['exam_update']) {
+		if ($query_params['examUpdate']) {
     		$stmt = $mysql->prepare(
         		"SELECT 'exam_update' activity, e.*, e.date as year, e.date_updated as date, u.username
         		FROM exams e

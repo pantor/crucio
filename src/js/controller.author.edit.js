@@ -35,17 +35,17 @@ class EditExamController {
       }
     });
 
-    this.API.get('subjects').success(result => {
-      this.subject_list = result.subjects;
+    this.API.get('subjects').then(result => {
+      this.subjectList = result.data.subjects;
     });
 
     this.loadExam();
   }
 
   loadExam() {
-    this.API.get('exams/' + this.examId).success(result => {
-      this.exam = result.exam;
-      this.questions = result.questions;
+    this.API.get('exams/' + this.examId).then(result => {
+      this.exam = result.data.exam;
+      this.questions = result.data.questions;
 
       for (let i = 0; i < this.questions.length; i++) {
         if (this.questions[i].question_id === this.openQuestionId) {
@@ -64,7 +64,7 @@ class EditExamController {
   }
 
   getCategories(subjectId) {
-    for (const e of this.subject_list) {
+    for (const e of this.subjectList) {
       if (e.subject_id === subjectId) {
         return e.categories;
       }
@@ -128,8 +128,7 @@ class EditExamController {
       this.API.put('exams/' + this.examId, this.exam);
 
       for (const q of this.questions) {
-        const validateQuestion = q.question
-          || q.question_id;
+        const validateQuestion = q.question || q.question_id;
 
         if (validateQuestion) {
           q.explanation = q.explanation || '';
@@ -148,8 +147,8 @@ class EditExamController {
           };
 
           if (!q.question_id) { // New question
-            this.API.post('questions', data).success(result => {
-              q.question_id = result.question_id;
+            this.API.post('questions', data).then(result => {
+              q.question_id = result.data.question_id;
             });
           } else {
             this.API.put('questions/' + q.question_id, data);
@@ -165,7 +164,7 @@ class EditExamController {
   }
 
   deleteExam() {
-    this.API.delete('exams/' + this.exam.exam_id).success(() => {
+    this.API.delete('exams/' + this.exam.exam_id).then(() => {
       this.$location.url('/author');
     });
   }

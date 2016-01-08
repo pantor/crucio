@@ -10,12 +10,12 @@ class QuestionController {
     this.user = Auth.getUser();
     this.collection = this.Collection.get();
 
-    this.question_id = Number($routeParams.id);
+    this.questionId = Number($routeParams.id);
     this.resetSession = Boolean($routeParams.reset_session);
 
     this.commentsCollapsed = Boolean(this.user.showComments);
 
-    if (!this.question_id) {
+    if (!this.questionId) {
       this.$window.location.replace('/questions');
     }
 
@@ -28,9 +28,9 @@ class QuestionController {
     }
 
     if (this.collection && Object.keys(this.collection).length) {
-      // this.index = this.collection.list.findIndex(e => e.question_id === this.question_id);
+      // this.index = this.collection.list.findIndex(e => e.question_id === this.questionId);
       for (let i = 0; i < this.collection.list.length; i++) {
-        if (this.collection.list[i].question_id === this.question_id) {
+        if (this.collection.list[i].question_id === this.questionId) {
           this.index = i;
           break;
         }
@@ -46,12 +46,12 @@ class QuestionController {
   }
 
   loadQuestion() {
-    this.API.get('questions/' + this.question_id + '/user/' + this.user.user_id).success(result => {
-      this.question = result.question;
-      this.comments = result.comments;
+    this.API.get('questions/' + this.questionId + '/user/' + this.user.user_id).then(result => {
+      this.question = result.data.question;
+      this.comments = result.data.comments;
 
       this.tags = [];
-      if (result.tags) {
+      if (result.data.tags) {
         this.tags = result.tags.split(',').map(entry => { return { text: entry }; });
       }
 
@@ -66,7 +66,7 @@ class QuestionController {
   // If tag field is changed
   updateTags() {
     const string = this.tags.map(entry => entry.text).join(',');
-    const data = { tags: string, question_id: this.question_id, user_id: this.user.user_id };
+    const data = { tags: string, question_id: this.questionId, user_id: this.user.user_id };
     this.API.post('tags', data, true);
   }
 
@@ -88,7 +88,7 @@ class QuestionController {
 
     const data = {
       correct,
-      question_id: this.question_id,
+      question_id: this.questionId,
       user_id: this.user.user_id,
       given_result: this.givenResult,
     };
@@ -132,15 +132,15 @@ class QuestionController {
     const now = new Date() / 1000;
     const data = {
       comment: this.commentText,
-      question_id: this.question_id,
+      question_id: this.questionId,
       reply_to: 0,
       username: this.user.username,
       date: now,
     };
-    this.API.post('comments/' + this.user.user_id, data).success(result => {
+    this.API.post('comments/' + this.user.user_id, data).then(result => {
       data.voting = 0;
       data.user_voting = 0;
-      data.comment_id = result.comment_id;
+      data.comment_id = result.data.comment_id;
       this.comments.push(data);
       this.commentText = '';
     });

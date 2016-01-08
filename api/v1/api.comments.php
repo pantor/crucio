@@ -104,13 +104,13 @@ $app->group('/comments', function() {
 
 		$stmt = $mysql->prepare(
 		    "INSERT INTO comments (user_id, date, comment, question_id, reply_to)
-		    VALUES (?, ?, ?, ?, ?)"
+		    VALUES (:user_id, :time, :comment, :question_id, :reply_to)"
 		);
-		$stmt->bindValue(1, $args['user_id']);
-		$stmt->bindValue(2, time());
-		$stmt->bindValue(3, $body['comment']);
-		$stmt->bindValue(4, $body['question_id']);
-		$stmt->bindValue(5, $body['reply_to']);
+		$stmt->bindValue(':user_id', $args['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':time', time());
+		$stmt->bindValue(':comment', $body['comment']);
+		$stmt->bindValue(':question_id', $body['question_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':reply_to', $body['reply_to']);
 
 		$data['status'] = execute($stmt);
 		$data['comment_id'] = $mysql->lastInsertId();
@@ -123,13 +123,12 @@ $app->group('/comments', function() {
 
 		$stmt = $mysql->prepare(
 		    "INSERT INTO user_comments_data (user_id, comment_id, user_voting, subscription)
-		    VALUES (?, ?, ?, '0')
-		    ON DUPLICATE KEY UPDATE user_voting = ?"
+		    VALUES (:user_id, :comment_id, :user_voting, '0')
+		    ON DUPLICATE KEY UPDATE user_voting = :user_voting"
 		);
-		$stmt->bindValue(1, $args['user_id']);
-		$stmt->bindValue(2, $args['comment_id']);
-		$stmt->bindValue(3, $body['user_voting']);
-		$stmt->bindValue(4, $body['user_voting']);
+		$stmt->bindValue(':user_id', $args['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':comment_id', $args['comment_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':user_voting', $body['user_voting']);
 
 		$data['status'] = execute($stmt);
 		return createResponse($response, $data);

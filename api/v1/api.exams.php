@@ -165,19 +165,21 @@ $app->group('/exams', function() {
 		$body = $request->getParsedBody();
 
 		$stmt = $mysql->prepare(
-		    "INSERT INTO exams (subject, professor, semester, date, sort, date_added, date_updated, user_id_added, duration, notes)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+		    "INSERT INTO exams (subject, professor, semester, date, sort, date_added, date_updated,
+		        user_id_added, duration, notes)
+            VALUES (:subject, :professor, :semester, :date, :sort, :date_added, :date_updated,
+                :user_id_added, :duration, :notes)"
 		);
-		$stmt->bindValue(1, $body['subject']);
-		$stmt->bindValue(2, $body['professor']);
-		$stmt->bindValue(3, $body['semester']);
-		$stmt->bindValue(4, $body['date']);
-		$stmt->bindValue(5, $body['type']);
-		$stmt->bindValue(6, time());
-		$stmt->bindValue(7, time());
-		$stmt->bindValue(8, $body['user_id_added']);
-		$stmt->bindValue(9, $body['duration']);
-		$stmt->bindValue(10, $body['notes']);
+		$stmt->bindValue(':subject', $body['subject']);
+		$stmt->bindValue(':professor', $body['professor']);
+		$stmt->bindValue(':semester', $body['semester']);
+		$stmt->bindValue(':date', $body['date']);
+		$stmt->bindValue(':sort', $body['type']);
+		$stmt->bindValue(':date_added', time());
+		$stmt->bindValue(':date_updated', time());
+		$stmt->bindValue(':user_id_added', $body['user_id_added']);
+		$stmt->bindValue(':duration', $body['duration']);
+		$stmt->bindValue(':notes', $body['notes']);
 
 		$data['status'] = execute($stmt);
         $data['exam_id'] = $mysql->lastInsertId();
@@ -190,20 +192,22 @@ $app->group('/exams', function() {
 
 		$stmt = $mysql->prepare(
 		    "UPDATE exams
-            SET subject = ?, professor = ?, semester = ?, date = ?, sort = ?, duration = ?, notes = ?, file_name = ?, visibility = ?, date_updated = ?
-            WHERE exam_id = ?"
+            SET subject = :subject, professor = :professor, semester = :semester, date = :date,
+                sort = :sort, duration = :duration, notes = :notes, file_name = :file_name,
+                visibility = :visibility, date_updated = :date_updated
+            WHERE exam_id = :exam_id"
 		);
-		$stmt->bindValue(1, $body['subject']);
-		$stmt->bindValue(2, $body['professor']);
-		$stmt->bindValue(3, $body['semester']);
-		$stmt->bindValue(4, $body['date']);
-		$stmt->bindValue(5, $body['sort']);
-		$stmt->bindValue(6, $body['duration']);
-		$stmt->bindValue(7, $body['notes']);
-		$stmt->bindValue(8, $body['file_name']);
-		$stmt->bindValue(9, $body['visibility']);
-		$stmt->bindValue(10, time());
-		$stmt->bindValue(11, $args['exam_id']);
+		$stmt->bindValue(':subject', $body['subject']);
+		$stmt->bindValue(':professor', $body['professor']);
+		$stmt->bindValue(':semester', $body['semester']);
+		$stmt->bindValue(':date', $body['date']);
+		$stmt->bindValue(':sort', $body['sort']);
+		$stmt->bindValue(':duration', $body['duration']);
+		$stmt->bindValue(':notes', $body['notes']);
+		$stmt->bindValue(':file_name', $body['file_name']);
+		$stmt->bindValue(':visibility', $body['visibility']);
+		$stmt->bindValue(':date_updated', time());
+		$stmt->bindValue(':exam_id', $args['exam_id']);
 
 		$data['status'] = execute($stmt);
 		return createResponse($response, $data);

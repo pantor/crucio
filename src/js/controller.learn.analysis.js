@@ -17,9 +17,9 @@ class AnalysisController {
 
         const data = {
           correct,
+          given_result: question.given_result,
           question_id: question.question_id,
           user_id: this.user.user_id,
-          given_result: question.given_result,
         };
         this.API.post('results', data);
       }
@@ -36,8 +36,8 @@ class AnalysisController {
     this.count = Collection.analyseCount();
 
     if (this.examId) {
-      this.API.get('exams/' + this.examId).success(result => {
-        this.exam = result.exam;
+      this.API.get('exams/' + this.examId).then(result => {
+        this.exam = result.data.exam;
       });
     }
   }

@@ -11,7 +11,7 @@ class RegisterController {
 
   formChanged() {
     const regex = /[\wäüöÄÜÖ]*@studserv\.uni-leipzig\.de$/;
-    this.$scope.form.email.$setValidity('studserv', regex.test(this.mail));
+    this.$scope.form.email.$setValidity('studserv', regex.test(this.email));
     this.$scope.form.passwordc.$setValidity('confirm', this.password === this.passwordc);
   }
 
@@ -23,21 +23,21 @@ class RegisterController {
 
     const data = {
       username: this.username,
-      email: this.mail.replace('@', '(@)'),
+      email: this.email,
       semester: this.semester,
       course: this.course,
       password: this.password,
     };
-    this.API.post('users', data, true).success(result => {
-      if (result.status) {
+    this.API.post('users', data, true).then(r => {
+      if (r.data.status) {
         this.$uibModal.open({
           templateUrl: 'registerModalContent.html',
         });
       }
 
       this.isWorking = false;
-      this.$scope.form.username.$setValidity('duplicate', result.error !== 'error_username_taken');
-      this.$scope.form.email.$setValidity('duplicate', result.error !== 'error_email_taken');
+      this.$scope.form.username.$setValidity('duplicate', r.data.error !== 'error_username_taken');
+      this.$scope.form.email.$setValidity('duplicate', r.data.error !== 'error_email_taken');
     });
   }
 }

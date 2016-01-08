@@ -31,25 +31,25 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">Altes Passwort</label>
             <div class="col-sm-4">
-                <input class="form-control" type="password" ng-model="ctrl.old_password" ng-change="ctrl.formChanged()">
+                <input class="form-control" type="password" ng-model="ctrl.oldPassword" ng-change="ctrl.formChanged()">
             </div>
-            <span class="label validation-error label-danger" ng-show="ctrl.wrong_password">Falsches Passwort</span>
+            <span class="label validation-error label-danger" ng-show="ctrl.wrongPassword">Falsches Passwort</span>
         </div>
 
         <div class="form-group">
             <label class="col-sm-3 control-label">Neues Passwort</label>
             <div class="col-sm-4">
-                <input class="form-control" type="password" ng-model="ctrl.new_password" ng-change="ctrl.formChanged()">
+                <input class="form-control" type="password" ng-model="ctrl.newPassword" ng-change="ctrl.formChanged()">
             </div>
-            <span ng-show="ctrl.new_password.length < 6" class="label validation-error label-danger">Dein Passwort sollte l&auml;nger als 5 Zeichen sein</span>
+            <span ng-show="ctrl.newPassword.length < 6" class="label validation-error label-danger">Dein Passwort sollte l&auml;nger als 5 Zeichen sein</span>
         </div>
 
         <div class="form-group">
             <label class="col-sm-3 control-label">Passwort best&auml;tigen</label>
             <div class="col-sm-4">
-                <input class="form-control" type="password" ng-model="ctrl.new_password_c" ng-change="ctrl.formChanged()">
+                <input class="form-control" type="password" ng-model="ctrl.newPasswordC" ng-change="ctrl.formChanged()">
             </div>
-            <span ng-show="ctrl.new_password != ctrl.new_password_c" class="label validation-error label-danger">Passw&ouml;rter verschieden</span>
+            <span ng-show="ctrl.newPassword != ctrl.newPasswordC" class="label validation-error label-danger">Passw&ouml;rter verschieden</span>
         </div>
 
         <hr>

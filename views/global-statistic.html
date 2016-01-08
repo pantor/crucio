@@ -191,8 +191,8 @@
 						    <label class="btn btn-default" ng-model="ctrl.showActivity.register" ng-disabled="!ctrl.updateActivity" uib-btn-checkbox>Registrierungen</label>
 						    <label class="btn btn-default" ng-model="ctrl.showActivity.login" ng-disabled="!ctrl.updateActivity" uib-btn-checkbox>Anmeldungen</label>
 						    <label class="btn btn-default" ng-model="ctrl.showActivity.comment" ng-disabled="!ctrl.updateActivity" uib-btn-checkbox>Kommentare</label>
-						    <label class="btn btn-default" ng-model="ctrl.showActivity.exam_new" ng-disabled="!ctrl.updateActivity" uib-btn-checkbox>Neue...</label>
-						    <label class="btn btn-default" ng-model="ctrl.showActivity.exam_update" ng-disabled="!ctrl.updateActivity" uib-btn-checkbox>Ver&auml;nderte Klausuren</label>
+						    <label class="btn btn-default" ng-model="ctrl.showActivity.examNew" ng-disabled="!ctrl.updateActivity" uib-btn-checkbox>Neue...</label>
+						    <label class="btn btn-default" ng-model="ctrl.showActivity.examUpdate" ng-disabled="!ctrl.updateActivity" uib-btn-checkbox>Ver&auml;nderte Klausuren</label>
 						</div>
 					</div>
 
@@ -217,10 +217,10 @@
 								<td ng-if="act.activity == 'comment'">
 									<strong>{{ act.username }}</strong> hat einen Kommentar zur Frage #{{ act.question_id }} geschrieben
 								</td>
-								<td ng-if="act.activity == 'exam_new'">
+								<td ng-if="act.activity == 'examNew'">
 									<strong>{{ act.username }}</strong> hat Klausur #{{ act.exam_id }} hinzugef&uuml;gt
 								</td>
-								<td ng-if="act.activity == 'exam_update'">
+								<td ng-if="act.activity == 'examUpdate'">
 									<strong>{{ act.username }}</strong> hat Klausur #{{ act.exam_id }} ver&auml;ndert
 								</td>
 							</tr>

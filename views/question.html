@@ -99,7 +99,7 @@
 
             <a class="btn btn-danger mtop" ng-if="ctrl.collection.list" href="analysis">Klausur beenden</a>
 
-            <a ng-if="ctrl.user.group_id == 2 || ctrl.user.group_id == 3" class="btn btn-default pull-right mtop hidden-xs" href="edit-exam?id={{ ctrl.question.exam_id }}&question_id={{ ctrl.question_id }}">
+            <a ng-if="ctrl.user.group_id == 2 || ctrl.user.group_id == 3" class="btn btn-default pull-right mtop hidden-xs" href="edit-exam?id={{ ctrl.question.exam_id }}&question_id={{ ctrl.questionId }}">
                 Bearbeiten
             </a>
 
@@ -107,17 +107,17 @@
                 <a class="btn btn-default" uib-dropdown-toggle>Melden <span class="caret"></span></a>
 
                 <ul class="dropdown-menu">
-                    <li><a href="/help?question_id={{ ctrl.question_id }}" tabindex="-1">
+                    <li><a href="/help?question_id={{ ctrl.questionId }}" tabindex="-1">
                         Allgemein
                     </a></li>
-                    <li><a href="/help?question_id={{ ctrl.question_id }}&s=Rechtschreibfehler" tabindex="-1">
+                    <li><a href="/help?question_id={{ ctrl.questionId }}&s=Rechtschreibfehler" tabindex="-1">
                         Rechtschreibfehler
                     </a></li>
-                    <li><a href="/help?question_id={{ ctrl.question_id }}&s=Antwort" tabindex="-1">
+                    <li><a href="/help?question_id={{ ctrl.questionId }}&s=Antwort" tabindex="-1">
                         {{ ctrl.question.correct_answer >= 0 ? 'Falsche Antwort' : 'Antwort geben' }}
                     </a></li>
                     <li class="divider"></li>
-                    <li><a href="/help?question_id={{ ctrl.question_id }}" tabindex="-1">
+                    <li><a href="/help?question_id={{ ctrl.questionId }}" tabindex="-1">
                         Erkl&auml;rung schreiben
                     </a></li>
                 </ul>

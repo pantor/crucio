@@ -5,20 +5,25 @@ class API {
     this.base = 'api/v1/';
   }
 
+  sanitize(data) {
+    data.email = data.email && data.email.replace('@', '(@)');
+    return data;
+  }
+
   get(path, data = {}, ignoreLoadingBar = false) {
-    return this.$http.get(this.base + path, { ignoreLoadingBar, params: data });
+    return this.$http.get(this.base + path, { ignoreLoadingBar, params: this.sanitize(data) });
   }
 
   post(path, data, ignoreLoadingBar = false) {
-    return this.$http.post(this.base + path, data, { ignoreLoadingBar });
+    return this.$http.post(this.base + path, this.sanitize(data), { ignoreLoadingBar });
   }
 
   put(path, data, ignoreLoadingBar = false) {
-    return this.$http.put(this.base + path, data, { ignoreLoadingBar });
+    return this.$http.put(this.base + path, this.sanitize(data), { ignoreLoadingBar });
   }
 
   delete(path, data = {}, ignoreLoadingBar = false) {
-    return this.$http.delete(this.base + path, { ignoreLoadingBar, params: data });
+    return this.$http.delete(this.base + path, { ignoreLoadingBar, params: this.sanitize(data) });
   }
 }
 

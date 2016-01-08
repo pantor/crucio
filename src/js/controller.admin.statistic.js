@@ -13,8 +13,8 @@ class GlobalStatisticController {
       login: false,
       register: false,
       comment: false,
-      exam_new: false,
-      exam_update: false,
+      examNew: false,
+      examUpdate: false,
     };
 
     $interval(() => {
@@ -28,8 +28,8 @@ class GlobalStatisticController {
   }
 
   loadData() {
-    this.API.get('stats/general').success(result => {
-      this.stats = result.stats;
+    this.API.get('stats/general').then(result => {
+      this.stats = result.data.stats;
 
       this.chart_time_result_today = {
         labels: this.stats.result_dep_time_today_label,
@@ -48,8 +48,8 @@ class GlobalStatisticController {
   }
 
   loadActivity() {
-    this.API.get('stats/activities', this.showActivity, true).success(result => {
-      this.activities = result.activities;
+    this.API.get('stats/activities', this.showActivity, true).then(result => {
+      this.activities = result.data.activities;
     });
   }
 }

@@ -2,10 +2,10 @@ class Collection {
   constructor() { }
 
   get() {
-    if (angular.isUndefined(this.collection)) {
-      if (angular.isDefined(sessionStorage.crucioCollection)) {
-        this.set(angular.fromJson(sessionStorage.crucioCollection));
-      }
+    if (angular.isUndefined(this.collection)
+      && angular.isDefined(sessionStorage.crucioCollection)
+    ) {
+      this.set(angular.fromJson(sessionStorage.crucioCollection));
     }
 
     return this.collection;
@@ -30,39 +30,39 @@ class Collection {
     const workedCollection = this.getWorked();
 
     const result = {
-      correct_q: 0,
-      wrong_q: 0,
-      seen_q: 0,
-      solved_q: 0,
-      free_q: 0,
-      no_answer_q: 0,
-      all_q: this.collection.list.length,
-      worked_q: workedCollection.length,
+      correct: 0,
+      wrong: 0,
+      seen: 0,
+      solved: 0,
+      free: 0,
+      no_answer: 0,
+      all: this.collection.list.length,
+      worked: workedCollection.length,
     };
 
     for (const q of workedCollection) {
       if (q.correct_answer === q.given_result && q.given_result > 0 && q.correct_answer > 0) {
-        result.correct_q++;
+        result.correct++;
       }
 
       if (q.correct_answer !== q.given_result && q.given_result > 0 && q.correct_answer > 0) {
-        result.wrong_q++;
+        result.wrong++;
       }
 
       if (q.given_result > 0) {
-        result.solved_q++;
+        result.solved++;
       }
 
       if (q.given_result > -2) {
-        result.seen_q++;
+        result.seen++;
       }
 
       if (q.type === 1) {
-        result.free_q++;
+        result.free++;
       }
 
       if (q.correct_answer === 0 && q.type !== 1) {
-        result.no_answer_q++;
+        result.no_answer++;
       }
     }
 

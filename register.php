@@ -53,7 +53,7 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label">E-Mail</label>
                         <div class="col-sm-4">
-                            <input class="form-control" name="email" ng-model="ctrl.mail" type="email" placeholder="________@studserv.uni-leipzig.de" ng-change="ctrl.formChanged()" required />
+                            <input class="form-control" name="email" ng-model="ctrl.email" type="email" placeholder="________@studserv.uni-leipzig.de" ng-change="ctrl.formChanged()" required />
                         </div>
                         <div ng-messages="form.email.$error" ng-show="form.email.$touched" ng-cloak>
                             <span class="label validation-error label-danger" ng-message="required">Keine E-Mail-Adresse</span>

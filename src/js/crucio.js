@@ -41,20 +41,12 @@ angular.module('crucioApp', [
   })
 
   .run(function run(Auth, $location, $window) {
-    // Enumerate routes that don't need authentication
-    const routesThatLogin = ['/', '/register', '/forgot-password'];
-    const routesForAuthor = ['/author', '/edit-exam'];
-    const routesForAdmin = ['/admin', '/global-statistic']; // + Author routes
+    // Enumerate paths that don't need authentication
+    const pathsThatLogin = ['/', '/register', '/forgot-password'];
+    const pathsForAuthor = ['/author', '/edit-exam'];
+    const pathsForAdmin = ['/admin', '/global-statistic']; // + Author paths
 
     const user = Auth.tryGetUser();
-
-    function routeInArray(array, route) {
-      let routeC = route;
-      if (route.includes('?')) {
-        routeC = route.substr(0, route.indexOf('?'));
-      }
-      return array.includes(routeC);
-    }
 
     let isLoggedIn = false;
     let isAdmin = false;
@@ -65,16 +57,16 @@ angular.module('crucioApp', [
       isAuthor = Boolean(user.group_id === 3);
     }
 
-    const url = $location.url();
-    if (routeInArray(routesThatLogin, url) && isLoggedIn && user.remember_user) {
+    const path = $location.path();
+    if (pathsThatLogin.includes(path) && isLoggedIn && user.remember_user) {
       $window.location.replace('/learn');
     }
 
-    if (routeInArray(routesForAuthor, url) && !(isAuthor || isAdmin)) {
+    if (pathsForAuthor.includes(path) && !(isAuthor || isAdmin)) {
       $window.location.replace('/403');
     }
 
-    if (routeInArray(routesForAdmin, url) && !isAdmin) {
+    if (pathsForAdmin.includes(path) && !isAdmin) {
       $window.location.replace('/403');
     }
   });

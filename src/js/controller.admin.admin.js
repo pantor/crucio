@@ -8,20 +8,20 @@ class AdminController {
 
     this.user = Auth.getUser();
 
-    this.user_search = {};
-    this.comment_search = {};
+    this.userSearch = {};
+    this.commentSearch = {};
 
-    this.API.get('whitelist').success(result => {
-      this.whitelist = result.whitelist;
+    this.API.get('whitelist').then(result => {
+      this.whitelist = result.data.whitelist;
     });
 
-    this.API.get('stats/summary').success(result => {
-      this.stats = result.stats;
+    this.API.get('stats/summary').then(result => {
+      this.stats = result.data.stats;
     });
 
-    this.API.get('users/distinct').success(result => {
-      this.distinct_groups = result.groups;
-      this.distinct_semesters = result.semesters;
+    this.API.get('users/distinct').then(result => {
+      this.distinctGroups = result.data.groups;
+      this.distinctSemesters = result.data.semesters;
     });
 
     this.loadUsers();
@@ -30,68 +30,67 @@ class AdminController {
 
   loadUsers() {
     const data = {
-      semester: this.user_search.semester,
-      group_id: this.user_search.group,
-      query: this.user_search.query,
+      semester: this.userSearch.semester,
+      group_id: this.userSearch.group,
+      query: this.userSearch.query,
       limit: 100,
     };
-    this.API.get('users', data).success(result => {
-      this.users = result.users;
+    this.API.get('users', data).then(result => {
+      this.users = result.data.users;
     });
   }
 
   loadComments() {
-    const data = { query: this.comment_search.query, limit: 50 };
-    this.API.get('comments', data).success(result => {
-      this.comments = result.comments;
+    const data = { query: this.commentSearch.query, limit: 50 };
+    this.API.get('comments', data).then(result => {
+      this.comments = result.data.comments;
 
-      this.questions_by_comment = [];
+      this.questionsByComment = [];
       for (const c of this.comments) {
-        // found = this.questions_by_comment.findIndex(e => { e[0].question == c.question });
+        // found = this.questionsByComment.findIndex(e => { e[0].question == c.question });
         let found = -1;
-        for (let i = 0; i < this.questions_by_comment.length; i++) {
-          if (this.questions_by_comment[i][0].question === c.question) {
+        for (let i = 0; i < this.questionsByComment.length; i++) {
+          if (this.questionsByComment[i][0].question === c.question) {
             found = i;
             break;
           }
         }
 
         if (found > -1) {
-          this.questions_by_comment[found].push(c);
+          this.questionsByComment[found].push(c);
         } else {
-          this.questions_by_comment.push([c]);
+          this.questionsByComment.push([c]);
         }
       }
-      this.questions_by_comment_display = this.questions_by_comment;
     });
   }
 
   addMail() {
-    const mail = this.new_whitelist_mail;
-    if (mail) {
-      this.whitelist.push({ username: '', mail_address: mail });
+    const email = this.newWhitelistEmail;
+    if (email) {
+      this.whitelist.push({ mail_address: email, username: '' });
 
-      const data = { mail_address: mail.replace('@', '(@)') };
+      const data = { email };
       this.API.post('whitelist', data);
     }
   }
 
   removeMail(index) {
-    const mail = this.whitelist[index].mail_address;
-    if (mail) {
+    const email = this.whitelist[index].mail_address;
+    if (email) {
       this.whitelist.splice(index, 1);
-      this.API.delete('whitelist/' + mail);
+      this.API.delete('whitelist/' + email);
     }
   }
 
   changeGroup(index) {
     const userId = this.users[index].user_id;
     let groupId = this.users[index].group_id;
-    groupId = (groupId % this.distinct_groups.length) + 1;
+    groupId = (groupId % this.distinctGroups.length) + 1;
 
     this.users[index].group_id = groupId;
     // this.users[index].group_name = this.dg.find(e => { e.group_id == groupId }).name;
-    for (const e of this.distinct_groups) {
+    for (const e of this.distinctGroups) {
       if (e.group_id === groupId) {
         this.users[index].group_name = e.name;
         break;
@@ -113,14 +112,14 @@ class AdminController {
 
   changeSemester(number) {
     const data = { number };
-    this.API.put('users/change-semester', data).success(result => {
-      alert(result.status);
+    this.API.put('users/change-semester', data).then(result => {
+      alert(result.data.status);
     });
   }
 
   removeTestAccount() {
-    this.API.delete('users/test-account').success(result => {
-      alert(result.status);
+    this.API.delete('users/test-account').then(result => {
+      alert(result.data.status);
     });
   }
 }

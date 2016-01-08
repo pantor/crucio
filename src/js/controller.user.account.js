@@ -20,22 +20,22 @@ class AccountController {
     this.isWorking = true;
 
     const data = {
-      email: this.user.email.replace('@', '(@)'),
+      email: this.user.email,
       course_id: this.user.course_id,
       semester: this.user.semester,
-      current_password: this.old_password,
-      password: this.new_password,
+      current_password: this.oldPassword,
+      password: this.newPassword,
     };
-    this.API.put('users/' + this.user.user_id + '/account', data, true).success(result => {
-      if (result.status) {
+    this.API.put('users/' + this.user.user_id + '/account', data, true).then(result => {
+      if (result.data.status) {
         this.Auth.setUser(this.user);
       } else {
         this.user = this.Auth.getUser();
         this.hasError = true;
       }
 
-      this.isSaved = result.status;
-      this.wrong_password = (result.error === 'error_incorrect_password');
+      this.isSaved = result.data.status;
+      this.wrongPassword = (result.data.error === 'error_incorrect_password');
       this.isWorking = false;
     });
   }

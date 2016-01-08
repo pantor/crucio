@@ -57,7 +57,7 @@
                     <div class="form-group">
                         <label class="col-sm-2">E-Mail-Adresse</label>
                         <div class="col-sm-6">
-                            <input class="form-control" name="email" ng-model="ctrl.mail" type="email" required />
+                            <input class="form-control" name="email" ng-model="ctrl.email" type="email" required />
                         </div>
                         <div ng-messages="form.email.$error" ng-show="form.email.$touched" ng-cloak>
                             <span class="label validation-error label-danger" ng-message="required">Kein E-Mail-Adresse</span>

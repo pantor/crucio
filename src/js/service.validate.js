@@ -2,8 +2,8 @@ class Validate {
   constructor(API) {
     this.API = API;
 
-    API.get('whitelist', {}, true).success(result => {
-      this.whitelist = result.whitelist;
+    API.get('whitelist', {}, true).then(result => {
+      this.whitelist = result.data.whitelist;
     });
   }
 
