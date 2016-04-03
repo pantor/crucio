@@ -1,4 +1,21 @@
 class EditExamController {
+  API: any;
+  FileUploader: any;
+  $location: any;
+  user: any;
+  examId: number;
+  openQuestionId: number;
+  openQuestionIndex: number;
+  numberChanged: number;
+  uploader: any;
+  uploaderArray: any;
+  hasChanged: boolean;
+  subjectList: any;
+  exam: any;
+  questions: any;
+  ready: boolean;
+  isSaving: boolean;
+
   constructor(Page, Auth, API, FileUploader, $scope, $location, $routeParams) {
     this.API = API;
     this.FileUploader = FileUploader;

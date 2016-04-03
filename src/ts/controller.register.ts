@@ -1,4 +1,16 @@
 class RegisterController {
+  API: any;
+  $scope: any;
+  $uibModal: any;
+  user: any;
+  semester: number;
+  course: number;
+  isWorking: boolean;
+  username: string;
+  email: string;
+  password: string;
+  passwordc: string;
+
   constructor(Auth, API, $scope, $uibModal) {
     this.API = API;
     this.$scope = $scope;

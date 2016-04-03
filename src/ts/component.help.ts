@@ -1,4 +1,13 @@
 class HelpController {
+  API: any;
+  user: any;
+  question_id: number;
+  subject: string;
+  isWorking: boolean;
+  text: string;
+  question: any;
+  emailSend: boolean;
+
   constructor(Auth, Page, API, $location) {
     this.API = API;
 

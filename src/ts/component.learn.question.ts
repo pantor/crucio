@@ -1,4 +1,32 @@
 class QuestionController {
+  Auth: any;
+  API: any;
+  Collection: any;
+  $uibModal: any;
+  user: any;
+  questionId: number;
+  resetSession: boolean;
+  commentsCollapsed: boolean;
+  $window: any;
+  noAnswer: boolean;
+  showExplanation: boolean;
+  collection: any;
+  index: number;
+  questionData: any;
+  length: number;
+  preQuestionId: number;
+  postQuestionId: number;
+  question: any;
+  comments: any;
+  tags: any;
+  checkedAnswer: any;
+  isAnswerGiven: boolean;
+  correctAnswer: number;
+  isAnswerRight: boolean;
+  commentText: string;
+  isAnswerWrong: boolean;
+  wrongAnswer: any;
+
   constructor(Auth, Page, API, Collection, $routeParams, $window, $uibModal) {
     this.Auth = Auth;
     this.API = API;
@@ -108,7 +136,7 @@ class QuestionController {
   }
 
   addComment() {
-    const now = new Date() / 1000;
+    const now = +new Date() / 1000;
     const data = {
       comment: this.commentText,
       question_id: this.questionId,
@@ -117,9 +145,9 @@ class QuestionController {
       date: now,
     };
     this.API.post(`comments/${this.user.user_id}`, data).then(result => {
-      data.voting = 0;
-      data.user_voting = 0;
-      data.comment_id = result.data.comment_id;
+      data['voting'] = 0;
+      data['user_voting'] = 0;
+      data['comment_id'] = result.data.comment_id;
       this.comments.push(data);
       this.commentText = '';
     });

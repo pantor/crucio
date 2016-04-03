@@ -1,4 +1,13 @@
 class LoginController {
+  Auth: any;
+  API: any;
+  $document: any;
+  user: any;
+  rememberMe: boolean;
+  loginError: boolean;
+  email: string;
+  password: string;
+
   constructor(Auth, API, $document) {
     this.Auth = Auth;
     this.API = API;

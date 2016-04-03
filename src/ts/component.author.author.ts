@@ -1,4 +1,18 @@
 class AuthorController {
+  API: any;
+  $location: any;
+  activeTab: string;
+  user: any;
+  examSearch: any;
+  commentSearch: any;
+  distinctSemesters: any;
+  distinctAuthors: any;
+  distinctSubjects: any;
+  subjectList: any;
+  exams: any;
+  comments: any;
+  questionsByComment: any;
+
   constructor(Page, Auth, API, $location) {
     this.API = API;
     this.$location = $location;

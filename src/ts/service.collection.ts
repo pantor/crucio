@@ -1,4 +1,11 @@
+interface Storage {
+  crucioCollection: any;
+}
+
 class Collection {
+  API: any;
+  collection: any;
+
   constructor(API) {
     this.API = API;
   }
@@ -13,7 +20,7 @@ class Collection {
     return this.collection;
   }
 
-  set(collection) {
+  set(collection: any) {
     this.collection = collection;
     sessionStorage.crucioCollection = angular.toJson(collection);
   }
@@ -78,21 +85,21 @@ class Collection {
     }
   }
 
-  saveStrike(index, strike) {
+  saveStrike(index: number, strike) {
     if (this.collection && Object.keys(this.collection).length) {
       this.collection.list[index].strike = strike;
       this.set(this.collection);
     }
   }
 
-  saveMarkAnswer(index) {
+  saveMarkAnswer(index: number) {
     if (this.collection && Object.keys(this.collection).length) {
       this.collection.list[index].mark_answer = 1;
       this.set(this.collection);
     }
   }
 
-  prepareExam(examId, data) {
+  prepareExam(examId: number, data) {
     return this.API.get(`exams/action/prepare/${examId}`, data).then(result => {
       const collection = { list: result.data.list, exam_id: examId };
       this.set(collection);
@@ -103,12 +110,12 @@ class Collection {
   prepareSubjects(data) {
     return this.API.get('questions/prepare-subjects', data).then(result => {
       const collection = { list: result.data.list, selection: data.selection };
-      this.Collection.set(collection);
+      this.set(collection);
       return collection;
     });
   }
 
-  getIndexOfQuestion(questionId) {
+  getIndexOfQuestion(questionId: number) {
     // this.index = this.collection.list.findIndex(e => e.question_id === this.questionId);
     for (let i = 0; i < this.collection.list.length; i++) {
       if (this.collection.list[i].question_id === questionId) {
@@ -118,7 +125,7 @@ class Collection {
     return -1;
   }
 
-  getQuestionData(index) {
+  getQuestionData(index: number) {
     return this.collection.list[index];
   }
 }

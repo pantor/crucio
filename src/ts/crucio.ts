@@ -1,6 +1,7 @@
+/// <reference path='../../typings/tsd.d.ts' />
+
 angular.module('crucioApp', [
   'ngRoute',
-//  'ngComponentRouter',
   'ngSanitize',
   'ngCookies',
   'ngMessages',
@@ -37,16 +38,6 @@ angular.module('crucioApp', [
     // $compileProvider.debugInfoEnabled(false);
   })
 
-  /* .value('$routerRootComponent', 'app')
-
-  .component('app', {
-    template: '<ng-outlet></ng-outlet>',
-    $routeConfig: [
-      { path: '/404', component: 'error404Component' },
-      { path: '/500', component: 'error500Component' },
-    ]
-  }) */
-
   .run(function run(Auth, $location, $window) {
     // Enumerate paths that don't need authentication
     const pathsThatLogin = ['/', '/register', '/forgot-password'];
@@ -65,15 +56,15 @@ angular.module('crucioApp', [
     }
 
     const path = $location.path();
-    if (pathsThatLogin.includes(path) && isLoggedIn && user.remember_user) {
+    if (pathsThatLogin.indexOf(path) > -1 && isLoggedIn && user.remember_user) {
       $window.location.replace('/learn');
     }
 
-    if (pathsForAuthor.includes(path) && !(isAuthor || isAdmin)) {
+    if (pathsForAuthor.indexOf(path) > -1 && !(isAuthor || isAdmin)) {
       $window.location.replace('/403');
     }
 
-    if (pathsForAdmin.includes(path) && !isAdmin) {
+    if (pathsForAdmin.indexOf(path) > -1 && !isAdmin) {
       $window.location.replace('/403');
     }
   });

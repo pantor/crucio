@@ -1,4 +1,19 @@
 class AdminController {
+  API: any;
+  $uibModal: any;
+  activeTab: string;
+  user: any;
+  userSearch: any;
+  commentSearch: any;
+  whitelist: any;
+  stats: any;
+  distinctGroups: any;
+  distinctSemesters: any;
+  users: any;
+  comments: any;
+  questionsByComment: any;
+  newWhitelistEmail: string;
+
   constructor(Page, Auth, API, $uibModal) {
     this.API = API;
     this.$uibModal = $uibModal;
@@ -102,8 +117,8 @@ class AdminController {
   }
 
   isToday(dateString, hourDiff = 0) {
-    const today = new Date();
-    const diff = today - 1000 * 60 * 60 * hourDiff;
+    const today: any = new Date();
+    const diff: number = today - 1000 * 60 * 60 * hourDiff;
     const compareDate = new Date(diff);
 
     const date = new Date(dateString * 1000);

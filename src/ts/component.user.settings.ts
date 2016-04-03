@@ -1,4 +1,11 @@
 class SettingsController {
+  API: any;
+  Auth: any;
+  user: any;
+  isWorking: boolean;
+  hasError: boolean;
+  isSaved: boolean;
+
   constructor(Page, Auth, API) {
     this.API = API;
     this.Auth = Auth;

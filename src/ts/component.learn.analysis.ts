@@ -1,4 +1,12 @@
 class AnalysisController {
+  API: any;
+  user: any;
+  random: number;
+  examId: number;
+  workedCollection: any;
+  count: any;
+  exam: any;
+
   constructor(Page, Auth, API, Collection) {
     this.API = API;
 
@@ -7,7 +15,7 @@ class AnalysisController {
     this.user = Auth.getUser();
 
     // Post results, but not which are already saved or are free questions
-    for (const question of this.Collection.get().list) {
+    for (const question of Collection.get().list) {
       if (!question.mark_answer && question.type > 1 && question.given_result > 0) {
         let correct = (question.correct_answer === question.given_result) ? 1 : 0;
         if (question.correct_answer === 0 || question.question.type === 1) {
@@ -30,7 +38,7 @@ class AnalysisController {
 
     this.random = getRandom(0, 1000);
 
-    this.examId = this.Collection.get().exam_id;
+    this.examId = Collection.get().exam_id;
     this.workedCollection = Collection.getWorked();
     this.count = Collection.analyseCount();
 

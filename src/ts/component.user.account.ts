@@ -1,4 +1,16 @@
 class AccountController {
+  API: any;
+  Auth: any;
+  $scope: any;
+  user: any;
+  isWorking: boolean;
+  isSaved: boolean;
+  hasError: boolean;
+  wrongPassword: boolean;
+  oldPassword: string;
+  newPassword: string;
+  newPasswordC: string;
+
   constructor(Page, Auth, API, $scope) {
     this.API = API;
     this.Auth = Auth;
@@ -10,7 +22,7 @@ class AccountController {
   }
 
   formChanged() {
-    this.$scope.form.passwordc.$setValidity('confirm', this.password === this.passwordc);
+    this.$scope.form.passwordc.$setValidity('confirm', this.newPassword === this.newPasswordC);
   }
 
   saveUser() {

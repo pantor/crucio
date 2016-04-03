@@ -1,4 +1,31 @@
 class LearnController {
+  API: any;
+  Collection: any;
+  $location: any;
+  activeTab: string;
+  user: any;
+  examSearch: any;
+  commentSearch: any;
+  questionSearch: any;
+  selection: any;
+  selectedQuestionNumber: number;
+  numberQuestionsInSelection: number;
+  sliderOptions: any;
+  abstractExams: any;
+  ready: number;
+  exams: any;
+  tags: any;
+  distinctTags: any;
+  distinctSemesters: any;
+  distinctSubjects: any;
+  subjectList: any;
+  questionsByTag: any;
+  comments: any;
+  questionsByComment: any;
+  searchResults: any;
+  hasSearched: boolean;
+  showSpinner: boolean;
+
   constructor(Auth, Page, API, Collection, $scope, $location, $timeout) {
     this.API = API;
     this.Collection = Collection;

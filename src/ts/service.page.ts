@@ -1,17 +1,21 @@
 class Page {
+  $window: any;
+  title: string;
+  nav: string;
+
   constructor($window) {
     this.$window = $window;
   }
 
-  setTitle(newTitle) {
+  setTitle(newTitle: string) {
     this.title = newTitle;
   }
 
-  setNav(newNav) {
+  setNav(newNav: string) {
     this.nav = newNav;
   }
 
-  setTitleAndNav(newTitle, newNav = '') {
+  setTitleAndNav(newTitle: string, newNav: string = '') {
     this.title = newTitle;
     this.nav = newNav;
 

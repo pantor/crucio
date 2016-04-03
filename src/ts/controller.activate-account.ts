@@ -1,4 +1,11 @@
 class ActivateController {
+  API: any;
+  user: any;
+  token: string;
+  success: boolean;
+  errorNoToken: boolean;
+  errorUnknown: boolean;
+
   constructor(Auth, API, $location) {
     this.API = API;
 

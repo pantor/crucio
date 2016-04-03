@@ -1,4 +1,13 @@
 class ContactController {
+  API: any;
+  $uibModal: any;
+  user: any;
+  name: string;
+  email: string;
+  isWorking: boolean;
+  emailSend: any;
+  text: string;
+
   constructor(Auth, API, $location, $uibModal) {
     this.API = API;
     this.$uibModal = $uibModal;

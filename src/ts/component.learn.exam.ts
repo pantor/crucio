@@ -1,4 +1,16 @@
 class ExamController {
+  API: any;
+  Collection: any;
+  $location: any;
+  $document: any;
+  $uibModal: any;
+  user: any;
+  examId: number;
+  currentIndex: number;
+  exam: any;
+  length: number;
+  questions: any;
+
   constructor(
     Page, Auth, API, Collection,
     $location, $uibModal, $routeParams, $timeout, $document, $window

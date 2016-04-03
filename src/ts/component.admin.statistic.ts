@@ -1,4 +1,13 @@
 class GlobalStatisticController {
+  API: any;
+  activeTab: string;
+  user: any;
+  updateActivity: boolean;
+  showActivity: any;
+  stats: any;
+  chart_time_result_today: any;
+  activities: any;
+
   constructor(Page, Auth, API, $interval) {
     this.API = API;
 

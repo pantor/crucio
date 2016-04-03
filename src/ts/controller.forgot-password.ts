@@ -1,4 +1,14 @@
 class ForgotPasswordController {
+  API: any;
+  $scope: any;
+  $uibModal: any;
+  confirm: any;
+  deny: any;
+  reset: any;
+  status: any;
+  email: string;
+  isWorking: boolean;
+
   constructor(API, $location, $scope, $uibModal) {
     this.API = API;
     this.$scope = $scope;

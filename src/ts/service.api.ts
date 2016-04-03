@@ -1,4 +1,7 @@
 class API {
+  $http: any;
+  base: string;
+  
   constructor($http) {
     this.$http = $http;
 

@@ -1,4 +1,8 @@
 class Auth {
+  $cookies: any;
+  $window: any;
+  user: any;
+
   constructor($cookies, $window) {
     this.$window = $window;
     this.$cookies = $cookies;

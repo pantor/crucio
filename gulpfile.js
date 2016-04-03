@@ -1,12 +1,11 @@
 var gulp = require('gulp'),
+  ts = require('gulp-typescript'),
   ngAnnotate = require('gulp-ng-annotate'),
   uglify = require('gulp-uglify'),
   concat = require('gulp-concat'),
   sass = require('gulp-sass'),
   autoprefixer = require('gulp-autoprefixer'),
   inlineCss = require('gulp-inline-css'),
-  eslint = require('gulp-eslint'),
-  babel = require('gulp-babel'),
   phplint = require('gulp-phplint');
 
 
@@ -17,24 +16,15 @@ gulp.task('sass', function () {
     .pipe(gulp.dest('public/css/'));
 });
 
-gulp.task('js', function () {
-  return gulp.src(['src/js/crucio.js','src/js/**/*.js'])
-    .pipe(babel({ presets: ['es2015'] }))
-    .pipe(concat('crucio.js'))
+gulp.task('ts', function () {
+  gulp.src(['src/ts/crucio.ts', 'src/ts/**/*.ts'])
+		.pipe(ts({
+      noImplicitAny: false,
+			out: 'crucio.js',
+		}))
     .pipe(ngAnnotate())
     .pipe(uglify())
-    .pipe(gulp.dest('public/js/'));
-});
-
-gulp.task('js-lint', function () {
-  return gulp.src(['src/js/crucio.js','src/js/**/*.js'])
-    .pipe(eslint({
-      extends: ['airbnb/base', 'angular'],
-      rules: { 'angular/controller-as-vm': 0, 'angular/no-service-method': 0, 'angular/log': 0, 'no-param-reassign': 1, 'prefer-arrow-callback': 0, 'arrow-body-style': 0 },
-      envs: ['browser', 'es6'],
-    }))
-    .pipe(eslint.format())
-    .pipe(eslint.failAfterError());
+		.pipe(gulp.dest('public/js'));
 });
 
 gulp.task('js-vendor', function () {
@@ -64,7 +54,7 @@ gulp.task('php', function () {
 
 gulp.task('watch', function () {
   gulp.watch('src/sass/**/*.scss', ['sass']);
-  gulp.watch('src/js/**/*.js', ['js']);
+  gulp.watch('src/ts/**/*.ts', ['ts']);
   gulp.watch('src/mail-templates/**/*.html', ['mail']);
   gulp.watch('api/v1/**/*.php', ['php']);
 });
