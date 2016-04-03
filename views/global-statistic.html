@@ -2,36 +2,36 @@
 	<div class="row mtop-navbar-row">
 	    <div class="col-md-3 sidebar">
 	    	<ul class="nav nav-pills nav-stacked mbottom-2x">
-				<li ng-class="{active: ctrl.activeTab == 'stats'}"><a ng-click="ctrl.activeTab = 'stats'"><i class="fa fa-bar-chart fa-fw"></i>  &Uuml;bersicht</a></li>
+				<li ng-class="{active: $ctrl.activeTab == 'stats'}"><a ng-click="$ctrl.activeTab = 'stats'"><i class="fa fa-bar-chart fa-fw"></i>  &Uuml;bersicht</a></li>
 				<hr>
-				<li ng-class="{active: ctrl.activeTab == 'users'}"><a ng-click="ctrl.activeTab = 'users'"><i class="fa fa-users fa-fw"></i>  Nutzer</a></li>
-				<li ng-class="{active: ctrl.activeTab == 'questions'}"><a ng-click="ctrl.activeTab = 'questions'"><i class="fa fa-question-circle fa-fw"></i>  Fragen</a></li>
-				<li ng-class="{active: ctrl.activeTab == 'results'}"><a ng-click="ctrl.activeTab = 'results'"><i class="fa fa-exclamation-triangle fa-fw"></i>  Antworten</a></li>
-				<li ng-class="{active: ctrl.activeTab == 'activity'}"><a ng-click="ctrl.activeTab = 'activity'"><i class="fa fa-bicycle fa-fw"></i>  Aktivit&auml;t</a></li>
+				<li ng-class="{active: $ctrl.activeTab == 'users'}"><a ng-click="$ctrl.activeTab = 'users'"><i class="fa fa-users fa-fw"></i>  Nutzer</a></li>
+				<li ng-class="{active: $ctrl.activeTab == 'questions'}"><a ng-click="$ctrl.activeTab = 'questions'"><i class="fa fa-question-circle fa-fw"></i>  Fragen</a></li>
+				<li ng-class="{active: $ctrl.activeTab == 'results'}"><a ng-click="$ctrl.activeTab = 'results'"><i class="fa fa-exclamation-triangle fa-fw"></i>  Antworten</a></li>
+				<li ng-class="{active: $ctrl.activeTab == 'activity'}"><a ng-click="$ctrl.activeTab = 'activity'"><i class="fa fa-bicycle fa-fw"></i>  Aktivit&auml;t</a></li>
 			</ul>
 			<hr class="visible-xs visible-sm">
 	    </div>
 
 	    <div class="col-md-9">
 	    	<div class="tab-content">
-	    		<div ng-show="ctrl.activeTab == 'stats'">
+	    		<div ng-show="$ctrl.activeTab == 'stats'">
 		    		<h4>Antworten</h4>
 					<div class="row">
 						<div class="col-xs-12 col-sm-4">
 							<div class="stats-box">
-								<h5>{{ ctrl.stats.result_count }}</h5>
-								<p><i class="fa fa-exclamation-triangle fa-fw"></i> Insgesamt | {{ ctrl.stats.result_count / ctrl.stats.user_count | number:0  }} pro Nutzer</p>
+								<h5>{{ $ctrl.stats.result_count }}</h5>
+								<p><i class="fa fa-exclamation-triangle fa-fw"></i> Insgesamt | {{ $ctrl.stats.result_count / $ctrl.stats.user_count | number:0  }} pro Nutzer</p>
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-4">
 							<div class="stats-box">
-								<h5>{{ ctrl.stats.result_count_today }}</h5>
+								<h5>{{ $ctrl.stats.result_count_today }}</h5>
 								<p><i class="fa fa-exclamation-triangle fa-fw"></i> 24 Stunden</p>
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-4">
 							<div class="stats-box">
-								<h5>{{ ctrl.stats.result_per_minute | number : 2 }}</h5>
+								<h5>{{ $ctrl.stats.result_per_minute | number : 2 }}</h5>
 								<p><i class="fa fa-exclamation-triangle fa-fw"></i> pro Minute</p>
 							</div>
 						</div>
@@ -43,19 +43,19 @@
 					<div class="row">
 						<div class="col-xs-12 col-sm-4">
 							<div class="stats-box">
-								<h5>{{ ctrl.stats.user_count }}</h5>
+								<h5>{{ $ctrl.stats.user_count }}</h5>
 								<p><i class="fa fa-users fa-fw"></i> Insgesamt</p>
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-4">
 							<div class="stats-box">
-								<h5>{{ ctrl.stats.user_count_login_today }}</h5>
+								<h5>{{ $ctrl.stats.user_count_login_today }}</h5>
 								<p><i class="fa fa-users fa-fw"></i> Angemeldet 24 Stunden</p>
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-4">
 							<div class="stats-box">
-								<h5>{{ ctrl.stats.user_count_register_today }}</h5>
+								<h5>{{ $ctrl.stats.user_count_register_today }}</h5>
 								<p><i class="fa fa-users fa-fw"></i> Registriert 24 Stunden</p>
 							</div>
 						</div>
@@ -66,25 +66,25 @@
 					<div class="row">
 						<div class="col-xs-12 col-sm-4">
 							<div class="stats-box">
-								<h5>{{ ctrl.stats.question_count }}</h5>
-								<p> <i class="fa fa-question-circle fa-fw"></i> Fragen | {{ ctrl.stats.visible_question_count }} sichtbar</p>
+								<h5>{{ $ctrl.stats.question_count }}</h5>
+								<p> <i class="fa fa-question-circle fa-fw"></i> Fragen | {{ $ctrl.stats.visible_question_count }} sichtbar</p>
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-4">
 							<div class="stats-box">
-								<h5>{{ ctrl.stats.exam_count }}</h5>
-								<p> <i class="fa fa-list fa-fw"></i> Klausuren | {{ ctrl.stats.visible_exam_count }} sichtbar</p>
+								<h5>{{ $ctrl.stats.exam_count }}</h5>
+								<p> <i class="fa fa-list fa-fw"></i> Klausuren | {{ $ctrl.stats.visible_exam_count }} sichtbar</p>
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-4">
 							<div class="stats-box">
-								<h5>{{ ctrl.stats.comment_count }}</h5>
+								<h5>{{ $ctrl.stats.comment_count }}</h5>
 								<p> <i class="fa fa-comments fa-fw"></i> Kommentare</p>
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-4">
 							<div class="stats-box">
-								<h5>{{ ctrl.stats.tag_count }}</h5>
+								<h5>{{ $ctrl.stats.tag_count }}</h5>
 								<p> <i class="fa fa-tags fa-fw"></i> Markierungen</p>
 							</div>
 						</div>
@@ -94,23 +94,23 @@
 				</div>
 
 
-	    		<div ng-show="ctrl.activeTab == 'users'">
+	    		<div ng-show="$ctrl.activeTab == 'users'">
 					<div class="row">
 						<div class="col-xs-12 col-sm-4">
 							<div class="stats-box">
-								<h5>{{ ctrl.stats.user_count }}</h5>
+								<h5>{{ $ctrl.stats.user_count }}</h5>
 								<p><i class="fa fa-users fa-fw"></i> Insgesamt</p>
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-4">
 							<div class="stats-box">
-								<h5>{{ ctrl.stats.user_count_login_today }}</h5>
+								<h5>{{ $ctrl.stats.user_count_login_today }}</h5>
 								<p><i class="fa fa-users fa-fw"></i> Angemeldet 24 Stunden</p>
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-4">
 							<div class="stats-box">
-								<h5>{{ ctrl.stats.user_count_register_today }}</h5>
+								<h5>{{ $ctrl.stats.user_count_register_today }}</h5>
 								<p><i class="fa fa-users fa-fw"></i> Registriert 24 Stunden</p>
 							</div>
 						</div>
@@ -118,23 +118,23 @@
 				</div>
 
 
-	    		<div ng-show="ctrl.activeTab == 'questions'">
+	    		<div ng-show="$ctrl.activeTab == 'questions'">
 		    		<div class="row">
 						<div class="col-xs-12 col-sm-4">
 							<div class="stats-box">
-								<h5>{{ ctrl.stats.question_count }}</h5>
-								<p> <i class="fa fa-question-circle fa-fw"></i> {{ ctrl.stats.visible_question_count }} sichtbar</p>
+								<h5>{{ $ctrl.stats.question_count }}</h5>
+								<p> <i class="fa fa-question-circle fa-fw"></i> {{ $ctrl.stats.visible_question_count }} sichtbar</p>
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-4">
 							<div class="stats-box">
-								<h5>{{ ctrl.stats.question_worked_count }}</h5>
+								<h5>{{ $ctrl.stats.question_worked_count }}</h5>
 								<p> <i class="fa fa-question-circle fa-fw"></i> Insgesamt Gel&ouml;st</p>
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-4">
 							<div class="stats-box">
-								<h5>{{ ctrl.stats.question_worked_count_today }}</h5>
+								<h5>{{ $ctrl.stats.question_worked_count_today }}</h5>
 								<p> <i class="fa fa-question-circle fa-fw"></i> 24 Stunden Gel&ouml;st</p>
 							</div>
 						</div>
@@ -142,27 +142,27 @@
 				</div>
 
 
-	    		<div ng-show="ctrl.activeTab == 'results'">
+	    		<div ng-show="$ctrl.activeTab == 'results'">
 		    		<h4>Antworten</h4>
 					<div class="row">
 						<div class="col-xs-12 col-sm-4">
 							<div class="stats-box">
-								<h5>{{ ctrl.stats.result_count }}</h5>
+								<h5>{{ $ctrl.stats.result_count }}</h5>
 								<p>
 									<i class="fa fa-exclamation-triangle fa-fw"></i>
-									Insgesamt | {{ ctrl.stats.result_count / ctrl.stats.user_count | number:0  }} pro Nutzer
+									Insgesamt | {{ $ctrl.stats.result_count / $ctrl.stats.user_count | number:0  }} pro Nutzer
 								</p>
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-4">
 							<div class="stats-box">
-								<h5>{{ ctrl.stats.result_count_today }}</h5>
+								<h5>{{ $ctrl.stats.result_count_today }}</h5>
 								<p><i class="fa fa-exclamation-triangle fa-fw"></i> 24 Stunden</p>
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-4">
 							<div class="stats-box">
-								<h5>{{ ctrl.stats.result_per_minute | number : 2 }}</h5>
+								<h5>{{ $ctrl.stats.result_per_minute | number : 2 }}</h5>
 								<p><i class="fa fa-exclamation-triangle fa-fw"></i> pro Minute</p>
 							</div>
 						</div>
@@ -171,7 +171,7 @@
 					<hr>
 
 					<center>
-						<canvas linechart data="::ctrl.chart_time_result_today" width="800" height="400"></canvas>
+						<canvas linechart data="::$ctrl.chart_time_result_today" width="800" height="400"></canvas>
 					</center>
 					<h6>Antworten pro Stunde im Verlauf der letzten Stunden</h6>
 
@@ -179,26 +179,26 @@
 				</div>
 
 
-	    		<div ng-show="ctrl.activeTab == 'activity'">
+	    		<div ng-show="$ctrl.activeTab == 'activity'">
 		    		<h4>Aktivit&auml;t <small>Aktualisieren braucht immer etwas...</small></h4>
 		    		<div class="btn-toolbar">
 		    			<div class="btn-group">
-						    <label class="btn btn-danger" ng-model="ctrl.updateActivity" btn-checkbox>LIVE</label>
+						    <label class="btn btn-danger" ng-model="$ctrl.updateActivity" btn-checkbox>LIVE</label>
 						</div>
 
 		    			<div class="btn-group mbottom-2x">
-						    <label class="btn btn-default" ng-model="ctrl.showActivity.result" ng-disabled="!ctrl.updateActivity" uib-btn-checkbox>Antworten</label>
-						    <label class="btn btn-default" ng-model="ctrl.showActivity.register" ng-disabled="!ctrl.updateActivity" uib-btn-checkbox>Registrierungen</label>
-						    <label class="btn btn-default" ng-model="ctrl.showActivity.login" ng-disabled="!ctrl.updateActivity" uib-btn-checkbox>Anmeldungen</label>
-						    <label class="btn btn-default" ng-model="ctrl.showActivity.comment" ng-disabled="!ctrl.updateActivity" uib-btn-checkbox>Kommentare</label>
-						    <label class="btn btn-default" ng-model="ctrl.showActivity.examNew" ng-disabled="!ctrl.updateActivity" uib-btn-checkbox>Neue...</label>
-						    <label class="btn btn-default" ng-model="ctrl.showActivity.examUpdate" ng-disabled="!ctrl.updateActivity" uib-btn-checkbox>Ver&auml;nderte Klausuren</label>
+						    <label class="btn btn-default" ng-model="$ctrl.showActivity.result" ng-disabled="!$ctrl.updateActivity" uib-btn-checkbox>Antworten</label>
+						    <label class="btn btn-default" ng-model="$ctrl.showActivity.register" ng-disabled="!$ctrl.updateActivity" uib-btn-checkbox>Registrierungen</label>
+						    <label class="btn btn-default" ng-model="$ctrl.showActivity.login" ng-disabled="!$ctrl.updateActivity" uib-btn-checkbox>Anmeldungen</label>
+						    <label class="btn btn-default" ng-model="$ctrl.showActivity.comment" ng-disabled="!$ctrl.updateActivity" uib-btn-checkbox>Kommentare</label>
+						    <label class="btn btn-default" ng-model="$ctrl.showActivity.examNew" ng-disabled="!$ctrl.updateActivity" uib-btn-checkbox>Neue...</label>
+						    <label class="btn btn-default" ng-model="$ctrl.showActivity.examUpdate" ng-disabled="!$ctrl.updateActivity" uib-btn-checkbox>Ver&auml;nderte Klausuren</label>
 						</div>
 					</div>
 
 					<table class="table">
 						<tbody>
-							<tr ng-repeat="act in ctrl.activities">
+							<tr ng-repeat="act in $ctrl.activities">
 								<td>
 									<span class="text-muted"><i class="fa fa-clock-o fa-fw"></i> <span timeago="{{act.date * 1000}}"></span></span>
 								</td>

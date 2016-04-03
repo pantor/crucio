@@ -1,6 +1,6 @@
 <div class="container">
     <div class="page-header">
-        <h2>Einstellungen <small>von {{ ::ctrl.user.username }}</small></h2>
+        <h2>Einstellungen <small>von {{ ::$ctrl.user.username }}</small></h2>
     </div>
 
     <div class="form-horizontal">
@@ -8,13 +8,13 @@
             <label class="col-sm-3 control-label">Allgemein</label>
             <div class="col-sm-8">
                 <div class="checkbox">
-                    <label><input type="checkbox" ng-model="ctrl.user.highlightExams" ng-change="ctrl.formChanged()" ng-true-value="1" ng-false-value="0">
+                    <label><input type="checkbox" ng-model="$ctrl.user.highlightExams" ng-change="$ctrl.formChanged()" ng-true-value="1" ng-false-value="0">
                         Empfohlene Fragen und Klausuren hervorheben
                     </label>
                 </div>
 
                 <div class="checkbox">
-                    <label> <input type="checkbox" ng-model="ctrl.user.showComments" ng-change="ctrl.formChanged()" ng-true-value="1" ng-false-value="0">
+                    <label> <input type="checkbox" ng-model="$ctrl.user.showComments" ng-change="$ctrl.formChanged()" ng-true-value="1" ng-false-value="0">
                         Kommentare automatisch ausblenden
                     </label>
                 </div>
@@ -25,13 +25,13 @@
             <label class="col-sm-3 control-label">Datenschutz</label>
             <div class="col-sm-8">
                 <div class="checkbox">
-                    <label><input type="checkbox" ng-model="ctrl.user.useAnswers" ng-change="ctrl.formChanged()" ng-true-value="1" ng-false-value="0">
+                    <label><input type="checkbox" ng-model="$ctrl.user.useAnswers" ng-change="$ctrl.formChanged()" ng-true-value="1" ng-false-value="0">
                         Meine Antworten verwenden, um schwere Fragen herauszufinden
                     </label>
                 </div>
 
                 <div class="checkbox">
-                    <label><input type="checkbox" ng-model="ctrl.user.useTags" ng-change="ctrl.formChanged()" ng-true-value="1" ng-false-value="0">
+                    <label><input type="checkbox" ng-model="$ctrl.user.useTags" ng-change="$ctrl.formChanged()" ng-true-value="1" ng-false-value="0">
                         Meine Markierungen verwenden, um Fragen zu katalogisieren
                     </label>
                 </div>
@@ -41,19 +41,19 @@
         <hr>
 
         <div class="form-group">
-            <label class="col-sm-3 control-label">Zurücksetzen</label>
+            <label class="col-sm-3 control-label">Zurï¿½cksetzen</label>
             <div class="col-sm-8">
-                <button class="btn btn-default" data-toggle="modal" data-target="#myModal">Alle Klausuren zurücksetzen</button>
+                <button class="btn btn-default" data-toggle="modal" data-target="#myModal">Alle Klausuren zurï¿½cksetzen</button>
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-sm-offset-3 col-sm-8">
-                <button class="btn btn-primary" id="submitButton" ng-click="ctrl.updateUser()">
-                    <i ng-show="ctrl.isWorking" class="fa fa-circle-o-notch fa-spin"></i>
-                    <span ng-show="!ctrl.isSaved && !ctrl.hasError">Speichern</span>
-                    <span ng-show="ctrl.isSaved">Gespeichert</span>
-                    <span ng-show="ctrl.hasError">Speichern nicht m&ouml;glich</span>
+                <button class="btn btn-primary" id="submitButton" ng-click="$ctrl.updateUser()">
+                    <i ng-show="$ctrl.isWorking" class="fa fa-circle-o-notch fa-spin"></i>
+                    <span ng-show="!$ctrl.isSaved && !$ctrl.hasError">Speichern</span>
+                    <span ng-show="$ctrl.isSaved">Gespeichert</span>
+                    <span ng-show="$ctrl.hasError">Speichern nicht m&ouml;glich</span>
                 </button>
             </div>
         </div>
@@ -63,11 +63,11 @@
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">Wirklich alle Klausuren zurücksetzen?</h4>
+                    <h4 class="modal-title" id="myModalLabel">Wirklich alle Klausuren zurï¿½cksetzen?</h4>
                 </div>
                 <div class="modal-body">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
-                    <button class="btn btn-danger pull-right" data-dismiss="modal" ng-click="ctrl.removeAllResults()">Zurücksetzen</button>
+                    <button class="btn btn-danger pull-right" data-dismiss="modal" ng-click="$ctrl.removeAllResults()">Zurï¿½cksetzen</button>
                 </div>
             </div>
         </div>

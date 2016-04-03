@@ -19,18 +19,22 @@ gulp.task('sass', function () {
 
 gulp.task('js', function () {
   return gulp.src(['src/js/crucio.js','src/js/**/*.js'])
-    .pipe(eslint({
-      extends: ['airbnb/base', 'angular'],
-      rules: { 'angular/controller-as-vm': 0, 'angular/no-service-method': 0, 'angular/log': 0, 'no-param-reassign': 1 },
-      envs: ['browser', 'es6'],
-    }))
-    .pipe(eslint.format())
-    .pipe(eslint.failAfterError())
     .pipe(babel({ presets: ['es2015'] }))
     .pipe(concat('crucio.js'))
     .pipe(ngAnnotate())
     .pipe(uglify())
     .pipe(gulp.dest('public/js/'));
+});
+
+gulp.task('js-lint', function () {
+  return gulp.src(['src/js/crucio.js','src/js/**/*.js'])
+    .pipe(eslint({
+      extends: ['airbnb/base', 'angular'],
+      rules: { 'angular/controller-as-vm': 0, 'angular/no-service-method': 0, 'angular/log': 0, 'no-param-reassign': 1, 'prefer-arrow-callback': 0, 'arrow-body-style': 0 },
+      envs: ['browser', 'es6'],
+    }))
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError());
 });
 
 gulp.task('js-vendor', function () {

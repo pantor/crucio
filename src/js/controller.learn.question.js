@@ -8,7 +8,6 @@ class QuestionController {
     Page.setTitleAndNav('Frage | Crucio', 'Lernen');
 
     this.user = Auth.getUser();
-    this.collection = this.Collection.get();
 
     this.questionId = Number($routeParams.id);
     this.resetSession = Boolean($routeParams.reset_session);
@@ -22,31 +21,26 @@ class QuestionController {
     this.noAnswer = true;
     this.showExplanation = false;
 
+    this.collection = this.Collection.get();
     if (this.resetSession) {
       delete this.collection;
       Collection.remove();
     }
 
-    if (this.collection && Object.keys(this.collection).length) {
-      // this.index = this.collection.list.findIndex(e => e.question_id === this.questionId);
-      for (let i = 0; i < this.collection.list.length; i++) {
-        if (this.collection.list[i].question_id === this.questionId) {
-          this.index = i;
-          break;
-        }
-      }
-
-      this.length = this.collection.list.length;
-      this.showAnswer = this.collection.list[this.index].mark_answer;
-      this.givenResult = this.collection.list[this.index].given_result;
-      this.strike = this.collection.list[this.index].strike;
+    this.index = this.Collection.getIndexOfQuestion(this.questionId);
+    if (this.index !== -1) {
+      const list = this.collection.list;
+      this.questionData = this.Collection.getQuestionData(this.index);
+      this.length = list.length;
+      this.preQuestionId = this.index > 0 ? list[this.index - 1].question_id : -1;
+      this.postQuestionId = this.index < this.length ? list[this.index + 1].question_id : -1;
     }
 
     this.loadQuestion();
   }
 
   loadQuestion() {
-    this.API.get('questions/' + this.questionId + '/user/' + this.user.user_id).then(result => {
+    this.API.get(`questions/${this.questionId}/user/${this.user.user_id}`).then(result => {
       this.question = result.data.question;
       this.comments = result.data.comments;
 
@@ -55,10 +49,10 @@ class QuestionController {
         this.tags = result.tags.split(',').map(entry => { return { text: entry }; });
       }
 
-      this.checkedAnswer = this.givenResult;
+      this.checkedAnswer = this.questionData.givenAnswer;
 
-      if (this.showAnswer) {
-        this.markAnswer(this.givenResult);
+      if (this.questionData.showAnswer) {
+        this.markAnswer(this.questionData.givenAnswer);
       }
     });
   }
@@ -70,18 +64,11 @@ class QuestionController {
     this.API.post('tags', data, true);
   }
 
-  saveStrike() {
-    if (this.collection && Object.keys(this.collection).length) {
-      this.collection.list[this.index].strike = this.strike;
-      this.Collection.set(this.collection);
-    }
-  }
-
   // If show solution button is clicked
   showSolution() {
     const correctAnswer = this.question.correct_answer;
     this.checkedAnswer = correctAnswer;
-    let correct = (correctAnswer === this.givenResult) ? 1 : 0;
+    let correct = (correctAnswer === this.questionData.givenAnswer) ? 1 : 0;
     if (correctAnswer === 0 || this.question.type === 1) {
       correct = -1;
     }
@@ -90,25 +77,17 @@ class QuestionController {
       correct,
       question_id: this.questionId,
       user_id: this.user.user_id,
-      given_result: this.givenResult,
+      given_result: this.questionData.givenAnswer,
     };
     this.API.post('results', data, true);
 
-    if (this.collection && Object.keys(this.collection).length) {
-      this.collection.list[this.index].mark_answer = 1;
-      this.Collection.set(this.collection);
-    }
-
-    this.markAnswer(this.givenResult);
+    this.Collection.saveMarkAnswer(this.index);
+    this.markAnswer(this.questionData.givenAnswer);
   }
 
   saveAnswer(givenAnswer) {
-    this.givenResult = givenAnswer;
-
-    if (this.collection && Object.keys(this.collection).length) {
-      this.collection.list[this.index].given_result = this.givenResult;
-      this.Collection.set(this.collection);
-    }
+    this.questionData.givenAnswer = givenAnswer;
+    this.Collection.saveAnswer(this.index, this.questionData.givenAnswer);
   }
 
   // Colors the given answers and shows the correct solution
@@ -137,7 +116,7 @@ class QuestionController {
       username: this.user.username,
       date: now,
     };
-    this.API.post('comments/' + this.user.user_id, data).then(result => {
+    this.API.post(`comments/${this.user.user_id}`, data).then(result => {
       data.voting = 0;
       data.user_voting = 0;
       data.comment_id = result.data.comment_id;
@@ -148,14 +127,14 @@ class QuestionController {
 
   deleteComment(index) {
     const commentId = this.comments[index].comment_id;
-    this.API.delete('comments/' + commentId);
+    this.API.delete(`comments/${commentId}`);
     this.comments.splice(index, 1);
   }
 
   changeUserVoting(comment, change) {
     comment.user_voting = Math.min(Math.max(comment.user_voting + change, -1), 1);
     const data = { user_voting: comment.user_voting };
-    this.API.post('comments/' + comment.comment_id + '/user/' + this.user.user_id, data, true);
+    this.API.post(`comments/${comment.comment_id}/user/${this.user.user_id}`, data, true);
   }
 
   openImageModal() {
@@ -172,4 +151,7 @@ class QuestionController {
   }
 }
 
-angular.module('crucioApp').controller('QuestionController', QuestionController);
+angular.module('crucioApp').component('questioncomponent', {
+  templateUrl: 'views/question.html',
+  controller: QuestionController,
+});

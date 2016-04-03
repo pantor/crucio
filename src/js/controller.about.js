@@ -1,5 +1,8 @@
 class AboutController {
-  constructor() { }
+
 }
 
-angular.module('crucioApp').controller('AboutController', AboutController);
+angular.module('crucioApp').component('aboutcomponent', {
+  templateUrl: 'views/about.html',
+  controller: AboutController,
+});

@@ -13,23 +13,23 @@ class ExamController {
 
     this.user = Auth.getUser();
     this.examId = $routeParams.id;
-    this.collection = { type: 'exam', exam_id: this.examId };
     this.currentIndex = 0;
 
     $document.on('scroll', () => {
       const positionTop = $document.scrollTop();
 
       const isIdAbovePosition = (i) => {
-        const question = angular.element($window.document.getElementById('id' + i));
+        const question = angular.element($window.document.getElementById(`id${i}`));
         if (question.prop('offsetTop') > positionTop) {
           $timeout(() => {
             this.currentIndex = Math.max(i - 1, 0);
           }, 0);
           return true;
         }
+        return false;
       };
 
-      for (let i = 0; i < this.collection.list.length; i++) {
+      for (let i = 0; i < this.Collection.get().list.length; i++) {
         if (isIdAbovePosition(i)) {
           break;
         }
@@ -45,9 +45,14 @@ class ExamController {
   }
 
   loadExam() {
-    this.API.get('exams/' + this.examId).then(result => {
+    this.API.get(`exams/${this.examId}`).then(result => {
       this.exam = result.data.exam;
-      this.collection.list = result.data.questions;
+      this.length = result.data.questions.length;
+      this.Collection.set({
+        type: 'exam',
+        exam_id: this.examId,
+        list: result.data.questions,
+      });
     });
   }
 
@@ -55,12 +60,7 @@ class ExamController {
     return (Math.abs(index + 1 - this.questions.length / 2) < 1) && (index > 3);
   }
 
-  saveAnswer(index, givenAnswer) {
-    this.collection.list[index].given_result = givenAnswer;
-  }
-
   handExam() {
-    this.Collection.set(this.collection);
     this.$location.path('/analysis').search('id', null);
   }
 
@@ -78,4 +78,7 @@ class ExamController {
   }
 }
 
-angular.module('crucioApp').controller('ExamController', ExamController);
+angular.module('crucioApp').component('examcomponent', {
+  templateUrl: 'views/exam.html',
+  controller: ExamController,
+});

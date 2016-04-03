@@ -1,6 +1,7 @@
 <?php
 
 function init() {
+    error_reporting(0);
     try {
         $config = include(dirname(__FILE__).'/../config.php');
         $mysql = new PDO(

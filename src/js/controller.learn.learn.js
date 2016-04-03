@@ -40,7 +40,7 @@ class LearnController {
 
   loadAbstract() {
     const data = { limit: 12 };
-    this.API.get('exams/abstract/' + this.user.user_id, data).then(result => {
+    this.API.get(`exams/abstract/${this.user.user_id}`, data).then(result => {
       this.abstractExams = result.data.exams;
       this.ready = 1;
     });
@@ -146,26 +146,25 @@ class LearnController {
 
   learnExam(examId) {
     const data = { random: true };
-    this.API.get('exams/action/prepare/' + examId, data).then(result => {
-      const collection = { list: result.data.list, exam_id: examId };
-      this.Collection.set(collection);
-      this.$location.path('/question').search('id', collection.list[0].question_id);
+    this.Collection.prepareExam(examId, data).then(result => {
+      this.$location.path('/question').search('id', result.list[0].question_id);
     });
   }
 
   learnSubjects() {
     const data = { selection: this.selection, limit: this.selectedQuestionNumber };
-    this.API.get('questions/prepare-subjects', data).then(result => {
-      const collection = { list: result.data.list, selection: data.selection };
-      this.Collection.set(collection);
-      this.$location.path('/question').search('id', collection.list[0].question_id);
+    this.Collection.prepareSubjects(data).then(result => {
+      this.$location.path('/question').search('id', result.list[0].question_id);
     });
   }
 
   resetExam(exam) {
     exam.answered_questions = 0;
-    this.API.delete('results/' + this.user.user_id + '/' + exam.exam_id, true);
+    this.API.delete(`results/${this.user.user_id}/${exam.exam_id}`, true);
   }
 }
 
-angular.module('crucioApp').controller('LearnController', LearnController);
+angular.module('crucioApp').component('learncomponent', {
+  templateUrl: 'views/learn.html',
+  controller: LearnController,
+});

@@ -6,4 +6,7 @@ class StatisticController {
   }
 }
 
-angular.module('crucioApp').controller('StatisticController', StatisticController);
+angular.module('crucioApp').component('statisticcomponent', {
+  templateUrl: 'views/statistic.html',
+  controller: StatisticController,
+});

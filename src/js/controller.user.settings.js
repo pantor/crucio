@@ -26,7 +26,7 @@ class SettingsController {
       useTags: this.user.useTags,
     };
 
-    this.API.put('users/' + this.user.user_id + '/settings', data, true).then(result => {
+    this.API.put(`users/${this.user.user_id}/settings`, data, true).then(result => {
       if (result.data.status) {
         this.Auth.setUser(this.user);
       } else {
@@ -40,8 +40,11 @@ class SettingsController {
   }
 
   removeAllResults() {
-    this.API.delete('results/' + this.user.user_id);
+    this.API.delete(`results/${this.user.user_id}`);
   }
 }
 
-angular.module('crucioApp').controller('SettingsController', SettingsController);
+angular.module('crucioApp').component('settingscomponent', {
+  templateUrl: 'views/settings.html',
+  controller: SettingsController,
+});

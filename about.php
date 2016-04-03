@@ -5,7 +5,7 @@
         <?php include('parts/header.php'); ?>
     </head>
 
-    <body class="body" ng-controller="AboutController as ctrl">
+    <body class="body">
         <div class="wrap">
             <div class="container-top-bar">
                 <div class="container ">

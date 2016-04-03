@@ -80,4 +80,7 @@ class AuthorController {
   }
 }
 
-angular.module('crucioApp').controller('AuthorController', AuthorController);
+angular.module('crucioApp').component('authorcomponent', {
+  templateUrl: 'views/author.html',
+  controller: AuthorController,
+});

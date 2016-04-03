@@ -1,9 +1,11 @@
 ### Dependency directories ###
 node_modules
 vendor
+.vagrant
 
 
 ### Website ###
 robots.txt
 google*.html
 api/config.php
+api/config.leipzig.php

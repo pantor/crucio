@@ -1,5 +1,7 @@
 class Collection {
-  constructor() { }
+  constructor(API) {
+    this.API = API;
+  }
 
   get() {
     if (angular.isUndefined(this.collection)
@@ -67,6 +69,57 @@ class Collection {
     }
 
     return result;
+  }
+
+  saveAnswer(index, answer) {
+    if (this.collection && Object.keys(this.collection).length) {
+      this.collection.list[index].given_result = answer;
+      this.set(this.collection);
+    }
+  }
+
+  saveStrike(index, strike) {
+    if (this.collection && Object.keys(this.collection).length) {
+      this.collection.list[index].strike = strike;
+      this.set(this.collection);
+    }
+  }
+
+  saveMarkAnswer(index) {
+    if (this.collection && Object.keys(this.collection).length) {
+      this.collection.list[index].mark_answer = 1;
+      this.set(this.collection);
+    }
+  }
+
+  prepareExam(examId, data) {
+    return this.API.get(`exams/action/prepare/${examId}`, data).then(result => {
+      const collection = { list: result.data.list, exam_id: examId };
+      this.set(collection);
+      return collection;
+    });
+  }
+
+  prepareSubjects(data) {
+    return this.API.get('questions/prepare-subjects', data).then(result => {
+      const collection = { list: result.data.list, selection: data.selection };
+      this.Collection.set(collection);
+      return collection;
+    });
+  }
+
+  getIndexOfQuestion(questionId) {
+    // this.index = this.collection.list.findIndex(e => e.question_id === this.questionId);
+    for (let i = 0; i < this.collection.list.length; i++) {
+      if (this.collection.list[i].question_id === questionId) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  getQuestionData(index) {
+    return this.collection.list[index];
   }
 }
 

@@ -59,6 +59,8 @@
                 </div>
             </nav>
 
+            <!--app></app-->
+
             <div ng-view class="external-ctrl"></div>
         </div>
 

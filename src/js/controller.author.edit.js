@@ -43,7 +43,7 @@ class EditExamController {
   }
 
   loadExam() {
-    this.API.get('exams/' + this.examId).then(result => {
+    this.API.get(`exams/${this.examId}`).then(result => {
       this.exam = result.data.exam;
       this.questions = result.data.questions;
 
@@ -69,6 +69,7 @@ class EditExamController {
         return e.categories;
       }
     }
+    return -1;
   }
 
   remakeUploaderArray() {
@@ -104,7 +105,7 @@ class EditExamController {
     const questionId = this.questions[index].question_id;
 
     if (questionId) {
-      this.API.delete('questions/' + questionId);
+      this.API.delete(`questions/${questionId}`);
     }
 
     this.questions.splice(index, 1);
@@ -125,7 +126,7 @@ class EditExamController {
 
     if (validate) {
       this.isSaving = true;
-      this.API.put('exams/' + this.examId, this.exam);
+      this.API.put(`exams/${this.examId}`, this.exam);
 
       for (const q of this.questions) {
         const validateQuestion = q.question || q.question_id;
@@ -151,7 +152,7 @@ class EditExamController {
               q.question_id = result.data.question_id;
             });
           } else {
-            this.API.put('questions/' + q.question_id, data);
+            this.API.put(`questions/${q.question_id}`, data);
           }
         }
       }
@@ -164,10 +165,13 @@ class EditExamController {
   }
 
   deleteExam() {
-    this.API.delete('exams/' + this.exam.exam_id).then(() => {
+    this.API.delete(`exams/${this.exam.exam_id}`).then(() => {
       this.$location.url('/author');
     });
   }
 }
 
-angular.module('crucioApp').controller('EditExamController', EditExamController);
+angular.module('crucioApp').component('editexamcomponent', {
+  templateUrl: 'views/edit-exam.html',
+  controller: EditExamController,
+});

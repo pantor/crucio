@@ -1,5 +1,6 @@
 angular.module('crucioApp', [
   'ngRoute',
+//  'ngComponentRouter',
   'ngSanitize',
   'ngCookies',
   'ngMessages',
@@ -14,31 +15,37 @@ angular.module('crucioApp', [
   'duScroll',
 ])
   .config(function config($routeProvider, $locationProvider) {
-    function routeGenerator(fileName, controller) {
-      return { controller, controllerAs: 'ctrl', templateUrl: 'views/' + fileName + '.html' };
-    }
-
     $routeProvider
-      .when('/learn', routeGenerator('learn', 'LearnController'))
-      .when('/author', routeGenerator('author', 'AuthorController'))
-      .when('/admin', routeGenerator('admin', 'AdminController'))
-      .when('/global-statistic', routeGenerator('global-statistic', 'GlobalStatisticController'))
-      .when('/account', routeGenerator('account', 'AccountController'))
-      .when('/settings', routeGenerator('settings', 'SettingsController'))
-      .when('/edit-exam', routeGenerator('edit-exam', 'EditExamController'))
-      .when('/question', routeGenerator('question', 'QuestionController'))
-      .when('/exam', routeGenerator('exam', 'ExamController'))
-      .when('/statistic', routeGenerator('statistic', 'StatisticController'))
-      .when('/analysis', routeGenerator('analysis', 'AnalysisController'))
-      .when('/help', routeGenerator('help', 'HelpController'))
-      .when('/403', routeGenerator('403', 'ErrorController'))
-      .when('/404', routeGenerator('404', 'ErrorController'))
-      .when('/500', routeGenerator('500', 'ErrorController'))
+      .when('/learn', { template: '<learnComponent></learnComponent>' })
+      .when('/author', { template: '<authorComponent></authorComponent>' })
+      .when('/admin', { template: '<adminComponent></adminComponent>' })
+      .when('/global-statistic', { template: '<globalStatisticComponent></globalStatisticComponent>' })
+      .when('/account', { template: '<accountComponent></accountComponent>' })
+      .when('/settings', { template: '<settingsComponent></settingsComponent>' })
+      .when('/edit-exam', { template: '<editExamComponent></editExamComponent>' })
+      .when('/question', { template: '<questionComponent></questionComponent>' })
+      .when('/exam', { template: '<examComponent></examComponent>' })
+      .when('/statistic', { template: '<statisticComponent></statisticComponent>' })
+      .when('/analysis', { template: '<analysisComponent></analysisComponent>' })
+      .when('/help', { template: '<helpComponent></helpComponent>' })
+      .when('/403', { template: '<error403Component></error403Component>' })
+      .when('/404', { template: '<error404Component></error404Component>' })
+      .when('/500', { template: '<error500Component></error500Component>' })
       .otherwise({ redirectTo: '/404' });
 
     $locationProvider.html5Mode(true); // use the HTML5 History API
     // $compileProvider.debugInfoEnabled(false);
   })
+
+  /* .value('$routerRootComponent', 'app')
+
+  .component('app', {
+    template: '<ng-outlet></ng-outlet>',
+    $routeConfig: [
+      { path: '/404', component: 'error404Component' },
+      { path: '/500', component: 'error500Component' },
+    ]
+  }) */
 
   .run(function run(Auth, $location, $window) {
     // Enumerate paths that don't need authentication

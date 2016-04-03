@@ -1,7 +1,6 @@
 class HelpController {
-  constructor(Auth, Page, API, Validation, $location) {
+  constructor(Auth, Page, API, $location) {
     this.API = API;
-    this.Validation = Validation;
 
     Page.setTitleAndNav('Hilfe | Crucio', '');
 
@@ -11,14 +10,14 @@ class HelpController {
     this.subject = $location.search().s;
 
     if (this.question_id) {
-      this.API.get('questions/' + this.question_id).then(result => {
+      this.API.get(`questions/${this.question_id}`).then(result => {
         this.question = result.data.question;
       });
     }
   }
 
   sendMail() {
-    const validation = this.Validation.nonEmpty(this.text);
+    const validation = this.text;
 
     if (validation) {
       this.isWorking = true;
@@ -56,4 +55,7 @@ class HelpController {
   }
 }
 
-angular.module('crucioApp').controller('HelpController', HelpController);
+angular.module('crucioApp').component('helpcomponent', {
+  templateUrl: 'views/help.html',
+  controller: HelpController,
+});

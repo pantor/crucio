@@ -5,10 +5,9 @@ class AnalysisController {
     Page.setTitleAndNav('Analyse | Crucio', 'Lernen');
 
     this.user = Auth.getUser();
-    this.collection = Collection.get();
 
     // Post results, but not which are already saved or are free questions
-    for (const question of this.collection.list) {
+    for (const question of this.Collection.get().list) {
       if (!question.mark_answer && question.type > 1 && question.given_result > 0) {
         let correct = (question.correct_answer === question.given_result) ? 1 : 0;
         if (question.correct_answer === 0 || question.question.type === 1) {
@@ -31,12 +30,12 @@ class AnalysisController {
 
     this.random = getRandom(0, 1000);
 
-    this.examId = this.collection.exam_id;
+    this.examId = this.Collection.get().exam_id;
     this.workedCollection = Collection.getWorked();
     this.count = Collection.analyseCount();
 
     if (this.examId) {
-      this.API.get('exams/' + this.examId).then(result => {
+      this.API.get(`exams/${this.examId}`).then(result => {
         this.exam = result.data.exam;
       });
     }
@@ -47,4 +46,7 @@ class AnalysisController {
   }
 }
 
-angular.module('crucioApp').controller('AnalysisController', AnalysisController);
+angular.module('crucioApp').component('analysiscomponent', {
+  templateUrl: 'views/analysis.html',
+  controller: AnalysisController,
+});

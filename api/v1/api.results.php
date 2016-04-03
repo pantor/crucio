@@ -32,9 +32,9 @@ $app->group('/results', function() {
 		);
 		$stmt->bindValue(':user_id', $body['user_id'], PDO::PARAM_INT);
 		$stmt->bindValue(':question_id', $body['question_id'], PDO::PARAM_INT);
-		$stmt->bindValue(':attempt', $attempt_count + 1);
+		$stmt->bindValue(':attempt', $attempt_count + 1, PDO::PARAM_INT);
 		$stmt->bindValue(':correct', $body['correct']);
-		$stmt->bindValue(':given_result', $body['given_result']);
+		$stmt->bindValue(':given_result', $body['given_result'], PDO::PARAM_INT);
 		$stmt->bindValue(':date', time());
 
 		$data['status'] = execute($stmt);

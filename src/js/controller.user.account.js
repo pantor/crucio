@@ -26,7 +26,7 @@ class AccountController {
       current_password: this.oldPassword,
       password: this.newPassword,
     };
-    this.API.put('users/' + this.user.user_id + '/account', data, true).then(result => {
+    this.API.put(`users/${this.user.user_id}/account`, data, true).then(result => {
       if (result.data.status) {
         this.Auth.setUser(this.user);
       } else {
@@ -41,4 +41,7 @@ class AccountController {
   }
 }
 
-angular.module('crucioApp').controller('AccountController', AccountController);
+angular.module('crucioApp').component('accountcomponent', {
+  templateUrl: 'views/account.html',
+  controller: AccountController,
+});

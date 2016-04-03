@@ -54,4 +54,7 @@ class GlobalStatisticController {
   }
 }
 
-angular.module('crucioApp').controller('GlobalStatisticController', GlobalStatisticController);
+angular.module('crucioApp').component('globalstatisticcomponent', {
+  templateUrl: 'views/global-statistic.html',
+  controller: GlobalStatisticController,
+});

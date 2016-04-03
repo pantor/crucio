@@ -79,7 +79,7 @@ class AdminController {
     const email = this.whitelist[index].mail_address;
     if (email) {
       this.whitelist.splice(index, 1);
-      this.API.delete('whitelist/' + email);
+      this.API.delete(`whitelist/${email}`);
     }
   }
 
@@ -98,7 +98,7 @@ class AdminController {
     }
 
     const data = { group_id: groupId };
-    this.API.put('users/' + userId + '/group', data, true);
+    this.API.put(`users/${userId}/group`, data, true);
   }
 
   isToday(dateString, hourDiff = 0) {
@@ -124,4 +124,7 @@ class AdminController {
   }
 }
 
-angular.module('crucioApp').controller('AdminController', AdminController);
+angular.module('crucioApp').component('admincomponent', {
+  templateUrl: 'views/admin.html',
+  controller: AdminController,
+});
