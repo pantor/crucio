@@ -1,10 +1,10 @@
 <?php
 
 return array(
-    'host' => '',
-    'dbname' => '',
-    'user' => '',
-    'password' => ''
+    'host' => 'localhost',
+    'dbname' => 'scotchbox',
+    'user' => 'root',
+    'password' => 'root'
 );
 
 ?>

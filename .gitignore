@@ -4,6 +4,7 @@ jspm_packages
 vendor
 .vagrant
 logs
+typings
 
 
 ### Website ###
