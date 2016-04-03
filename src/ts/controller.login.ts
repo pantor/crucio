@@ -1,8 +1,8 @@
 class LoginController {
-  Auth: any;
-  API: any;
+  Auth: Auth;
+  API: API;
   $document: any;
-  user: any;
+  user: User;
   rememberMe: boolean;
   loginError: boolean;
   email: string;

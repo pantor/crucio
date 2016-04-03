@@ -1,7 +1,7 @@
 class GlobalStatisticController {
-  API: any;
+  API: API;
   activeTab: string;
-  user: any;
+  user: User;
   updateActivity: boolean;
   showActivity: any;
   stats: any;

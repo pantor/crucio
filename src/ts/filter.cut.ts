@@ -1,5 +1,5 @@
 function Cut() {
-  return (value, wordwise, max, tail) => {
+  return (value: string, wordwise: boolean, max: string, tail: string): string => {
     if (!value) {
       return '';
     }

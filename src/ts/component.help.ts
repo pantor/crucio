@@ -1,6 +1,6 @@
 class HelpController {
-  API: any;
-  user: any;
+  API: API;
+  user: User;
   question_id: number;
   subject: string;
   isWorking: boolean;

@@ -1,5 +1,5 @@
 class ForgotPasswordController {
-  API: any;
+  API: API;
   $scope: any;
   $uibModal: any;
   confirm: any;

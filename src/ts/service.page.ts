@@ -7,15 +7,15 @@ class Page {
     this.$window = $window;
   }
 
-  setTitle(newTitle: string) {
+  setTitle(newTitle: string): void {
     this.title = newTitle;
   }
 
-  setNav(newNav: string) {
+  setNav(newNav: string): void {
     this.nav = newNav;
   }
 
-  setTitleAndNav(newTitle: string, newNav: string = '') {
+  setTitleAndNav(newTitle: string, newNav: string = ''): void {
     this.title = newTitle;
     this.nav = newNav;
 

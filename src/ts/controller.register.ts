@@ -1,8 +1,8 @@
 class RegisterController {
-  API: any;
+  API: API;
   $scope: any;
   $uibModal: any;
-  user: any;
+  user: User;
   semester: number;
   course: number;
   isWorking: boolean;
@@ -11,7 +11,7 @@ class RegisterController {
   password: string;
   passwordc: string;
 
-  constructor(Auth, API, $scope, $uibModal) {
+  constructor(Auth: Auth, API: API, $scope, $uibModal) {
     this.API = API;
     this.$scope = $scope;
     this.$uibModal = $uibModal;

@@ -1,6 +1,6 @@
 class ActivateController {
-  API: any;
-  user: any;
+  API: API;
+  user: User;
   token: string;
   success: boolean;
   errorNoToken: boolean;

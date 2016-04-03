@@ -1,8 +1,8 @@
 class EditExamController {
-  API: any;
+  API: API;
   FileUploader: any;
   $location: any;
-  user: any;
+  user: User;
   examId: number;
   openQuestionId: number;
   openQuestionIndex: number;
@@ -80,7 +80,7 @@ class EditExamController {
     });
   }
 
-  getCategories(subjectId) {
+  getCategories(subjectId: number) {
     for (const e of this.subjectList) {
       if (e.subject_id === subjectId) {
         return e.categories;
@@ -101,7 +101,7 @@ class EditExamController {
     }
   }
 
-  addQuestion(show) {
+  addQuestion(show: boolean) {
     const question = {
       category_id: 0,
       question: '',
@@ -118,7 +118,7 @@ class EditExamController {
     this.remakeUploaderArray();
   }
 
-  deleteQuestion(index) {
+  deleteQuestion(index: number) {
     const questionId = this.questions[index].question_id;
 
     if (questionId) {
@@ -131,7 +131,7 @@ class EditExamController {
     this.remakeUploaderArray();
 
     if (!this.questions) {
-      this.addQuestion(1);
+      this.addQuestion(true);
     }
   }
 

@@ -1,7 +1,7 @@
 class SettingsController {
-  API: any;
-  Auth: any;
-  user: any;
+  API: API;
+  Auth: Auth;
+  user: User;
   isWorking: boolean;
   hasError: boolean;
   isSaved: boolean;

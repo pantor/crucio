@@ -1,14 +1,14 @@
 class Auth {
   $cookies: any;
   $window: any;
-  user: any;
+  user: User;
 
   constructor($cookies, $window) {
     this.$window = $window;
     this.$cookies = $cookies;
   }
 
-  getUser() {
+  getUser(): User {
     this.tryGetUser();
     if (!this.user) {
       this.$window.location.replace('/');
@@ -16,7 +16,7 @@ class Auth {
     return this.user;
   }
 
-  tryGetUser() {
+  tryGetUser(): User {
     // Check if user is in already in user object and check if cookies
     if (
       angular.isUndefined(this.user) && angular.isDefined(this.$cookies.getObject('CrucioUser'))
@@ -26,7 +26,7 @@ class Auth {
     return this.user;
   }
 
-  login(newUser, rememberUser) {
+  login(newUser: User, rememberUser: boolean) {
     newUser.remember_user = rememberUser;
     this.setUser(newUser, true);
     this.$window.location.assign('/learn');
@@ -37,7 +37,7 @@ class Auth {
     this.$window.location.assign(this.$window.location.origin);
   }
 
-  setUser(newUser, saveNewCookie = false) {
+  setUser(newUser: User, saveNewCookie: boolean = false) {
     this.user = newUser;
 
     if (saveNewCookie || angular.isDefined(this.$cookies.getObject('CrucioUser'))) {

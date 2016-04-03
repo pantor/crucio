@@ -1,9 +1,9 @@
 class LearnController {
-  API: any;
-  Collection: any;
+  API: API;
+  Collection: Collection;
   $location: any;
   activeTab: string;
-  user: any;
+  user: User;
   examSearch: any;
   commentSearch: any;
   questionSearch: any;
@@ -171,7 +171,7 @@ class LearnController {
     }
   }
 
-  learnExam(examId) {
+  learnExam(examId: number) {
     const data = { random: true };
     this.Collection.prepareExam(examId, data).then(result => {
       this.$location.path('/question').search('id', result.list[0].question_id);

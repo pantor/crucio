@@ -1,10 +1,10 @@
 class ExamController {
-  API: any;
-  Collection: any;
+  API: API;
+  Collection: Collection;
   $location: any;
   $document: any;
   $uibModal: any;
-  user: any;
+  user: User;
   examId: number;
   currentIndex: number;
   exam: any;
@@ -68,7 +68,7 @@ class ExamController {
     });
   }
 
-  isHalftime(index) {
+  isHalftime(index: number): boolean {
     return (Math.abs(index + 1 - this.questions.length / 2) < 1) && (index > 3);
   }
 
@@ -76,7 +76,7 @@ class ExamController {
     this.$location.path('/analysis').search('id', null);
   }
 
-  openImageModal(fileName) {
+  openImageModal(fileName: string) {
     this.$uibModal.open({
       templateUrl: 'imageModalContent.html',
       controller: 'ModalInstanceController',

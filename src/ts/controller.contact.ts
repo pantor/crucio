@@ -1,7 +1,7 @@
 class ContactController {
-  API: any;
+  API: API;
   $uibModal: any;
-  user: any;
+  user: User;
   name: string;
   email: string;
   isWorking: boolean;

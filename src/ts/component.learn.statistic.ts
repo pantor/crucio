@@ -1,6 +1,6 @@
 class StatisticController {
-  user: any;
-  
+  user: User;
+
   constructor(Auth, Page) {
     Page.setTitleAndNav('Statistik | Crucio', 'Lernen');
 

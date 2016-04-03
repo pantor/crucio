@@ -1,9 +1,9 @@
 class QuestionController {
-  Auth: any;
-  API: any;
-  Collection: any;
+  Auth: Auth;
+  API: API;
+  Collection: Collection;
   $uibModal: any;
-  user: any;
+  user: User;
   questionId: number;
   resetSession: boolean;
   commentsCollapsed: boolean;
@@ -113,13 +113,13 @@ class QuestionController {
     this.markAnswer(this.questionData.givenAnswer);
   }
 
-  saveAnswer(givenAnswer) {
+  saveAnswer(givenAnswer: number) {
     this.questionData.givenAnswer = givenAnswer;
     this.Collection.saveAnswer(this.index, this.questionData.givenAnswer);
   }
 
   // Colors the given answers and shows the correct solution
-  markAnswer(givenAnswer) {
+  markAnswer(givenAnswer: number) {
     this.isAnswerGiven = true;
     const type = this.question.type;
     if (type > 1) {
@@ -153,13 +153,13 @@ class QuestionController {
     });
   }
 
-  deleteComment(index) {
+  deleteComment(index: number) {
     const commentId = this.comments[index].comment_id;
     this.API.delete(`comments/${commentId}`);
     this.comments.splice(index, 1);
   }
 
-  changeUserVoting(comment, change) {
+  changeUserVoting(comment, change: number) {
     comment.user_voting = Math.min(Math.max(comment.user_voting + change, -1), 1);
     const data = { user_voting: comment.user_voting };
     this.API.post(`comments/${comment.comment_id}/user/${this.user.user_id}`, data, true);

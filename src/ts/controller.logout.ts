@@ -1,8 +1,8 @@
 class LogoutController {
-  Page: any;
-  Auth: any;
-  user: any;
-  
+  Page: Page;
+  Auth: Auth;
+  user: User;
+
   constructor(Auth, Page) {
     this.Page = Page;
     this.Auth = Auth;

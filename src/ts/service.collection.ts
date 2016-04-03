@@ -3,7 +3,7 @@ interface Storage {
 }
 
 class Collection {
-  API: any;
+  API: API;
   collection: any;
 
   constructor(API) {
@@ -78,21 +78,21 @@ class Collection {
     return result;
   }
 
-  saveAnswer(index, answer) {
+  saveAnswer(index: number, answer): void {
     if (this.collection && Object.keys(this.collection).length) {
       this.collection.list[index].given_result = answer;
       this.set(this.collection);
     }
   }
 
-  saveStrike(index: number, strike) {
+  saveStrike(index: number, strike): void {
     if (this.collection && Object.keys(this.collection).length) {
       this.collection.list[index].strike = strike;
       this.set(this.collection);
     }
   }
 
-  saveMarkAnswer(index: number) {
+  saveMarkAnswer(index: number): void {
     if (this.collection && Object.keys(this.collection).length) {
       this.collection.list[index].mark_answer = 1;
       this.set(this.collection);
@@ -115,7 +115,7 @@ class Collection {
     });
   }
 
-  getIndexOfQuestion(questionId: number) {
+  getIndexOfQuestion(questionId: number): number {
     // this.index = this.collection.list.findIndex(e => e.question_id === this.questionId);
     for (let i = 0; i < this.collection.list.length; i++) {
       if (this.collection.list[i].question_id === questionId) {

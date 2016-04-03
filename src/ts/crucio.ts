@@ -38,7 +38,7 @@ angular.module('crucioApp', [
     // $compileProvider.debugInfoEnabled(false);
   })
 
-  .run(function run(Auth, $location, $window) {
+  .run(function run(Auth: Auth, $location, $window) {
     // Enumerate paths that don't need authentication
     const pathsThatLogin = ['/', '/register', '/forgot-password'];
     const pathsForAuthor = ['/author', '/edit-exam'];

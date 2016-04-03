@@ -1,8 +1,8 @@
 class Validate {
-  public API: any;
+  public API: API;
   public whitelist: any;
 
-  constructor(API: any) {
+  constructor(API) {
     this.API = API;
 
     API.get('whitelist', {}, true).then(result => {
@@ -10,12 +10,12 @@ class Validate {
     });
   }
 
-  username(username: string) {
+  username(username: string): boolean {
     // TODO: Check duplicate
     return (username.length > 4);
   }
 
-  email(mail: string) {
+  email(mail: string): boolean {
     // Check online duplicate
     const regex = /[\wäüöÄÜÖ]*@studserv\.uni-leipzig\.de$/;
     if (regex.test(mail)) {
@@ -25,7 +25,7 @@ class Validate {
     return this.whitelist && this.whitelist.some(entry => entry.mail_address === mail);
   }
 
-  password(password: string) {
+  password(password: string): boolean {
     return (password && password.length > 4);
   }
 }

@@ -1,15 +1,15 @@
 class AdminController {
-  API: any;
+  API: API;
   $uibModal: any;
   activeTab: string;
-  user: any;
+  user: User;
   userSearch: any;
   commentSearch: any;
   whitelist: any;
   stats: any;
   distinctGroups: any;
   distinctSemesters: any;
-  users: any;
+  users: User[];
   comments: any;
   questionsByComment: any;
   newWhitelistEmail: string;
@@ -99,8 +99,8 @@ class AdminController {
   }
 
   changeGroup(index) {
-    const userId = this.users[index].user_id;
-    let groupId = this.users[index].group_id;
+    const userId: number = this.users[index].user_id;
+    let groupId: number = this.users[index].group_id;
     groupId = (groupId % this.distinctGroups.length) + 1;
 
     this.users[index].group_id = groupId;
@@ -116,7 +116,7 @@ class AdminController {
     this.API.put(`users/${userId}/group`, data, true);
   }
 
-  isToday(dateString, hourDiff = 0) {
+  isToday(dateString, hourDiff = 0): boolean {
     const today: any = new Date();
     const diff: number = today - 1000 * 60 * 60 * hourDiff;
     const compareDate = new Date(diff);
@@ -125,8 +125,8 @@ class AdminController {
     return (compareDate.toDateString() === date.toDateString());
   }
 
-  changeSemester(number) {
-    const data = { number };
+  changeSemester(difference: number) {
+    const data = { difference };
     this.API.put('users/change-semester', data).then(result => {
       alert(result.data.status);
     });

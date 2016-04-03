@@ -1,8 +1,8 @@
 class AuthorController {
-  API: any;
+  API: API;
   $location: any;
   activeTab: string;
-  user: any;
+  user: User;
   examSearch: any;
   commentSearch: any;
   distinctSemesters: any;

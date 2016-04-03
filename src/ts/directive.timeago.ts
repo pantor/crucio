@@ -36,18 +36,18 @@ function TimeAgo() {
         const prefix = strings.prefixAgo;
         const suffix = strings.suffixAgo;
 
-        function isFunction(functionToCheck) {
+        function isFunction(functionToCheck): boolean {
           const getType = {};
           return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
         }
 
-        function substitute(object, number) { // object is either string or function
+        function substitute(object, number): string { // object is either string or function
           const string = isFunction(object) ? element(number, distanceMillis) : object;
           const value = (strings.numbers && strings.numbers[number]) || number;
           return string.replace(/%d/i, value);
         }
 
-        function trimString(string) {
+        function trimString(string: string): string {
           return string.replace(/^\s+|\s+$/g, '');
         }
 

@@ -1,8 +1,8 @@
 class AccountController {
-  API: any;
-  Auth: any;
+  API: API;
+  Auth: Auth;
   $scope: any;
-  user: any;
+  user: User;
   isWorking: boolean;
   isSaved: boolean;
   hasError: boolean;

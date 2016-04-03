@@ -1,6 +1,6 @@
 class AnalysisController {
-  API: any;
-  user: any;
+  API: API;
+  user: User;
   random: number;
   examId: number;
   workedCollection: any;
@@ -32,7 +32,7 @@ class AnalysisController {
       }
     }
 
-    function getRandom(min, max) {
+    function getRandom(min: number, max: number): number {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
@@ -49,7 +49,7 @@ class AnalysisController {
     }
   }
 
-  showCorrectAnswerClicked(index) {
+  showCorrectAnswerClicked(index: number) {
     this.workedCollection[index].show_correct_answer = 1;
   }
 }
