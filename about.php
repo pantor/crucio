@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="crucioApp" id="ng-app">
+<html>
     <head>
         <title>Impressum | Crucio</title>
         <?php include('parts/header.php'); ?>
@@ -7,37 +7,12 @@
 
     <body class="body">
         <div class="wrap">
-            <div class="container-top-bar">
-                <div class="container ">
-                    <div class="row">
-                        <div class="col-md-7 col-md-offset-1 col-sm-5 col-sm-offset-1">
-                            <h1><a href="/" target="_self"><i class="fa fa-check-square-o"></i> Crucio</a></h1>
-                        </div>
+            <?php include('parts/container-top-bar.php'); ?>
 
-                        <div class="col-xs-6 col-md-2 col-sm-3">
-                            <a class="btn btn-block btn-index-top" href="/" target="_self">
-                                <i class="fa fa-sign-in fa-fw hidden-xs"></i> Anmelden
-                            </a>
-                        </div>
-
-                        <div class="col-xs-6 col-md-2 col-sm-3">
-                            <a class="btn btn-block btn-index-top" href="/register" target="_self">
-                                <i class="fa fa-pencil-square-o fa-fw hidden-xs"></i> Registrieren
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="container-back-image container-padding-4">
-                <div class="container container-text container-text-light">
-                    <i class="fa fa-info-circle fa-5x"></i>
-                    <h4>Impressum</h4>
-                    <p>
-                        Alles Rechtliche & Wichtige...
-                    </p>
-                </div>
-            </div>
+            <?php
+                $param = ["fa" => "fa-info-circle", "h4" => "Impressum", "p" => "Alles Rechtliche & Wichtige..."];
+                include('parts/container-title.php');
+            ?>
 
             <div class="container-light-grey container-padding-2">
                 <div class="container container-text">
@@ -76,6 +51,5 @@
         </div>
 
         <?php include('parts/footer.php'); ?>
-        <?php include('parts/scripts.php'); ?>
     </body>
 </html>

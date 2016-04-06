@@ -1,40 +1,18 @@
 <!DOCTYPE html>
-<html ng-app="crucioApp" id="ng-app">
+<html>
     <head>
         <title>Account Aktivierung | Crucio</title>
         <?php include('parts/header.php'); ?>
     </head>
 
-    <body class="body" ng-controller="ActivateController as ctrl">
+    <body class="body">
         <div class="wrap">
-            <div class="container-top-bar">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-7 col-md-offset-1 col-sm-5 col-sm-offset-1">
-                            <h1><a href="/" target="_self"><i class="fa fa-check-square-o"></i> Crucio</a></h1>
-                        </div>
+            <?php include('parts/container-top-bar.php'); ?>
 
-                        <div class="col-xs-6 col-md-2 col-sm-3">
-                            <a class="btn btn-block btn-index-top" href="/" target="_self">
-                                <i class="fa fa-sign-in fa-fw hidden-xs"></i> Anmelden
-                            </a>
-                        </div>
-
-                        <div class="col-xs-6 col-md-2 col-sm-3">
-                            <a class="btn btn-block btn-index-top" href="/register" target="_self">
-                                <i class="fa fa-pencil-square-o fa-fw hidden-xs"></i> Registrieren
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="container-back-image container-padding-4">
-                <div class="container container-text container-text-light">
-                    <i class="fa fa-user fa-5x"></i>
-                    <h4>Account Aktivieren</h4>
-                </div>
-            </div>
+            <?php
+                $param = ["fa" => "fa-user", "h4" => "Account Aktivieren", "p" => ""];
+                include('parts/container-title.php');
+            ?>
 
             <div class="container">
                 <div class="row">
@@ -67,5 +45,23 @@
 
         <?php include('parts/footer.php'); ?>
         <?php include('parts/scripts.php'); ?>
+
+        <script>
+            $(document).ready(function() {
+                var token = $location.search().token;
+
+                if (!token) {
+                    var success = false;
+                    var errorNoToken = true;
+                } else {
+                  var data = { token: token };
+                  $.put('api/v1/users/activate', $('form').serialize(), function(data) {
+                    var success = data.status;
+                    var errorNoToken = (data.error === 'error_no_token');
+                    var errorUnknown = (data.error === 'error_unknown');
+                  });
+                }
+            });
+        </script>
     </body>
 </html>

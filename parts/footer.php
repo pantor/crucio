@@ -1,4 +1,4 @@
-<div id="footer">
+<div class="footer">
     <div class="container">
         <p class="left hidden-xs">
             <a href="http://www.sturamed-leipzig.de">StuRaMed</a>

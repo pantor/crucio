@@ -1,24 +1,31 @@
 <!DOCTYPE html>
-<html ng-app="crucioApp" id="ng-app">
+<?php
+    if(isset($_COOKIE["CrucioUser"])) {
+        header("Location: /learn");
+        exit;
+    }
+?>
+
+<html>
     <head>
         <title>Crucio | Fachschaft Medizin Leipzig</title>
         <?php include('parts/header.php'); ?>
     </head>
 
-    <body class="body" ng-controller="LoginController as ctrl">
+    <body class="body">
         <div class="wrap">
             <div class="container-top-bar" style="margin-bottom: 0;">
                 <div class="container">
-                    <form class="row" ng-submit="ctrl.login()">
+                    <form class="row">
                         <div class="col-md-4 col-md-offset-1">
                             <h1><a href="/"><i class="fa fa-check-square-o"></i> Crucio</a></h1>
                         </div>
 
                         <div class="col-md-3">
                             <div class="form-group element has-feedback" ng-class="{'has-error': ctrl.loginError}">
-                                <input class="form-control" ng-model="ctrl.email" ng-changed="ctrl.formChanged()" type="email" placeholder="E-Mail-Adresse" autofocus>
+                                <input class="form-control" name="email" type="email" placeholder="E-Mail-Adresse" autofocus>
                                 <label class="checkbox">
-                                    <input type="checkbox" ng-model="ctrl.rememberMe" style="margin-top: 2px;">
+                                    <input type="checkbox" name="remember_me" style="margin-top: 2px;" checked>
                                     Angemeldet bleiben
                                 </label>
                             </div>
@@ -26,8 +33,7 @@
 
                         <div class="col-md-2">
                             <div class="form-group element has-feedback" ng-class="{'has-error': ctrl.loginError}">
-                                <input class="form-control" ng-model="ctrl.password" ng-changed="ctrl.formChanged()" type="password" placeholder="Passwort">
-                                <i class="fa fa-remove form-control-feedback" ng-show="ctrl.loginError" style="margin-top: 9px;" ng-cloak></i>
+                                <input class="form-control" name="password" type="password" placeholder="Passwort">
                                 <label for="passwordInput">
                                     <a href="forgot-password" target="_self">Passwort vergessen?</a>
                                 </label>
@@ -35,7 +41,7 @@
                         </div>
 
                         <div class="col-md-1">
-                            <button class="btn btn-index-top">
+                            <button class="btn btn-index-top" type="submit">
                                 <i class="fa fa-sign-in fa-fw hidden-xs"></i> Anmelden
                             </button>
                         </div>
@@ -54,11 +60,11 @@
                         </p>
 
                         <a class="btn btn-lg" href="register" target="_self">Registrieren</a>
-                        <a class="btn btn-lg" ng-click="ctrl.$document.scrollTopAnimated(1050, 600)">Mehr Infos</a>
+                        <a class="btn btn-lg" id="moreButton">Mehr Infos</a>
                     </div>
                 </div>
 
-                <img src="public/images/med_3x.png" class="center-block img-responsive image-med-exam" alt="Klausuren lernen">
+                <img src="public/images/med_notepad.png" class="center-block img-responsive image-med-exam" alt="Klausuren lernen">
             </div>
 
             <div class="container-light-grey container-padding-2">
@@ -132,5 +138,37 @@
 
         <?php include('parts/footer.php'); ?>
         <?php include('parts/scripts.php'); ?>
+
+        <script>
+            $("#moreButton").click(function() {
+                $('html, body').animate({ scrollTop: 1050 }, 600);
+            });
+
+            $('form').validate({
+                errorClass: 'fa fa-remove form-control-feedback',
+                errorElement: 'i',
+                wrapper: 'div',
+                highlight: function () {
+                    return false;
+                },
+                unhighlight: function () {
+                    return false;
+                },
+                submitHandler: function() {
+                    $.get('api/v1/users/login', $('form').serialize(), function(data) {
+                        if (data.status) {
+                            // data.logged_in_user.remeber_me = $("[name='remeber_me']").val();
+                            Cookies.set('CrucioUser', data.logged_in_user)
+                            location.assign('/learn');
+                        }
+                    });
+                    return false;
+                },
+                messages: {
+                    email: "",
+                    password: "",
+                }
+            });
+        </script>
     </body>
 </html>

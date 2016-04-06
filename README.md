@@ -1,10 +1,6 @@
 # Crucio
 
-Crucio is an e-learning system for multiple-choice questions. 
-
 Crucio ist ein Online-Lernsystem für Multiple-Choice-Klausuren. Fachschaften können Alt- oder Probefragen eintragen und auf einfachem Wege allen Studierenden zur Verfügung stellen. Alle Informationen und einige Screenshots findet ihr auf der [Website](http://crucioproject.github.io). Crucio wird derzeit an der [Universität Leipzig](http://www.crucio-leipzig.de) verwendet.
-
-Crucio is open source and freely available.
 
 Crucio ist Open Source und damit kostenlos verfügbar. Falls du/ihr/deine Fachschaft Crucio einführen wollt, könnt ihr unter Installation weiterlesen. Bei Fragen könnt ihr an crucio@pantorix.de schreiben!
 
@@ -28,7 +24,7 @@ Crucio is written in PHP, Javascript ES6, [SASS](http://sass-lang.com) and MySQL
 Crucio is based on several frameworks and plug-ins. The most important ones are [AngularJS](https://angularjs.org), [Bootstrap](http://getbootstrap.com) and [SLIM](http://www.slimframework.com). For Icons [FontAwesome](http://fontawesome.io) is used.
 
 ### Workflow
-For development [Gulp](http://gulpjs.com) is used; mainly for compiling SCSS files and minify- and concat actions. At first, [NodeJS](https://nodejs.org) needs to be installed, afterwards Gulp can be installed via `npm install -g gulp`. The needed dependencies for Crucio (which are listed in `package.json`) can be downloaded via `npm install`. 
+For development [Gulp](http://gulpjs.com) is used; mainly for compiling SCSS files and minify- and concat actions. At first, [NodeJS](https://nodejs.org) needs to be installed, afterwards Gulp can be installed via `npm install -g gulp`. The needed dependencies for Crucio (which are listed in `package.json`) can be downloaded via `npm install`.
 
 ## License
 Crucio is released under the GNU GENERAL PUBLIC LICENSE v2.
