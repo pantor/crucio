@@ -1,0 +1,295 @@
+<div class="container" ng-show="$ctrl.ready == 0" style="padding-top: 100px;">
+    <div class="spinner" us-spinner="{length: 0, radius: 18, color: '#333', shadow: false}" spinner-on="$ctrl.ready == 0"></div>
+</div>
+
+<div class="container" ng-show="$ctrl.ready == 1">
+    <div class="row mtop-navbar-row">
+        <div class="col-sm-4" >
+            <div class="fixed-wrapper fixed-wrapper-sm-4">
+                <div class="btn-toolbar mmtop">
+                    <button class="btn btn-success mtop" ng-click="$ctrl.saveExam()">
+                        <i ng-show="!$ctrl.isSaving" class="fa fa-fw fa-save"></i>
+                        <i ng-show="$ctrl.isSaving" class="fa fa-circle-o-notch fa-spin"></i>
+                        <span ng-show="$ctrl.hasChanged">Speichern</span>
+                        <span ng-show="!$ctrl.hasChanged">Gespeichert</span>
+                    </button>
+
+                    <div class="btn-group pull-right mtop" role="group">
+                        <a class="btn btn-default" href="exam?id={{ ::$ctrl.exam.exam_id }}" target="_blank"><i class="fa fa-fw fa-external-link"></i></a>
+                    </div>
+
+                    <div class="btn-group pull-right mtop">
+                        <button class="btn btn-success" ng-click="$ctrl.addQuestion(1)"><i class="fa fa-plus"></i> Frage</button>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="edit-exam-wrapper" >
+                    <ul class="list-group exam-edit-list-group">
+                        <a class="list-group-item" ng-class="{ active: $ctrl.openQuestionIndex == -1 }" ng-click="$ctrl.openQuestionIndex = -1" href>
+                            <h4 class="list-group-item-heading">Allgemeine Infos <i class="fa fa-chevron-right pull-right"></i></h4>
+                            <p class="list-group-item-text">
+                                <i class="fa fa-fw fa-flask"></i> {{ $ctrl.exam.subject }} <i class="fa fa-fw"></i><i class="fa fa-fw fa-calendar"></i> {{ $ctrl.exam.date }}
+                            </p>
+                        </a>
+                        <a class="list-group-item question-item" ng-class="{active: $ctrl.openQuestionIndex == $index}" ng-click="$ctrl.openQuestionIndex = $index" ng-repeat="q in $ctrl.questions" href>
+                            <div ng-show="q.type == 1" class="dot dot-info pull-left" style="margin-top: 2px; margin-left: -4px;"></div>
+                            <div ng-show="q.type > 1 && q.correct_answer == 0" class="dot dot-danger pull-left" style="margin-top: 2px; margin-left: -4px;"></div>
+                            <i class="fa fa-chevron-right pull-right"></i>
+                            <span ng-show="q.question.length == 0 || q.question == '<br/>'">Neue Frage...</span>
+                            <span ng-bind-html="q.question | cut : true : 44 : '...'"></span>
+                        </a>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-8">
+            <div class="tab-content">
+                <div class="tab-pane" ng-class="{ active: $ctrl.openQuestionIndex == -1 }" id="info">
+                    <div class="form-horizontal mbotton-3x">
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-3 control-label">Fach</label>
+                            <div class="col-md-8 col-sm-9">
+                                <select class="form-control" ng-model="$ctrl.exam.subject_id">
+                                    <option ng-repeat="s in ::$ctrl.subjectList" value="{{ s.subject_id }}">{{ s.subject }}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-3 control-label">Semester</label>
+                            <div class="col-sm-4">
+                                <input class="form-control" type="number" ng-model="$ctrl.exam.semester">
+                            </div>
+                            <span class="label validation-error label-danger" ng-show="$ctrl.exam.semester < 1">Kein echtes Semester</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-3 control-label">Termin</label>
+                            <div class="col-md-6 col-sm-7">
+                                <input class="form-control" type="text" ng-model="$ctrl.exam.date" placeholder="z.B. WS 2001/02, SS 2009 oder Unbekannt">
+                            </div>
+                            <span class="label validation-error label-danger" ng-show="!$ctrl.exam.date">Hier sollte etwas stehen</span>
+                        </div>
+
+                        <hr>
+
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-3 control-label">Art</label>
+                            <div class="col-md-8 col-sm-9">
+                                <select class="form-control" ng-model="$ctrl.exam.sort">
+                                      <option value='Erstklausur'>Erstklausur</option>
+                                      <option value='Wiederholungsklausur'>Wiederholungsklausur</option>
+                                      <option value='Leistungskontrolle'>Leistungskontrolle</option>
+                                      <option value='Fragensammlung'>Fragensammlung</option>
+                                      <option value='Testat'>Testat</option>
+                                      <option value='Sonstiges'>Sonstiges</option>
+                                </select>
+                            </div>
+                            <span class="label validation-error label-error" id="sort-validation-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-3 control-label">Professor</label>
+                            <div class="col-md-8 col-sm-9">
+                                <input class="form-control" id="professor" type="text" ng-model="$ctrl.exam.professor">
+                            </div>
+                            <span class="label validation-error label-danger" id="prof-validation-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-3 control-label">Bearbeitungszeit</label>
+                            <div class="col-sm-3">
+                                <input class="form-control" id="duration" type="number" ng-model="$ctrl.exam.duration">
+                            </div>
+                            <span class="label validation-error label-default" id="duration-validation-error">Minuten</span>
+                            <span class="label validation-error label-danger" id="duration-validation-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-3 control-label">Anmerkungen</label>
+                            <div class="col-md-8 col-sm-9">
+                                <textarea class="form-control" rows="3" id="notes" name="notes" ng-model="$ctrl.exam.notes"></textarea>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-3 control-label">Dokument</label>
+                            <div class="col-md-8 col-sm-9">
+                                <div class="mtop-8 mbottom">
+                                    <input type="file" nv-file-select uploader="$ctrl.uploader" accept="application/pdf"/><br/>
+                                        <a href="/files/{{ $ctrl.exam.file_name }}" target="_self" class="btn btn-primary" ng-show="$ctrl.exam.file_name">
+                                        <i class="fa fa-external-link fa-fw"></i> Originaldokument
+                                    </a>
+                                    <button ng-disabled="$ctrl.uploader.queue.length == 0" class="btn btn-default" ng-click="$ctrl.uploader.queue[$ctrl.uploader.queue.length-1].upload()">
+                                        <i class="fa fa-fw fa-upload"></i> Hochladen
+                                    </button>
+                                    <button class="btn btn-danger" ng-click="$ctrl.exam.file_name=''">Dokument l&ouml;schen</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-3 control-label">Sichtbar</label>
+
+                                <div class="col-md-8 col-sm-9" style="margin-left:20px;">
+                                <label class="checkbox">
+                                    <input type="checkbox" ng-model="$ctrl.exam.visibility" ng-true-value="'1'" ng-false-value="'0'">
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-3 control-label">Anzahl Fragen</label>
+                            <div class="col-md-8 col-sm-9 mtop-8">{{ $ctrl.questions.length }}</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-3 control-label">Autor</label>
+                            <div class="col-md-8 col-sm-9 mtop-8">{{ ::$ctrl.exam.username }}</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-3 control-label">Eingetragen</label>
+                            <div class="col-md-8 col-sm-9 mtop-8">{{ $ctrl.exam.date_added * 1000 | date:'dd.MM.yyyy' }}</div>
+                        </div>
+
+                        <div class="form-group" ng-show="exam.exam_id">
+                            <label class="col-md-2 col-sm-3 control-label">Aktualisiert</label>
+                            <div class="col-md-8 col-sm-9 mtop-8">{{ $ctrl.exam.date_updated * 1000 | date:'dd.MM.yyyy, HH:mm' }}</div>
+                        </div>
+
+                        <hr>
+
+                        <div class="form-group">
+                            <div class="col-md-8 col-md-offset-2">
+                                <button class="btn btn-danger mtop" data-toggle="modal" data-target="#myModal">
+                                    <i class="fa fa-fw fa-trash-o"></i> Klausur l&ouml;schen
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane tab-question" ng-class="{active: $ctrl.openQuestionIndex == $index}" ng-repeat="q in $ctrl.questions" id="{{ $index+1 }}">
+                    <div class="form-horizontal mbottom-3x">
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-3 control-label">Typ</label>
+                            <div class="col-sm-7 col-md-6">
+                                <div class="btn-group">
+                                    <label class="btn btn-default" ng-model="q.type" uib-btn-radio="'1'">Freie Frage</label>
+                                    <label class="btn btn-default" ng-model="q.type" uib-btn-radio="'2'">2</label>
+                                    <label class="btn btn-default" ng-model="q.type" uib-btn-radio="'3'">3</label>
+                                    <label class="btn btn-default" ng-model="q.type" uib-btn-radio="'4'">4</label>
+                                    <label class="btn btn-default" ng-model="q.type" uib-btn-radio="'5'">5</label>
+                                    <label class="btn btn-default" ng-model="q.type" uib-btn-radio="'6'">6 Antworten</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-3 control-label">Kategorie</label>
+                            <div class="col-md-7 col-sm-8">
+                                <select class="form-control" ng-model="q.category_id">
+                                    <option value="0">Sonstiges</option>
+                                    <option ng-repeat="c in $ctrl.getCategories($ctrl.exam.subject_id)" value="{{ c.category_id }}">{{ c.category }}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Frage</label>
+                            <div class="col-sm-10">
+                                <text-angular ng-model="q.question" ta-disabled="false" ta-toolbar="[['bold','italics', 'subscript', 'superscript'], ['ul', 'ol'], ['times', 'sdot', 'asymp', 'radic'], ['arrow-left', 'arrow-right', 'arrow-left-right'], ['alpha', 'beta', 'gamma', 'delta', 'lambda', 'mu', 'pi', 'rho', 'omega', 'Omega'], ['undo', 'redo']]" class="text-angular-large"></text-angular>
+
+                                <div class="mtop-8 mbottom">
+                                    <input type="file" nv-file-select uploader="$ctrl.uploaderArray[$index]" accept="image/jpeg, image/png"/><br/>
+                                    <button ng-disabled="$ctrl.uploaderArray[$index].queue.length == 0" class="btn btn-default" ng-click="$ctrl.uploaderArray[$index].queue[0].upload()">
+                                        <i class="fa fa-fw fa-upload"></i> Hochladen
+                                    </button>
+                                    <button class="btn btn-danger" ng-click="q.question_image_url=''">Bild l&ouml;schen</button>
+                                </div>
+
+                                <img ng-if="q.question_image_url" class="img-thumbnail questionImagePreview" src="/files/{{ q.question_image_url }}"/>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="form-group mmbottom">
+                            <label class="col-sm-2">
+                            </label>
+                            <div class="col-sm-10 mmbottom">
+                                <text-angular-toolbar name="toolbarf{{$index}}" ta-toolbar="[['subscript', 'superscript'], ['times', 'sdot', 'asymp', 'radic'], ['alpha', 'beta', 'gamma', 'delta', 'lambda', 'mu', 'pi', 'rho', 'omega', 'Omega']]"></text-angular-toolbar>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-repeat="a in [0,1,2,3,4,5]"  id="answer{{ $index+1 }}Form" ng-show="$index < q.type">
+                            <label class="col-sm-2 control-label {{q.correct_answer == $index+1 ? 'text-success strong':''}}">
+                                Antwort <span ng-show="q.type>1">{{ ::$index+1 }}</span>
+                            </label>
+
+                            <div class="col-sm-10">
+                                <text-angular ng-model="q.answers[$index]" ta-disabled="false" ta-target-toolbars="toolbarf{{ $parent.$index }}"></text-angular>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-show="q.type>1">
+                            <label class="col-sm-2 control-label">L&ouml;sung</label>
+
+                            <div class="col-sm-10">
+                                <div class="btn-group">
+                                    <label class="btn btn-success" ng-model="q.correct_answer" uib-btn-radio="'0'">Unbekannt</label>
+                                    <label ng-repeat="a in [0,1,2,3,4,5]" ng-if="$index < q.type" class="btn btn-success" ng-model="q.correct_answer" uib-btn-radio="'{{ $index+ 1 }}'">{{ ::$index + 1 }}</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="explanation">Erkl&auml;rung</label>
+                            <div class="col-sm-10">
+                                <text-angular ng-model="q.explanation" ta-disabled="false" ta-toolbar="[['bold','italics', 'subscript', 'superscript'], ['ul', 'ol'], ['times', 'sdot', 'asymp', 'radic'], ['arrow-left', 'arrow-right', 'arrow-left-right'], ['alpha', 'beta', 'gamma', 'delta', 'lambda', 'mu', 'pi', 'rho', 'omega', 'Omega'], ['undo', 'redo']]" class="text-angular-large"></text-angular>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="form-group">
+                            <div class="col-md-8 col-md-offset-2">
+                                <button class="btn btn-danger mtop" ng-click="$ctrl.deleteQuestion($index)"><i class="fa fa-trash-o"></i> Frage l&ouml;schen</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Klausur wirklich l&ouml;schen?</h4>
+                </div>
+
+                <div class="modal-body">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+                    <button class="btn btn-danger pull-right" data-dismiss="modal" ng-click="$ctrl.deleteExam()">L&ouml;schen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
