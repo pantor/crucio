@@ -3,7 +3,12 @@
 function init() {
     error_reporting(0);
     try {
-        $config = include(dirname(__FILE__).'/../config.php');
+        if ($_SERVER['SERVER_ADDR'] == '192.168.33.10') { // Vagrant Address
+            $config = include(dirname(__FILE__).'/../config.vagrant.php');
+        } else {
+            $config = include(dirname(__FILE__).'/../config.php');
+        }
+
         $mysql = new PDO(
             'mysql:host='.$config['host'].';dbname='.$config['dbname'].';charset=utf8',
             $config['user'],
