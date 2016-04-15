@@ -10,6 +10,7 @@ var gulp = require('gulp'),
   phplint = require('gulp-phplint'),
   copy = require('gulp-copy');
 
+
 var node = 'node_modules/';
 
 gulp.task('sass', function () {
@@ -31,7 +32,10 @@ gulp.task('sass', function () {
 });
 
 gulp.task('ts', function () {
-  gulp.src(['app/crucio.ts', 'app/**/*.ts'])
+  gulp.src([
+    'app/crucio.ts',
+    'app/**/*.ts',
+  ])
 		.pipe(ts({ noImplicitAny: false, out: 'crucio.js' }))
     .pipe(ngAnnotate())
     .pipe(uglify())

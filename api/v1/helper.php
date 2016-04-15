@@ -165,4 +165,28 @@ function sendMail($destination, $subject, $message, $senderName, $senderMail) {
     return $data;
 }
 
+
+
+// ----- Outer ------
+
+function activate($token) {
+    $mysql = init();
+
+    if ((getCount($mysql, "users WHERE activationtoken = ?", [$token]) != 1)) {
+        $data['error'] = 'error_unknown';
+        return $data;
+    }
+
+    $stmt = $mysql->prepare(
+        "UPDATE users
+        SET active = 1
+        WHERE activationtoken = :token
+        LIMIT 1"
+    );
+    $stmt->bindValue(':token', $token);
+
+    $data['status'] = execute($stmt);
+    return $data;
+}
+
 ?>

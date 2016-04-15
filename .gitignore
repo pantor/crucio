@@ -11,4 +11,4 @@ typings
 robots.txt
 google*.html
 api/config.php
-api/config.leipzig.php
+ftp.json

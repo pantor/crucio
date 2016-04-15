@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php
     if(isset($_COOKIE["CrucioUser"])) {
         header("Location: /learn");
@@ -6,6 +5,7 @@
     }
 ?>
 
+<!DOCTYPE html>
 <html>
     <head>
         <title>Crucio | Fachschaft Medizin Leipzig</title>

@@ -10,7 +10,7 @@
             <?php include('parts/container-top-bar.php'); ?>
 
             <?php
-                $param = ["fa" => "fa-pencil-square-o", "h4" => "Registrieren", "p" => ""];
+                $param = ["fa" => "fa-pencil-square-o", "h4" => "Registrieren"];
                 include('parts/container-title.php');
             ?>
 

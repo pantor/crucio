@@ -10,7 +10,7 @@
             <?php include('parts/container-top-bar.php'); ?>
 
             <?php
-                $param = ["fa" => "fa-info-circle", "h4" => "Impressum", "p" => "Alles Rechtliche & Wichtige..."];
+                $param = ["fa" => "fa-info-circle", "h4" => "Impressum"];
                 include('parts/container-title.php');
             ?>
 

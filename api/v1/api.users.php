@@ -213,23 +213,8 @@ $app->group('/users', function() {
 	});
 
 	$this->put('/activate', function($request, $response, $args) {
-		$mysql = init();
         $body = $request->getParsedBody();
-
-		if ((getCount($mysql, "users WHERE activationtoken = ?", [$body['token']]) != 1)) {
-			$data['error'] = 'error_unknown';
-			return createResponse($response, $data, false);
-		}
-
-		$stmt = $mysql->prepare(
-		    "UPDATE users
-		    SET active = 1
-		    WHERE activationtoken = :token
-		    LIMIT 1"
-		);
-		$stmt->bindValue(':token', $body['token']);
-
-		$data['status'] = execute($stmt);
+        $data = activate($body['token']);
 	    return createResponse($response, $data, false);
 	});
 
@@ -364,6 +349,35 @@ $app->group('/users', function() {
 
 	$this->group('/password', function() {
 
+        $this->post('/token', function($request, $response, $args) {
+            $mysql = init();
+			$body = $request->getParsedBody();
+
+			if (!validateActivationToken($mysql, $body['token'])) {
+				$data['error'] = 'error_token';
+				return createResponse($response, $data);
+			}
+
+			$rand_pass = $body['password'];
+			$secure_pass = generateHash($rand_pass);
+			$user = fetchUserDetailsByToken($mysql, $body['token']);
+
+			$new_activation_token = generateActivationToken($mysql);
+
+			$stmt = $mysql->prepare(
+    		    "UPDATE users
+    		    SET password = ?, activationtoken = ?
+    		    WHERE activationtoken = ?"
+    		);
+    		$stmt->bindValue(1, $secure_pass);
+    		$stmt->bindValue(2, $new_activation_token);
+    		$stmt->bindValue(3, sanitize($body['token']));
+
+    		$data['status'] = execute($stmt);
+			$data['status_flag'] = flagLostpasswordRequest($mysql, $user["username_clean"], 0);
+			return createResponse($response, $data);
+		});
+
 		$this->post('/reset', function($request, $response, $args) {
 			$mysql = init();
 			$body = $request->getParsedBody();
@@ -383,66 +397,15 @@ $app->group('/users', function() {
 		    }
 
 	        $website_url = getURL();
-	        $confirm_url = $website_url.'forgot-password?confirm='.$user['activationtoken'];
-	        $deny_url = $website_url.'forgot-password?deny='.$user['activationtoken'];
+	        $reset_url = $website_url.'change-password?token='.$user['activationtoken'];
 
 	        $hooks = [
-    	        'CONFIRM-URL' => $confirm_url,
-    	        'DENY-URL' => $deny_url,
+    	        'RESET-URL' => $reset_url,
     	        'USERNAME' => $user['username'],
             ];
 	        sendTemplateMail('lost-password-request', $email, 'Neues Passwort I', $hooks);
 
 	        $data['status'] = flagLostpasswordRequest($mysql, $user['username'], 1);
-			return createResponse($response, $data);
-		});
-
-		$this->post('/confirm', function($request, $response, $args) {
-			$mysql = init();
-			$body = $request->getParsedBody();
-
-			if (!validateActivationToken($mysql, $body['token'])) {
-				$data['error'] = 'error_token';
-				return createResponse($response, $data);
-			}
-
-			$rand_pass = getUniqueCode(15);
-			$secure_pass = generateHash($rand_pass);
-			$user = fetchUserDetailsByToken($mysql, $body['token']);
-
-			$hooks = [
-    			'GENERATED-PASS' => $rand_pass,
-    			'USERNAME' => $user['username'],
-            ];
-			sendTemplateMail('your-lost-password', $user['email'], 'Neues Passwort II', $hooks);
-
-			$new_activation_token = generateActivationToken($mysql);
-
-			$stmt = $mysql->prepare(
-    		    "UPDATE users
-    		    SET password = ?, activationtoken = ?
-    		    WHERE activationtoken = ?"
-    		);
-    		$stmt->bindValue(1, $secure_pass);
-    		$stmt->bindValue(2, $new_activation_token);
-    		$stmt->bindValue(3, sanitize($body['token']));
-
-    		$data['status'] = execute($stmt);
-			$data['status'] = flagLostpasswordRequest($mysql, $user["username_clean"], 0);
-			return createResponse($response, $data);
-		});
-
-		$this->post('/deny', function($request, $response, $args) {
-			$mysql = init();
-			$body = $request->getParsedBody();
-
-			if (!validateActivationToken($mysql, $body['token'])) {
-				$data['error'] = 'error_token';
-				return createResponse($response, $data);
-			}
-
-            $user = fetchUserDetailsByToken($mysql, $body['token']);
-            $data['status'] = flagLostpasswordRequest($mysql, $user['username_clean'], 0);
 			return createResponse($response, $data);
 		});
 	});
