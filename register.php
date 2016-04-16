@@ -37,7 +37,7 @@
                         <div class="col-sm-3">
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-default active">
-                                    <input type="radio" name="options" id="option1" checked>Humanmedizin
+                                    <input type="radio" name="course_id" id="1" checked>Humanmedizin
                                 </label>
                             </div>
                         </div>
@@ -99,6 +99,7 @@
                 submitHandler: function() {
                     $('#submitbutton').button('loading');
                     $.post('api/v1/users', $('form').serialize(), function(data) {
+                        console.log(data);
                         if (data.status) {
                             $('#successModal').modal();
                         }
@@ -109,6 +110,10 @@
 
                         if (data.error === 'error_email_taken') {
                             validator.showErrors({"email": "Wird bereits verwendet"});
+                        }
+
+                        if (data.error === 'error_email_forbidden') {
+                            validator.showErrors({"email": "Keine g&uuml;tige E-Mail-Adresse"});
                         }
                         $('#submitbutton').button('reset');
                     });
@@ -135,15 +140,12 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" id="myModalLabel">Registrierung</h4>
                     </div>
 
                     <div class="modal-body">
                         <p><i class="fa fa-check"></i> Du hast dich erfolgreich registriert. Schau mal in deinen Mail Account.</p>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" ng-click="$close()">Zur&uuml;ck</button>
                     </div>
                 </div>
             </div>

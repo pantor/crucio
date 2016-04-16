@@ -165,26 +165,31 @@ $app->group('/users', function() {
         $course_id = $body['course'];
         $activation_token = 0;
 
-        $website_url = getURL();
-
         if (!$username) {
             $data['error'] = 'error';
-            return createResponse($response, $data, false);
+            return createResponse($response, $data);
         }
 
         if (getCount($mysql, "users WHERE username_clean = ?", [sanitize($clean_username)])) {
             $data['error'] = 'error_username_taken';
-            return createResponse($response, $data, false);
+            return createResponse($response, $data);
         }
 
         if (getCount($mysql, "users WHERE email = ?", [sanitize($email)])) {
             $data['error'] = 'error_email_taken';
-            return createResponse($response, $data, false);
+            return createResponse($response, $data);
+        }
+
+        $pattern = '/[\wäüöÄÜÖ]*@studserv\.uni-leipzig\.de$/';
+        if (!preg_match($pattern, $email)) {
+            $data['error'] = 'error_email_forbidden';
+            return createResponse($response, $data);
         }
 
 		$secure_pass = generateHash($clean_password);
 		$activation_token = generateActivationToken($mysql);
 
+        $website_url = getURL();
 		$activation_message = $website_url.'activate-account?token='.$activation_token;
 		$hooks = [
     		'ACTIVATION-MESSAGE' => $activation_message,
@@ -207,14 +212,14 @@ $app->group('/users', function() {
 		$stmt->bindValue(8, $course_id);
 		$stmt->bindValue(9, $semester);
 
-		$data['status'] = execute($stmt);
-        return createResponse($response, $data, false);
+		$data['status'] = $body; // execute($stmt);
+        return createResponse($response, $data);
 	});
 
 	$this->put('/activate', function($request, $response, $args) {
         $body = $request->getParsedBody();
         $data = activate($body['token']);
-	    return createResponse($response, $data, false);
+	    return createResponse($response, $data);
 	});
 
 	$this->put('/change-semester', function($request, $response, $args) {
@@ -401,9 +406,8 @@ $app->group('/users', function() {
 	        $hooks = [
     	        'USERNAME' => $user['username'],
                 'RESET-URL' => $reset_url,
-                'RESET-URL' => $reset_url
             ];
-	        sendTemplateMail('lost-password-request', $email, 'Passwort zur&uuml;cksetzen', $hooks);
+	        sendTemplateMail('lost-password-request', $email, 'Passwort vergessen...', $hooks);
 
 	        $data['status'] = flagLostpasswordRequest($mysql, $user['username'], 1);
 			return createResponse($response, $data);
