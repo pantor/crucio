@@ -16,8 +16,7 @@
 
             <div class="container-light-grey container-padding-2">
                 <div class="container container-text container-text-dark">
-                    <p>Du kannst hier deine E-Mail-Adresse eintragen, wir schicken dir dann ein neues Passwort zu.<br>
-                        Bei Fragen kannst du uns gerne schreiben.</p>
+                    <p>Du kannst hier deine E-Mail-Adresse eintragen, wir schicken dir dann ein neues Passwort zu.</p>
                 </div>
             </div>
 

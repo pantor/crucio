@@ -73,7 +73,6 @@ $app->group('/users', function() {
 	    }
 
     	$user = fetchUserDetailsByMail($mysql, $email);
-        $data['userdetails'] = $user;
 
     	if ($user['active'] == 0) {
     		$data['error'] = 'error_account_not_activated';
@@ -400,10 +399,11 @@ $app->group('/users', function() {
 	        $reset_url = $website_url.'change-password?token='.$user['activationtoken'];
 
 	        $hooks = [
-    	        'RESET-URL' => $reset_url,
     	        'USERNAME' => $user['username'],
+                'RESET-URL' => $reset_url,
+                'RESET-URL' => $reset_url
             ];
-	        sendTemplateMail('lost-password-request', $email, 'Neues Passwort I', $hooks);
+	        sendTemplateMail('lost-password-request', $email, 'Passwort zur&uuml;cksetzen', $hooks);
 
 	        $data['status'] = flagLostpasswordRequest($mysql, $user['username'], 1);
 			return createResponse($response, $data);

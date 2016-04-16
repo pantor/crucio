@@ -84,7 +84,6 @@
         </form>
 
         <?php include('parts/footer.php'); ?>
-        <?php include('parts/scripts.php'); ?>
 
         <script>
             var validator = $('form').validate({

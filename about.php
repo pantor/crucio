@@ -18,12 +18,11 @@
                 <div class="container container-text">
                     <center>
                         <address>
-                            <strong>StuRaMed Leipzig</strong><br>
-                            Liebigstra&szlig;e 27<br>
-                            04103 Leipzig<br>
+                            <strong><?php echo $info['organisation-full']; ?></strong><br>
+                            <?php echo $info['address']; ?>
                         </address>
 
-                        <p>Crucio wurde entwickelt von Pantorix. <strong>&copy; 2016 Pantorix.</strong></p>
+                        <p>Crucio ist ein Open-Source Projekt. <a href="http://crucioproject.github.io">Mehr dazu...</a></p>
                     </center>
                 </div>
             </div>
@@ -33,13 +32,13 @@
                     <dt>Version</dt>
                     <dd>
                         <address>
-                            Crucio ist noch in der <strong><span class="text-danger">0.8-Beta</span></strong>-Version, daher werdet ihr sicherlich einige Fehler entdecken. Die k&ouml;nnt ihr in <a href="https://github.com/crucioproject/Crucio/issues">Github</a> eintragen; und zwar m&ouml;glichst so, dass wir den Fehler reproduzieren k&ouml;nnen. Oder euch einfach bei uns melden...
+                            Crucio ist in der <strong><span class="text-danger">0.9-Beta</span></strong>-Version. Falls ihr Fehler entdeckt, k&ouml;nnt ihr sie bei <a href="https://github.com/crucioproject/Crucio/issues">Github</a> eintragen. Oder euch einfach bei uns melden...
                         </address>
                     </dd>
 
                     <dt>Disclaimer</dt>
                     <dd>
-                        <p> Sofern auf Verweisziele ("Links") direkt oder indirekt verwiesen wird, die au&szlig;erhalb des Verantwortungsbereiches des Autors liegen, haftet dieser nur dann, wenn er von den Inhalten Kenntnis hat und es ihm technisch m&ouml;glich und zumutbar w&auml;re, die Nutzung im Falle rechtswidriger Inhalte zu verhindern. F&uuml;r dar&uuml;ber hinausgehende Inhalte und insbesondere f&uuml;r Sch&auml;den, die aus der Nutzung oder Nichtnutzung solcherart dargebotener Informationen entstehen, haftet allein der Anbieter der Seite, auf welche verwiesen wurde, nicht derjenige, der &uuml;ber Links auf die jeweilige Ver&ouml;ffentlichung lediglich verweist. Diese Einschr&auml;nkung gilt gleicherma&szlig;en auch f&uuml;r Fremdeintr&auml;ge in vom Autor eingerichteten G&auml;steb&uuml;chern, Diskussionsforen und Mailinglisten. </p>
+                        <p> Sofern auf Links direkt oder indirekt verwiesen wird, die au&szlig;erhalb des Verantwortungsbereiches des Autors liegen, haftet dieser nur dann, wenn er von den Inhalten Kenntnis hat und es ihm technisch m&ouml;glich und zumutbar w&auml;re, die Nutzung im Falle rechtswidriger Inhalte zu verhindern. F&uuml;r dar&uuml;ber hinausgehende Inhalte und insbesondere f&uuml;r Sch&auml;den, die aus der Nutzung oder Nichtnutzung solcherart dargebotener Informationen entstehen, haftet allein der Anbieter der Seite, auf welche verwiesen wurde, nicht derjenige, der &uuml;ber Links auf die jeweilige Ver&ouml;ffentlichung lediglich verweist. Diese Einschr&auml;nkung gilt gleicherma&szlig;en auch f&uuml;r Fremdeintr&auml;ge in vom Autor eingerichteten G&auml;steb&uuml;chern, Diskussionsforen und Mailinglisten. </p>
                     </dd>
 
                     <dt>Datenschutz</dt>

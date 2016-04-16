@@ -55,7 +55,6 @@
         </div>
 
         <?php include('parts/footer.php'); ?>
-        <?php include('parts/scripts.php'); ?>
 
         <script>
             $('form').validate({

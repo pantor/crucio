@@ -8,8 +8,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Crucio | Fachschaft Medizin Leipzig</title>
         <?php include('parts/header.php'); ?>
+        <title>Crucio | <?php echo $info['description']; ?></title>
     </head>
 
     <body class="body">
@@ -22,7 +22,7 @@
                         </div>
 
                         <div class="col-md-3">
-                            <div class="form-group element has-feedback" ng-class="{'has-error': ctrl.loginError}">
+                            <div class="form-group element has-feedback">
                                 <input class="form-control" name="email" type="email" placeholder="E-Mail-Adresse" autofocus>
                                 <label class="checkbox">
                                     <input type="checkbox" name="remember_me" style="margin-top: 2px;" checked>
@@ -32,7 +32,7 @@
                         </div>
 
                         <div class="col-md-2">
-                            <div class="form-group element has-feedback" ng-class="{'has-error': ctrl.loginError}">
+                            <div class="form-group element has-feedback">
                                 <input class="form-control" name="password" type="password" placeholder="Passwort">
                                 <label for="passwordInput">
                                     <a href="forgot-password" target="_self">Passwort vergessen?</a>
@@ -55,7 +55,7 @@
                         <h1><i class="fa fa-check-square-o"></i> Crucio</h1>
 
                         <p>
-                            ... hilft dir bei der Vorbereitung f&uuml;r Medizinklausuren an der Universit&auml;t Leipzig.
+                            ... hilft dir bei der Vorbereitung f&uuml;r Medizinklausuren an der <?php echo $info['university']; ?>.
                             Hier werden &Uuml;bungsfragen aus dem Studium gesammelt, gekreuzt und erkl&auml;rt.
                         </p>
 
@@ -70,8 +70,8 @@
             <div class="container-light-grey container-padding-2">
                 <div class="sturamed">
                     <p>Crucio - Ein Projekt eures</p>
-                    <a href="http://www.sturamed-leipzig.de">
-                        <img src="public/images/sturamed.svg" width="245px" alt="Sturamed Leipzig">
+                    <a href="<?php echo $info['website']; ?>">
+                        <img src="public/images/<?php echo $info['logo']; ?>" width="245px" alt="<?php echo $info['organisation-full']; ?>">
                     </a>
                 </div>
             </div>
@@ -81,13 +81,13 @@
                     <div class="col-sm-4 info-block-crucio">
                         <i class="fa fa-book"></i>
                         <h2>Lernen</h2>
-                        <p>Mit Crucio kannst du Fragen & &Uuml;bungsklausuren anschauen, lernen, wiederholen und erkl&auml;ren lassen. Hier sind alle Fragen, die bisher an der Uni Leipzig gesammelt wurden, vereint. Damit sind die Fragen mit dem Studium in Leipzig abgestimmt, sodass du perfekt f&uuml;r die n&auml;chsten Klausuren vorbereitet bist.</p>
+                        <p>Mit Crucio kannst du Fragen & &Uuml;bungsklausuren anschauen, lernen, wiederholen und erkl&auml;ren lassen. Hier sind alle Fragen, die bisher an der <?php echo $info['university']; ?> gesammelt wurden, vereint. Damit sind die Fragen mit dem Studium in Leipzig abgestimmt, sodass du perfekt f&uuml;r die n&auml;chsten Klausuren vorbereitet bist.</p>
                     </div>
 
                     <div class="col-sm-4 info-block-crucio">
                         <i class="fa fa-inbox"></i>
                         <h2>&Uuml;bersicht</h2>
-                        <p>Crucio ist ein zentraler Ort f&uuml;r Fragen und &Uuml;bungsklausuren an & von der Universit&auml;t Leipzig. Die &Uuml;bungsklausuren sind automatisch nach deinem Semester sortiert, du kannst aber nat&uuml;rlich nach Fachbereich oder einzelnen Fragen suchen. So kannst du dir deine Zeit und Nerven f&uuml;r Inhalte aufheben.</p>
+                        <p>Crucio ist ein zentraler Ort f&uuml;r Fragen und &Uuml;bungsklausuren an & von der <?php echo $info['university']; ?>. Die &Uuml;bungsklausuren sind automatisch nach deinem Semester sortiert, du kannst aber nat&uuml;rlich nach Fachbereich oder einzelnen Fragen suchen. So kannst du dir deine Zeit und Nerven f&uuml;r Inhalte aufheben.</p>
                     </div>
 
                     <div class="col-sm-4 info-block-crucio">
@@ -131,35 +131,51 @@
                 <div class="container container-text container-text-light">
                     <i class="fa fa-magic fa-5x"></i>
                     <h4>Noch nicht registriert?</h4>
-                    <p>Auf gehts, Crucio ist seit kurzem freigeschaltet! Wenn du gar nicht in Leipzig studierst, dann kannst du uns gerne mal anschreiben, vielleicht k&ouml;nnen wir dir helfen...</p>
+                    <p>Auf gehts! Wenn du aber gar nicht an der <?php echo $info['university']; ?> studierst,<br>dann kannst du uns gerne mal anschreiben, vielleicht k&ouml;nnen wir dir helfen...</p>
                 </div>
             </div>
         </div>
 
         <?php include('parts/footer.php'); ?>
-        <?php include('parts/scripts.php'); ?>
 
         <script>
             $("#moreButton").click(function() {
                 $('html, body').animate({ scrollTop: 1050 }, 600);
             });
 
-            $('form').validate({
-                errorClass: 'fa fa-remove form-control-feedback',
-                errorElement: 'i',
-                wrapper: 'div',
-                highlight: function () {
+            var validator = $('form').validate({
+                highlight: function(element) {
                     return false;
                 },
-                unhighlight: function () {
+                unhighlight: function(element) {
                     return false;
+                },
+                errorElement: 'i',
+                errorClass: 'fa fa-remove form-control-feedback',
+                wrapper: 'div',
+                errorPlacement: function(error, element) {
+                    error.insertAfter(element);
+                },
+                invalidHandler: function() {
+                    $(".form-group").addClass('has-error');
                 },
                 submitHandler: function() {
+                    $(".form-group").removeClass('has-error');
                     $.get('api/v1/users/login', $('form').serialize(), function(data) {
                         if (data.status) {
-                            // data.logged_in_user.remeber_me = $("[name='remeber_me']").val();
+                            data.logged_in_user.remember_me = $("[name='remember_me']").val();
                             Cookies.set('CrucioUser', data.logged_in_user)
                             location.assign('/learn');
+                        }
+
+                        if (
+                            data.error === 'error_incorrect_password'
+                            || data.error === 'error_account_not_activated'
+                            || data.error === 'error_no_email'
+                            || data.error === 'error_no_password'
+                        ) {
+                            $(".form-group").addClass('has-error');
+                            validator.showErrors({"password": ""});
                         }
                     });
                     return false;

@@ -227,6 +227,9 @@ body, html {
 .text-right {
   text-align: right; }
 
+.fa-remove.form-control-feedback {
+  margin-top: 9px; }
+
 .container-center-align {
   margin-top: 80px;
   text-align: center; }
