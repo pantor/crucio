@@ -116,7 +116,7 @@ class AdminController {
     this.API.put(`users/${userId}/group`, data, true);
   }
 
-  isToday(dateString, hourDiff = 0): boolean {
+  isToday(dateString: any, hourDiff: number = 0): boolean {
     const today: any = new Date();
     const diff: number = today - 1000 * 60 * 60 * hourDiff;
     const compareDate = new Date(diff);

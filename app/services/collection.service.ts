@@ -74,14 +74,14 @@ class Collection {
     return result;
   }
 
-  saveAnswer(index: number, answer): void {
+  saveAnswer(index: number, answer: number): void {
     if (this.collection && Object.keys(this.collection).length) {
       this.collection.list[index].given_result = answer;
       this.set(this.collection);
     }
   }
 
-  saveStrike(index: number, strike): void {
+  saveStrike(index: number, strike: any): void {
     if (this.collection && Object.keys(this.collection).length) {
       this.collection.list[index].strike = strike;
       this.set(this.collection);
@@ -95,7 +95,7 @@ class Collection {
     }
   }
 
-  prepareExam(examId: number, data) {
+  prepareExam(examId: number, data: any) {
     return this.API.get(`exams/action/prepare/${examId}`, data).then(result => {
       const collection = { list: result.data.list, exam_id: examId };
       this.set(collection);
