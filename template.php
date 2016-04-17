@@ -16,7 +16,7 @@
         <div class="footer">
             <div class="container">
                 <p class="left hidden-xs">
-                    <a href="http://www.sturamed-leipzig.de">StuRaMed</a>
+                    <a href="<?php echo $info['website']; ?>"><?php echo $info['organisation']; ?></a>
                 </p>
 
                 <p class="right">

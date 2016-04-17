@@ -49,7 +49,7 @@
                 </div>
             </div>
 
-            <div class="container-back-image container-padding-6">
+            <div class="container-image container-padding-6">
                 <div class="container">
                     <div class="brand">
                         <h1><i class="fa fa-check-square-o"></i> Crucio</h1>

@@ -29,7 +29,7 @@
             <div class="container-center-align-sm container-light-grey container-padding-6">
 
                 <?php if ($error) { ?>
-                <div class="container container-text container-text-red">
+                <div class="container container-text container-text-danger">
                     <h3>Fehler bei der Aktivierung.</h3>
 
                     <p>
@@ -43,7 +43,7 @@
                 <?php } ?>
 
                 <?php if (!$error) { ?>
-                <div class="container container-text container-text-green">
+                <div class="container container-text container-text-success">
                     <p>
                         Dein Account ist aktiviert und deine E-Mail-Adresse best&auml;tigt. Willkommen bei Crucio!
                     </p>

@@ -1,18 +1,18 @@
-$white: #fff;
-$blue: #477894;
-$blue_2: #5bc0de;
-$green: #5cb85c;
-$red: #d9534f;
-$very-light-grey: #eee;
-$light-grey: #eef0f1;
-$light-orange: #e67e22;
+// Variables
+
+$white: #fff; // background
+$blue: #5bc0de; // info
+$green: #17971b; // success
+$red: #d9534f; // danger
+$orange: #d35400; // primary
+$yellow: #f0ad4e; // warning
+
+$light-grey: darken($white, 6.5%);
 $light-blue: #6d9bb5;
-$dark-orange: #d35400;
+$light-green: #5cb85c;
+$light-orange: #e67e22;
 $dark-blue: #2c3e50;
-$dark-green: #17971b;
 $dark-grey: #444;
-$yellow: #f0ad4e;
-$very-dark-orange: #341200;
 
 
 
@@ -48,7 +48,7 @@ body, html {
 }
 
 
-// --- Container ---
+// Container
 
 .container-center-align {
     margin-top: 80px;
@@ -87,9 +87,8 @@ body, html {
 
 .container-light-grey { background-color: $light-grey; }
 .container-light-orange { background-color: $light-orange; }
-.container-dark-orange { background-color: $dark-orange; }
-.container-red { background-color: $red; }
-.container-back-image {
+.container-dark-orange { background-color: $orange; }
+.container-image {
     background-image: url(../images/background.jpg);
     background-position: 50% 0;
 }
@@ -182,30 +181,30 @@ body, html {
     }
 
     .btn-green {
-        border: 2px solid $dark-green;
+        border: 2px solid $green;
         margin: 5px;
         margin-top: 40px;
 
-        color: $dark-green;
+        color: $green;
         background-color: rgba(255, 255, 255, 0);
 
         transition: all .2s;
 
         &:hover {
             color: $white;
-            background-color: $dark-green;
+            background-color: $green;
         }
     }
 }
-.container-text-light { color: $very-light-grey; }
+.container-text-light { color: $white; }
 .container-text-dark { color: $dark-grey; }
-.container-text-red { color: $red; }
-.container-text-green { color: $dark-green; }
+.container-text-danger { color: $red; }
+.container-text-success { color: $green; }
 
 
 
 
-// --- Index ---
+// Index
 
 .brand {
     margin: 20px auto;
@@ -240,7 +239,7 @@ body, html {
         transition: all .2s;
 
         &:hover {
-            color: $dark-green;
+            color: $green;
             background-color: $white;
         }
     }
@@ -275,18 +274,18 @@ body, html {
     h3 {
         font-size: 32px;
         font-weight: 300;
-        color: #69767F;
+        color: darken(desaturate($light-blue, 21%), 12%);
         text-align: center;
     }
 
     i {
-        color: $dark-orange;
+        color: $orange;
         margin-left: 120px;
 
         a {
             font-size: 14px;
             font-weight: 400;
-            color: #596068;
+            color: darken(desaturate($light-blue, 20%), 20%);
         }
     }
 }
@@ -370,6 +369,9 @@ body, html {
     }
 }
 
+
+// General spaces
+
 .mtop-8 { margin-top: 8px; }
 .mtop-navbar-row { margin-top: 46px; }
 
@@ -382,6 +384,9 @@ body, html {
 .mbottom-2x { margin-bottom: 20px; }
 .mbottom-3x { margin-bottom: 30px; }
 .mmbottom { margin-bottom: -10px; }
+
+
+// Dots
 
 .dot {
     border-radius: 50%;
@@ -396,14 +401,13 @@ body, html {
     }
 }
 
-.dot-success { background-color: $green; }
+.dot-success { background-color: $light-green; }
 .dot-danger { background-color: $red; }
-.dot-info { background-color: $blue_2; }
+.dot-info { background-color: $blue; }
 .dot-warning { background-color: $yellow; }
 
 
-
-// --- Comment ---
+// Comment
 
 .comment-voting {
     margin-top: -4px;
@@ -426,25 +430,7 @@ body, html {
 }
 
 
-
-
-.learn-subjects {
-    margin-top: 20px;
-    margin-bottom: 30px;
-
-    center {
-        margin: 10px;
-    }
-
-    span {
-        margin-left: 10px;
-        margin-right: 10px;
-    }
-}
-
-
-
-// --- Spinner ---
+// Spinner
 
 .spinner {
     position: absolute;
@@ -465,7 +451,7 @@ body, html {
 
 
 
-// --- Validation error for all forms: registration, account... ---
+// Validation error for all forms: registration, account...
 
 .validation-error {
     font-size: 85%;
@@ -486,7 +472,7 @@ input[id^="textAngular"] {
 
 
 
-// --- Crucio colored navbar ---
+// Crucio colored navbar
 
 .navbar-nav > li > a {
     padding-top: 26px;
@@ -503,12 +489,12 @@ input[id^="textAngular"] {
     color: $white;
     background-image: url(../images/background.jpg);
     background-position: 50% 25%;
-    border-bottom: 3px solid $dark-orange;
+    border-bottom: 3px solid $orange;
     height: 73px;
 
     .navbar-brand {
         color: $white;
-        background-color: $dark-orange;
+        background-color: $orange;
         line-height: 72px;
         height: 72px;
 
@@ -521,7 +507,7 @@ input[id^="textAngular"] {
 
         &:hover, &:focus {
             color: $white;
-            background-color: $dark-orange;
+            background-color: $orange;
         }
     }
 
@@ -543,10 +529,10 @@ input[id^="textAngular"] {
     }
 
     .navbar-link {
-        color: #777777;
+        color: #777;
 
         &:hover {
-          color: #333333;
+          color: #333;
         }
     }
 
@@ -560,7 +546,7 @@ input[id^="textAngular"] {
 
         &:hover, &:focus {
             color: $white;
-            background-color: $dark-orange;
+            background-color: $orange;
             transition: all .2s;
         }
     }
@@ -569,7 +555,7 @@ input[id^="textAngular"] {
     .navbar-nav > .active > a:hover,
     .navbar-nav > .active > a:focus {
         color: $white;
-        background-color: $dark-orange;
+        background-color: $orange;
         font-weight: bold;
     }
 
@@ -584,26 +570,26 @@ input[id^="textAngular"] {
     .navbar-nav > .open > a:hover,
     .navbar-nav > .open > a:focus {
         color: $white;
-        background-color: $dark-orange;
+        background-color: $orange;
     }
 }
 
 @media (max-width: 767px) {
     .navbar-crucio {
         .navbar-nav > li > a {
-            color: #333333;
+            color: #333;
             background-color: $light-orange;
         }
 
         .navbar-collapse,
         .navbar-form {
-            border: solid 6px $dark-orange;
+            border: solid 6px $orange;
             background-color: $light-orange;
         }
 
         .navbar-nav .open {
             .dropdown-menu > li > a {
-                color: #333333;
+                color: #333;
             }
 
             .dropdown-menu > li > a:hover,
@@ -615,14 +601,14 @@ input[id^="textAngular"] {
             .dropdown-menu > .active > a,
             .dropdown-menu > .active > a:hover,
             .dropdown-menu > .active > a:focus {
-                color: #555555;
+                color: #555;
                 background-color: #e7e7e7;
             }
 
             .dropdown-menu > .disabled > a,
             .dropdown-menu > .disabled > a:hover,
             .dropdown-menu > .disabled > a:focus {
-                color: #333333;
+                color: #333;
                 background-color: transparent;
             }
         }
@@ -631,7 +617,7 @@ input[id^="textAngular"] {
 
 
 
-// --- Sidebar menu ---
+// Sidebar menu
 
 .sidebar li {
     a {
@@ -670,7 +656,7 @@ input[id^="textAngular"] {
     padding: 10px;
     margin: 10px 5px;
 
-    background-color: $very-light-grey;
+    background-color: $light-grey;
     border-radius: 8px;
 
     font-size: 12px;
@@ -705,7 +691,7 @@ input[id^="textAngular"] {
 
 
 
-// --- Admin ---
+// Admin
 
 .btn-admin-group {
     width: 65px;
@@ -713,7 +699,7 @@ input[id^="textAngular"] {
 
 
 
-// --- Edit exam ---
+// Edit exam
 
 .exam-edit-list-group {
     margin: 0;
@@ -760,7 +746,7 @@ input[id^="textAngular"] {
 
 
 
-// --- Editor ---
+// Editor
 
 .ta-scroll-window.form-control {
     min-height: 20px;
@@ -799,7 +785,7 @@ sub {
 
 
 
-// --- Question ---
+// Question
 
 .btn-group-strike {
     margin-left: -50px;
@@ -825,30 +811,27 @@ sub {
 }
 
 
-// ---- Loading Bar -----
+// Loading bar
 
 #loading-bar {
     .bar {
-        background: $dark-orange;
+        background: $orange;
     }
 
-    /* Fancy blur effect */
+    // Fancy blur effect
     .peg {
-        -moz-box-shadow: $dark-orange 1px 0 6px 1px;
-        -ms-box-shadow: $dark-orange 1px 0 6px 1px;
-        -webkit-box-shadow: $dark-orange 1px 0 6px 1px;
-        box-shadow: $dark-orange 1px 0 6px 1px;
+        box-shadow: $orange 1px 0 6px 1px;
     }
 }
 
 #loading-bar-spinner .spinner-icon {
-    border-top-color:  $dark-orange;
-    border-left-color: $dark-orange;
+    border-top-color:  $orange;
+    border-left-color: $orange;
 }
 
 
 
-// ---- Slider ----
+// Slider
 
 rzslider {
     position: relative;
@@ -906,7 +889,7 @@ rzslider {
         width: 18px;
         height: 18px;
         cursor: pointer;
-        background-color: $dark-orange;
+        background-color: $orange;
         border-radius: 9px;
 
         &:after {
@@ -959,11 +942,11 @@ rzslider {
             height: 10px;
             text-align: center;
             cursor: pointer;
-            background: #d8e0f3;
+            background: darken($light-grey, 9%);
             border-radius: 50%;
 
             &.selected {
-                background: #0db9f0;
+                background: $blue;
             }
 
             .tick-value {
@@ -981,11 +964,11 @@ rzslider[disabled] {
 
 rzslider[disabled] .rz-pointer {
   cursor: not-allowed;
-  background-color: #d8e0f3;
+  background-color: darken($light-grey, 9%);
 }
 
 
-// ---- Loading Animation ----
+// Loading animation
 
 @-webkit-keyframes zoomIn {
   0% {
@@ -1029,12 +1012,12 @@ rzslider[disabled] .rz-pointer {
 }
 
 .loading-screen {
-  background-color: #eee;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: 10;
-  top: 0px;
-  right: 0px;
-  padding: 20%;
+    background-color: $light-grey;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    top: 0px;
+    right: 0px;
+    padding: 20%;
 }
