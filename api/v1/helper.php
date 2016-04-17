@@ -59,6 +59,10 @@ function validateActivationToken($mysql, $token) {
 	return (getCount($mysql, "users WHERE activationtoken = ?", [$token]) > 0);
 }
 
+function validateEMail($mysql, $email) {
+	return (getCount($mysql, "whitelist WHERE mail_address = ?", [$email]) > 0);
+}
+
 function fetchUserDetails($mysql, $token = null, $email = null) {
     $stmt = $mysql->prepare(
 	    "SELECT *
@@ -136,7 +140,7 @@ function generateActivationToken($mysql) {
 function fillTemplate($hooks, $template) {
     $from = array_map(function($entry) { return '#'.$entry.'#'; }, array_keys($hooks));
     $to = array_values($hooks);
-    return str_replace($markedFrom, $to, $template);
+    return str_replace($from, $to, $template);
 }
 
 function sendTemplateMail($templateName, $destination, $subject, $additionalHooks, $senderName = 'Crucio', $senderMail = 'noreply@crucio-leipzig.de') {

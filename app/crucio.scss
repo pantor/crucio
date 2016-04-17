@@ -88,6 +88,7 @@ body, html {
 .container-light-grey { background-color: $light-grey; }
 .container-light-orange { background-color: $light-orange; }
 .container-dark-orange { background-color: $dark-orange; }
+.container-red { background-color: $red; }
 .container-back-image {
     background-image: url(../images/background.jpg);
     background-position: 50% 0;
@@ -196,12 +197,11 @@ body, html {
         }
     }
 }
-.container-text-light {
-    color: $very-light-grey;
-}
-.container-text-dark {
-    color: $dark-grey;
-}
+.container-text-light { color: $very-light-grey; }
+.container-text-dark { color: $dark-grey; }
+.container-text-red { color: $red; }
+.container-text-green { color: $dark-green; }
+
 
 
 

@@ -269,6 +269,9 @@ body, html {
 .container-dark-orange {
   background-color: #d35400; }
 
+.container-red {
+  background-color: #d9534f; }
+
 .container-back-image {
   background-image: url(../images/background.jpg);
   background-position: 50% 0; }
@@ -346,6 +349,12 @@ body, html {
 
 .container-text-dark {
   color: #444; }
+
+.container-text-red {
+  color: #d9534f; }
+
+.container-text-green {
+  color: #17971b; }
 
 .brand {
   margin: 20px auto;

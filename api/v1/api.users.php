@@ -103,41 +103,6 @@ $app->group('/users', function() {
 		return createResponse($response, $data);
 	});
 
-	/* $this->group('/validate', function() {
-
-        $this->get('/username', function($request, $response, $args) {
-            $mysql = init();
-            $query_params = $request->getQueryParams();
-
-            $stmt = $mysql->prepare(
-		        "SELECT COUNT(*)
-                FROM users u
-                WHERE u.username = :username
-                LIMIT 1"
-            );
-            $stmt->bindValue(':username', $query_params['username']);
-
-            $data['status'] = (getFetch($stmt) > 0);
-            return createResponse($response, $data);
-        });
-
-        $this->get('/mail', function($request, $response, $args) {
-            $mysql = init();
-            $query_params = $request->getQueryParams();
-
-            $stmt = $mysql->prepare(
-		        "SELECT COUNT(*)
-                FROM users u
-                WHERE u.email = :email
-                LIMIT 1"
-            );
-            $stmt->bindValue(':email', $query_params['email']);
-
-            $data['status'] = (getFetch($stmt) > 0);
-            return createResponse($response, $data);
-        });
-	}); */
-
 	$this->get('/{user_id}', function($request, $response, $args) {
 		$mysql = init();
 
@@ -182,8 +147,10 @@ $app->group('/users', function() {
 
         $pattern = '/[\wäüöÄÜÖ]*@studserv\.uni-leipzig\.de$/';
         if (!preg_match($pattern, $email)) {
-            $data['error'] = 'error_email_forbidden';
-            return createResponse($response, $data);
+            if (!validateEMail($mysql, $email)) { // Check whitelist
+                $data['error'] = 'error_email_forbidden';
+                return createResponse($response, $data);
+            }
         }
 
 		$secure_pass = generateHash($clean_password);

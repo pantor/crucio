@@ -25,36 +25,32 @@
                 include('parts/container-title.php');
             ?>
 
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-10 col-sm-offset-1">
-                        <?php if ($error) { ?>
-                        <div class="container-center-align-sm" style="padding: 60px;">
-                            <h3>Fehler bei der Aktivierung.</h3>
 
-                            <hr>
+            <div class="container-center-align-sm container-light-grey container-padding-6">
 
-                            <div class="alert alert-danger">
-                            <?php if ($errorNoToken) { ?>
-                                Der Schl&uuml;ssel konnte deinen Account nicht aktivieren. Wir haben einfach keinen Schl&uuml;ssel gefunden.
-                            <?php } else if ($errorUnknown) { ?>
-                                Der Schl&uuml;ssel konnte deinen Account nicht aktivieren. <br> Entweder passt der Schl&uuml;ssel nicht oder dein Account ist bereits aktiviert.
-                            <?php } ?>
-                            </div>
-                        </div>
-                        <?php } ?>
+                <?php if ($error) { ?>
+                <div class="container container-text container-text-red">
+                    <h3>Fehler bei der Aktivierung.</h3>
 
-                        <?php if (!$error) { ?>
-                        <div class="container-center-align-sm" style="padding: 60px;">
-                            <div class="alert alert-success">
-                                Dein Account ist aktiviert und deine E-Mail-Adresse best&auml;tigt. Willkommen bei Crucio!
-                            </div>
-
-                            <a class="btn btn-success" target="_self" href="/">Zur Anmeldung</a>
-                        </div>
-                        <?php } ?>
-                    </div>
+                    <p>
+                    <?php if ($errorNoToken) { ?>
+                        Der Schl&uuml;ssel konnte deinen Account nicht aktivieren. Wir haben einfach keinen Schl&uuml;ssel gefunden.
+                    <?php } else if ($errorUnknown) { ?>
+                        Der Schl&uuml;ssel konnte deinen Account nicht aktivieren. <br> Entweder passt der Schl&uuml;ssel nicht oder dein Account ist bereits aktiviert.
+                    <?php } ?>
+                    </p>
                 </div>
+                <?php } ?>
+
+                <?php if (!$error) { ?>
+                <div class="container container-text container-text-green">
+                    <p>
+                        Dein Account ist aktiviert und deine E-Mail-Adresse best&auml;tigt. Willkommen bei Crucio!
+                    </p>
+
+                    <a class="btn btn-success btn-green" target="_self" href="/">Zur Anmeldung</a>
+                </div>
+                <?php } ?>
             </div>
         </div>
 

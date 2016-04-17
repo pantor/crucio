@@ -36,10 +36,10 @@ gulp.task('ts', function () {
     'app/crucio.ts',
     'app/**/*.ts',
   ])
-		.pipe(ts({ noImplicitAny: false, out: 'crucio.js' }))
+    .pipe(ts({ noImplicitAny: false, out: 'crucio.js' }))
     .pipe(ngAnnotate())
     .pipe(uglify())
-		.pipe(gulp.dest('public/js'));
+    .pipe(gulp.dest('public/js'));
 });
 
 gulp.task('js-vendor', function () {
