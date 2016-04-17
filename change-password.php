@@ -41,7 +41,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">Passwort bestätigen</label>
+                        <label class="col-sm-3 control-label">Passwort best&auml;tigen</label>
                         <div class="col-sm-4">
                             <input class="form-control" name="passwordc" type="password" equalTo="#password" required />
                         </div>

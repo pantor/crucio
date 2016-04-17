@@ -179,7 +179,7 @@ $app->group('/users', function() {
 		$stmt->bindValue(8, $course_id);
 		$stmt->bindValue(9, $semester);
 
-		$data['status'] = $body; // execute($stmt);
+		$data['status'] = execute($stmt);
         return createResponse($response, $data);
 	});
 
