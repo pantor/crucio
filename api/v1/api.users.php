@@ -176,8 +176,8 @@ $app->group('/users', function() {
 		$stmt->bindValue(5, $activation_token);
 		$stmt->bindValue(6, time());
 		$stmt->bindValue(7, time());
-		$stmt->bindValue(8, $course_id);
-		$stmt->bindValue(9, $semester);
+		$stmt->bindValue(8, $course_id, PDO::PARAM_INT);
+		$stmt->bindValue(9, $semester, PDO::PARAM_INT);
 
 		$data['status'] = execute($stmt);
         return createResponse($response, $data);

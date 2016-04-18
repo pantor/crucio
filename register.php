@@ -37,7 +37,7 @@
                         <div class="col-sm-3">
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-default active">
-                                    <input type="radio" name="course_id" value="1" checked>Humanmedizin
+                                    <input type="radio" name="course" value="1" checked>Humanmedizin
                                 </label>
                             </div>
                         </div>
