@@ -32,14 +32,13 @@ class AccountController {
     this.isWorking = true;
 
     const data = {
-      email: this.user.email,
       course_id: this.user.course_id,
       semester: this.user.semester,
       current_password: this.oldPassword,
       password: this.newPassword,
     };
     this.API.put(`users/${this.user.user_id}/account`, data, true).then(result => {
-      console.log(result);
+      console.log(result.data);
       if (result.data.status) {
         this.Auth.setUser(this.user);
       } else {

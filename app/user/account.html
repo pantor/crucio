@@ -41,7 +41,7 @@
             <div class="col-sm-4">
                 <input class="form-control" name="password" type="password" ng-model="$ctrl.newPassword" ng-change="$ctrl.formChanged()">
             </div>
-            <span ng-show="$ctrl.newPassword.length < 6" class="label validation-error label-danger">Dein Passwort sollte l&auml;nger als 5 Zeichen sein</span>
+            <span ng-show="$ctrl.newPassword.length < 4" class="label validation-error label-danger">Dein Passwort sollte l&auml;nger als 3 Zeichen sein</span>
         </div>
 
         <div class="form-group">

@@ -208,9 +208,23 @@ $app->group('/users', function() {
 		$body = $request->getParsedBody();
 
 		$user_id = $args['user_id'];
-		$email = str_replace('(@)', '@', sanitize($body['email']));
 
-		$stmt_user = $mysql->prepare(
+		$stmt = $mysql->prepare(
+		    "UPDATE users
+		    SET semester = ?, course_id = ?
+		    WHERE user_id = ?"
+		);
+		$stmt->bindValue(1, $body['semester']);
+		$stmt->bindValue(2, $body['course_id']);
+		$stmt->bindValue(3, $user_id, PDO::PARAM_INT);
+
+        if (!$body['password']) {
+            $data['status'] = execute($stmt);
+    	    return createResponse($response, $data);
+        }
+
+
+        $stmt_user = $mysql->prepare(
 		    "SELECT u.*
 		    FROM users u
 		    WHERE u.user_id = :user_id
@@ -218,24 +232,32 @@ $app->group('/users', function() {
 		);
 		$stmt_user->bindValue(':user_id', $user_id, PDO::PARAM_INT);
         $user = getFetch($stmt_user);
-		$old_email = $user['email'];
 
-		if ((getCount($mysql, "users WHERE email = ?", [sanitize($email)]) > 0) && $email != $old_email) {
-			$data['error'] = 'error_email_taken';
-			return createResponse($response, $data);
-        }
+        $old_hash_pw = $user['password'];
+	    $entered_pass = generateHash($body['current_password'], $old_hash_pw);
+	    $entered_pass_new = generateHash($body['password'], $old_hash_pw);
 
-		$stmt = $mysql->prepare(
+        if ($entered_pass != $old_hash_pw) {
+	        $data['error'] = 'error_incorrect_password';
+	        return createResponse($response, $data);
+	    }
+
+	    if ($entered_pass_new == $old_hash_pw) {
+	        $data['error'] = 'error_same_passwords';
+	        return createResponse($response, $data);
+	    }
+
+    	$secure_pass = generateHash($body['password']);
+
+    	$stmt_password = $mysql->prepare(
 		    "UPDATE users
-		    SET email = ?, semester = ?, course_id = ?
-		    WHERE user_id = ?"
+		    SET password = :password
+		    WHERE user_id = :user_id"
 		);
-		$stmt->bindValue(1, $email);
-		$stmt->bindValue(2, $body['semester']);
-		$stmt->bindValue(3, $body['course_id']);
-		$stmt->bindValue(4, $user_id, PDO::PARAM_INT);
+		$stmt_password->bindValue(':password', $secure_pass);
+		$stmt_password->bindValue(':user_id', $user_id, PDO::PARAM_INT);
 
-		$data['status'] = execute($stmt);
+        $data['status'] = execute($stmt) && execute($stmt_password);
 	    return createResponse($response, $data);
 	});
 
