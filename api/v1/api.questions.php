@@ -87,12 +87,14 @@ $app->group('/questions', function() {
 		$sql_params = [];
 		foreach ($selection as $subject_id => $entry) {
     		if ($entry->subject) {
-                $sql .= 'OR e.subject_id = ? ';
+                $count = count($sql_params);
+                $sql .= "OR e.subject_id = :sp$count ";
                 array_push($sql_params, $subject_id);
     		}
     		foreach ($entry->categories as $category_id => $data_category) {
                 if ($data_category) {
-                    $sql .= 'OR q.category_id = ? ';
+                    $count = count($sql_params);
+                    $sql .= "OR q.category_id = :sp$count ";
                     array_push($sql_params, $category_id);
                 }
             }
@@ -106,9 +108,12 @@ $app->group('/questions', function() {
 		    ORDER BY rand()
 		    LIMIT :limit"
 		);
+        for ($i = 0; $i < count($sql_params); $i++) {
+            $stmt->bindValue(":sp$i", $sql_params[0]);
+        }
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 
-        $list = getAll($stmt, $sql_params);
+        $list = getAll($stmt);
         foreach ($list as &$question) {
             $question['answers'] = unserialize($question['answers']);
         }
@@ -122,10 +127,11 @@ $app->group('/questions', function() {
 		$mysql = init();
 
 		$stmt_question = $mysql->prepare(
-		    "SELECT q.*, e.*, u.email, u.username
+		    "SELECT q.*, e.*, u.email, u.username, s.name AS 'subject'
             FROM questions q
             INNER JOIN exams e ON e.exam_id = q.exam_id
             INNER JOIN users u ON u.user_id = e.user_id_added
+            INNER JOIN subjects s ON s.subject_id = e.subject_id
             WHERE q.question_id = :question_id"
 		);
 		$stmt_question->bindValue(':question_id', $args['question_id'], PDO::PARAM_INT);
@@ -150,9 +156,10 @@ $app->group('/questions', function() {
 		$mysql = init();
 
 		$stmt_question = $mysql->prepare(
-		    "SELECT q.*, e.*
+		    "SELECT q.*, e.*, s.name AS 'subject'
             FROM questions q
             INNER JOIN exams e ON e.exam_id = q.exam_id
+            INNER JOIN subjects s ON s.subject_id = e.subject_id
 		    WHERE q.question_id = :question_id"
 		);
 		$stmt_question->bindValue(':question_id', $args['question_id'], PDO::PARAM_INT);
@@ -210,8 +217,8 @@ $app->group('/questions', function() {
         $stmt->bindValue(':user_id_added', $body['user_id_added'], PDO::PARAM_INT);
         $stmt->bindValue(':explanation', $body['explanation']);
         $stmt->bindValue(':question_image_url', $body['question_image_url']);
-        $stmt->bindValue(':type', $args['type']);
-        $stmt->bindValue(':category_id', $args['category_id']);
+        $stmt->bindValue(':type', $body['type']);
+        $stmt->bindValue(':category_id', $body['category_id']);
 
         $data['status'] = execute($stmt);
         $data['question_id'] = $mysql->lastInsertId();

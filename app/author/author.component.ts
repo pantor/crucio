@@ -86,6 +86,7 @@ class AuthorController {
     const data = {
       subject_id: 1,
       user_id_added: this.user.user_id,
+      sort: 'Erstklausur',
     };
 
     this.API.post('exams', data).then(result => {

@@ -62,10 +62,6 @@
                             <div class="exam-progress-comment text-success" ng-show="(1 > Math.abs($ctrl.index + 1 - $ctrl.length/2)) && ($ctrl.index > 3)">
                                 Halbzeit!
                             </div>
-
-                            <p ng-show="$ctrl.question.topic != '' && $ctrl.question.topic != 'Sonstiges'">
-                                <i class="fa fa-fw fa-angle-right"></i> {{ $ctrl.question.topic }}
-                            </p>
                         </li>
                     </ul>
                 </div>
@@ -206,7 +202,7 @@
                                     <br>
                                     <small class="text-muted">
                                         <i class="fa fa-clock-o"></i>
-                                        <timeago datetime="{{ comment.date * 1000 }}"></timeago>
+                                        <timeago datetime="comment.date * 1000"></timeago>
                                     </small>
                                 </div>
                             </div>

@@ -46,7 +46,7 @@ $app->group('/whitelist', function() {
 		    FROM whitelist
 		    WHERE mail_address = :mail_address"
 		);
-		$stmt->bindValue(':mail_address', $args['email']);
+		$stmt->bindValue(':mail_address', $args['mail_address']);
 
         $data['status'] = execute($stmt);
 		return createResponse($response, $data);

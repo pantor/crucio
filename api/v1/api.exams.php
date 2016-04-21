@@ -21,11 +21,12 @@ $app->group('/exams', function() {
 		}
 
 		$stmt = $mysql->prepare(
-		    "SELECT e.*, u.username AS 'author', COUNT(*) AS 'question_count' $answered_questions_sql_select
+		    "SELECT e.*, u.username AS 'author', s.name AS 'subject', COUNT(*) AS 'question_count' $answered_questions_sql_select
             FROM exams e
             $answered_questions_sql_join
             INNER JOIN users u ON u.user_id = e.user_id_added
             INNER JOIN questions q ON q.exam_id = e.exam_id
+			INNER JOIN subjects s ON s.subject_id = e.subject_id
             WHERE e.visibility = IFNULL(:visibility, e.visibility)
                 AND e.semester = IFNULL(:semester, e.semester)
                 AND e.user_id_added = IFNULL(:author_id, e.user_id_added)
@@ -80,9 +81,10 @@ $app->group('/exams', function() {
 		$mysql = init();
 
 		$stmt_exam = $mysql->prepare(
-		    "SELECT e.*, u.username, u.email
+		    "SELECT e.*, u.username, u.email, s.name AS 'subject'
             FROM exams e
             INNER JOIN users u ON u.user_id = e.user_id_added
+			INNER JOIN subjects s ON s.subject_id = e.subject_id
             WHERE e.exam_id = :exam_id"
 		);
 		$stmt_exam->bindValue(':exam_id', $args['exam_id']);
@@ -165,21 +167,13 @@ $app->group('/exams', function() {
 		$body = $request->getParsedBody();
 
 		$stmt = $mysql->prepare(
-		    "INSERT INTO exams (subject, professor, semester, date, sort, date_added, date_updated,
-		        user_id_added, duration, notes)
-            VALUES (:subject, :professor, :semester, :date, :sort, :date_added, :date_updated,
-                :user_id_added, :duration, :notes)"
+		    "INSERT INTO exams (subject_id, date_added, date_updated, user_id_added)
+            VALUES (:subject_id, :date_added, :date_updated, :user_id_added)"
 		);
-		$stmt->bindValue(':subject', $body['subject']);
-		$stmt->bindValue(':professor', $body['professor']);
-		$stmt->bindValue(':semester', $body['semester']);
-		$stmt->bindValue(':date', $body['date']);
-		$stmt->bindValue(':sort', $body['type']);
+		$stmt->bindValue(':subject_id', $body['subject_id']);
 		$stmt->bindValue(':date_added', time());
 		$stmt->bindValue(':date_updated', time());
 		$stmt->bindValue(':user_id_added', $body['user_id_added']);
-		$stmt->bindValue(':duration', $body['duration']);
-		$stmt->bindValue(':notes', $body['notes']);
 
 		$data['status'] = execute($stmt);
         $data['exam_id'] = $mysql->lastInsertId();
@@ -192,12 +186,12 @@ $app->group('/exams', function() {
 
 		$stmt = $mysql->prepare(
 		    "UPDATE exams
-            SET subject = :subject, professor = :professor, semester = :semester, date = :date,
+            SET subject_id = :subject_id, professor = :professor, semester = :semester, date = :date,
                 sort = :sort, duration = :duration, notes = :notes, file_name = :file_name,
                 visibility = :visibility, date_updated = :date_updated
             WHERE exam_id = :exam_id"
 		);
-		$stmt->bindValue(':subject', $body['subject']);
+		$stmt->bindValue(':subject_id', $body['subject_id']);
 		$stmt->bindValue(':professor', $body['professor']);
 		$stmt->bindValue(':semester', $body['semester']);
 		$stmt->bindValue(':date', $body['date']);

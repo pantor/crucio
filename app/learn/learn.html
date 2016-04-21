@@ -84,7 +84,7 @@
 
                                                 <ul class="dropdown-menu dropdown-menu-right" role="menu">
                                                     <li ng-class="{disabled: exam.answered_questions == 0}">
-                                                        <a href ng-click="$ctrl.resetExam(exam)">Klausur zur�cksetzen</a>
+                                                        <a href ng-click="$ctrl.resetExam(exam)">Klausur zur&uuml;cksetzen</a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -218,7 +218,7 @@
                                             <a href ng-click="$ctrl.examSearch.subject = ds; $ctrl.loadExams()">{{ ds.name }}</a>
                                         </li>
                                         <li class="divider"></li>
-                                        <li><a href ng-click="$ctrl.examSearch.subject = null; $ctrl.loadExams()">Alle F�cher</a></li>
+                                        <li><a href ng-click="$ctrl.examSearch.subject = null; $ctrl.loadExams()">Alle F&auml;cher</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -240,7 +240,7 @@
                                 <th>Semester</th>
                                 <th><i class="fa fa-fw fa-flask"></i> Fach</th>
                                 <th><i class="fa fa-fw fa-calendar"></i>Termin</th>
-                                <th class="hidden-xs hidden-sm">Gel�ste Fragen</th>
+                                <th class="hidden-xs hidden-sm">Gel&ouml;ste Fragen</th>
                                 <th><i class="fa fa-graduation-cap fa-fw"></i> Lernen</th>
                             </thead>
 
@@ -344,7 +344,7 @@
                                                             <a href ng-click="$ctrl.questionSearch.subject = ds; $ctrl.searchQuestion()">{{ ds.name }}</a>
                                                         </li>
                                                         <li class="divider"></li>
-                                                        <li><a href ng-click="$ctrl.questionSearch.subject = null; $ctrl.searchQuestion()">Alle F�cher</a></li>
+                                                        <li><a href ng-click="$ctrl.questionSearch.subject = null; $ctrl.searchQuestion()">Alle F&auml;cher</a></li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -410,7 +410,7 @@
                         <h3>Du hast noch keine Markierungen erstellt.</h3>
                         <h5>
                             Wenn die eine Frage beantwortest, siehst du rechts unter dem Info-Feld eine Eingabe.<br>
-                            Gebe dort die Markierung ein und dr�cke Enter.
+                            Gebe dort die Markierung ein und dr&uuml;cke Enter.
                         </h5>
                         <br>
                     </div>
@@ -427,7 +427,7 @@
                             <tbody ng-repeat="(tag, tag_array) in $ctrl.questionsByTag">
                                 <tr>
                                     <td rowspan="{{tag_array.length}}" style="min-width:140px;">
-                                        <span class="tag-item pull-right">
+                                        <span class="tags tag-item pull-right">
                                             {{ tag }}
                                         </span>
                                     </td>
@@ -473,12 +473,12 @@
                                         <span ng-bind-html="comment_array[0].question"></span>
                                     </td>
                                     <td>{{ comment_array[0].comment }}</td>
-                                    <td><timeago datetime="{{ comment_array[0].date * 1000 }}"></timeago></td>
+                                    <td><timeago datetime="comment_array[0].date * 1000"></timeago></td>
                                     <td><a href="question?id={{ comment_array[0].question_id }}&reset_session=1"><i class="fa fa-chevron-right"></i></a></td>
                                 </tr>
                                 <tr ng-repeat="c in comment_array" ng-show="$index > 0">
                                     <td>{{ c.comment }}</td>
-                                    <td><timeago datetime="{{ c.date * 1000 }}"></timeago></td>
+                                    <td><timeago datetime="c.date * 1000"></timeago></td>
                                     <td><a href="question?id={{ c.question_id }}&reset_session=1"><i class="fa fa-chevron-right"></i></a></td>
                                 </tr>
                             </tbody>

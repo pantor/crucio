@@ -43,7 +43,8 @@ class QuestionController {
     this.commentsCollapsed = Boolean(this.user.showComments);
 
     if (!this.questionId) {
-      this.$window.location.replace('/questions');
+      alert('Fehler: Konnte keine Frage finden.');
+      $window.location.replace('/learn');
     }
 
     this.noAnswer = true;
@@ -51,18 +52,23 @@ class QuestionController {
 
     this.collection = this.Collection.get();
     if (this.resetSession) {
+      this.index = -1;
       delete this.collection;
       Collection.remove();
     }
-
-    this.index = this.Collection.getIndexOfQuestion(this.questionId);
-    if (this.index !== -1) {
-      const list = this.collection.list;
-      this.questionData = this.Collection.getQuestionData(this.index);
-      this.length = list.length;
-      this.preQuestionId = this.index > 0 ? list[this.index - 1].question_id : -1;
-      this.postQuestionId = this.index < this.length ? list[this.index + 1].question_id : -1;
+    else
+    {
+      this.index = this.Collection.getIndexOfQuestion(this.questionId);
+      if (this.index > -1) {
+        const list = this.collection.list;
+        this.questionData = this.Collection.getQuestionData(this.index);
+        this.length = list.length;
+        this.preQuestionId = this.index > 0 ? list[this.index - 1].question_id : -1;
+        this.postQuestionId = this.index < this.length ? list[this.index + 1].question_id : -1;
+      }
     }
+
+
 
     this.loadQuestion();
   }
@@ -74,7 +80,7 @@ class QuestionController {
 
       this.tags = [];
       if (result.data.tags) {
-        this.tags = result.tags.split(',').map(entry => { return { text: entry }; });
+        this.tags = result.data.tags.split(',').map(entry => { return { text: entry }; });
       }
 
       this.checkedAnswer = this.questionData.givenAnswer;
@@ -86,7 +92,7 @@ class QuestionController {
   }
 
   // If tag field is changed
-  updateTags(): void {
+  updateTags($tag: any): void {
     const string = this.tags.map(entry => entry.text).join(',');
     const data = { tags: string, question_id: this.questionId, user_id: this.user.user_id };
     this.API.post('tags', data, true);

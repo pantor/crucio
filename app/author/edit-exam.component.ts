@@ -15,6 +15,9 @@ class EditExamController {
   questions: Question[];
   ready: boolean;
   isSaving: boolean;
+  exam_types: string[];
+  subjectListPerId: any;
+  categoryListPerId: any;
 
   constructor(Page, Auth, API, FileUploader, $scope, $location, $routeParams) {
     this.API = API;
@@ -27,7 +30,7 @@ class EditExamController {
     this.examId = $routeParams.id;
     this.openQuestionId = $routeParams.question_id;
     this.openQuestionIndex = -1;
-    this.numberChanged = 0;
+    this.numberChanged = -3; // Works with this number...
 
     this.uploader = new FileUploader({ url: '/api/v1/file/upload' });
     this.uploader.onSuccessItem = (fileItem, response) => {
@@ -35,9 +38,23 @@ class EditExamController {
     };
     this.uploaderArray = [];
 
+    this.exam_types = [
+      'Erstklausur',
+      'Wiederholungsklausur',
+      'Leistungskontrolle',
+      'Fragensammlung',
+      'Testat',
+      'Sonstiges',
+    ];
+
 
     $scope.$watch(() => this.exam, () => {
-      this.hasChanged = (this.numberChanged > 1);
+      this.hasChanged = (this.numberChanged > 0);
+      this.numberChanged += 1;
+    }, true);
+
+    $scope.$watch(() => this.questions, () => {
+      this.hasChanged = (this.numberChanged > 0);
       this.numberChanged += 1;
     }, true);
 
@@ -54,6 +71,13 @@ class EditExamController {
 
     this.API.get('subjects').then(result => {
       this.subjectList = result.data.subjects;
+      this.subjectListPerId = {};
+      this.categoryListPerId = {};
+      for (const subject of this.subjectList) {
+        this.subjectListPerId[subject.subject_id] = subject.subject;
+        this.categoryListPerId[subject.subject_id] = subject.categories;
+        this.categoryListPerId[subject.subject_id].unshift({category_id: 0, category: 'Sonstiges'});
+      }
     });
 
     this.loadExam();
@@ -65,6 +89,7 @@ class EditExamController {
       this.questions = result.data.questions;
 
       for (let i = 0; i < this.questions.length; i++) {
+        // this.questions[i].category_id = `${this.questions[i].category_id}`;
         if (this.questions[i].question_id === this.openQuestionId) {
           this.openQuestionIndex = i;
         }
@@ -78,15 +103,6 @@ class EditExamController {
 
       this.ready = true;
     });
-  }
-
-  getCategories(subjectId: number) {
-    for (const e of this.subjectList) {
-      if (e.subject_id === subjectId) {
-        return e.categories;
-      }
-    }
-    return -1;
   }
 
   remakeUploaderArray(): void {
@@ -143,7 +159,11 @@ class EditExamController {
 
     if (validate) {
       this.isSaving = true;
-      this.API.put(`exams/${this.examId}`, this.exam);
+      this.API.put(`exams/${this.examId}`, this.exam).then(result => {
+        if (!result.data.status) {
+          alert('Fehler beim Speichern der Klausur.');
+        }
+      });
 
       for (const q of this.questions) {
         const validateQuestion = q.question || q.question_id;
@@ -166,6 +186,7 @@ class EditExamController {
 
           if (!q.question_id) { // New question
             this.API.post('questions', data).then(result => {
+              console.log(result, data);
               q.question_id = result.data.question_id;
             });
           } else {
@@ -175,6 +196,7 @@ class EditExamController {
       }
 
       this.hasChanged = false;
+      this.numberChanged = 0;
       this.isSaving = false;
     } else {
       alert('Es fehlen noch allgemeine Infos zur Klausur.');

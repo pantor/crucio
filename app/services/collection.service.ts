@@ -26,7 +26,7 @@ class Collection {
     sessionStorage.removeItem('crucioCollection');
   }
 
-  getWorked() {
+  getWorked(): any {
     this.get();
     return this.collection.list.filter(e => e.given_result);
   }
@@ -103,7 +103,7 @@ class Collection {
     });
   }
 
-  prepareSubjects(data) {
+  prepareSubjects(data): any {
     return this.API.get('questions/prepare-subjects', data).then(result => {
       const collection = { list: result.data.list, selection: data.selection };
       this.set(collection);
@@ -121,7 +121,7 @@ class Collection {
     return -1;
   }
 
-  getQuestionData(index: number) {
+  getQuestionData(index: number): any {
     return this.collection.list[index];
   }
 }
