@@ -171,8 +171,12 @@
                             </tr>
                         </tbody>
 
-                        <tbody class="search-sf" ng-show="!$ctrl.questionsByCommentdisplay.length">
+                        <tbody class="search-sf" ng-show="!$ctrl.questionsByComment.length">
                             <td class="text-muted" colspan="6">Nichts gefunden.</td>
+                        </tbody>
+
+                        <tbody class="search-sf" ng-show="$ctrl.questionsByComment.length >= 100">
+                            <td class="text-muted" colspan="6">...</td>
                         </tbody>
                     </table>
                 </div>

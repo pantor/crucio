@@ -197,7 +197,7 @@ $app->group('/users', function() {
     		"UPDATE users
     		SET semester = semester + :add"
         );
-        $stmt->bindValue(':add', $body['number'], PDO::PARAM_INT);
+        $stmt->bindValue(':add', $body['difference'], PDO::PARAM_INT);
 
         $data['status'] = execute($stmt);
 		return createResponse($response, $data);

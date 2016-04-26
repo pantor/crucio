@@ -51,19 +51,24 @@ $app->group('/exams', function() {
 
 	$this->get('/distinct', function($request, $response, $args) {
 		$mysql = init();
+		$query_params = $request->getQueryParams();
 
 		$stmt_authors = $mysql->prepare(
 		    "SELECT DISTINCT u.*
 		    FROM exams e
 		    INNER JOIN users u ON u.user_id = e.user_id_added
+			WHERE e.visibility = IFNULL(:visibility, e.visibility)
 		    ORDER BY u.username ASC"
 		);
+		$stmt_authors->bindValue(':visibility', $query_params['visibility']);
 
 		$stmt_semesters = $mysql->prepare(
 		    "SELECT DISTINCT e.semester
 		    FROM exams e
+			WHERE e.visibility = IFNULL(:visibility, e.visibility)
 		    ORDER BY e.semester ASC"
 		);
+		$stmt_semesters->bindValue(':visibility', $query_params['visibility']);
 
 		$stmt_subjects = $mysql->prepare(
 		    "SELECT DISTINCT s.*

@@ -109,7 +109,7 @@ $app->group('/questions', function() {
 		    LIMIT :limit"
 		);
         for ($i = 0; $i < count($sql_params); $i++) {
-            $stmt->bindValue(":sp$i", $sql_params[0]);
+            $stmt->bindValue(":sp$i", $sql_params[$i]);
         }
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 

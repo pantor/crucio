@@ -18,12 +18,12 @@ class GlobalStatisticController {
 
     this.updateActivity = false;
     this.showActivity = {
-      result: false,
-      login: false,
-      register: false,
-      comment: false,
-      examNew: false,
-      examUpdate: false,
+      result: true,
+      login: true,
+      register: true,
+      comment: true,
+      examNew: true,
+      examUpdate: true,
     };
 
     $interval(() => {
@@ -48,7 +48,15 @@ class GlobalStatisticController {
   }
 
   loadActivity(): void {
-    this.API.get('stats/activities', this.showActivity, true).then(result => {
+    const showActivityBoolean = {
+      result: this.showActivity.result | 0,
+      login: this.showActivity.login | 0,
+      register: this.showActivity.register | 0,
+      comment: this.showActivity.comment | 0,
+      examNew: this.showActivity.examNew | 0,
+      examUpdate: this.showActivity.examUpdate | 0,
+    };
+    this.API.get('stats/activities', showActivityBoolean, true).then(result => {
       this.activities = result.data.activities;
     });
   }

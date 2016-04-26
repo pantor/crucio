@@ -50,7 +50,7 @@ class LearnController {
     });
 
 
-    this.API.get('exams/distinct').then(result => {
+    this.API.get('exams/distinct', {visibility: 1}).then(result => {
       this.distinctSemesters = result.data.semesters;
       this.distinctSubjects = result.data.subjects;
     });

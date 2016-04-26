@@ -186,7 +186,7 @@
 		    		<h4>Aktivit&auml;t <small>Aktualisieren braucht immer etwas...</small></h4>
 		    		<div class="btn-toolbar">
 		    			<div class="btn-group">
-						    <label class="btn btn-danger" ng-model="$ctrl.updateActivity" btn-checkbox>LIVE</label>
+						    <label class="btn btn-danger" ng-model="$ctrl.updateActivity" uib-btn-checkbox>LIVE</label>
 						</div>
 
 		    			<div class="btn-group mbottom-2x">
@@ -202,6 +202,7 @@
 					<table class="table">
 						<tbody>
 							<tr ng-repeat="act in $ctrl.activities">
+
 								<td>
 									<span class="text-muted"><i class="fa fa-clock-o fa-fw"></i> <timeago datetime="act.date * 1000"></timeago></span>
 								</td>
@@ -220,10 +221,10 @@
 								<td ng-if="act.activity == 'comment'">
 									<strong>{{ act.username }}</strong> hat einen Kommentar zur Frage #{{ act.question_id }} geschrieben
 								</td>
-								<td ng-if="act.activity == 'examNew'">
+								<td ng-if="act.activity == 'exam_new'">
 									<strong>{{ act.username }}</strong> hat Klausur #{{ act.exam_id }} hinzugef&uuml;gt
 								</td>
-								<td ng-if="act.activity == 'examUpdate'">
+								<td ng-if="act.activity == 'exam_update'">
 									<strong>{{ act.username }}</strong> hat Klausur #{{ act.exam_id }} ver&auml;ndert
 								</td>
 							</tr>

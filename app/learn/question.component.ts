@@ -55,9 +55,8 @@ class QuestionController {
       this.index = -1;
       delete this.collection;
       Collection.remove();
-    }
-    else
-    {
+
+    } else {
       this.index = this.Collection.getIndexOfQuestion(this.questionId);
       if (this.index > -1) {
         const list = this.collection.list;
@@ -67,8 +66,6 @@ class QuestionController {
         this.postQuestionId = this.index < this.length ? list[this.index + 1].question_id : -1;
       }
     }
-
-
 
     this.loadQuestion();
   }
@@ -85,7 +82,7 @@ class QuestionController {
 
       this.checkedAnswer = this.questionData.givenAnswer;
 
-      if (this.questionData.showAnswer) {
+      if (this.questionData.mark_answer) {
         this.markAnswer(this.questionData.givenAnswer);
       }
     });

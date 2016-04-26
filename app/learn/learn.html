@@ -57,7 +57,6 @@
                                             <div class="btn-group" uib-dropdown>
                                                 <button type="button" class="btn btn-default btn-xs" uib-dropdown-toggle>
                                                     <i class="fa fa-fw fa-file-pdf-o"></i> PDF
-                                                    <span class="caret"></span>
                                                 </button>
 
                                                 <ul class="dropdown-menu dropdown-menu-right" role="menu">
@@ -79,7 +78,7 @@
 
                                             <div class="btn-group" uib-dropdown>
                                                 <button type="button" class="btn btn-default btn-xs" uib-dropdown-toggle>
-                                                    <span class="caret"></span>
+                                                    <i class="fa fa-caret-down"></i>
                                                 </button>
 
                                                 <ul class="dropdown-menu dropdown-menu-right" role="menu">
@@ -263,7 +262,6 @@
                                             <div class="btn-group" uib-dropdown>
                                                 <button type="button" class="btn btn-default btn-xs" uib-dropdown-toggle>
                                                     <i class="fa fa-fw fa-file-pdf-o"></i> PDF
-                                                    <span class="caret"></span>
                                                 </button>
 
                                                 <ul class="dropdown-menu dropdown-menu-right" role="menu">
@@ -281,8 +279,9 @@
 
                                             <div class="btn-group" uib-dropdown>
                                                 <button type="button" class="btn btn-default btn-xs" uib-dropdown-toggle>
-                                                    <span class="caret"></span>
+                                                    <i class="fa fa-caret-down"></i>
                                                 </button>
+
                                                 <ul class="dropdown-menu dropdown-menu-right" role="menu">
                                                     <li ng-class="{disabled: exam.answered_questions == 0}">
                                                         <a href ng-click="$ctrl.resetExam(exam)">Klausur zur&uuml;cksetzen</a>
@@ -307,8 +306,8 @@
                                 <div class="panel-heading">
                                     <h3 class="panel-title">
                                         <i class="fa fa-search"></i>
-                                        <span ng-show="$ctrl.search_results.length > 0">{{ $ctrl.search_results.length }} Ergebnisse</span>
-                                        <span ng-show="!$ctrl.search_results">Suche</span>
+                                        <span ng-show="$ctrl.searchResults.length > 0">{{ $ctrl.searchResults.length }} Ergebnisse</span>
+                                        <span ng-show="!$ctrl.searchResults || $ctrl.searchResults.length == 0">Suche</span>
                                     </h3>
                                 </div>
 

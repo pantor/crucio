@@ -51,6 +51,7 @@ class AnalysisController {
 
   showCorrectAnswerClicked(index: number) {
     this.workedCollection[index].show_correct_answer = 1;
+    // this.Collection.saveMarkAnswer(this.index); wrong index
   }
 }
 

@@ -57,8 +57,9 @@
         <div class="form-group">
             <div class="col-sm-offset-3 col-sm-8">
                 <button class="btn btn-primary" type="submit" ng-disabled="form.$invalid">
-                    <i ng-show="$ctrl.isWorking" class="fa fa-circle-o-notch fa-spin"></i>
-                    <span ng-show="!$ctrl.isSaved && !$ctrl.hasError">Speichern</span>
+                    <span ng-show="!$ctrl.isSaved && !$ctrl.hasError">
+                        Speichern<span ng-show="$ctrl.isWorking">...</span>
+                    </span>
                     <span ng-show="$ctrl.isSaved">Gespeichert</span>
                     <span ng-show="$ctrl.hasError">Speichern nicht m&ouml;glich</span>
                 </button>

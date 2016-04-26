@@ -146,6 +146,7 @@ $app->group('/stats', function() {
 		    return $b['date'] - $a['date'];
 		});
 
+        $data['asdf'] = boolval($query_params['examUpdate']);
 		$data['activities'] = array_slice($activities, 0, 101);
 		return createResponse($response, $data);
 	});
