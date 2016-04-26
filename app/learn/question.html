@@ -59,7 +59,7 @@
 
                             <uib-progressbar value="($ctrl.index + 1) / $ctrl.length * 100" type="success"></uib-progressbar>
 
-                            <div class="exam-progress-comment text-success" ng-show="(1 > Math.abs($ctrl.index + 1 - $ctrl.length/2)) && ($ctrl.index > 3)">
+                            <div class="exam-progress-comment text-success" ng-show="$ctrl.Collection.isHalftime($ctrl.currentIndex)">
                                 Halbzeit!
                             </div>
                         </li>
@@ -121,8 +121,7 @@
 
             <div class="btn-group pull-right mtop hidden-xs" role="group" uib-dropdown>
                 <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                    <i class="fa fa-fw fa-file-pdf-o"></i> PDF
-                    <span class="caret"></span>
+                    <i class="fa fa-fw fa-file-pdf-o"></i> PDF <i class="fa fa-caret-down"></i>
                 </button>
 
                 <ul class="dropdown-menu" role="menu">

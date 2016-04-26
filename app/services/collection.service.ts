@@ -124,6 +124,10 @@ class Collection {
   getQuestionData(index: number): any {
     return this.collection.list[index];
   }
+
+  isHalftime(index: number): boolean {
+    return (Math.abs(index + 1 - this.collection.list.length / 2) < 1) && (index > 3);
+  }
 }
 
 angular.module('crucioApp').service('Collection', Collection);

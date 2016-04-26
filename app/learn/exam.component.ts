@@ -68,10 +68,6 @@ class ExamController {
     });
   }
 
-  isHalftime(index: number): boolean {
-    return (Math.abs(index + 1 - this.questions.length / 2) < 1) && (index > 3);
-  }
-
   handExam(): void {
     this.$location.path('/analysis').search('id', null);
   }

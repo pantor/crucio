@@ -29,7 +29,7 @@
                                     <button class="btn btn-default" type="button" uib-dropdown-toggle>
                                         <span ng-show="$ctrl.examSearch.subject">{{ $ctrl.examSearch.subject.name }}</span>
                                         <span ng-show="!$ctrl.examSearch.subject">Alle F&auml;cher</span>
-                                        <span class="caret"></span>
+                                        <i class="fa fa-caret-down"></i>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
                                         <li ng-repeat="ds in $ctrl.distinctSubjects">
@@ -44,7 +44,7 @@
                                     <button class="btn btn-default" type="button" uib-dropdown-toggle>
                                         <span ng-show="$ctrl.examSearch.semester">{{ $ctrl.examSearch.semester }}. Semester</span>
                                         <span ng-show="!$ctrl.examSearch.semester">Alle Semester</span>
-                                        <span class="caret"></span>
+                                        <i class="fa fa-caret-down"></i>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
                                         <li ng-repeat="ds in $ctrl.distinctSemesters">
@@ -59,7 +59,7 @@
                                     <button class="btn btn-default" type="button" uib-dropdown-toggle>
                                         <span ng-show="$ctrl.examSearch.author">{{ $ctrl.examSearch.author.username }}</span>
                                         <span ng-show="!$ctrl.examSearch.author">Alle Autoren</span>
-                                        <span class="caret"></span>
+                                        <i class="fa fa-caret-down"></i>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
                                         <li ng-repeat="da in $ctrl.distinctAuthors">
@@ -125,7 +125,7 @@
                                     <button class="btn btn-default" type="button" uib-dropdown-toggle>
                                         <span ng-show="$ctrl.commentSearch.author">{{ $ctrl.commentSearch.author.username }}</span>
                                         <span ng-show="!$ctrl.commentSearch.author">Alle Autoren</span>
-                                        <span class="caret"></span>
+                                        <i class="fa fa-caret-down"></i>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
                                         <li ng-repeat="da in $ctrl.distinctAuthors">

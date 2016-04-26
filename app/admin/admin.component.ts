@@ -9,6 +9,7 @@ class AdminController {
   stats: any;
   distinctGroups: any;
   distinctSemesters: any;
+  distinctGroupsPerId: any;
   users: User[];
   comments: Comment[];
   questionsByComment: any;
@@ -37,6 +38,10 @@ class AdminController {
     this.API.get('users/distinct').then(result => {
       this.distinctGroups = result.data.groups;
       this.distinctSemesters = result.data.semesters;
+      this.distinctGroupsPerId = {};
+      for (let e of this.distinctGroups) {
+        this.distinctGroupsPerId[e.group_id] = e.name;
+      }
     });
 
     this.loadUsers();
