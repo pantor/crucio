@@ -1,10 +1,10 @@
 class ModalInstanceController {
   data: any;
-  $modalInstance: any;
-  
-  constructor(data, $modalInstance) {
+  $uibModalInstance: any;
+
+  constructor(data, $uibModalInstance) {
     this.data = data;
-    this.$modalInstance = $modalInstance;
+    this.$uibModalInstance = $uibModalInstance;
   }
 }
 

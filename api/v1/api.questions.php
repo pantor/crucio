@@ -17,10 +17,11 @@ $app->group('/questions', function() {
         $limit = ($query_params['limit']) ? intval($query_params['limit']) : 10000;
 
 		$stmt = $mysql->prepare(
-		    "SELECT q.*, s.name AS 'subject', e.subject_id, e.semester
+		    "SELECT q.*, c.name AS 'topic', s.name AS 'subject', e.subject_id, e.semester
 		    FROM questions q
 		    INNER JOIN exams e ON q.exam_id = e.exam_id
 		    INNER JOIN subjects s ON e.subject_id = s.subject_id
+            LEFT JOIN categories c ON q.category_id = c.category_id
 		    WHERE e.visibility = IFNULL(:visibility, e.visibility)
 		        AND e.semester = IFNULL(:semester, e.semester)
 		        AND e.subject_id = IFNULL(:subject_id, e.subject_id)
@@ -127,11 +128,12 @@ $app->group('/questions', function() {
 		$mysql = init();
 
 		$stmt_question = $mysql->prepare(
-		    "SELECT q.*, e.*, u.email, u.username, s.name AS 'subject'
+		    "SELECT q.*, e.*, u.email, u.username, c.name AS 'topic', s.name AS 'subject'
             FROM questions q
             INNER JOIN exams e ON e.exam_id = q.exam_id
             INNER JOIN users u ON u.user_id = e.user_id_added
             INNER JOIN subjects s ON s.subject_id = e.subject_id
+            LEFT JOIN categories c ON q.category_id = c.category_id
             WHERE q.question_id = :question_id"
 		);
 		$stmt_question->bindValue(':question_id', $args['question_id'], PDO::PARAM_INT);
@@ -156,10 +158,11 @@ $app->group('/questions', function() {
 		$mysql = init();
 
 		$stmt_question = $mysql->prepare(
-		    "SELECT q.*, e.*, s.name AS 'subject'
+		    "SELECT q.*, e.*, c.name AS 'topic', s.name AS 'subject'
             FROM questions q
             INNER JOIN exams e ON e.exam_id = q.exam_id
             INNER JOIN subjects s ON s.subject_id = e.subject_id
+            LEFT JOIN categories c ON q.category_id = c.category_id
 		    WHERE q.question_id = :question_id"
 		);
 		$stmt_question->bindValue(':question_id', $args['question_id'], PDO::PARAM_INT);

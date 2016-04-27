@@ -139,7 +139,7 @@
         <?php include('parts/footer.php'); ?>
 
         <script>
-            $("#moreButton").click(function() {
+            $('#moreButton').click(function() {
                 $('html, body').animate({ scrollTop: 1050 }, 600);
             });
 
@@ -157,10 +157,10 @@
                     error.insertAfter(element);
                 },
                 invalidHandler: function() {
-                    $(".form-group").addClass('has-error');
+                    $('.form-group').addClass('has-error');
                 },
                 submitHandler: function() {
-                    $(".form-group").removeClass('has-error');
+                    $('.form-group').removeClass('has-error');
                     $.get('api/v1/users/login', $('form').serialize(), function(data) {
                         if (data.status) {
                             data.logged_in_user.remember_me = $("[name='remember_me']").val();
@@ -174,15 +174,15 @@
                             || data.error === 'error_no_email'
                             || data.error === 'error_no_password'
                         ) {
-                            $(".form-group").addClass('has-error');
-                            validator.showErrors({"password": ""});
+                            $('.form-group').addClass('has-error');
+                            validator.showErrors({'password': ''});
                         }
                     });
                     return false;
                 },
                 messages: {
-                    email: "",
-                    password: "",
+                    email: '',
+                    password: '',
                 }
             });
         </script>

@@ -76,7 +76,7 @@
 
         <div class="btn-toolbar mmtop">
             <div class="btn-group">
-                <a class="btn btn-default mtop" ng-if="$ctrl.index != -1" ng-disabled="$ctrl.preQuestionId == -1" href="question?id={{ $ctrl.preQuestionId }}">
+                <a class="btn btn-default mtop" ng-if="$ctrl.index != -1" ng-disabled="$ctrl.preQuestionId == $ctrl.questionId" ng-href="question?id={{ $ctrl.preQuestionId }}">
                     <i class="fa fa-backward"></i>
                 </a>
 
@@ -88,7 +88,7 @@
                     Erkl&auml;rung
                 </button>
 
-                <a class="btn btn-default mtop" ng-if="$ctrl.index != -1" ng-disabled="$ctrl.postQuestionId == -1" href="question?id={{ $ctrl.postQuestionId }}">
+                <a class="btn btn-default mtop" ng-if="$ctrl.index != -1" ng-disabled="$ctrl.postQuestionId == $ctrl.questionId" ng-href="question?id={{ $ctrl.postQuestionId }}">
                     <i class="fa fa-forward"></i>
                 </a>
             </div>

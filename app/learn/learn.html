@@ -116,8 +116,7 @@
 
                                                 <div ng-if="s.categories.length">
                                                     <a ng-click="isCollapsed = !isCollapsed" style="color: #333; cursor: pointer;">
-                                                        <i class="fa fa-fw" ng-class="{'fa-caret-down': isCollapsed, 'fa-caret-right': !isCollapsed}"></i>
-                                                        <strong>{{ s.subject }}</strong>
+                                                        <i class="fa fa-fw" ng-class="{'fa-caret-down': isCollapsed, 'fa-caret-right': !isCollapsed}"></i><strong>{{ s.subject }}</strong>
                                                     </a>
 
                                                     <div uib-collapse="!isCollapsed">

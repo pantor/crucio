@@ -85,16 +85,14 @@
                             Halbzeit!
                         </div>
 
-                        <p ng-show="$ctrl.Collection.getQuestionData($ctrl.currentIndex).topic != '' && $ctrl.Collection.getQuestionData($ctrl.currentIndex).topic != 'Sonstiges'">
-                            <i class="fa fa-fw fa-angle-right"></i> {{ $ctrl.Collection.getQuestionData($ctrl.currentIndex).topic }}
-                        </p>
-
                         <div class="btn-toolbar" role="toolbar" ng-if="$ctrl.user.group_id == 2 || $ctrl.user.group_id == 3">
                             <div class="btn-group pull-right" role="group">
                                 <a class="btn btn-default" href="edit-exam?id={{ $ctrl.exam.exam_id }}&question_id={{ $ctrl.Collection.getQuestionData($ctrl.currentIndex).question_id }}">Bearbeiten</a>
                             </div>
                         </div>
                     </li>
+
+                    <li class="list-group-item" ng-show="$ctrl.Collection.getQuestionData($ctrl.currentIndex).topic != '' && $ctrl.Collection.getQuestionData($ctrl.currentIndex).topic != 'Sonstiges'"><i class="fa fa-fw fa-angle-right"></i> {{ $ctrl.Collection.getQuestionData($ctrl.currentIndex).topic }}</li>
 
                     <li class="list-group-item">
                         <div class="btn-toolbar" role="toolbar">

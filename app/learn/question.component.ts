@@ -62,8 +62,8 @@ class QuestionController {
         const list = this.collection.list;
         this.questionData = this.Collection.getQuestionData(this.index);
         this.length = list.length;
-        this.preQuestionId = this.index > 0 ? list[this.index - 1].question_id : -1;
-        this.postQuestionId = this.index < this.length ? list[this.index + 1].question_id : -1;
+        this.preQuestionId = this.index > 0 ? list[this.index - 1].question_id : this.questionId;
+        this.postQuestionId = this.index < this.length - 1 ? list[this.index + 1].question_id : this.questionId;
       }
     }
 

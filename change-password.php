@@ -20,7 +20,7 @@
             <?php include('parts/container-top-bar.php'); ?>
 
             <?php
-                $param = ["fa" => "fa-key", "h4" => "Neues Passwort"];
+                $param = ['fa' => 'fa-key', 'h4' => 'Neues Passwort'];
                 include('parts/container-title.php');
             ?>
 
@@ -85,7 +85,7 @@
                         }
 
                         if (data.error === 'error_token') {
-                            validator.showErrors({"password": "Konnte das Passwort nicht zuordnen."});
+                            validator.showErrors({'password': 'Konnte das Passwort nicht zuordnen.');
                         }
 
                         $('#submitbutton').button('reset');
@@ -93,8 +93,8 @@
                     return false;
                 },
                 messages: {
-                    password: "Kein Passwort",
-                    passwordc: "Passw&ouml;rter nicht gleich",
+                    password: 'Kein Passwort',
+                    passwordc: 'Passw&ouml;rter nicht gleich',
                 }
             });
         </script>

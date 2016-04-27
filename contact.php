@@ -10,7 +10,7 @@
             <?php include('parts/container-top-bar.php'); ?>
 
             <?php
-                $param = ["fa" => "fa-bullhorn", "h4" => "Kontakt", "p" => ""];
+                $param = ['fa' => 'fa-bullhorn', 'h4' => 'Kontakt'];
                 include('parts/container-title.php');
             ?>
 
@@ -78,12 +78,12 @@
                     return false;
                 },
                 messages: {
-                    name: "Kein Name",
+                    name: 'Kein Name',
                     email: {
-                        required: "Keine E-Mail-Adresse",
-                        email: "Keine g&uuml;tige E-Mail-Adresse"
+                        required: 'Keine E-Mail-Adresse',
+                        email: 'Keine g&uuml;tige E-Mail-Adresse'
                     },
-                    text: "Keine Nachricht",
+                    text: 'Keine Nachricht',
                 }
             });
         </script>

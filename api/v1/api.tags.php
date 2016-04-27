@@ -10,11 +10,12 @@ $app->group('/tags', function() {
 		$query = strlen($query_params['query']) > 0 ? "%".$query_params['query']."%" : null;
 
 		$stmt = $mysql->prepare(
-		    "SELECT DISTINCT t.*, q.question, q.exam_id, e.subject, u.username
+		    "SELECT DISTINCT t.*, q.question, q.exam_id, s.name AS 'subject', u.username
             FROM tags t
             INNER JOIN questions q ON q.question_id = t.question_id
             INNER JOIN exams e ON e.exam_id = q.exam_id
             INNER JOIN users u ON u.user_id = t.user_id
+			INNER JOIN subjects s ON s.subject_id = e.subject_id
             WHERE t.tags != ''
                 AND t.user_id = IFNULL(:user_id, t.user_id)
                 AND t.question_id = IFNULL(:question_id, t.question_id)

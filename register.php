@@ -105,32 +105,32 @@
                         }
 
                         if (data.error === 'error_username_taken') {
-                            validator.showErrors({"username": "Wird bereits verwendet"});
+                            validator.showErrors({'username': 'Wird bereits verwendet'});
                         }
 
                         if (data.error === 'error_email_taken') {
-                            validator.showErrors({"email": "Wird bereits verwendet"});
+                            validator.showErrors({'email': 'Wird bereits verwendet'});
                         }
 
                         if (data.error === 'error_email_forbidden') {
-                            validator.showErrors({"email": "Keine g&uuml;tige E-Mail-Adresse"});
+                            validator.showErrors({'email': 'Keine g&uuml;tige E-Mail-Adresse'});
                         }
                         $('#submitbutton').button('reset');
                     });
                 },
                 messages: {
                     username: {
-                        required: "Kein Name",
-                        minlength: "Zu kurzer Name"
+                        required: 'Kein Name',
+                        minlength: 'Zu kurzer Name'
                     },
                     email: {
-                        required: "Keine E-Mail-Adresse",
-                        email: "Keine g&uuml;tige E-Mail-Adresse"
+                        required: 'Keine E-Mail-Adresse',
+                        email: 'Keine g&uuml;tige E-Mail-Adresse'
                     },
-                    text: "Keine Nachricht",
-                    semester: "Kein Semester",
-                    password: "Kein Passwort",
-                    passwordc: "Passw&ouml;rter nicht gleich",
+                    text: 'Keine Nachricht',
+                    semester: 'Kein Semester',
+                    password: 'Kein Passwort',
+                    passwordc: 'Passw&ouml;rter nicht gleich',
                 }
             });
         </script>

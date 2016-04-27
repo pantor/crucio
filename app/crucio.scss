@@ -805,6 +805,7 @@ sub {
     display : block;
 }
 
+.question-answer,
 .answer {
     padding: 5px;
     margin-top: -5px;
@@ -1106,5 +1107,9 @@ tags-input .tags .tag-item {
 
     .remove-button:hover {
         text-decoration: none;
+    }
+
+    .remove-button:active {
+        color: darken($light-blue, 20%);
     }
 }

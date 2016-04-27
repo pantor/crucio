@@ -10,7 +10,7 @@
             <?php include('parts/container-top-bar.php'); ?>
 
             <?php
-                $param = ["fa" => "fa-unlock", "h4" => "Passwort vergessen"];
+                $param = ['fa' => 'fa-unlock', 'h4' => 'Passwort vergessen'];
                 include('parts/container-title.php');
             ?>
 
@@ -62,10 +62,10 @@
                         }
 
                         if (data.error === 'error_email') {
-                            validator.showErrors({"email": "Wir konnten deine E-Mail-Adresse nicht finden."});
+                            validator.showErrors({"email": 'Wir konnten deine E-Mail-Adresse nicht finden.'});
 
                         } else if (data.error === 'error_already_requested') {
-                            validator.showErrors({"email": "F&uuml;r die E-Mail-Adresse wurde bereits das Passwort zur&uuml;ckgesetzt."});
+                            validator.showErrors({'email': 'F&uuml;r die E-Mail-Adresse wurde bereits das Passwort zur&uuml;ckgesetzt.'});
                         }
 
                         $('#submitbutton').button('reset');
@@ -74,8 +74,8 @@
                 },
                 messages: {
                     email: {
-                        required: "Keine E-Mail-Adresse",
-                        email: "Keine g&uuml;tige E-Mail-Adresse"
+                        required: 'Keine E-Mail-Adresse',
+                        email: 'Keine g&uuml;tige E-Mail-Adresse'
                     }
                 }
             });

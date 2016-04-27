@@ -32,9 +32,9 @@ $app->group('/exams', function() {
                 AND e.user_id_added = IFNULL(:author_id, e.user_id_added)
                 AND e.subject_id = IFNULL(:subject_id, e.subject_id)
                 AND ( e.date LIKE IFNULL(:query, e.date)
-                    OR e.subject LIKE  IFNULL(:query, e.subject) )
+                    OR s.name LIKE  IFNULL(:query, s.name) )
             GROUP BY q.exam_id
-            ORDER BY e.semester ASC, e.subject ASC, e.date DESC
+            ORDER BY e.semester ASC, s.name ASC, e.date DESC
             LIMIT :limit"
 		);
 		$stmt->bindValue(':user_id', $query_params['user_id'], PDO::PARAM_INT);
@@ -96,10 +96,11 @@ $app->group('/exams', function() {
 		$exam = getFetch($stmt_exam);
 
 		$stmt_questions = $mysql->prepare(
-		    "SELECT *
-		    FROM questions
-		    WHERE exam_id = :exam_id
-		    ORDER BY question_id ASC"
+		    "SELECT q.*, c.name AS 'topic'
+		    FROM questions q
+			LEFT JOIN categories c ON q.category_id = c.category_id
+		    WHERE q.exam_id = :exam_id
+		    ORDER BY q.question_id ASC"
 		);
 		$stmt_questions->bindValue(':exam_id', $args['exam_id']);
 		$questions = getAll($stmt_questions);
@@ -119,7 +120,7 @@ $app->group('/exams', function() {
 		$limit = $query_params['limit'] ? intval($query_params['limit']) : 10000;
 
 		$stmt = $mysql->prepare(
-		    "SELECT e.*, COUNT(*) AS 'question_count', IFNULL(answered_questions, 0) AS 'answered_questions'
+		    "SELECT e.*, s.name AS 'subject', COUNT(*) AS 'question_count', IFNULL(answered_questions, 0) AS 'answered_questions'
             FROM exams e
             LEFT JOIN (SELECT q.exam_id, COUNT(*) AS 'answered_questions'
                 FROM results r
@@ -127,13 +128,14 @@ $app->group('/exams', function() {
                 WHERE r.resetted = 0 AND r.attempt = 1
                 GROUP BY q.exam_id) AS R ON e.exam_id = R.exam_id
             INNER JOIN questions q ON q.exam_id = e.exam_id
+			INNER JOIN subjects s ON s.subject_id = e.subject_id
             WHERE e.visibility = 1
             GROUP BY q.exam_id
             HAVING answered_questions > 0
                 OR ( e.semester = 4
                     AND question_count > 20
                     AND e.date != 'Unbekannt' )
-            ORDER BY answered_questions DESC, e.semester ASC, e.subject ASC, e.date DESC
+            ORDER BY answered_questions DESC, e.semester ASC, s.name ASC, e.date DESC
             LIMIT :limit"
 		);
 		$stmt->bindValue(':user_id', $args['user_id'], PDO::PARAM_INT);
