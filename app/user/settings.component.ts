@@ -1,14 +1,16 @@
 class SettingsController {
   API: API;
   Auth: Auth;
+  $uibModal: any;
   user: User;
   isWorking: boolean;
   hasError: boolean;
   isSaved: boolean;
 
-  constructor(Page, Auth, API) {
+  constructor(Page, Auth, API, $uibModal) {
     this.API = API;
     this.Auth = Auth;
+    this.$uibModal = $uibModal;
 
     Page.setTitleAndNav('Einstellungen | Crucio', 'Name');
 
@@ -46,8 +48,17 @@ class SettingsController {
     });
   }
 
-  removeAllResults(): void {
-    this.API.delete(`results/${this.user.user_id}`);
+  deleteAllResultsModal(): void {
+    this.$uibModal.open({
+      templateUrl: 'deleteResultsModalContent.html',
+      controller: 'deleteResultsModalController',
+      controllerAs: '$ctrl',
+      resolve: {
+        userId: () => {
+          return this.user.user_id;
+        },
+      },
+    });
   }
 }
 

@@ -50,7 +50,7 @@
                         <li class="list-group-item">{{ $ctrl.question.semester }}. Semester<span ng-show="question.sort">, {{ $ctrl.question.sort }}</span></li>
                         <li class="list-group-item"><i class="fa fa-fw fa-calendar"></i> {{ $ctrl.question.date }}</li>
                         <li class="list-group-item" ng-if="$ctrl.question.professor"><i class="fa fa-fw fa-user-md"></i> {{ $ctrl.question.professor }}</li>
-                        <li class="list-group-item" ng-if="$ctrl.question.topic != 'Sonstiges' && $ctrl.question.topic != ''">
+                        <li class="list-group-item" ng-if="$ctrl.question.topic != 'Sonstiges' && $ctrl.question.topic != '' && $ctrl.question.topic">
                             <i class="fa fa-fw fa-angle-right"></i> {{ $ctrl.question.topic }}
                         </li>
 

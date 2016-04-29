@@ -46,6 +46,7 @@ class AuthorController {
       semester: this.examSearch.semester,
       query: this.examSearch.query,
       limit: 200,
+      showEmpty: true,
     };
     this.API.get('exams', data).then(result => {
       this.exams = result.data.exams;

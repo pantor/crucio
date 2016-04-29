@@ -1,6 +1,5 @@
 class AdminController {
   API: API;
-  $uibModal: any;
   activeTab: string;
   user: User;
   userSearch: any;
@@ -15,9 +14,8 @@ class AdminController {
   questionsByComment: any;
   newWhitelistEmail: string;
 
-  constructor(Page, Auth, API, $uibModal) {
+  constructor(Page, Auth, API) {
     this.API = API;
-    this.$uibModal = $uibModal;
 
     Page.setTitleAndNav('Verwaltung | Crucio', 'Admin');
     this.activeTab = 'users';

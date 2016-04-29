@@ -2,6 +2,7 @@ class EditExamController {
   API: API;
   FileUploader: any;
   $location: any;
+  $uibModal: any;
   user: User;
   examId: number;
   openQuestionId: number;
@@ -19,16 +20,17 @@ class EditExamController {
   subjectListPerId: any;
   categoryListPerId: any;
 
-  constructor(Page, Auth, API, FileUploader, $scope, $location, $routeParams) {
+  constructor(Page, Auth, API, FileUploader, $scope, $location, $routeParams, $uibModal) {
     this.API = API;
     this.FileUploader = FileUploader;
     this.$location = $location;
+    this.$uibModal = $uibModal;
 
     Page.setTitleAndNav('Klausur | Crucio', 'Autor');
 
     this.user = Auth.getUser();
     this.examId = $routeParams.id;
-    this.openQuestionId = $routeParams.question_id;
+    this.openQuestionId = parseInt($routeParams.question_id, 0);
     this.openQuestionIndex = -1;
     this.numberChanged = -3; // Works with this number...
 
@@ -89,9 +91,9 @@ class EditExamController {
       this.questions = result.data.questions;
 
       for (let i = 0; i < this.questions.length; i++) {
-        // this.questions[i].category_id = `${this.questions[i].category_id}`;
         if (this.questions[i].question_id === this.openQuestionId) {
           this.openQuestionIndex = i;
+          break;
         }
       }
 
@@ -186,7 +188,6 @@ class EditExamController {
 
           if (!q.question_id) { // New question
             this.API.post('questions', data).then(result => {
-              console.log(result, data);
               q.question_id = result.data.question_id;
             });
           } else {
@@ -203,9 +204,16 @@ class EditExamController {
     }
   }
 
-  deleteExam(): void {
-    this.API.delete(`exams/${this.exam.exam_id}`).then(() => {
-      this.$location.url('/author');
+  deleteExamModal(): void {
+    this.$uibModal.open({
+      templateUrl: 'deleteExamModalContent.html',
+      controller: 'deleteExamModalController',
+      controllerAs: '$ctrl',
+      resolve: {
+        examId: () => {
+          return this.examId;
+        },
+      },
     });
   }
 }

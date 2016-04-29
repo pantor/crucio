@@ -20,19 +20,24 @@ $app->group('/exams', function() {
                 GROUP BY q.exam_id) AS R ON e.exam_id = R.exam_id ";
 		}
 
+		$questions_sql_join = "INNER";
+		if ($query_params['showEmpty']) {
+    		$questions_sql_join = "LEFT";
+		}
+
 		$stmt = $mysql->prepare(
 		    "SELECT e.*, u.username AS 'author', s.name AS 'subject', COUNT(*) AS 'question_count' $answered_questions_sql_select
             FROM exams e
             $answered_questions_sql_join
             INNER JOIN users u ON u.user_id = e.user_id_added
-            INNER JOIN questions q ON q.exam_id = e.exam_id
+            $questions_sql_join JOIN questions q ON q.exam_id = e.exam_id
 			INNER JOIN subjects s ON s.subject_id = e.subject_id
             WHERE e.visibility = IFNULL(:visibility, e.visibility)
                 AND e.semester = IFNULL(:semester, e.semester)
                 AND e.user_id_added = IFNULL(:author_id, e.user_id_added)
                 AND e.subject_id = IFNULL(:subject_id, e.subject_id)
                 AND ( e.date LIKE IFNULL(:query, e.date)
-                    OR s.name LIKE  IFNULL(:query, s.name) )
+                    OR s.name LIKE IFNULL(:query, s.name) )
             GROUP BY q.exam_id
             ORDER BY e.semester ASC, s.name ASC, e.date DESC
             LIMIT :limit"
@@ -174,13 +179,14 @@ $app->group('/exams', function() {
 		$body = $request->getParsedBody();
 
 		$stmt = $mysql->prepare(
-		    "INSERT INTO exams (subject_id, date_added, date_updated, user_id_added)
-            VALUES (:subject_id, :date_added, :date_updated, :user_id_added)"
+		    "INSERT INTO exams (subject_id, date_added, date_updated, user_id_added, sort)
+            VALUES (:subject_id, :date_added, :date_updated, :user_id_added, :sort)"
 		);
 		$stmt->bindValue(':subject_id', $body['subject_id']);
 		$stmt->bindValue(':date_added', time());
 		$stmt->bindValue(':date_updated', time());
 		$stmt->bindValue(':user_id_added', $body['user_id_added']);
+		$stmt->bindValue(':sort', $body['sort']);
 
 		$data['status'] = execute($stmt);
         $data['exam_id'] = $mysql->lastInsertId();

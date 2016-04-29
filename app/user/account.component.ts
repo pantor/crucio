@@ -38,7 +38,6 @@ class AccountController {
       password: this.newPassword,
     };
     this.API.put(`users/${this.user.user_id}/account`, data, true).then(result => {
-      console.log(result.data);
       if (result.data.status) {
         this.Auth.setUser(this.user);
       } else {

@@ -102,9 +102,10 @@ $app->group('/questions', function() {
         }
 
 		$stmt = $mysql->prepare(
-		    "SELECT q.*
+		    "SELECT q.*, c.name AS 'topic'
 		    FROM questions q
 		    INNER JOIN exams e ON e.exam_id = q.exam_id
+            LEFT JOIN categories c ON q.category_id = c.category_id
 		    WHERE $sql
 		    ORDER BY rand()
 		    LIMIT :limit"

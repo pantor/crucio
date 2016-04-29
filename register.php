@@ -99,7 +99,6 @@
                 submitHandler: function() {
                     $('#submitbutton').button('loading');
                     $.post('api/v1/users', $('form').serialize(), function(data) {
-                        console.log(data);
                         if (data.status) {
                             $('#successModal').modal();
                         }
