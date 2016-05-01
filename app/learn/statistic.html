@@ -1,0 +1,95 @@
+<div class="container">
+    <div class="row mtop-navbar-row">
+        <div class="col-md-3 sidebar">
+            <ul class="nav nav-pills nav-stacked mbottom-2x">
+                <li class="active"><a showtab="" data-target="#stats" href="admin" data-toggle="tab"><i class="fa fa-dashboard fa-fw"></i>  Statistik</a></li>
+            </ul>
+            <hr class="visible-xs visible-sm">
+        </div>
+
+        <div class="col-md-9">
+            <div class="tab-content">
+                <div class="tab-pane active" id="stats">
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-4">
+                            <div class="stats-box">
+
+                                <h5>{{ stats.user_count }}</h5>
+                                <p><i class="fa fa-users fa-fw"></i> Nutzer</p>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-sm-4">
+                            <div class="stats-box">
+                                <h5>{{ stats.question_count }}</h5>
+                                <p> <i class="fa fa-question-circle fa-fw"></i> Fragen | {{ stats.visible_question_count }} sichtbar</p>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-sm-4">
+                            <div class="stats-box">
+                                <h5>{{ stats.answer_count }}</h5>
+                                <p> <i class="fa fa-exclamation-triangle fa-fw"></i> Antworten | {{ stats.answer_count / stats.user_count | number:0  }} pro Nutzer</p>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-sm-4">
+                            <div class="stats-box">
+                                <h5>{{ stats.exam_count }}</h5>
+                                <p> <i class="fa fa-list fa-fw"></i> Klausuren | {{ stats.visible_exam_count }} sichtbar</p>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-sm-4">
+                            <div class="stats-box">
+                                <h5>{{ stats.comment_count }}</h5>
+                                <p> <i class="fa fa-comments fa-fw"></i> Kommentare</p>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-sm-4">
+                            <div class="stats-box">
+                                <h5>{{ stats.tag_count }}</h5>
+                                <p> <i class="fa fa-tags fa-fw"></i> Markierungen</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <h4>Semester</h4>
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-4">
+                            <center>
+                                <canvas doughnutchart data="chart_users" width="200" height="200"></canvas>
+                                <p>Nutzer</p>
+                            </center>
+                        </div>
+
+                        <div class="col-xs-6 col-sm-4">
+                            <center>
+                                <canvas doughnutchart data="chart_exams" width="200" height="200"></canvas>
+                                <p>Klausuren</p>
+                            </center>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-4">
+                            <div style="line-height: 24px; margin-top: 20px;">
+                                <div class="dot pull-left" style="background-color: #e74c3c; margin-top:3px; margin-right: 14px;"></div> 1. Semester<br>
+                                <div class="dot pull-left" style="background-color: #e67e22; margin-top:3px; margin-right: 14px;"></div> 2. Semester<br>
+                                <div class="dot pull-left" style="background-color: #f1c40f; margin-top:3px; margin-right: 14px;"></div> 3. Semester<br>
+                                <div class="dot pull-left" style="background-color: #2ecc71; margin-top:3px; margin-right: 14px;"></div> 4. Semester<br>
+                                <div class="dot pull-left" style="background-color: #1abc9c; margin-top:3px; margin-right: 14px;"></div> 5. Semester<br>
+                                <div class="dot pull-left" style="background-color: #3498db; margin-top:3px; margin-right: 14px;"></div> 6. Semester<br>
+                                <div class="dot pull-left" style="background-color: #34495e; margin-top:3px; margin-right: 14px;"></div> >6. Semester<br>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+                    <h4>Fragen</h4>
+                    <div class="row mbottom-2x">
+                        <center>
+                            <canvas barchart data="chart_questions" width="600" height="400"></canvas>
+                        </center>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

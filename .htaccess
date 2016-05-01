@@ -1,6 +1,6 @@
 # If the request is a file, folder or symlink that exists, serve it up
 
-AddDefaultCharset iso-8859-1
+AddDefaultCharset utf-8
 
 <FilesMatch "\.(ttf|otf|eot|woff)$">
   <IfModule mod_headers.c>
@@ -9,7 +9,7 @@ AddDefaultCharset iso-8859-1
 </FilesMatch>
 
 RewriteEngine On
-RewriteCond %{HTTP_HOST} !^www\.
+RewriteCond %{HTTP_HOST} ^[^.]+\.[^.]+$
 RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]
 
 RewriteEngine On

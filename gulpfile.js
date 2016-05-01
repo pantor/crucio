@@ -1,84 +1,110 @@
 var gulp = require('gulp'),
-    sass = require('gulp-sass'),
-    uglify = require('gulp-uglify'),
-    rename = require("gulp-rename"),
-    concat = require("gulp-concat"),
-    inlineCss = require('gulp-inline-css'),
-    eslint = require('gulp-eslint')
-    babel = require('gulp-babel'),
-    sourcemaps = require("gulp-sourcemaps"),
-    phplint = require('phplint').lint,
-    convertEncoding = require('gulp-convert-encoding');
+  autoprefixer = require('gulp-autoprefixer'),
+  concat = require('gulp-concat'),
+  copy = require('gulp-copy'),
+  inlineCss = require('gulp-inline-css'),
+  ngAnnotate = require('gulp-ng-annotate'),
+  phplint = require('gulp-phplint'),
+  sass = require('gulp-sass'),
+  ts = require('gulp-typescript'),
+  uglify = require('gulp-uglify'),
+  streamqueue = require('streamqueue');
 
 
-// Compile SASS
+var api = 'api/';
+var app = 'app/';
+var node = 'node_modules/';
+
 gulp.task('sass', function () {
-    return gulp.src('src/sass/**/*.scss')
-        .pipe(sass({ outputStyle: 'compressed' }).on('error', sass.logError))
-        .pipe(rename({ suffix: '.min' }))
-        .pipe(gulp.dest('public/css/'));
+  return streamqueue({ objectMode: true },
+      gulp.src([
+        node + 'angular-loading-bar/build/loading-bar.min.css',
+        node + 'bootstrap/dist/css/bootstrap.min.css',
+        node + 'font-awesome/css/font-awesome.min.css',
+        node + 'angularjs-slider/dist/rzslider.min.css',
+        node + 'ng-tags-input/build/ng-tags-input.min.css',
+        node + 'textangular/dist/textAngular.css',
+      ]),
+      gulp.src([app + '**/*.scss'])
+        .pipe(sass())
+        .pipe(autoprefixer({ browsers: ['last 2 versions'], cascade: false }))
+    )
+    .pipe(concat('crucio.css'))
+    .pipe(gulp.dest('public/css'));
 });
 
-// Lint and format JS
-gulp.task('js', function () {
-    return gulp.src(['src/js/crucio.js', 'src/js/**/*.js'])
-        .pipe(eslint({
-            globals: {
-                '$': true,
-                'angular': true,
-                'subject_list': true,
-            },
-            extends: ['airbnb/base', 'angular'], // 'eslint:recommended'
-            rules: {
-                'angular/controller-as-vm': 0,
-                'angular/no-service-method': 0,
-                'angular/document-service': 0,
-                'angular/log': 0,
-                'no-console': 1,
-                'camelcase': 0,
-                'no-loop-func' : 1,
-                'eqeqeq': 0,
-                'func-names': 0,
-                'object-shorthand': 1,
-                'indent': [2, 4],
-            },
-            envs: ['browser', 'es6'],
-        }))
-        .pipe(eslint.format())
-        .pipe(eslint.failAfterError())
-        .pipe(babel({ presets: ['es2015'] }))
-        .pipe(concat('crucio.js'))
-        .pipe(uglify({ mangle: false }))
-        .pipe(rename({ suffix: '.min' }))
-        .pipe(convertEncoding({ to: 'iso-8859-15' }))
-        .pipe(gulp.dest('public/js/'));
+gulp.task('ts', function () {
+  gulp.src([
+    app + 'crucio.ts',
+    app + '**/*.ts',
+  ])
+    .pipe(ts({ noImplicitAny: false, out: 'crucio.js' }))
+    .pipe(ngAnnotate())
+    .pipe(uglify())
+    .pipe(gulp.dest('public/js'));
 });
 
-// Compile mail templates
+gulp.task('js-vendor', function () {
+  gulp.src([
+    node + 'spin.js/spin.min.js',
+    node + 'chart.js/Chart.min.js',
+    node + 'angular/angular.min.js',
+    node + 'textangular/dist/textAngular-rangy.min.js',
+    node + 'textangular/dist/textAngular-sanitize.min.js',
+    node + 'textangular/dist/textAngular.min.js',
+    node + 'textangular/dist/textAngularSetup.js',
+    node + 'angular-chart.js/dist/angular-chart.min.js',
+    node + 'angular-cookies/angular-cookies.min.js',
+    node + 'angular-file-upload/dist/angular-file-upload.min.js',
+    node + 'angular-messages/angular-messages.min.js',
+    node + 'angular-route/angular-route.min.js',
+    node + 'angular-scroll/angular-scroll.min.js',
+    node + 'angular-spinner/angular-spinner.min.js',
+    node + 'angular-loading-bar/build/loading-bar.min.js',
+    node + 'angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
+    node + 'angularjs-slider/dist/rzslider.min.js',
+    node + 'ng-tags-input/build/ng-tags-input.min.js',
+  ])
+    .pipe(concat('vendor.js'))
+    .pipe(ngAnnotate())
+    .pipe(uglify())
+    .pipe(gulp.dest('public/js/'));
+
+  gulp.src([
+    node + 'jquery/dist/jquery.min.js',
+    node + 'jquery-validation/dist/jquery.validate.js',
+    node + 'js-cookie/src/js.cookie.js',
+    node + 'bootstrap/dist/js/bootstrap.min.js',
+  ])
+    .pipe(concat('outer.js'))
+    .pipe(ngAnnotate())
+    .pipe(uglify())
+    .pipe(gulp.dest('public/js/'));
+});
+
 gulp.task('mail', function () {
-    return gulp.src('src/mail-templates/**/*.html')
-        .pipe(inlineCss())
-        .pipe(gulp.dest('api/mail-templates/'));
+  gulp.src(app + 'mail-templates/**/*.html')
+    .pipe(inlineCss())
+    .pipe(gulp.dest(api + 'mail-templates/'));
 });
 
-// Lint PHP
-gulp.task('php', function (cb) {
-    return phplint(['api/v1/**/*.php'], { stderr: true }, function (err, stdout, stderr) {
-        if (err) {
-            cb(err);
-        } else {
-            cb();
-        }
-    });
+gulp.task('php', function () {
+  gulp.src(api + '**/*.php')
+    .pipe(phplint());
 });
 
-// Watch Files For Changes
-gulp.task('serve', function () {
-    gulp.watch('src/sass/**/*.scss', ['sass']);
-    gulp.watch('src/js/**/*.js', ['js']);
-    gulp.watch('src/mail-templates/**/*.html', ['mail']);
-    gulp.watch('api/v1/**/*.php', ['php']);
+gulp.task('fonts', function () {
+  gulp.src([
+    node + 'font-awesome/fonts/*.*'
+  ])
+    .pipe(copy('public/fonts', { prefix: 3 }));
 });
 
-// Default Task
-gulp.task('default', ['serve']);
+gulp.task('watch', function () {
+  gulp.watch(api + '**/*.php', ['php']);
+  gulp.watch(app + '**/*.scss', ['sass']);
+  gulp.watch(app + '**/*.ts', ['ts']);
+  gulp.watch(app + 'mail-templates/**/*.html', ['mail']);
+});
+
+gulp.task('default', ['watch']);

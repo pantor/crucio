@@ -1,0 +1,16 @@
+# top-most EditorConfig file
+root = true
+
+# 4 space indentation
+[*]
+indent_style = space
+indent_size = 4
+
+# JS 2 space indentation
+[*.js]
+indent_style = space
+indent_size = 2
+
+[*.ts]
+indent_style = space
+indent_size = 2

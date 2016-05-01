@@ -3,166 +3,243 @@
 $app->group('/exams', function() {
 
 	$this->get('', function($request, $response, $args) {
-		$mysql = startMysql();
+		$mysql = init();
+		$query_params = $request->getQueryParams();
 
-		$visibility = $request->getQueryParams()['visibility'];
-		$visibility_sql_where = "";
-		if ($visibility) {
-            $visibility_sql_where = "AND e.visibility = $visibility ";
-		}
+		$limit = $query_params['limit'] ? intval($query_params['limit']) : 10000;
+		$query = strlen($query_params['query']) > 0 ? "%".$query_params['query']."%" : null;
 
-		$semester = $request->getQueryParams()['semester'];
-		$semester_sql_where = "";
-		if ($semester) {
-    		$semester_sql_where = "AND e.semester = $semester ";
-		}
-
-		$author_id = $request->getQueryParams()['author_id'];
-		$author_id_sql_where = "";
-		if ($author_id) {
-    		$author_id_sql_where = "AND e.user_id_added = $author_id ";
-		}
-
-		$data = get_all($mysql,
-		    "SELECT e.*, u.username AS 'author', COUNT(*) AS 'question_count'
-            FROM exams e
-            INNER JOIN users u ON u.user_id = e.user_id_added
-            INNER JOIN questions q ON q.exam_id = e.exam_id
-            WHERE 1 = 1 "
-                .$visibility_sql_where
-                .$semester_sql_where
-                .$author_id_sql_where
-            ."GROUP BY q.exam_id
-            ORDER BY e.subject ASC, e.semester ASC, e.date DESC",
-		[], 'exams');
-
-		return createResponse($response, $data);
-	});
-
-
-	$this->get('/user_id/{user_id}', function($request, $response, $args) {
-		$mysql = startMysql();
-
-		$visibility = 1; // $request->getQueryParams()['visibility'];
-		$visibility_sql_where = "";
-		if ($visibility) {
-            $visibility_sql_where = "AND e.visibility = $visibility ";
-		}
-
-		$semester = $request->getQueryParams()['semester'];
-		$semester_sql_where = "";
-		if ($semester) {
-    		$semester_sql_where = "AND e.semester = $semester ";
-		}
-
-		$author_id = $request->getQueryParams()['author_id'];
-		$author_id_sql_where = "";
-		if ($author_id) {
-    		$author_id_sql_where = "AND e.user_id_added = $author_id ";
-		}
-
-		$data = get_all($mysql,
-		    "SELECT e.*, u.username, COUNT(*) AS 'question_count', IFNULL(answered_questions, 0) AS 'answered_questions'
-            FROM exams e
-            LEFT JOIN (SELECT q.exam_id, COUNT(*) AS 'answered_questions'
+        $answered_questions_sql_select = "";
+		$answered_questions_sql_join = "";
+		if ($query_params['user_id']) {
+    		$answered_questions_sql_select = ", IFNULL(answered_questions, 0) AS 'answered_questions'";
+    		$answered_questions_sql_join = " LEFT JOIN (SELECT q.exam_id, COUNT(*) AS 'answered_questions'
                 FROM results r
-                INNER JOIN questions q ON q.question_id = r.question_id AND r.user_id = ?
+                INNER JOIN questions q ON q.question_id = r.question_id AND r.user_id = :user_id
                 WHERE r.resetted = 0 AND r.attempt = 1
-                GROUP BY q.exam_id) AS R ON e.exam_id = R.exam_id
-            INNER JOIN questions q ON q.exam_id = e.exam_id
-            INNER JOIN users u ON u.user_id = e.user_id_added
-            WHERE 1 = 1 "
-                .$visibility_sql_where
-                .$semester_sql_where
-                .$author_id_sql_where
-            ."GROUP BY q.exam_id
-            ORDER BY e.semester ASC, e.subject ASC, e.date DESC",
-        [$args['user_id']], 'exam');
+                GROUP BY q.exam_id) AS R ON e.exam_id = R.exam_id ";
+		}
 
+		$questions_sql_join = "INNER";
+		if ($query_params['showEmpty']) {
+    		$questions_sql_join = "LEFT";
+		}
+
+		$stmt = $mysql->prepare(
+		    "SELECT e.*, u.username AS 'author', s.name AS 'subject', COUNT(*) AS 'question_count' $answered_questions_sql_select
+            FROM exams e
+            $answered_questions_sql_join
+            INNER JOIN users u ON u.user_id = e.user_id_added
+            $questions_sql_join JOIN questions q ON q.exam_id = e.exam_id
+			INNER JOIN subjects s ON s.subject_id = e.subject_id
+            WHERE e.visibility = IFNULL(:visibility, e.visibility)
+                AND e.semester = IFNULL(:semester, e.semester)
+                AND e.user_id_added = IFNULL(:author_id, e.user_id_added)
+                AND e.subject_id = IFNULL(:subject_id, e.subject_id)
+                AND ( e.date LIKE IFNULL(:query, e.date)
+                    OR s.name LIKE IFNULL(:query, s.name) )
+            GROUP BY q.exam_id
+            ORDER BY e.semester ASC, s.name ASC, e.date DESC
+            LIMIT :limit"
+		);
+		$stmt->bindValue(':user_id', $query_params['user_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':visibility', $query_params['visibility']);
+        $stmt->bindValue(':semester', $query_params['semester']);
+        $stmt->bindValue(':author_id', $query_params['author_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':subject_id', $query_params['subject_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':query', $query);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+
+        $data['exams'] = getAll($stmt);
 		return createResponse($response, $data);
 	});
 
+	$this->get('/distinct', function($request, $response, $args) {
+		$mysql = init();
+		$query_params = $request->getQueryParams();
+
+		$stmt_authors = $mysql->prepare(
+		    "SELECT DISTINCT u.*
+		    FROM exams e
+		    INNER JOIN users u ON u.user_id = e.user_id_added
+			WHERE e.visibility = IFNULL(:visibility, e.visibility)
+		    ORDER BY u.username ASC"
+		);
+		$stmt_authors->bindValue(':visibility', $query_params['visibility']);
+
+		$stmt_semesters = $mysql->prepare(
+		    "SELECT DISTINCT e.semester
+		    FROM exams e
+			WHERE e.visibility = IFNULL(:visibility, e.visibility)
+		    ORDER BY e.semester ASC"
+		);
+		$stmt_semesters->bindValue(':visibility', $query_params['visibility']);
+
+		$stmt_subjects = $mysql->prepare(
+		    "SELECT DISTINCT s.*
+		    FROM subjects s
+		    ORDER BY s.name ASC"
+		);
+
+        $data['authors'] = getAll($stmt_authors);
+        $data['semesters'] = getAll($stmt_semesters);
+		$data['subjects'] = getAll($stmt_subjects);
+		return createResponse($response, $data);
+	});
 
 	$this->get('/{exam_id}', function($request, $response, $args) {
-		$mysql = startMysql();
+		$mysql = init();
 
-		$exam = get_fetch($mysql,
-		    "SELECT e.*, u.username, u.email
+		$stmt_exam = $mysql->prepare(
+		    "SELECT e.*, u.username, u.email, s.name AS 'subject'
             FROM exams e
-            INNER JOIN users u ON u.user_id = e.user_id_added
-            WHERE e.exam_id = ?",
-		[$args['exam_id']]);
+            LEFT JOIN users u ON u.user_id = e.user_id_added
+			LEFT JOIN subjects s ON s.subject_id = e.subject_id
+            WHERE e.exam_id = :exam_id"
+		);
+		$stmt_exam->bindValue(':exam_id', $args['exam_id']);
+		$exam = getFetch($stmt_exam);
 
-		$questions = get_all($mysql,
-		    "SELECT *
-		    FROM questions
-		    WHERE exam_id = ? ORDER BY question_id ASC",
-		[$args['exam_id']]);
-
-		foreach ($questions['result'] as &$question) {
+		$stmt_questions = $mysql->prepare(
+		    "SELECT q.*, c.name AS 'topic'
+		    FROM questions q
+			LEFT JOIN categories c ON q.category_id = c.category_id
+		    WHERE q.exam_id = :exam_id
+		    ORDER BY q.question_id ASC"
+		);
+		$stmt_questions->bindValue(':exam_id', $args['exam_id']);
+		$questions = getAll($stmt_questions);
+		foreach ($questions as &$question) {
             $question['answers'] = unserialize($question['answers']);
         }
 
-		$data = $exam['result'];
-		$data['questions'] = $questions['result'];
-		$data['question_count'] = count($questions['result']);
+		$data['exam'] = $exam;
+		$data['questions'] = $questions;
 		return createResponse($response, $data);
 	});
 
+	$this->get('/abstract/{user_id}', function($request, $response, $args) {
+		$mysql = init();
+		$query_params = $request->getQueryParams();
 
-	$this->get('/action/prepare/{exam_id}/{random}', function($request, $response, $args) {
-		$mysql = startMysql();
+		$limit = $query_params['limit'] ? intval($query_params['limit']) : 10000;
 
-		$sql = "SELECT DISTINCT * FROM questions";
-		$parameters = [];
-		if ($args['exam_id']) {
-			$sql .= " WHERE exam_id = ?";
-			$parameters[] = $args['exam_id'];
+		$stmt_user = $mysql->prepare(
+		    "SELECT *
+		    FROM users
+		    WHERE user_id = :user_id"
+		);
+		$stmt_user->bindValue(':user_id', $args['user_id']);
+		$user = getFetch($stmt_user);
+
+		$stmt = $mysql->prepare(
+		    "SELECT e.*, s.name AS 'subject', COUNT(*) AS 'question_count', IFNULL(answered_questions, 0) AS 'answered_questions'
+            FROM exams e
+            LEFT JOIN (SELECT q.exam_id, COUNT(*) AS 'answered_questions'
+                FROM results r
+                INNER JOIN questions q ON q.question_id = r.question_id AND r.user_id = :user_id
+                WHERE r.resetted = 0 AND r.attempt = 1
+                GROUP BY q.exam_id) AS R ON e.exam_id = R.exam_id
+            INNER JOIN questions q ON q.exam_id = e.exam_id
+			INNER JOIN subjects s ON s.subject_id = e.subject_id
+            WHERE e.visibility = 1
+            GROUP BY q.exam_id
+            HAVING answered_questions > 0
+                OR ( e.semester = :semester
+                    AND question_count > 20
+                    AND e.date != 'Unbekannt' )
+            ORDER BY answered_questions DESC, e.semester ASC, s.name ASC, e.date DESC
+            LIMIT :limit"
+		);
+		$stmt->bindValue(':user_id', $args['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':semester', $user['semester'], PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+
+        $data['exams'] = getAll($stmt);
+		return createResponse($response, $data);
+	});
+
+	$this->get('/action/prepare/{exam_id}', function($request, $response, $args) {
+		$mysql = init();
+		$query_params = $request->getQueryParams();
+
+		$order_sql = '';
+		if ($query_params['random']) {
+			$order_sql = "ORDER BY RAND()";
 		}
-		if ($args['random']) {
-			$sql .= " ORDER BY RAND()";
-		}
 
-		$data = get_all($mysql, $sql, $parameters, 'list');
+		$stmt = $mysql->prepare(
+		    "SELECT DISTINCT *
+		    FROM questions
+		    WHERE exam_id = :exam_id
+		    $order_sql"
+        );
+        $stmt->bindValue(':exam_id', $args['exam_id'], PDO::PARAM_INT);
+
+		$data['list'] = getAll($stmt);
 		foreach ($data['list'] as &$question) {
             $question['answers'] = unserialize($question['answers']);
         }
 		return createResponse($response, $data);
 	});
 
-
 	$this->post('', function($request, $response, $args) {
-		$mysql = startMysql();
+		$mysql = init();
 		$body = $request->getParsedBody();
 
-		$data = executeMysql($mysql,
-		    "INSERT INTO exams ( subject, professor, semester, date, sort, date_added, date_updated, user_id_added, duration, notes)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-		[$body['subject'], $body['professor'], $body['semester'], $body['date'], $body['type'], time(), time(), $body['user_id_added'], $body['duration'], $body['notes']], function($stmt, $mysql) {
-			$response['exam_id'] = $mysql->lastInsertId();
-			return $response;
-		});
+		$stmt = $mysql->prepare(
+		    "INSERT INTO exams (subject_id, date_added, date_updated, user_id_added, sort)
+            VALUES (:subject_id, :date_added, :date_updated, :user_id_added, :sort)"
+		);
+		$stmt->bindValue(':subject_id', $body['subject_id']);
+		$stmt->bindValue(':date_added', time());
+		$stmt->bindValue(':date_updated', time());
+		$stmt->bindValue(':user_id_added', $body['user_id_added']);
+		$stmt->bindValue(':sort', $body['sort']);
+
+		$data['status'] = execute($stmt);
+        $data['exam_id'] = $mysql->lastInsertId();
 		return createResponse($response, $data);
 	});
-
 
 	$this->put('/{exam_id}', function($request, $response, $args) {
-		$mysql = startMysql();
+		$mysql = init();
 		$body = $request->getParsedBody();
 
-		$data = executeMysql($mysql,
+		$stmt = $mysql->prepare(
 		    "UPDATE exams
-            SET subject = ?, professor = ?, semester = ?, date = ?, sort = ?, duration = ?, notes = ?, file_name = ?, visibility = ?, date_updated = ?
-            WHERE exam_id = ?",
-		[$body['subject'], $body['professor'], $body['semester'], $body['date'], $body['sort'], $body['duration'], $body['notes'], $body['file_name'], $body['visibility'], time(), $args['exam_id']]);
+            SET subject_id = :subject_id, professor = :professor, semester = :semester, date = :date,
+                sort = :sort, duration = :duration, notes = :notes, file_name = :file_name,
+                visibility = :visibility, date_updated = :date_updated
+            WHERE exam_id = :exam_id"
+		);
+		$stmt->bindValue(':subject_id', $body['subject_id']);
+		$stmt->bindValue(':professor', $body['professor']);
+		$stmt->bindValue(':semester', $body['semester']);
+		$stmt->bindValue(':date', $body['date']);
+		$stmt->bindValue(':sort', $body['sort']);
+		$stmt->bindValue(':duration', $body['duration']);
+		$stmt->bindValue(':notes', $body['notes']);
+		$stmt->bindValue(':file_name', $body['file_name']);
+		$stmt->bindValue(':visibility', $body['visibility']);
+		$stmt->bindValue(':date_updated', time());
+		$stmt->bindValue(':exam_id', $args['exam_id']);
+
+		$data['status'] = execute($stmt);
 		return createResponse($response, $data);
 	});
 
-
 	$this->delete('/{exam_id}', function($request, $response, $args) {
-		$mysql = startMysql();
+		$mysql = init();
 
-		$data = executeMysql($mysql, "DELETE FROM exams WHERE exam_id = ?", [$args['exam_id']]);
+		$stmt = $mysql->prepare(
+		    "DELETE
+		    FROM exams
+		    WHERE exam_id = :exam_id"
+		);
+		$stmt->bindValue(':exam_id', $args['exam_id'], PDO::PARAM_INT);
+
+		$data['status'] = execute($stmt);
 		return createResponse($response, $data);
 	});
 });

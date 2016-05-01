@@ -1,0 +1,170 @@
+<div class="container">
+    <div class="page-header">
+        <div class="pull-right">
+            <a class="btn btn-default" href="/learn" type="button"><i class="fa fa-fw fa-home"></i> Zur &Uuml;bersicht</a>
+        </div>
+        <h2>Analyse</h2>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-9 col-md-9">
+            <dl class="dl-horizontal">
+                <dt>Zusammenfassung</dt>
+                <dd>
+                    <uib-progress>
+                        <uib-bar value="$ctrl.count.correct / $ctrl.count.all * 100" type="success"></uib-bar>
+                        <uib-bar value="$ctrl.count.wrong / $ctrl.count.all * 100" type="danger"></uib-bar>
+                        <uib-bar value="$ctrl.count.no_answer / $ctrl.count.all * 100" type="warning"></uib-bar>
+                        <uib-bar value="$ctrl.count.free / $ctrl.count.all * 100" type="info"></uib-bar>
+                    </uib-progress>
+
+                    <p>
+                        Die Klausur umfasste <strong>{{ $ctrl.count.all }} Frage{{ $ctrl.count.all > 1 ? 'n':'' }}</strong>, von denen du <strong>{{ $ctrl.count.all == $ctrl.count.worked ? 'alle bearbeitet' : $ctrl.count.worked + ' bearbeitet' }}</strong> hast.
+
+                        <span ng-if="$ctrl.count.solved == 0">
+                            Allerdings hast du <strong class="text-danger">keine Frage gel&ouml;st</strong>. Kann man nicht sehen, wohin wir k&auml;men, wenn wir gingen...
+                        </span>
+
+                        <span ng-if="$ctrl.count.solved > 0">
+                            <span ng-if="$ctrl.count.free > 0 || $ctrl.count.no_answer > 0">
+                                Es
+
+                                <span ng-if="$ctrl.count.free > 0">
+                                    <span ng-if="$ctrl.count.free > 1">
+                                        waren <strong class="text-info">{{ $ctrl.count.free }} freie Fragen</strong>
+                                    </span>
+                                    <span ng-if="$ctrl.count.free == 1">
+                                        war <strong class="text-info">eine freie Frage</strong>
+                                    </span>
+                                </span>
+
+                                <span ng-if="$ctrl.count.free > 0 && $ctrl.count.no_answer > 0">und</span>
+
+                                <span ng-if="$ctrl.count.free == 0">
+                                    <span ng-if="$ctrl.count.no_answer > 1">
+                                        waren
+                                    </span>
+                                    <span ng-if="$ctrl.count.no_answer == 1">
+                                        war
+                                    </span>
+                                </span>
+
+                                <span ng-if="$ctrl.count.no_answer > 1">
+                                    <strong class="text-warning">{{ $ctrl.count.no_answer }} Fragen ohne gespeicherte Antwort</strong>
+                                </span>
+                                <span ng-if="$ctrl.count.no_answer == 1">
+                                    <strong class="text-warning">eine Frage ohne gespeicherte Antwort</strong>
+                                </span>
+
+                                dabei, insgesamt hast du so {{ $ctrl.count.solved }} Frage{{ $ctrl.count.solved > 1 ? 'n':'' }} gel&ouml;st.
+                            </span>
+
+                            <span ng-if="$ctrl.count.correct == $ctrl.count.solved">
+                                Du konntest <strong class="text-success">alle Fragen richtig beantworten</strong>. Wenn du so weiter machst, wirst du mal Chefarzt.
+                            </span>
+
+                            <span ng-if="$ctrl.count.correct != $ctrl.count.solved && $ctrl.count.wrong != $ctrl.count.solved && $ctrl.count.no_answer != $ctrl.count.solved">
+                                Du konntest
+                                <strong class="text-success">{{ $ctrl.count.correct }} Frage{{ $ctrl.count.correct > 1 ? 'n':'' }} richtig beantworten</strong>,
+
+                                von
+                                <span ng-if="$ctrl.count.wrong > 1">den <strong class="text-danger">{{ $ctrl.count.wrong }} falsch beantworteten Fragen</strong></span>
+                                <span ng-if="$ctrl.count.wrong == 1">der falsch beantworteten Frage</strong></span>
+                                wei&szlig;t du jetzt immerhin die Antwort.
+
+                                Das entspricht einer Quote von <strong>{{ ($ctrl.count.correct / $ctrl.count.solved * 100) | limitTo:2 }}%</strong>.
+
+                                <span ng-if="$ctrl.count.correct >= $ctrl.count.wrong" ng-switch="($ctrl.random + 1) % 2">
+                                    <span ng-switch-when="0">Du wirst mal ein guter Arzt.</span>
+                                    <span ng-switch-when="1">Da sieht man klar deine Ambitionen auf den Chefarztsessel.</span>
+                                </span>
+                                <span ng-if="$ctrl.count.correct < $ctrl.count.wrong" ng-switch="($ctrl.random + 2) % 4">
+                                    <span ng-switch-when="0"></span>
+                                    <span ng-switch-when="1">Den Patienten kriegen wir jetzt nur noch chirurgisch wieder heile.</span>
+                                    <span ng-switch-when="2">Da hoffen wir mal, dass dein Patient kein Rechtsanwalt ist. :)</span>
+                                    <span ng-switch-when="3">Eine gute Berufshaftplichtversicherung ist also das A und O...</span>
+                                </span>
+                            </span>
+
+                            <span ng-if="$ctrl.count.wrong == $ctrl.count.solved">
+                                Du konntest <strong class="text-danger">keine Frage richtig beantworten</strong>. Komm schon, ein Arzt hat ja auch Vorbildfunktion ;)
+                            </span>
+
+                            <span ng-if="$ctrl.count.no_answer == $ctrl.count.solved">
+                                Vielleicht kannst du uns mithelfen richtige Antworten herauszufinden?
+                            </span>
+                        </span>
+                    </p>
+                    <br>
+                </dd>
+
+                <dt class="mtop-8" ng-if="$ctrl.count.solved > 0">Details</dt>
+                <dd ng-if="$ctrl.count.solved > 0">
+                    <table class="table">
+                        <thead>
+                            <th></th>
+                            <th>Frage</th>
+                            <th></th>
+                        </thead>
+
+                        <tbody>
+                            <tr ng-repeat="question in $ctrl.workedCollection">
+                                <td style="width: 30px;">
+                                    <div ng-if="question.correct_answer == 0" class="dot dot-warning"></div>
+                                    <div ng-if="question.correct_answer == question.given_result && question.given_result > 0 && question.correct_answer > 0" class="dot dot-success"></div>
+                                    <div ng-if="question.correct_answer != question.given_result && question.given_result > 0 && question.correct_answer > 0" class="dot dot-danger"></div>
+                                    <div ng-if="question.type == 1" class="dot dot-info"></div>
+                                </td>
+                                <td style="padding-top: 11px;">
+                                    <div ng-bind-html="question.question" style="margin-bottom: 12px;"></div>
+
+                                    <p class="question-answer strong text-danger bg-danger" ng-show="question.correct_answer != question.given_result && question.given_result > 0 && question.correct_answer > 0">
+                                        <span ng-bind-html="question.answers[question.given_result - 1]"></span>
+                                    </p>
+
+                                    <p class="question-answer strong text-success bg-success" ng-show="question.correct_answer > 0 && question.show_correct_answer == 1 || question.correct_answer == question.given_result">
+                                        <span ng-bind-html="question.answers[question.correct_answer - 1]"></span>
+                                    </p>
+
+                                    <center>
+                                        <button class="btn btn-sm btn-success" ng-click="$ctrl.showCorrectAnswerClicked($index)" ng-show="question.show_correct_answer != 1 && question.correct_answer != question.given_result && question.correct_answer > 0" style="width: 200px;">L&ouml;sung anzeigen</button>
+                                    </center>
+                                </td>
+                                <td style="width: 30px;">
+                                    <a href="question?id={{ question.question_id }}">
+                                        <i class="fa fa-chevron-right"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </dd>
+
+                <hr>
+
+                <dt ng-if="$ctrl.count.solved > 0">Legende</dt>
+                <dd ng-if="$ctrl.count.solved > 0" style="line-height: 24px;">
+                    <div class="dot dot-success pull-left" style="margin-top:3px; margin-right: 14px;"></div> Richtig gel&ouml;st<br>
+                    <div class="dot dot-danger pull-left" style="margin-top:3px; margin-right: 14px;"></div> Falsch gel&ouml;st<br>
+                    <div class="dot dot-warning pull-left" style="margin-top:3px; margin-right: 14px;"></div> Keine Antwort<br>
+                    <div class="dot dot-info pull-left" style="margin-top:3px; margin-right: 14px;"></div> Freie Frage<br>
+                </dd>
+            </dl>
+        </div>
+
+        <div class="col-xs-12 col-sm-3 col-md-3">
+            <div class="panel panel-default" ng-show="$ctrl.exam">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-fw fa-flask"></i> {{ $ctrl.exam.subject }}</h3>
+                </div>
+
+                <ul class="list-group">
+                    <li class="list-group-item">{{ $ctrl.exam.semester }}. Semester<span ng-show="$ctrl.exam.sort">, {{ $ctrl.exam.sort }}</span></li>
+                    <li class="list-group-item"><i class="fa fa-fw fa-calendar"></i> {{ $ctrl.exam.date }}</li>
+                    <li class="list-group-item" ng-if="$ctrl.exam.professor"><i class="fa fa-fw fa-user-md"></i> {{ $ctrl.exam.professor }}</li>
+                    <li class="list-group-item" ng-if="$ctrl.exam.notes"><i class="fa fa-fw fa-pencil-square-o"></i> {{ $ctrl.exam.notes }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

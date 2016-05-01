@@ -1,101 +1,106 @@
 <!DOCTYPE html>
-<html ng-app="crucioApp" id="ng-app">
+<html>
     <head>
         <title>Kontakt | Crucio</title>
         <?php include('parts/header.php'); ?>
     </head>
 
-    <body class="body" ng-controller="ContactController as ctrl">
+    <body class="body">
         <div class="wrap">
-            <div class="container-white container-top-bar">
-                <div class="container ">
-                    <div class="row">
-                        <div class="col-md-7 col-md-offset-1 col-sm-5 col-sm-offset-1">
-                            <h1><a href="/" target="_self"><i class="fa fa-check-square-o"></i> Crucio</a></h1>
-                        </div>
+            <?php include('parts/container-top-bar.php'); ?>
 
-                        <div class="col-xs-6 col-md-2 col-sm-3">
-                            <a class="btn btn-block btn-index-top" href="/" target="_self">
-                                <i class="fa fa-sign-in fa-fw hidden-xs"></i> Anmelden
-                            </a>
-                        </div>
+            <?php
+                $param = ['fa' => 'fa-bullhorn', 'h4' => 'Kontakt'];
+                include('parts/container-title.php');
+            ?>
 
-                        <div class="col-xs-6 col-md-2 col-sm-3">
-                            <a class="btn btn-block btn-index-top" href="/register" target="_self">
-                                <i class="fa fa-pencil-square-o fa-fw hidden-xs"></i> Registrieren
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="container-back-image container-padding-4">
-                <div class="container container-text container-text-light">
-                    <i class="fa fa-bullhorn fa-5x"></i>
-                    <h4>Kontakt</h4>
-                </div>
-            </div>
-
-            <div class="container-light-grey container-padding-4">
+            <div class="container-light-grey container-padding-2">
                 <div class="container container-text container-text-dark">
-                    <p style="margin-top: 0;">
-                        Bei Angelegenheiten wie z.B. Problemen bei der Registrierung, einer anderen E-Mail-Adresse oder weiteren Klausuren k&ouml;nnt ihr euch hier an uns wenden.
-                    </p>
+                    <p>Bei Angelegenheiten wie z.B. Problemen bei der Registrierung, einer anderen E-Mail-Adresse oder weiteren Klausuren k&ouml;nnt ihr euch hier an uns wenden.</p>
                 </div>
             </div>
 
             <div class="container container-register">
-                <div class="form-horizontal">
+                <form class="form-horizontal">
                     <div class="form-group">
                         <label class="col-sm-2">Name</label>
                         <div class="col-sm-6">
-                            <input ng-model="ctrl.name" type="text" class="form-control">
+                            <input class="form-control" name="name" type="text" data-msg="Kein Name" required />
                         </div>
-                        <span class="label validation-error label-danger" ng-show="ctrl.error_no_name">Kein Name</span>
                     </div>
 
                     <div class="form-group">
                         <label class="col-sm-2">E-Mail-Adresse</label>
                         <div class="col-sm-6">
-                            <input ng-model="ctrl.email" type="text" class="form-control">
+                            <input class="form-control" name="email" type="email" required />
                         </div>
-                        <span class="label validation-error label-danger" ng-show="ctrl.error_no_email">Keine g&uuml;ltige E-Mail-Adresse</span>
                     </div>
 
                     <div class="form-group">
                         <label class="col-sm-2">Nachricht</label>
                         <div class="col-sm-6">
-                            <textarea ng-model="ctrl.text" class="form-control" rows="4"></textarea>
+                            <textarea class="form-control" name="text" rows="4" required></textarea>
                         </div>
-                        <span class="label validation-error label-danger"></span>
                     </div>
 
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <button class="btn btn-primary" ng-click="ctrl.sendMail()">
-                                <i ng-show="ctrl.is_working" class="fa fa-circle-o-notch fa-spin"></i>
-                                <span ng-show="!ctrl.email_send">Senden</span>
-                                <span ng-show="ctrl.email_send">Gesendet</span>
+                            <button class="btn btn-primary" type="submit" id="submitbutton" data-loading-text="Senden...">
+                                Senden
                             </button>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
 
         <?php include('parts/footer.php'); ?>
-        <?php include('parts/scripts.php'); ?>
 
-        <script type="text/ng-template" id="myModalContent.html">
-            <div class="modal-header">
-              <h4 class="modal-title" id="myModalLabel">Nachricht abgeschickt.</h4>
-            </div>
-            <div class="modal-body">
-              <p><i class="fa fa-check"></i> Danke f&uuml;r deine Nachricht. Wir k&uuml;mmern uns so schnell es geht.</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-success" ng-click="$close()">Schlie&szlig;en</button>
-            </div>
+        <script>
+            $('form').validate({
+                errorClass: 'label label-danger',
+                errorElement: 'span',
+                wrapper: 'div',
+                highlight: function () {
+                    return false;
+                },
+                unhighlight: function () {
+                    return false;
+                },
+                submitHandler: function() {
+                    $('#submitbutton').button('loading');
+                    $.post('api/v1/contact/send-mail', $('form').serialize(), function(data) {
+                        if (data.status) {
+                            $('#successModal').modal();
+                        }
+                        $('#submitbutton').button('reset');
+                    });
+                    return false;
+                },
+                messages: {
+                    name: 'Kein Name',
+                    email: {
+                        required: 'Keine E-Mail-Adresse',
+                        email: 'Keine g&uuml;tige E-Mail-Adresse'
+                    },
+                    text: 'Keine Nachricht',
+                }
+            });
         </script>
+
+        <!-- Modal -->
+        <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Nachricht gesendet!</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p><i class="fa fa-check"></i> Danke f&uuml;r deine Nachricht. Wir k&uuml;mmern uns so schnell es geht...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

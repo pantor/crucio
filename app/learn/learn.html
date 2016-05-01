@@ -1,0 +1,489 @@
+<div class="container">
+    <div class="row mtop-navbar-row">
+        <div class="col-md-3 sidebar">
+            <ul class="nav nav-pills nav-stacked mbottom-2x">
+                <li ng-class="{active: $ctrl.activeTab == 'abstract'}"><a ng-click="$ctrl.activeTab = 'abstract'"><i class="fa fa-inbox fa-fw"></i>  &Uuml;bersicht</a></li>
+                <hr>
+                <li ng-class="{active: $ctrl.activeTab == 'subjects'}"><a ng-click="$ctrl.activeTab = 'subjects'"><i class="fa fa-flask fa-fw"></i>  F&auml;cher</a></li>
+                <li ng-class="{active: $ctrl.activeTab == 'exams'}"><a ng-click="$ctrl.activeTab = 'exams'"><i class="fa fa-list fa-fw"></i>  Klausuren</a></li>
+                <li ng-class="{active: $ctrl.activeTab == 'search'}"><a ng-click="$ctrl.activeTab = 'search'"><i class="fa fa-search fa-fw"></i>  Suche</a></li>
+                <li ng-class="{active: $ctrl.activeTab == 'tags'}"><a ng-click="$ctrl.activeTab = 'tags'"><i class="fa fa-tags fa-fw"></i>  Markierungen</a></li>
+                <li ng-class="{active: $ctrl.activeTab == 'comments'}"><a ng-click="$ctrl.activeTab = 'comments'"><i class="fa fa-comments fa-fw"></i>  Kommentare</a></li>
+            </ul>
+            <hr class="visible-xs visible-sm">
+        </div>
+
+        <div class="col-md-9">
+            <div class="tab-content">
+                <div ng-show="$ctrl.activeTab == 'abstract'">
+                    <h4 class="mbottom-2x">Klausuren<small></small></h4>
+
+                    <div ng-if="!$ctrl.abstractExams.length && $ctrl.ready" class="container-center-align-sm">
+                        <i class="fa fa-pencil"></i>
+
+                        <hr>
+
+                        <h3>Hier ist dein Stift.</h3>
+                        <h5>Leider haben wir keine empfohlenen Klausuren f&uuml;r dich.<br> Du kannst aber links Klausuren heraussuchen und lernen;<br> alle angefangenen Klausuren werden dann hier angezeigt.</h5>
+
+                        <br>
+                    </div>
+
+                    <div ng-if="$ctrl.abstractExams.length && $ctrl.ready">
+                        <table  class="table">
+                            <thead>
+                                <th><i class="fa fa-flask fa-fw"></i> Fach</th>
+                                <th><i class="fa fa-calendar fa-fw"></i> Termin</th>
+                                <th>Semester</th>
+                                <th class="hidden-xs hidden-sm">Gel&ouml;ste Fragen</th>
+                                <th><i class="fa fa-graduation-cap fa-fw"></i> Lernen</th>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="exam in $ctrl.abstractExams">
+                                    <td id="subject">{{ exam.subject }}</td>
+                                    <td>{{ exam.date }}</td>
+                                    <td id="semester">{{ exam.semester }}</td>
+                                    <td class="hidden-xs hidden-sm">{{ exam.answered_questions }} / {{ exam.question_count }}</td>
+                                    <td style="min-width: 250px;">
+                                        <div class="btn-group" role="group">
+                                            <a type="button" class="btn btn-default btn-xs" href ng-click="$ctrl.learnExam(exam.exam_id)">
+                                                Fragen
+                                            </a>
+
+                                            <a type="button" class="btn btn-default btn-xs" href="exam?id={{ exam.exam_id }}">
+                                                Klausuransicht
+                                            </a>
+
+                                            <div class="btn-group" uib-dropdown>
+                                                <button type="button" class="btn btn-default btn-xs" uib-dropdown-toggle>
+                                                    <i class="fa fa-fw fa-file-pdf-o"></i> PDF
+                                                </button>
+
+                                                <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                                    <li><a href="/api/v1/pdf/exam/{{ exam.exam_id }}" target="_self">Klausur als PDF</a></li>
+                                                    <li><a href="/api/v1/pdf/solution/{{ exam.exam_id }}" target="_self">L&ouml;sungen als PDF</a></li>
+
+                                                    <li class="divider"></li>
+
+                                                    <li ng-class="{disabled: exam.file_name == ''}">
+                                                        <a href="/files/{{ exam.file_name }}" target="_self" ng-if="exam.file_name != ''">
+                                                            Originaldokument
+                                                        </a>
+                                                        <a ng-if="exam.file_name == ''">
+                                                            Originaldokument
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="btn-group" uib-dropdown>
+                                                <button type="button" class="btn btn-default btn-xs" uib-dropdown-toggle>
+                                                    <i class="fa fa-caret-down"></i>
+                                                </button>
+
+                                                <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                                    <li ng-class="{disabled: exam.answered_questions == 0}">
+                                                        <a href ng-click="$ctrl.resetExam(exam)">Klausur zur&uuml;cksetzen</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+                <div ng-show="$ctrl.activeTab == 'subjects'">
+                    <h4 class="mbottom-2x">F&auml;cher & Kategorien <small>Hier kannst du dir deine eigene Klausur zusammenstellen.</small></h4>
+
+                    <div class="form-horizontal mbottom-3x">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">F&auml;cher</label>
+                            <div class="col-sm-9">
+                                <table class="table">
+                                    <tbody>
+                                        <tr ng-repeat="s in $ctrl.subjectList">
+                                            <td style="width: 30px;">
+                                                <input type="checkbox" ng-model="$ctrl.selection[s.subject_id].subject" ng-change="$ctrl.loadNumberQuestions()">
+                                            </td>
+                                            <td>
+                                                <div ng-if="!s.categories.length">
+                                                    <i class="fa fa-fw"></i><strong>{{ s.subject }} </strong>
+                                                </div>
+
+                                                <div ng-if="s.categories.length">
+                                                    <a ng-click="isCollapsed = !isCollapsed" style="color: #333; cursor: pointer;">
+                                                        <i class="fa fa-fw" ng-class="{'fa-caret-down': isCollapsed, 'fa-caret-right': !isCollapsed}"></i><strong>{{ s.subject }}</strong>
+                                                    </a>
+
+                                                    <div uib-collapse="!isCollapsed">
+                                                        <ul>
+                                                            <li ng-repeat="c in s.categories">
+                                                                <label class="checkbox" style="font-weight: normal;">
+                                                                    <input type="checkbox" ng-model="$ctrl.selection[s.subject_id].categories[c.category_id]" ng-change="$ctrl.loadNumberQuestions()">
+                                                                    {{ c.category }}
+                                                                </label>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="pull-right" ng-show="s.categories.length">{{ s.categories.length }}</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 col-md-3 control-label">Anzahl Fragen</label>
+                            <div class="col-sm-9 col-md-9">
+                                <div class="row mtop-8">
+                                    <div class="col-xs-5 col-sm-3">
+                                        <strong>
+                                            <span ng-show="$ctrl.selectedQuestionNumber < $ctrl.numberQuestionsInSelection || $ctrl.selectedQuestionNumber == 0">
+                                                {{ $ctrl.selectedQuestionNumber }}
+                                            </span>
+
+                                            <span ng-show="$ctrl.selectedQuestionNumber >= $ctrl.numberQuestionsInSelection && $ctrl.selectedQuestionNumber != 0">
+                                                Alle
+                                            </span>
+                                        </strong>
+                                        von {{ $ctrl.numberQuestionsInSelection }}
+                                        <span class="text-muted pull-right"><small>Weniger</small></span>
+                                    </div>
+
+                                    <rzslider class="col-xs-5 col-sm-8" rz-slider-model="$ctrl.selectedQuestionNumber" rz-slider-options="$ctrl.sliderOptions"></rzslider>
+
+
+                                    <div class="text-muted col-xs-2 col-sm-1"><small>Mehr</small></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 col-md-3 control-label"></label>
+                            <div class="col-sm-9 col-md-9">
+                                <button class="btn btn-success" type="button" ng-click="$ctrl.learnSubjects()" ng-disabled="$ctrl.selectedQuestionNumber == 0">
+                                    <i class="fa fa-fw fa-graduation-cap"></i> Lernen
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div ng-show="$ctrl.activeTab == 'exams'">
+                    <h4 class="mbottom">Alle Klausuren</h4>
+
+                    <div class="row mmtop">
+                        <div class="col-sm-6">
+                            <div class="btn-toolbar" role="toolbar">
+                                <div class="btn-group mtop" uib-dropdown>
+                                    <button class="btn btn-default" type="button" uib-dropdown-toggle>
+                                        <span ng-show="$ctrl.examSearch.semester">{{ $ctrl.examSearch.semester }}. Semester</span>
+                                        <span ng-show="!$ctrl.examSearch.semester">Alle Semester</span>
+                                        <i class="fa fa-caret-down"></i>
+                                    </button>
+
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li ng-repeat="ds in $ctrl.distinctSemesters">
+                                            <a href ng-click="$ctrl.examSearch.semester = ds.semester; $ctrl.loadExams()">{{ ds.semester }}. Semester</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li><a href ng-click="$ctrl.examSearch.semester = null; $ctrl.loadExams()">Alle Semester</a></li>
+                                    </ul>
+                                </div>
+
+                                <div class="btn-group mtop" uib-dropdown>
+                                    <button class="btn btn-default" type="button" uib-dropdown-toggle>
+                                        <span ng-show="$ctrl.examSearch.subject">{{ $ctrl.examSearch.subject.name }}</span>
+                                        <span ng-show="!$ctrl.examSearch.subject">Alle F&auml;cher</span>
+                                        <i class="fa fa-caret-down"></i>
+                                    </button>
+
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li ng-repeat="ds in $ctrl.distinctSubjects">
+                                            <a href ng-click="$ctrl.examSearch.subject = ds; $ctrl.loadExams()">{{ ds.name }}</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li><a href ng-click="$ctrl.examSearch.subject = null; $ctrl.loadExams()">Alle F&auml;cher</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="input-group mtop">
+                                <input class="form-control" type="text" ng-model="$ctrl.examSearch.query" ng-change="$ctrl.loadExams()">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button" ng-click="$ctrl.loadExams()"><i class="fa fa-search"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mtop">
+                        <table class="table">
+                            <thead>
+                                <th>Semester</th>
+                                <th><i class="fa fa-fw fa-flask"></i> Fach</th>
+                                <th><i class="fa fa-fw fa-calendar"></i>Termin</th>
+                                <th class="hidden-xs hidden-sm">Gel&ouml;ste Fragen</th>
+                                <th><i class="fa fa-graduation-cap fa-fw"></i> Lernen</th>
+                            </thead>
+
+                            <tbody>
+                                <tr ng-repeat="exam in $ctrl.exams">
+                                    <td>{{ exam.semester }}</td>
+                                    <td>{{ exam.subject | cut:true:38:'...' }}</td>
+                                    <td>{{ exam.date }}</td>
+                                    <td class="hidden-xs hidden-sm">{{ exam.answered_questions }} / {{ exam.question_count }}</td>
+                                    <td style="min-width: 250px;">
+                                        <div class="btn-group" role="group">
+                                            <a type="button" class="btn btn-default btn-xs" href ng-click="$ctrl.learnExam(exam.exam_id)">
+                                                Fragen
+                                            </a>
+
+                                            <a type="button" class="btn btn-default btn-xs" href="exam?id={{ exam.exam_id }}">
+                                                Klausuransicht
+                                            </a>
+
+                                            <div class="btn-group" uib-dropdown>
+                                                <button type="button" class="btn btn-default btn-xs" uib-dropdown-toggle>
+                                                    <i class="fa fa-fw fa-file-pdf-o"></i> PDF
+                                                </button>
+
+                                                <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                                    <li><a href="api/v1/pdf/exam/{{ exam.exam_id }}" target="_self">Klausur als PDF</a></li>
+                                                    <li><a href="api/v1/pdf/solution/{{ exam.exam_id }}" target="_self">L&ouml;sungen als PDF</a></li>
+
+                                                    <li class="divider"></li>
+
+                                                    <li ng-class="{ disabled: exam.file_name == '' }">
+                                                        <a href="/public/files/{{exam.file_name}}" target="_self" ng-if="exam.file_name != ''">Originaldokument</a>
+                                                        <a ng-if="exam.file_name == ''">Originaldokument</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="btn-group" uib-dropdown>
+                                                <button type="button" class="btn btn-default btn-xs" uib-dropdown-toggle>
+                                                    <i class="fa fa-caret-down"></i>
+                                                </button>
+
+                                                <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                                    <li ng-class="{disabled: exam.answered_questions == 0}">
+                                                        <a href ng-click="$ctrl.resetExam(exam)">Klausur zur&uuml;cksetzen</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr ng-show="!$ctrl.exams.length"><td class="text-muted" colspan="6">Nichts gefunden.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+                <div ng-show="$ctrl.activeTab == 'search'">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        <i class="fa fa-search"></i>
+                                        <span ng-show="$ctrl.searchResults.length > 0">{{ $ctrl.searchResults.length }} Ergebnisse</span>
+                                        <span ng-show="!$ctrl.searchResults || $ctrl.searchResults.length == 0">Suche</span>
+                                    </h3>
+                                </div>
+
+                                <div class="panel-body">
+                                    <div class="row mmtop">
+                                        <div class="col-sm-4">
+                                            <div class="btn-toolbar" role="toolbar">
+                                                <div class="btn-group mtop" uib-dropdown>
+                                                    <button class="btn btn-default" type="button" uib-dropdown-toggle>
+                                                        <span ng-show="$ctrl.questionSearch.semester">{{ $ctrl.questionSearch.semester }}. Semester</span>
+                                                        <span ng-show="!$ctrl.questionSearch.semester">Alle Semester</span>
+                                                        <i class="fa fa-caret-down"></i>
+                                                    </button>
+
+                                                    <ul class="dropdown-menu" role="menu">
+                                                        <li ng-repeat="ds in $ctrl.distinctSemesters">
+                                                            <a href ng-click="$ctrl.questionSearch.semester = ds.semester; $ctrl.searchQuestion()">{{ ds.semester }}. Semester</a>
+                                                        </li>
+                                                        <li class="divider"></li>
+                                                        <li><a href ng-click="$ctrl.questionSearch.semester = null; $ctrl.searchQuestion()">Alle Semester</a></li>
+                                                    </ul>
+                                                </div>
+
+                                                <div class="btn-group mtop" uib-dropdown>
+                                                    <button class="btn btn-default" type="button" uib-dropdown-toggle>
+                                                        <span ng-show="$ctrl.questionSearch.subject">{{ $ctrl.questionSearch.subject.name }}</span>
+                                                        <span ng-show="!$ctrl.questionSearch.subject">Alle F&auml;cher</span>
+                                                        <i class="fa fa-caret-down"></i>
+                                                    </button>
+
+                                                    <ul class="dropdown-menu" role="menu">
+                                                        <li ng-repeat="ds in $ctrl.distinctSubjects">
+                                                            <a href ng-click="$ctrl.questionSearch.subject = ds; $ctrl.searchQuestion()">{{ ds.name }}</a>
+                                                        </li>
+                                                        <li class="divider"></li>
+                                                        <li><a href ng-click="$ctrl.questionSearch.subject = null; $ctrl.searchQuestion()">Alle F&auml;cher</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-8">
+                                            <form class="input-group mtop" submit="$ctrl.searchQuestion()">
+                                                <input class="form-control" type="text" ng-model="$ctrl.questionSearch.query" placeholder="...">
+
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-default" ng-click="$ctrl.searchQuestion()">
+                                                        <i class="fa fa-search"></i>
+                                                    </button>
+                                                </span>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="spinner" us-spinner="{length: 0, radius: 18, color: '#333', shadow: false}" spinner-on="$ctrl.showSpinner" ng-show="$ctrl.showSpinner"></div>
+                    <div class="spinner-text">
+                        <p class="text-muted">
+                            <span ng-show="$ctrl.searchResults.length == 0 && $ctrl.hasSearched">Nichts gefunden ;(</span>
+                        </p>
+                    </div>
+
+                    <table class="table" ng-show="$ctrl.searchResults.length > 0">
+                        <thead>
+                            <th></th>
+                            <th>Semester</th>
+                            <th><i class="fa fa-flask fa-fw"></i> Fach</th>
+                            <th>Frage</th>
+                            <th></th>
+                        </thead>
+
+                        <tbody>
+                            <tr ng-repeat="question in $ctrl.searchResults">
+                                <td><i class="fa fa-check" ng-show="question.answered == 1"></i></td>
+                                <td>{{ question.semester }}</td>
+                                <td>{{ question.subject }}</td>
+                                <td><span ng-bind-html="question.question"></span></td>
+                                <td>
+                                    <a href="question?id={{ question.question_id }}&reset_session=1">
+                                        <i class="fa fa-chevron-right"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <div ng-show="$ctrl.activeTab == 'tags'">
+                    <h4 class="mbottom">Deine Markierungen <small></small></h4>
+
+                    <div ng-if="!$ctrl.tags.length" class="container-center-align-sm">
+                        <i class="fa fa-tags"></i>
+
+                        <hr>
+                        <h3>Du hast noch keine Markierungen erstellt.</h3>
+                        <h5>
+                            Wenn die eine Frage beantwortest, siehst du rechts unter dem Info-Feld eine Eingabe.<br>
+                            Gebe dort die Markierung ein und dr&uuml;cke Enter.
+                        </h5>
+                        <br>
+                    </div>
+
+                    <div ng-if="$ctrl.tags.length">
+                        <table class="table">
+                            <thead>
+                                <th style="min-width:120px;"><i class="fa fa-fw fa-tag"></i> Markierung</th>
+                                <th><i class="fa fa-fw fa-flask"></i> Fach</th>
+                                <th>Frage</th>
+                                <th></th>
+                            </thead>
+
+                            <tbody ng-repeat="(tag, tag_array) in $ctrl.questionsByTag">
+                                <tr>
+                                    <td rowspan="{{tag_array.length}}" style="min-width:140px;">
+                                        <span class="tags tag-item pull-right">
+                                            {{ tag }}
+                                        </span>
+                                    </td>
+                                    <td>{{ tag_array[0].subject }}</td>
+                                    <td><span ng-bind-html="tag_array[0].question"></span></td>
+                                    <td><a href="question?id={{ tag_array[0].question_id }}&reset_session=1"><i class="fa fa-chevron-right"></i></a></td>
+                                </tr>
+                                <tr ng-repeat="q in tag_array" ng-show="$index > 0">
+                                    <td>{{ q.subject }}</td>
+                                    <td><span ng-bind-html="q.question"></span></td>
+                                    <td><a href="question?id={{ q.question_id }}&reset_session=1"><i class="fa fa-chevron-right"></i></a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+                <div ng-show="$ctrl.activeTab == 'comments'">
+                    <h4 class="mbottom">Deine Kommentare <small></small></h4>
+
+                    <div ng-if="!$ctrl.comments.length" class="container-center-align-sm">
+                        <i class="fa fa-comments"></i>
+
+                        <hr>
+                        <h3>Du hast noch keine Kommentare geschrieben.</h3>
+                        <h5>Du kannst zu jeder Frage Kommentare schreiben und so von deinen<br> Kommilitonen zus&auml;tzliche Informationen bekommen.</h5>
+                        <br>
+                    </div>
+
+                    <div ng-if="$ctrl.comments.length">
+                        <table class="table">
+                            <thead>
+                                <th>Frage</th>
+                                <th style="min-width: 120px;"><i class="fa fa-fw fa-comment-o"></i> Kommentar</th>
+                                <th style="min-width: 80px;"><i class="fa fa-fw fa-clock-o"></i>Datum</th>
+                                <th></th>
+                            </thead>
+
+                            <tbody ng-repeat="(question, comment_array) in $ctrl.questionsByComment">
+                                <tr>
+                                    <td rowspan="{{ comment_array.length }}" style="min-width:140px;">
+                                        <span ng-bind-html="comment_array[0].question"></span>
+                                    </td>
+                                    <td>{{ comment_array[0].comment }}</td>
+                                    <td><timeago datetime="comment_array[0].date * 1000"></timeago></td>
+                                    <td><a href="question?id={{ comment_array[0].question_id }}&reset_session=1"><i class="fa fa-chevron-right"></i></a></td>
+                                </tr>
+                                <tr ng-repeat="c in comment_array" ng-show="$index > 0">
+                                    <td>{{ c.comment }}</td>
+                                    <td><timeago datetime="c.date * 1000"></timeago></td>
+                                    <td><a href="question?id={{ c.question_id }}&reset_session=1"><i class="fa fa-chevron-right"></i></a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
