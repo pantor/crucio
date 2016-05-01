@@ -2,7 +2,7 @@
     $info = include(dirname(__FILE__).'/info.php');
 ?>
 
-<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1" />
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 
 <meta name="description" content="Crucio, ein Online-Lernsystem f&uuml;r Multiple-Choice-Fragen.">
 <meta name="keywords" content="Medizin, Klausuren, Lernen, Leipzig, Studium, Lernsystem">

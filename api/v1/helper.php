@@ -47,7 +47,7 @@ function getCustomCount($mysql, $query, $parameters = []) {
 function createResponse($response, $data, $status = 200) {
     $response = $response->withStatus($status);
     $response = $response->withHeader('content-type', 'application/json');
-    $response = $response->withHeader('charset', 'iso-8859-1');
+    $response = $response->withHeader('charset', 'utf-8');
 
     $response->write( json_encode($data, JSON_NUMERIC_CHECK) );
     return $response;
