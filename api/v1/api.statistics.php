@@ -44,8 +44,10 @@ $app->group('/stats', function() {
 		$stats['question_explanation_count'] = getCount($mysql, "questions WHERE explanation != ''");
 		$stats['question_free_count'] = getCount($mysql, 'questions WHERE type = 1');
 		$stats['question_without_answer_count'] = getCount($mysql, 'questions WHERE correct_answer < 1 AND type > 1');
-		$stats['question_category_count'] = getCount($mysql, "questions WHERE category_id > 0");
-		$stats['visible_question_count'] = getCount($mysql, "questions, exams WHERE exams.visibility = 1 AND questions.exam_id = exams.exam_id");
+		$stats['question_category_count'] = getCount($mysql, 'questions WHERE category_id > 0');
+		$stats['visible_question_count'] = getCount($mysql, 'questions, exams WHERE exams.visibility = 1 AND questions.exam_id = exams.exam_id');
+        $stats['question_worked_count'] = getCustomCount($mysql, "SELECT COUNT(DISTINCT r.question_id) AS 'count' FROM results r");
+        $stats['question_worked_count_today'] = getCustomCount($mysql, "SELECT COUNT(DISTINCT r.question_id) AS 'count' FROM results r WHERE r.date > ?", [$time - 24*60*60]);
 
 		$stats['result_count'] = getCount($mysql, 'results');
 		$stats['result_count_hour'] = getCount($mysql, 'results WHERE date > ?', [$time - 60*60]);

@@ -251,6 +251,7 @@ $app->group('/questions', function() {
         $stmt->bindValue(':category_id', $body['category_id'], PDO::PARAM_INT);
         $stmt->bindValue(':question_id', $args['question_id'], PDO::PARAM_INT);
 
+        $data['a'] = $body['answers'];
         $data['status'] = execute($stmt);
 		return createResponse($response, $data);
 	});

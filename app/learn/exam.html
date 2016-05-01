@@ -68,7 +68,7 @@
         </div>
 
         <div class="col-md-4 hidden-xs hidden-sm">
-            <div class="panel panel-default" ng-show="$ctrl.exam" style="position:fixed;width:300px;">
+            <div class="panel panel-default" ng-show="$ctrl.exam" style="position:fixed; width:300px;">
                 <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-fw fa-flask"></i> {{ $ctrl.exam.subject }}</h3></div>
                 <ul class="list-group">
                     <li class="list-group-item">{{ $ctrl.exam.semester }}. Semester<span ng-show="$ctrl.exam.sort">, {{ $ctrl.exam.sort }}</span></li>
@@ -92,7 +92,7 @@
                         </div>
                     </li>
 
-                    <li class="list-group-item" ng-show="$ctrl.Collection.getQuestionData($ctrl.currentIndex).topic != '' && $ctrl.Collection.getQuestionData($ctrl.currentIndex).topic != 'Sonstiges'"><i class="fa fa-fw fa-angle-right"></i> {{ $ctrl.Collection.getQuestionData($ctrl.currentIndex).topic }}</li>
+                    <li class="list-group-item" ng-show="$ctrl.Collection.getQuestionData($ctrl.currentIndex).topic && $ctrl.Collection.getQuestionData($ctrl.currentIndex).topic != '' && $ctrl.Collection.getQuestionData($ctrl.currentIndex).topic != 'Sonstiges'"><i class="fa fa-fw fa-angle-right"></i> {{ $ctrl.Collection.getQuestionData($ctrl.currentIndex).topic }}</li>
 
                     <li class="list-group-item">
                         <div class="btn-toolbar" role="toolbar">

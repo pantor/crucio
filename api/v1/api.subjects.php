@@ -8,7 +8,8 @@ $app->group('/subjects', function (){
         $stmt = $mysql->prepare(
 		    "SELECT c.*, s.subject_id, s.name as 'subject'
 		    FROM subjects s
-		    LEFT JOIN categories c ON c.subject_id = s.subject_id"
+		    LEFT JOIN categories c ON c.subject_id = s.subject_id
+            ORDER BY s.name, c.name ASC"
 		);
 
 		$categories = getAll($stmt);
@@ -42,7 +43,8 @@ $app->group('/subjects', function (){
 		    "SELECT c.*, s.subject_id, s.name as 'subject'
 		    FROM subjects s
 		    LEFT JOIN categories c ON c.subject_id = s.subject_id
-		    WHERE s.subject_id = IFNULL(:subject_id, s.subject_id)"
+		    WHERE s.subject_id = IFNULL(:subject_id, s.subject_id)
+            ORDER BY s.name, c.name ASC"
 		);
 		$stmt->bindValue(':subject_id', $query_params['subject_id'], PDO::PARAM_INT);
 

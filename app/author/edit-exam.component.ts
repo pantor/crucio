@@ -185,12 +185,12 @@ class EditExamController {
             explanation: q.explanation,
             question_image_url: q.question_image_url,
           };
-
           if (!q.question_id) { // New question
             this.API.post('questions', data).then(result => {
               q.question_id = result.data.question_id;
             });
           } else {
+
             this.API.put(`questions/${q.question_id}`, data);
           }
         }

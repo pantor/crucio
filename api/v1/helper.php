@@ -35,12 +35,13 @@ function getFetch($stmt, $params = null) {
 }
 
 function getCount($mysql, $sub_query, $parameters = []) {
-    $stmt = $mysql->prepare(
-        "SELECT COUNT(*) AS 'result'
-        FROM $sub_query"
-    );
+    return getCustomCount($mysql, "SELECT COUNT(*) AS 'count' FROM $sub_query", $parameters);
+}
+
+function getCustomCount($mysql, $query, $parameters = []) {
+    $stmt = $mysql->prepare($query);
     $stmt->execute($parameters);
-    return $stmt->fetch(PDO::FETCH_ASSOC)['result'];
+    return $stmt->fetch(PDO::FETCH_ASSOC)['count'];
 }
 
 function createResponse($response, $data, $status = 200) {

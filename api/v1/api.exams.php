@@ -93,8 +93,8 @@ $app->group('/exams', function() {
 		$stmt_exam = $mysql->prepare(
 		    "SELECT e.*, u.username, u.email, s.name AS 'subject'
             FROM exams e
-            INNER JOIN users u ON u.user_id = e.user_id_added
-			INNER JOIN subjects s ON s.subject_id = e.subject_id
+            LEFT JOIN users u ON u.user_id = e.user_id_added
+			LEFT JOIN subjects s ON s.subject_id = e.subject_id
             WHERE e.exam_id = :exam_id"
 		);
 		$stmt_exam->bindValue(':exam_id', $args['exam_id']);
@@ -124,6 +124,14 @@ $app->group('/exams', function() {
 
 		$limit = $query_params['limit'] ? intval($query_params['limit']) : 10000;
 
+		$stmt_user = $mysql->prepare(
+		    "SELECT *
+		    FROM users
+		    WHERE user_id = :user_id"
+		);
+		$stmt_user->bindValue(':user_id', $args['user_id']);
+		$user = getFetch($stmt_user);
+
 		$stmt = $mysql->prepare(
 		    "SELECT e.*, s.name AS 'subject', COUNT(*) AS 'question_count', IFNULL(answered_questions, 0) AS 'answered_questions'
             FROM exams e
@@ -137,13 +145,14 @@ $app->group('/exams', function() {
             WHERE e.visibility = 1
             GROUP BY q.exam_id
             HAVING answered_questions > 0
-                OR ( e.semester = 4
+                OR ( e.semester = :semester
                     AND question_count > 20
                     AND e.date != 'Unbekannt' )
             ORDER BY answered_questions DESC, e.semester ASC, s.name ASC, e.date DESC
             LIMIT :limit"
 		);
 		$stmt->bindValue(':user_id', $args['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':semester', $user['semester'], PDO::PARAM_INT);
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 
         $data['exams'] = getAll($stmt);

@@ -50,13 +50,13 @@ class QuestionController {
     this.noAnswer = true;
     this.showExplanation = false;
 
-    this.collection = this.Collection.get();
     if (this.resetSession) {
       this.index = -1;
       delete this.collection;
       Collection.remove();
-
+      this.questionData = {};
     } else {
+      this.collection = this.Collection.get();
       this.index = this.Collection.getIndexOfQuestion(this.questionId);
       if (this.index > -1) {
         const list = this.collection.list;

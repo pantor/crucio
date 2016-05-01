@@ -1,16 +1,18 @@
 var gulp = require('gulp'),
-  ts = require('gulp-typescript'),
-  ngAnnotate = require('gulp-ng-annotate'),
-  uglify = require('gulp-uglify'),
-  concat = require('gulp-concat'),
-  sass = require('gulp-sass'),
   autoprefixer = require('gulp-autoprefixer'),
-  streamqueue = require('streamqueue'),
+  concat = require('gulp-concat'),
+  copy = require('gulp-copy'),
   inlineCss = require('gulp-inline-css'),
+  ngAnnotate = require('gulp-ng-annotate'),
   phplint = require('gulp-phplint'),
-  copy = require('gulp-copy');
+  sass = require('gulp-sass'),
+  ts = require('gulp-typescript'),
+  uglify = require('gulp-uglify'),
+  streamqueue = require('streamqueue');
 
 
+var api = 'api/';
+var app = 'app/';
 var node = 'node_modules/';
 
 gulp.task('sass', function () {
@@ -23,7 +25,7 @@ gulp.task('sass', function () {
         node + 'ng-tags-input/build/ng-tags-input.min.css',
         node + 'textangular/dist/textAngular.css',
       ]),
-      gulp.src(['app/**/*.scss'])
+      gulp.src([app + '**/*.scss'])
         .pipe(sass())
         .pipe(autoprefixer({ browsers: ['last 2 versions'], cascade: false }))
     )
@@ -33,8 +35,8 @@ gulp.task('sass', function () {
 
 gulp.task('ts', function () {
   gulp.src([
-    'app/crucio.ts',
-    'app/**/*.ts',
+    app + 'crucio.ts',
+    app + '**/*.ts',
   ])
     .pipe(ts({ noImplicitAny: false, out: 'crucio.js' }))
     .pipe(ngAnnotate())
@@ -81,13 +83,13 @@ gulp.task('js-vendor', function () {
 });
 
 gulp.task('mail', function () {
-  gulp.src('app/mail-templates/**/*.html')
+  gulp.src(app + 'mail-templates/**/*.html')
     .pipe(inlineCss())
-    .pipe(gulp.dest('api/mail-templates/'));
+    .pipe(gulp.dest(api + 'mail-templates/'));
 });
 
 gulp.task('php', function () {
-  gulp.src('api/**/*.php')
+  gulp.src(api + '**/*.php')
     .pipe(phplint());
 });
 
@@ -99,10 +101,10 @@ gulp.task('fonts', function () {
 });
 
 gulp.task('watch', function () {
-  gulp.watch('api/**/*.php', ['php']);
-  gulp.watch('app/**/*.scss', ['sass']);
-  gulp.watch('app/**/*.ts', ['ts']);
-  gulp.watch('app/mail-templates/**/*.html', ['mail']);
+  gulp.watch(api + '**/*.php', ['php']);
+  gulp.watch(app + '**/*.scss', ['sass']);
+  gulp.watch(app + '**/*.ts', ['ts']);
+  gulp.watch(app + 'mail-templates/**/*.html', ['mail']);
 });
 
 gulp.task('default', ['watch']);

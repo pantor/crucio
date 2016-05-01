@@ -158,6 +158,7 @@ $app->group('/pdf', function() {
             	$pdf->Ln(5);
             }
             $response->withBody( $pdf->Output('crucio-loesungen-'.$exam_id.'.pdf', 'I') );
+
         } else {
             $response = $response->withStatus(404);
             $response->write('Not found. Neither exam or solution.');
