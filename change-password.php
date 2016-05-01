@@ -85,7 +85,7 @@
                         }
 
                         if (data.error === 'error_token') {
-                            validator.showErrors({'password': 'Konnte das Passwort nicht zuordnen.');
+                            validator.showErrors({'password': 'Konnte das Passwort nicht zuordnen.'});
                         }
 
                         $('#submitbutton').button('reset');

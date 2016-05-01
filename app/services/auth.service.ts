@@ -26,11 +26,11 @@ class Auth {
     return this.user;
   }
 
-  login(newUser: User, rememberUser: boolean): void {
+  /* login(newUser: User, rememberUser: boolean): void {
     newUser.remember_user = rememberUser;
     this.setUser(newUser, true);
     this.$window.location.assign('/learn');
-  }
+  } */
 
   logout(): void {
     this.$cookies.remove('CrucioUser');
@@ -44,6 +44,10 @@ class Auth {
       const expires = new Date();
       expires.setDate(expires.getDate() + 21); // [Days]
       this.$cookies.putObject('CrucioUser', this.user, { expires });
+    }
+
+    if (!this.user.remember_me) {
+      this.$cookies.remove('CrucioUser');
     }
   }
 }

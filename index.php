@@ -163,8 +163,8 @@
                     $('.form-group').removeClass('has-error');
                     $.get('api/v1/users/login', $('form').serialize(), function(data) {
                         if (data.status) {
-                            data.logged_in_user.remember_me = $("[name='remember_me']").val();
-                            Cookies.set('CrucioUser', data.logged_in_user)
+                            data.logged_in_user.remember_me = $("[name='remember_me']").prop('checked');
+                            Cookies.set('CrucioUser', data.logged_in_user);
                             location.assign('/learn');
                         }
 
