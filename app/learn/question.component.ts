@@ -172,7 +172,7 @@ class QuestionController {
     this.$uibModal.open({
       templateUrl: 'imageModalContent.html',
       controller: 'ModalInstanceController',
-      controllerAs: 'ctrl',
+      controllerAs: '$ctrl',
       resolve: {
         data: () => {
           return this.question.question_image_url;
