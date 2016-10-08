@@ -1,0 +1,84 @@
+<h4 class="mbottom-2x">F&auml;cher & Kategorien <small>Hier kannst du dir deine eigene Klausur zusammenstellen.</small></h4>
+
+<div class="form-horizontal mbottom-3x">
+    <div class="form-group">
+        <label class="col-sm-3 control-label">F&auml;cher</label>
+        <div class="col-sm-9">
+            <table class="table">
+                <tbody>
+                    <tr ng-repeat="s in $ctrl.subjectList">
+                        <td style="width: 30px;">
+                            <input type="checkbox" ng-model="$ctrl.selection[s.subject_id].subject" ng-change="$ctrl.loadNumberQuestions()">
+                        </td>
+                        <td>
+                            <div ng-if="!s.categories.length">
+                                <i class="fa fa-fw"></i><strong>{{ s.subject }} </strong>
+                            </div>
+
+                            <div ng-if="s.categories.length">
+                                <a ng-click="isCollapsed = !isCollapsed" style="color: #333; cursor: pointer;">
+                                    <i class="fa fa-fw" ng-class="{'fa-caret-down': isCollapsed, 'fa-caret-right': !isCollapsed}"></i><strong>{{ s.subject }}</strong>
+                                </a>
+
+                                <div uib-collapse="!isCollapsed">
+                                    <ul>
+                                        <li ng-repeat="c in s.categories">
+                                            <label class="checkbox" style="font-weight: normal;">
+                                                <input type="checkbox" ng-model="$ctrl.selection[s.subject_id].categories[c.category_id]" ng-change="$ctrl.loadNumberQuestions()">
+                                                {{ c.category }}
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="pull-right" ng-show="s.categories.length">{{ s.categories.length }}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="form-group">
+        <label class="col-sm-3 col-md-3 control-label">Anzahl Fragen</label>
+        <div class="col-sm-9 col-md-9">
+            <div class="row mtop-8">
+                <div class="col-xs-5 col-sm-3">
+                    <strong>
+                        <span ng-show="$ctrl.selectedQuestionNumber < $ctrl.numberQuestionsInSelection || $ctrl.selectedQuestionNumber == 0">
+                            {{ $ctrl.selectedQuestionNumber }}
+                        </span>
+
+                        <span ng-show="$ctrl.selectedQuestionNumber >= $ctrl.numberQuestionsInSelection && $ctrl.selectedQuestionNumber != 0">
+                            Alle
+                        </span>
+                    </strong>
+                    von {{ $ctrl.numberQuestionsInSelection }}
+                    <span class="text-muted pull-right"><small>Weniger</small></span>
+                </div>
+
+
+                <div class="col-xs-5 col-sm-7">
+                    <rzslider rz-slider-model="$ctrl.selectedQuestionNumber" rz-slider-options="$ctrl.sliderOptions"></rzslider>
+                </div>
+
+                <div class="text-muted col-xs-2 col-sm-1"><small>Mehr</small></div>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="form-group">
+        <label class="col-sm-3 col-md-3 control-label"></label>
+        <div class="col-sm-9 col-md-9">
+            <button class="btn btn-success" type="button" ng-click="$ctrl.learnSubjects()" ng-disabled="$ctrl.selectedQuestionNumber == 0">
+                <i class="fa fa-fw fa-graduation-cap"></i> Lernen
+            </button>
+        </div>
+    </div>
+</div>

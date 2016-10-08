@@ -1,0 +1,66 @@
+<div class="btn-toolbar">
+    <a class="btn btn-default pull-right" href="https://www.google.com/analytics/web/#report/visitors-overview/a47836301w79202201p81910001/" target="_self"><i class="fa fa-fw fa-external-link"></i> Google Analytics</a>
+    <a class="btn btn-default pull-right" ui-sref="global-statistic.overview">Live Statistik</a>
+</div>
+
+<hr>
+
+<div class="row">
+    <div class="col-xs-6 col-sm-4">
+        <div class="stats-box">
+            <h5>{{ ::$ctrl.stats.user_count }}</h5>
+            <p><i class="fa fa-users fa-fw"></i> Nutzer</p>
+        </div>
+    </div>
+    <div class="col-xs-6 col-sm-4">
+        <div class="stats-box">
+            <h5>{{ ::$ctrl.stats.question_count }}</h5>
+            <p> <i class="fa fa-question-circle fa-fw"></i> Fragen | {{ ::$ctrl.stats.visible_question_count }} sichtbar</p>
+        </div>
+    </div>
+    <div class="col-xs-6 col-sm-4">
+        <div class="stats-box">
+            <h5>{{ ::$ctrl.stats.exam_count }}</h5>
+            <p> <i class="fa fa-list fa-fw"></i> Klausuren | {{ $ctrl.stats.visible_exam_count }} sichtbar</p>
+        </div>
+    </div>
+    <div class="col-xs-6 col-sm-4">
+        <div class="stats-box">
+            <h5>{{ ::$ctrl.stats.oral_exam_count }}</h5>
+            <p> <i class="fa fa-comments fa-fw"></i> M&uuml;ndliche Pr&uuml;fungen</p>
+        </div>
+    </div>
+    <div class="col-xs-6 col-sm-4">
+        <div class="stats-box">
+            <h5>{{ ::$ctrl.stats.result_count }}</h5>
+            <p>
+                <i class="fa fa-exclamation-triangle fa-fw"></i>
+                Antworten | {{ $ctrl.stats.result_count / $ctrl.stats.user_count | number:0  }} / Nutzer
+            </p>
+        </div>
+    </div>
+    <div class="col-xs-6 col-sm-4">
+        <div class="stats-box">
+            <h5>{{ $ctrl.stats.result_count_today }}</h5>
+            <p><i class="fa fa-exclamation-triangle fa-fw"></i> Antworten | 24 Stunden</p>
+        </div>
+    </div>
+    <div class="col-xs-6 col-sm-4">
+        <div class="stats-box">
+            <h5>{{ $ctrl.stats.result_per_minute | number : 2 }}</h5>
+            <p><i class="fa fa-exclamation-triangle fa-fw"></i> Antworten pro Minute</p>
+        </div>
+    </div>
+    <div class="col-xs-6 col-sm-4">
+        <div class="stats-box">
+            <h5>{{ ::$ctrl.stats.comment_count }}</h5>
+            <p> <i class="fa fa-comments fa-fw"></i> Kommentare</p>
+        </div>
+    </div>
+    <div class="col-xs-6 col-sm-4">
+        <div class="stats-box">
+            <h5>{{ ::$ctrl.stats.tag_count }}</h5>
+            <p> <i class="fa fa-tags fa-fw"></i> Markierungen</p>
+        </div>
+    </div>
+</div>

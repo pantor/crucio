@@ -1,0 +1,74 @@
+<h4>Antworten</h4>
+<div class="row">
+    <div class="col-xs-12 col-sm-4">
+        <div class="stats-box">
+            <h5>{{ $ctrl.stats.result_count }}</h5>
+            <p><i class="fa fa-exclamation-triangle fa-fw"></i> Insgesamt | {{ $ctrl.stats.result_count / $ctrl.stats.user_count | number:0  }} pro Nutzer</p>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+        <div class="stats-box">
+            <h5>{{ $ctrl.stats.result_count_today }}</h5>
+            <p><i class="fa fa-exclamation-triangle fa-fw"></i> 24 Stunden</p>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+        <div class="stats-box">
+            <h5>{{ $ctrl.stats.result_per_minute | number : 2 }}</h5>
+            <p><i class="fa fa-exclamation-triangle fa-fw"></i> pro Minute</p>
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<h4>Nutzer</h4>
+<div class="row">
+    <div class="col-xs-12 col-sm-4">
+        <div class="stats-box">
+            <h5>{{ $ctrl.stats.user_count }}</h5>
+            <p><i class="fa fa-users fa-fw"></i> Insgesamt</p>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+        <div class="stats-box">
+            <h5>{{ $ctrl.stats.user_count_login_today }}</h5>
+            <p><i class="fa fa-users fa-fw"></i> Angemeldet 24 Stunden</p>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+        <div class="stats-box">
+            <h5>{{ $ctrl.stats.user_count_register_today }}</h5>
+            <p><i class="fa fa-users fa-fw"></i> Registriert 24 Stunden</p>
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-4">
+        <div class="stats-box">
+            <h5>{{ $ctrl.stats.question_count }}</h5>
+            <p> <i class="fa fa-question-circle fa-fw"></i> Fragen | {{ $ctrl.stats.visible_question_count }} sichtbar</p>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+        <div class="stats-box">
+            <h5>{{ $ctrl.stats.exam_count }}</h5>
+            <p> <i class="fa fa-list fa-fw"></i> Klausuren | {{ $ctrl.stats.visible_exam_count }} sichtbar</p>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+        <div class="stats-box">
+            <h5>{{ $ctrl.stats.comment_count }}</h5>
+            <p> <i class="fa fa-comments fa-fw"></i> Kommentare</p>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+        <div class="stats-box">
+            <h5>{{ $ctrl.stats.tag_count }}</h5>
+            <p> <i class="fa fa-tags fa-fw"></i> Markierungen</p>
+        </div>
+    </div>
+</div>

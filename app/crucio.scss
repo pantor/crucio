@@ -834,7 +834,7 @@ sub {
 
 // Slider
 
-rzslider {
+.rzslider {
     position: relative;
     display: inline-block;
     width: 100%;
@@ -961,13 +961,12 @@ rzslider {
 
 rzslider[disabled] {
   cursor: not-allowed;
-}
 
-rzslider[disabled] .rz-pointer {
-  cursor: not-allowed;
-  background-color: darken($light-grey, 9%);
+  .rz-pointer {
+    cursor: not-allowed;
+    background-color: darken($light-grey, 9%);
+  }
 }
-
 
 // Loading animation
 

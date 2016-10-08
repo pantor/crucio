@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="crucioApp" id="ng-app">
+<html ng-app="crucioApp">
     <head>
         <?php include('parts/header.php'); ?>
 
@@ -10,7 +10,7 @@
         <div class="wrap">
             <navbar></navbar>
 
-            <div ng-view class="external-ctrl"></div>
+            <ui-view></ui-view>
         </div>
 
         <div class="footer">

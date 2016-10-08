@@ -1,0 +1,11 @@
+<h4>F&auml;cher & Kategorien</h4>
+<p>Ihr k&ouml;nnt folgende F&auml;cher schon eintragen, den Fragen k&ouml;nnt ihr dabei eine Kategorie zuordnen. Falls welche fehlen, meldet euch...</p>
+
+<dl>
+    <dt ng-repeat-start="s in $ctrl.subjectList">{{ s.subject }}</dt>
+    <dd ng-repeat-end>
+        <ul>
+            <li ng-repeat="c in s.categories">{{ c.category }}</li>
+        </ul>
+     </dd>
+</dl>

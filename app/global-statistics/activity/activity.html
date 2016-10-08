@@ -1,0 +1,47 @@
+<h4>Aktivit&auml;t <small>Aktualisieren braucht immer etwas...</small></h4>
+<div class="btn-toolbar">
+    <div class="btn-group">
+        <label class="btn btn-danger" ng-model="$ctrl.updateActivity" uib-btn-checkbox>LIVE</label>
+    </div>
+
+    <div class="btn-group mbottom-2x">
+        <label class="btn btn-default" ng-model="$ctrl.showActivity.result" ng-disabled="!$ctrl.updateActivity" uib-btn-checkbox>Antworten</label>
+        <label class="btn btn-default" ng-model="$ctrl.showActivity.register" ng-disabled="!$ctrl.updateActivity" uib-btn-checkbox>Registrierungen</label>
+        <label class="btn btn-default" ng-model="$ctrl.showActivity.login" ng-disabled="!$ctrl.updateActivity" uib-btn-checkbox>Anmeldungen</label>
+        <label class="btn btn-default" ng-model="$ctrl.showActivity.comment" ng-disabled="!$ctrl.updateActivity" uib-btn-checkbox>Kommentare</label>
+        <label class="btn btn-default" ng-model="$ctrl.showActivity.examNew" ng-disabled="!$ctrl.updateActivity" uib-btn-checkbox>Neue...</label>
+        <label class="btn btn-default" ng-model="$ctrl.showActivity.examUpdate" ng-disabled="!$ctrl.updateActivity" uib-btn-checkbox>Ver&auml;nderte Klausuren</label>
+    </div>
+</div>
+
+<table class="table">
+    <tbody>
+        <tr ng-repeat="act in $ctrl.activities">
+
+            <td>
+                <span class="text-muted"><i class="fa fa-clock-o fa-fw"></i> <timeago datetime="act.date * 1000"></timeago></span>
+            </td>
+            <td ng-if="act.activity == 'result'">
+                <strong>{{ act.username }}</strong> hat Frage #{{ act.question_id }}
+                <span ng-show="act.correct == 0"><strong class="text-danger">falsch</strong></span>
+                <span ng-show="act.correct == 1"><strong class="text-success">richtig</strong></span>
+                beantwortet
+            </td>
+            <td ng-if="act.activity == 'register'">
+                <strong>{{ act.username }}</strong> hat sich registriert
+            </td>
+            <td ng-if="act.activity == 'login'">
+                <strong>{{ act.username }}</strong> hat sich angemeldet
+            </td>
+            <td ng-if="act.activity == 'comment'">
+                <strong>{{ act.username }}</strong> hat einen Kommentar zur Frage #{{ act.question_id }} geschrieben
+            </td>
+            <td ng-if="act.activity == 'exam_new'">
+                <strong>{{ act.username }}</strong> hat Klausur #{{ act.exam_id }} hinzugef&uuml;gt
+            </td>
+            <td ng-if="act.activity == 'exam_update'">
+                <strong>{{ act.username }}</strong> hat Klausur #{{ act.exam_id }} ver&auml;ndert
+            </td>
+        </tr>
+    </tbody>
+</table>

@@ -11,6 +11,7 @@ require 'api.comments.php';
 require 'api.contact.php';
 require 'api.exams.php';
 require 'api.file.php';
+require 'api.oral_exams.php';
 require 'api.pdf.php';
 require 'api.questions.php';
 require 'api.results.php';

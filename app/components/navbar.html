@@ -9,8 +9,8 @@
                         <span class="icon-bar"></span>
                     </button>
 
-                    <a class="navbar-brand" href="learn">
-                        <h1><i class="fa fa-check-square-o"></i>  Crucio</h1>
+                    <a class="navbar-brand" ui-sref="learn.overview">
+                        <h1><i class="fa fa-check-square-o"></i> Crucio</h1>
                     </a>
                 </div>
             </div>
@@ -18,29 +18,24 @@
             <div ng-if="$ctrl.user.username" class="col-sm-7">
                 <div class="collapse navbar-collapse" uib-collapse="!isNavShown">
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="navbar-element" ng-class="{ 'active': $ctrl.Page.nav == 'Lernen' }">
-                            <a href="learn">Lernen</a>
+                        <li class="navbar-element" ng-class="{active: $ctrl.Page.nav == 'Learn'}">
+                            <a ui-sref="learn.overview">Lernen</a>
                         </li>
 
-                        <li class="navbar-element" ng-class="{ 'active': $ctrl.Page.nav == 'Autor' }" ng-if="$ctrl.user.group_id == 2 || $ctrl.user.group_id == 3">
-                            <a href="author">Autoren</a>
+                        <li class="navbar-element" ng-class="{active: $ctrl.Page.nav == 'Author'}" ng-if="$ctrl.user.group_id == 2 || $ctrl.user.group_id == 3">
+                            <a ui-sref="author.exams">Autoren</a>
                         </li>
 
-                        <li class="navbar-element" ng-class="{ 'active': $ctrl.Page.nav == 'Admin' }" ng-if="$ctrl.user.group_id == 2">
-                            <a href="admin">Admin</a>
+                        <li class="navbar-element" ng-class="{active: $ctrl.Page.nav == 'Admin'}" ng-if="$ctrl.user.group_id == 2">
+                            <a ui-sref="admin.users">Admin</a>
                         </li>
 
-                        <li ng-class="{active: $ctrl.Page.nav == 'Name'}" class="dropdown" uib-dropdown>
-                            <a role="button" href uib-dropdown-toggle>
-                                <span ng-bind="$ctrl.user.username"></span> <b class="caret"></b>
-                            </a>
+                        <li class="navbar-element" ng-class="{active: $ctrl.Page.nav == 'User'}">
+                            <a ui-sref="user"><span ng-bind="$ctrl.user.username"></span></a>
+                        </li>
 
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="account"><i class="fa fa-user fa-fw"></i> Account</a></li>
-                                <li><a href="settings"><i class="fa fa-sliders fa-fw"></i> Einstellungen</a></li>
-                                <li class="divider hidden-xs"></li>
-                                <li><a href ng-click="$ctrl.logout()"><i class="fa fa-sign-out fa-fw"></i> Abmelden</a></li>
-                            </ul>
+                        <li class="navbar-element" style="">
+                            <a href ng-click="$ctrl.logout()"><i class="fa fa-sign-out fa-fw"></i></a>
                         </li>
                      </ul>
                 </div>

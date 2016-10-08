@@ -1,0 +1,42 @@
+<h4 class="mbottom">Deine Markierungen</h4>
+
+<div ng-if="!$ctrl.tags.length" class="container-center-align-sm">
+    <i class="fa fa-tags"></i>
+
+    <hr>
+    <h3>Du hast noch keine Markierungen erstellt.</h3>
+    <h5>
+        Wenn die eine Frage beantwortest, siehst du rechts unter dem Info-Feld eine Eingabe.<br>
+        Gebe dort die Markierung ein und dr&uuml;cke Enter.
+    </h5>
+    <br>
+</div>
+
+<div ng-if="$ctrl.tags.length">
+    <table class="table">
+        <thead>
+            <th style="min-width:120px;"><i class="fa fa-fw fa-tag"></i> Markierung</th>
+            <th><i class="fa fa-fw fa-flask"></i> Fach</th>
+            <th>Frage</th>
+            <th></th>
+        </thead>
+
+        <tbody ng-repeat="(tag, tag_array) in $ctrl.questionsByTag">
+            <tr>
+                <td rowspan="{{tag_array.length}}" style="min-width:140px;">
+                    <span class="tags tag-item pull-right">
+                        {{ tag }}
+                    </span>
+                </td>
+                <td>{{ tag_array[0].subject }}</td>
+                <td><span ng-bind-html="tag_array[0].question"></span></td>
+                <td><a ui-sref="question({ questionId: tag_array[0].question_id, resetSession: 1 })"><i class="fa fa-chevron-right"></i></a></td>
+            </tr>
+            <tr ng-repeat="q in tag_array" ng-show="$index > 0">
+                <td>{{ q.subject }}</td>
+                <td><span ng-bind-html="q.question"></span></td>
+                <td><a ui-sref="question({ questionId: q.question_id, resetSession: 1 })"><i class="fa fa-chevron-right"></i></a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

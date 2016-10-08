@@ -1,0 +1,21 @@
+<div class="container">
+	<div class="row mtop-navbar-row">
+	    <div class="col-md-3 sidebar">
+	    	<ul class="nav nav-pills nav-stacked mbottom-2x">
+				<li ui-sref-active="active"><a ui-sref="global-statistic.overview"><i class="fa fa-bar-chart fa-fw"></i>  &Uuml;bersicht</a></li>
+				<hr>
+				<li ui-sref-active="active"><a ui-sref="global-statistic.users"><i class="fa fa-users fa-fw"></i>  Nutzer</a></li>
+				<li ui-sref-active="active"><a ui-sref="global-statistic.questions"><i class="fa fa-question-circle fa-fw"></i>  Fragen</a></li>
+				<li ui-sref-active="active"><a ui-sref="global-statistic.results"><i class="fa fa-exclamation-triangle fa-fw"></i>  Antworten</a></li>
+				<li ui-sref-active="active"><a ui-sref="global-statistic.activity"><i class="fa fa-bicycle fa-fw"></i>  Aktivit&auml;t</a></li>
+			</ul>
+			<hr class="visible-xs visible-sm">
+	    </div>
+
+		<div class="col-md-9">
+	    	<div class="tab-content">
+				<ui-view></ui-view>
+			</div>
+		</div>
+	</div>
+</div>

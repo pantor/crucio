@@ -1,0 +1,40 @@
+<h4 class="mbottom-2x">Alle Kommentare</h4>
+
+<div class="row mmtop">
+    <div class="col-xs-12">
+        <div class="input-group mtop">
+            <input class="form-control" type="text" ng-model="$ctrl.commentSearch.query" ng-change="$ctrl.loadComments()">
+            <span class="input-group-btn">
+                <button class="btn btn-default" ng-click="$ctrl.loadComments()"><i class="fa fa-search"></i></button>
+            </span>
+        </div>
+    </div>
+</div>
+
+<br>
+
+<table class="table">
+    <thead>
+        <th>Frage</th>
+        <th><i class="fa fa-fw fa-user"></i> Name</th>
+        <th><i class="fa fa-comment-o fa-user"></i> Kommentar</th>
+        <th style="min-width: 100px;"><i class="fa fa-clock-o fa-user"></i> Datum</th>
+        <th></th>
+    </thead>
+
+    <tbody ng-repeat="commentArray in $ctrl.questionsByComment">
+        <tr ng-repeat="c in commentArray">
+            <td ng-show="$index == 0" rowspan="{{ commentArray.length }}" style="min-width:140px;">
+                <span ng-bind-html="c.question"></span>
+            </td>
+            <td>{{ c.username }}</td>
+            <td>{{ c.comment }}</td>
+            <td><timeago datetime="c.date * 1000"></timeago></td>
+            <td><a ui-sref="question({ questionId: c.question_id, resetSession: 1 })"><i class="fa fa-chevron-right"></i></a></td>
+        </tr>
+    </tbody>
+
+    <tbody class="search-sf" ng-show="!$ctrl.questionsByComment.length">
+        <td class="text-muted" colspan="6">Nichts gefunden.</td>
+    </tbody>
+</table>

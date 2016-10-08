@@ -1,0 +1,96 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <i class="fa fa-search"></i>
+                    <span ng-show="$ctrl.searchResults.length > 0">{{ $ctrl.searchResults.length }} Ergebnisse</span>
+                    <span ng-show="!$ctrl.searchResults || $ctrl.searchResults.length == 0">Suche</span>
+                </h3>
+            </div>
+
+            <div class="panel-body">
+                <div class="row mmtop">
+                    <div class="col-sm-4">
+                        <div class="btn-toolbar" role="toolbar">
+                            <div class="btn-group mtop" uib-dropdown>
+                                <button class="btn btn-default" type="button" uib-dropdown-toggle>
+                                    <span ng-show="$ctrl.questionSearch.semester">{{ $ctrl.questionSearch.semester }}. Semester</span>
+                                    <span ng-show="!$ctrl.questionSearch.semester">Alle Semester</span>
+                                    <i class="fa fa-caret-down"></i>
+                                </button>
+
+                                <ul class="dropdown-menu" role="menu">
+                                    <li ng-repeat="ds in $ctrl.distinctSemesters">
+                                        <a href ng-click="$ctrl.questionSearch.semester = ds.semester; $ctrl.searchQuestion()">{{ ds.semester }}. Semester</a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li><a href ng-click="$ctrl.questionSearch.semester = null; $ctrl.searchQuestion()">Alle Semester</a></li>
+                                </ul>
+                            </div>
+
+                            <div class="btn-group mtop" uib-dropdown>
+                                <button class="btn btn-default" type="button" uib-dropdown-toggle>
+                                    <span ng-show="$ctrl.questionSearch.subject">{{ $ctrl.questionSearch.subject.name }}</span>
+                                    <span ng-show="!$ctrl.questionSearch.subject">Alle F&auml;cher</span>
+                                    <i class="fa fa-caret-down"></i>
+                                </button>
+
+                                <ul class="dropdown-menu" role="menu">
+                                    <li ng-repeat="ds in $ctrl.distinctSubjects">
+                                        <a href ng-click="$ctrl.questionSearch.subject = ds; $ctrl.searchQuestion()">{{ ds.name }}</a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li><a href ng-click="$ctrl.questionSearch.subject = null; $ctrl.searchQuestion()">Alle F&auml;cher</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-8">
+                        <form class="input-group mtop" submit="$ctrl.searchQuestion()">
+                            <input class="form-control" type="text" ng-model="$ctrl.questionSearch.query" placeholder="...">
+
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" ng-click="$ctrl.searchQuestion()">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="spinner" us-spinner="{length: 0, radius: 18, color: '#333', shadow: false}" spinner-on="$ctrl.showSpinner" ng-show="$ctrl.showSpinner"></div>
+<div class="spinner-text">
+    <p class="text-muted">
+        <span ng-show="$ctrl.searchResults.length == 0 && $ctrl.hasSearched">Nichts gefunden ;(</span>
+    </p>
+</div>
+
+<table class="table" ng-show="$ctrl.searchResults.length > 0">
+    <thead>
+        <th></th>
+        <th>Semester</th>
+        <th><i class="fa fa-flask fa-fw"></i> Fach</th>
+        <th>Frage</th>
+        <th></th>
+    </thead>
+
+    <tbody>
+        <tr ng-repeat="question in $ctrl.searchResults">
+            <td><i class="fa fa-check" ng-show="question.answered == 1"></i></td>
+            <td>{{ question.semester }}</td>
+            <td>{{ question.subject }}</td>
+            <td><span ng-bind-html="question.question"></span></td>
+            <td>
+                <a ui-sref="question({ questionId: question.question_id, resetSession: 1 })">
+                    <i class="fa fa-chevron-right"></i>
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>

@@ -8,15 +8,15 @@ class HelpController {
   question: any;
   emailSend: boolean;
 
-  constructor(Auth, Page, API, $location) {
+  constructor(Auth, Page, API, $location, $stateParams) {
     this.API = API;
 
     Page.setTitleAndNav('Hilfe | Crucio', '');
 
     this.user = Auth.getUser();
 
-    this.question_id = $location.search().question_id;
-    this.subject = $location.search().s;
+    this.question_id = $stateParams.questionId;
+    this.subject = $stateParams.s;
 
     if (this.question_id) {
       this.API.get(`questions/${this.question_id}`).then(result => {

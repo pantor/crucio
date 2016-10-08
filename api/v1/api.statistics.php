@@ -12,6 +12,7 @@ $app->group('/stats', function() {
 
 		$stats['user_count'] = getCount($mysql, 'users');
 		$stats['exam_count'] = getCount($mysql, 'exams');
+        $stats['oral_exam_count'] = getCount($mysql, 'oral_exams');
 		$stats['visible_exam_count'] = getCount($mysql, 'exams WHERE visibility = 1');
 		$stats['question_count'] = getCount($mysql, 'questions');
 		$stats['visible_question_count'] = getCount($mysql, "questions, exams WHERE exams.visibility = 1 AND questions.exam_id = exams.exam_id");

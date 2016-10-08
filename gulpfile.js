@@ -47,7 +47,7 @@ gulp.task('ts', function () {
 gulp.task('js-vendor', function () {
   gulp.src([
     node + 'spin.js/spin.min.js',
-    node + 'chart.js/Chart.min.js',
+    node + 'chart.js/dist/Chart.min.js',
     node + 'angular/angular.min.js',
     node + 'textangular/dist/textAngular-rangy.min.js',
     node + 'textangular/dist/textAngular-sanitize.min.js',
@@ -57,7 +57,7 @@ gulp.task('js-vendor', function () {
     node + 'angular-cookies/angular-cookies.min.js',
     node + 'angular-file-upload/dist/angular-file-upload.min.js',
     node + 'angular-messages/angular-messages.min.js',
-    node + 'angular-route/angular-route.min.js',
+    node + 'angular-ui-router/release/angular-ui-router.min.js',
     node + 'angular-scroll/angular-scroll.min.js',
     node + 'angular-spinner/angular-spinner.min.js',
     node + 'angular-loading-bar/build/loading-bar.min.js',
