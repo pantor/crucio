@@ -16,7 +16,7 @@
             </div>
 
             <div ng-if="$ctrl.user.username" class="col-sm-7">
-                <div class="collapse navbar-collapse" uib-collapse="!isNavShown">
+                <div class="collapse navbar-collapse" uib-collapse="!$ctrl.isNavShown">
                     <ul class="nav navbar-nav navbar-right">
                         <li class="navbar-element" ng-class="{active: $ctrl.Page.nav == 'Learn'}">
                             <a ui-sref="learn.overview">Lernen</a>

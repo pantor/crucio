@@ -2,9 +2,8 @@ class AuthorSubjectsController {
   API: API;
   subjectList: any;
 
-  constructor(API, Page) {
+  constructor(API) {
     this.API = API;
-    Page.setTitleAndNav('Autor | Crucio', 'Author');
 
     this.API.get('subjects').then(result => {
       this.subjectList = result.data.subjects;

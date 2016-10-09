@@ -7,11 +7,10 @@ class LearnSearchController {
   searchResults: any;
   hasSearched: boolean;
   showSpinner: boolean;
+  limit: number;
 
-  constructor(Auth, Page, API) {
+  constructor(Auth, API) {
     this.API = API;
-
-    Page.setTitleAndNav('Lernen | Crucio', 'Learn');
 
     this.user = Auth.getUser();
 
@@ -21,6 +20,8 @@ class LearnSearchController {
       this.distinctSemesters = result.data.semesters;
       this.distinctSubjects = result.data.subjects;
     });
+
+    this.limit = 100;
   }
 
   searchQuestion(): void {
@@ -35,7 +36,7 @@ class LearnSearchController {
         subject_id: this.questionSearch.subject && this.questionSearch.subject.subject_id,
         semester: this.questionSearch.semester,
         visibility: 1,
-        limit: 100,
+        limit: this.limit,
       };
       this.API.get('questions', data, true).then(result => {
         this.searchResults = result.data.result;

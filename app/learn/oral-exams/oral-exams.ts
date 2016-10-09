@@ -2,20 +2,17 @@ class LearnOralExamsController {
   API: API;
   user: User;
   oralExamSearch: any;
-  oralExams: any[];
+  oralExams: OralExam[];
   distinctOralSemesters: any;
   distinctOralYears: any;
-  oralExamsHasSearched: boolean;
+  hasSearched: boolean;
 
-  constructor(Auth, Page, API, Collection, $scope, $location, $timeout) {
+  constructor(Auth, API, Collection, $scope, $location, $timeout) {
     this.API = API;
-
-    Page.setTitleAndNav('Lernen | Crucio', 'Learn');
 
     this.user = Auth.getUser();
 
     this.oralExamSearch = { semester: this.user.semester };
-
 
     this.API.get('oral_exams/distinct', {visibility: 1}).then(result => {
       this.distinctOralSemesters = result.data.semesters;
@@ -25,7 +22,7 @@ class LearnOralExamsController {
 
   searchOralExams(): void {
     this.oralExams = []; // Reset search results on empty query
-    this.oralExamsHasSearched = false;
+    this.hasSearched = false;
 
     if (this.oralExamSearch.query) {
       const data = {
@@ -37,7 +34,7 @@ class LearnOralExamsController {
       this.API.get('oral_exams', data, true).then(result => {
         this.oralExams = result.data.oral_exams;
 
-        this.oralExamsHasSearched = true;
+        this.hasSearched = true;
       });
     }
   }

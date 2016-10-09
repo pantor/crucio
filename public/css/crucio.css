@@ -216,7 +216,7 @@ body, html {
   background-color: #fff; }
 
 .body-padding {
-  padding-top: 62px; }
+  padding-top: 73px; }
 
 .wrap {
   min-height: 100%;
@@ -470,7 +470,7 @@ body, html {
   margin-top: 8px; }
 
 .mtop-navbar-row {
-  margin-top: 46px; }
+  margin-top: 33px; }
 
 .mtop {
   margin-top: 10px; }
@@ -571,9 +571,7 @@ input[id^="textAngular"] {
 
 .navbar-crucio {
   color: #fff;
-  background-image: url(../images/background.jpg);
-  background-position: 50% 25%;
-  border-bottom: 3px solid #d35400;
+  background-color: #d35400;
   height: 73px; }
   .navbar-crucio .navbar-brand {
     color: #fff;
@@ -601,21 +599,23 @@ input[id^="textAngular"] {
     .navbar-crucio .navbar-link:hover {
       color: #333; }
   .navbar-crucio .navbar-nav > li > a {
-    color: #461e05;
+    color: rgba(255, 255, 255, 0.7);
+    background-color: #d35400;
     letter-spacing: 0.02em;
     text-align: center;
     font-weight: 400;
-    font-family: 'Lato', sans-serif; }
+    font-family: 'Lato', sans-serif;
+    font-size: 15px; }
     .navbar-crucio .navbar-nav > li > a:hover, .navbar-crucio .navbar-nav > li > a:focus {
       color: #fff;
-      background-color: #d35400;
       transition: all .2s; }
   .navbar-crucio .navbar-nav > .active > a,
   .navbar-crucio .navbar-nav > .active > a:hover,
   .navbar-crucio .navbar-nav > .active > a:focus {
     color: #fff;
-    background-color: #d35400;
-    font-weight: bold; }
+    font-weight: bold;
+    padding-bottom: 24px;
+    border-bottom: 3px solid #fff; }
   .navbar-crucio .navbar-nav > .disabled > a,
   .navbar-crucio .navbar-nav > .disabled > a:hover,
   .navbar-crucio .navbar-nav > .disabled > a:focus {
@@ -657,7 +657,8 @@ input[id^="textAngular"] {
   letter-spacing: 0.05em;
   text-transform: uppercase;
   font-family: 'Lato', sans-serif;
-  cursor: pointer; }
+  cursor: pointer;
+  transition: all 0.2s; }
 
 .sidebar li:hover a {
   background-color: #eeeeee;

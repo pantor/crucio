@@ -9,11 +9,9 @@ class AuthorExamsController {
   subjectList: any;
   exams: Exam[];
 
-  constructor(Page, Auth, API, $location) {
+  constructor(Auth, API, $location) {
     this.API = API;
     this.$location = $location;
-
-    Page.setTitleAndNav('Autor | Crucio', 'Author');
 
     this.user = Auth.getUser();
 

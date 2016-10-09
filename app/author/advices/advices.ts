@@ -1,8 +1,5 @@
 class AuthorAdivcesController {
-
-  constructor(Page) {
-    Page.setTitleAndNav('Autor | Crucio', 'Author');
-  }
+  constructor() { }
 }
 
 angular.module('crucioApp').component('authoradvicescomponent', {

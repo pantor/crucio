@@ -8,12 +8,10 @@ class LearnExamsController {
   distinctSemesters: any;
   distinctSubjects: any;
 
-  constructor(Auth, Page, API, Collection, $scope, $location, $timeout) {
+  constructor(Auth, API, Collection, $scope, $location, $timeout) {
     this.API = API;
     this.Collection = Collection;
     this.$location = $location;
-
-    Page.setTitleAndNav('Lernen | Crucio', 'Learn');
 
     this.user = Auth.getUser();
 

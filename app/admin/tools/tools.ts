@@ -1,10 +1,8 @@
 class AdminToolsController {
   API: API;
 
-  constructor(Page, Auth, API) {
+  constructor(Auth, API) {
     this.API = API;
-
-    Page.setTitleAndNav('Verwaltung | Crucio', 'Admin');
   }
 
   changeSemester(difference: number): void {

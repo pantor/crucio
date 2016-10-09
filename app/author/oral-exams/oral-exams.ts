@@ -5,13 +5,11 @@ class AuthorOralExamsController {
   oralExamSearch: any;
   distinctOralSemesters: any;
   distinctOralYears: any;
-  oralExams: any[];
+  oralExams: OralExam[];
 
-  constructor(Page, Auth, API, $location) {
+  constructor(Auth, API, $location) {
     this.API = API;
     this.$location = $location;
-
-    Page.setTitleAndNav('Autor | Crucio', 'Author');
 
     this.user = Auth.getUser();
 

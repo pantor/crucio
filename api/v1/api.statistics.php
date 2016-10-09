@@ -29,36 +29,11 @@ $app->group('/stats', function() {
 		return createResponse($response, $data);
 	});
 
-	$this->get('/general', function($request, $response, $args) {
+	$this->get('/result_graph', function($request, $response, $args) {
 		$mysql = init();
 
 		$time = time();
-		$stats['time'] = $time;
-
-		$stats['user_count'] = getCount($mysql, 'users');
-		$stats['user_count_register_today'] = getCount($mysql, 'users WHERE sign_up_date > ?', [$time - 24*60*60]);
-		$stats['user_count_login_today'] = getCount($mysql, 'users WHERE last_sign_in > ?', [$time - 24*60*60]);
-
-		$stats['exam_count'] = getCount($mysql, 'exams');
-		$stats['visible_exam_count'] = getCount($mysql, 'exams WHERE visibility = 1');
-		$stats['question_count'] = getCount($mysql, 'questions');
-		$stats['question_explanation_count'] = getCount($mysql, "questions WHERE explanation != ''");
-		$stats['question_free_count'] = getCount($mysql, 'questions WHERE type = 1');
-		$stats['question_without_answer_count'] = getCount($mysql, 'questions WHERE correct_answer < 1 AND type > 1');
-		$stats['question_category_count'] = getCount($mysql, 'questions WHERE category_id > 0');
-		$stats['visible_question_count'] = getCount($mysql, 'questions, exams WHERE exams.visibility = 1 AND questions.exam_id = exams.exam_id');
-        $stats['question_worked_count'] = getCustomCount($mysql, "SELECT COUNT(DISTINCT r.question_id) AS 'count' FROM results r");
-        $stats['question_worked_count_today'] = getCustomCount($mysql, "SELECT COUNT(DISTINCT r.question_id) AS 'count' FROM results r WHERE r.date > ?", [$time - 24*60*60]);
-
-		$stats['result_count'] = getCount($mysql, 'results');
-		$stats['result_count_hour'] = getCount($mysql, 'results WHERE date > ?', [$time - 60*60]);
-		$stats['result_count_week'] = getCount($mysql, 'results WHERE date > ?', [$time - 7*24*60*60]);
-		$stats['result_count_today'] = getCount($mysql, 'results WHERE date > ?', [$time - 24*60*60]);
-
-		$stats['result_per_minute'] = (getCount($mysql, 'results WHERE date > ?', [$time - 30*60])) / (30.); // Last Half Hour
-
-		$stats['comment_count'] = getCount($mysql, 'comments');
-		$stats['tag_count'] = getCount($mysql, 'tags');
+		$resultGraph['time'] = $time;
 
 		$resolution = 1.5 * 60;
 		$days = 2;
@@ -67,10 +42,10 @@ $app->group('/stats', function() {
 			$result_dep_time_today_label[] = (($time % (24*60*60) - ($time % (60*60)))/(60*60) - ($resolution/60)*$i + $days*24 + 1) % 24;
 			$result_dep_time_today[] = round( 60 * getCount($mysql, 'results WHERE date > ? AND date < ?', [$time - ($i+1)*$resolution*60, $time - ($i)*$resolution*60]) / ($resolution) );
 		}
-		$stats['result_dep_time_today_label'] = $result_dep_time_today_label;
-		$stats['result_dep_time_today'] = $result_dep_time_today;
+		$resultGraph['labels'] = $result_dep_time_today_label;
+		$resultGraph['data'] = $result_dep_time_today;
 
-		$data['stats'] = $stats;
+		$data['resultGraph'] = $resultGraph;
 		return createResponse($response, $data);
 	});
 
@@ -149,7 +124,6 @@ $app->group('/stats', function() {
 		    return $b['date'] - $a['date'];
 		});
 
-        $data['asdf'] = boolval($query_params['examUpdate']);
 		$data['activities'] = array_slice($activities, 0, 101);
 		return createResponse($response, $data);
 	});

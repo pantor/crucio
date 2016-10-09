@@ -37,13 +37,13 @@ $app->group('/oral_exams', function() {
 		$mysql = init();
 
 		$stmt_semesters = $mysql->prepare(
-		    "SELECT DISTINCT o.*
+		    "SELECT DISTINCT o.semester
 		    FROM oral_exams o
 		    ORDER BY o.semester ASC"
 		);
 
         $stmt_years = $mysql->prepare(
-		    "SELECT DISTINCT o.*
+		    "SELECT DISTINCT o.year
 		    FROM oral_exams o
 		    ORDER BY o.year ASC"
 		);

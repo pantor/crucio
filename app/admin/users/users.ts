@@ -8,11 +8,9 @@ class AdminUsersController {
   distinctGroupsPerId: any;
   users: User[];
 
-  constructor(Page, Auth, API, $uibModal) {
+  constructor(Auth, API, $uibModal) {
     this.API = API;
     this.$uibModal = $uibModal;
-
-    Page.setTitleAndNav('Verwaltung | Crucio', 'Admin');
 
     this.user = Auth.getUser();
 

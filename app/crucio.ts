@@ -6,11 +6,9 @@ angular.module('crucioApp', [
   'ngTagsInput',
   'ui.router',
   'ui.bootstrap',
-  'angular-loading-bar',
   'angularFileUpload',
   'angularSpinner',
   'textAngular',
-  'chart.js',
   'rzModule',
   'duScroll',
 ])
@@ -31,7 +29,7 @@ angular.module('crucioApp', [
       { name: 'learn.oral-exams', url: '/oral-exams', template: comp('learnoralexams') },
       { name: 'question', url: '/question?questionId&resetSession', template: comp('question') },
       { name: 'exam', url: '/exam?examId', template: comp('exam') },
-      { name: 'statistic', url: '/statistic', template: comp('statisticC') },
+      { name: 'statistic', url: '/statistic', template: comp('statistic') },
       { name: 'analysis', url: '/analysis', template: comp('analysis') },
 
       { name: 'author', url: '/author', template: comp('author') },
@@ -40,7 +38,7 @@ angular.module('crucioApp', [
       { name: 'author.subjects', url: '/subjects', template: comp('authorsubjects') },
       { name: 'author.oral-exams', url: '/oral-exams', template: comp('authororalexams') },
       { name: 'author.advices', url: '/advices', template: comp('authoradvices') },
-      { name: 'edit-exam', url: '/edit-exam?examId', template: comp('editExam') },
+      { name: 'edit-exam', url: '/edit-exam?examId&questionId', template: comp('editExam') },
       { name: 'edit-oral-exam', url: '/edit-oral-exam?oralExamId', template: comp('editOralExam') },
 
       { name: 'admin', url: '/admin', template: comp('admin') },
@@ -49,13 +47,7 @@ angular.module('crucioApp', [
       { name: 'admin.whitelist', url: '/whitelist', template: comp('adminwhitelist') },
       { name: 'admin.tools', url: '/tools', template: comp('admintools') },
       { name: 'admin.stats', url: '/stats', template: comp('adminstats') },
-
-      { name: 'global-statistic', url: '/global-statistic', template: comp('globalStatistic') },
-      { name: 'global-statistic.overview', url: '/overview', template: comp('globalStatisticOverview') },
-      { name: 'global-statistic.users', url: '/users', template: comp('globalStatisticUsers') },
-      { name: 'global-statistic.questions', url: '/questions', template: comp('globalStatisticQuestions') },
-      { name: 'global-statistic.results', url: '/results', template: comp('globalStatisticResults') },
-      { name: 'global-statistic.activity', url: '/activity', template: comp('globalStatisticActivity') },
+      { name: 'admin.activity', url: '/activity', template: comp('adminactivity') },
 
       { name: 'user', url: '/user', template: comp('user') },
 

@@ -8,7 +8,7 @@ class EditOralExamController {
   numberChanged: number;
   uploader: any;
   hasChanged: boolean;
-  oralExam: any;
+  oralExam: OralExam;
   ready: boolean;
   isSaving: boolean;
 

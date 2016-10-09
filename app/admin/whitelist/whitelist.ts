@@ -3,10 +3,8 @@ class AdminWhitelistController {
   whitelist: any;
   newWhitelistEmail: string;
 
-  constructor(Page, Auth, API) {
+  constructor(Auth, API) {
     this.API = API;
-
-    Page.setTitleAndNav('Verwaltung | Crucio', 'Admin');
 
     this.API.get('whitelist').then(result => {
       this.whitelist = result.data.whitelist;

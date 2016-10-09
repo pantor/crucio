@@ -6,10 +6,8 @@ class AuthorCommentsController {
   comments: Comment[];
   questionsByComment: any;
 
-  constructor(Page, Auth, API) {
+  constructor(Auth, API) {
     this.API = API;
-
-    Page.setTitleAndNav('Autor | Crucio', 'Author');
 
     this.user = Auth.getUser();
 

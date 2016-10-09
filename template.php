@@ -4,6 +4,8 @@
         <?php include('parts/header.php'); ?>
 
         <title>Crucio</title>
+
+        <script src="public/js/vendor.js"></script>
     </head>
 
     <body class="body-padding">
@@ -29,7 +31,6 @@
             </div>
         </div>
 
-        <script src="public/js/vendor.js"></script>
         <script src="public/js/crucio.js"></script>
     </body>
 </html>

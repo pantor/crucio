@@ -5,10 +5,8 @@ class LearnCommentsController {
   comments: Comment[];
   questionsByComment: any;
 
-  constructor(Auth, Page, API) {
+  constructor(Auth, API) {
     this.API = API;
-
-    Page.setTitleAndNav('Lernen | Crucio', 'Learn');
 
     this.user = Auth.getUser();
 

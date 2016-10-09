@@ -4,8 +4,9 @@
             <div class="panel-heading">
                 <h3 class="panel-title">
                     <i class="fa fa-search"></i>
-                    <span ng-show="$ctrl.searchResults.length > 0">{{ $ctrl.searchResults.length }} Ergebnisse</span>
-                    <span ng-show="!$ctrl.searchResults || $ctrl.searchResults.length == 0">Suche</span>
+                    <span ng-show="$ctrl.searchResults.length == $ctrl.limit">Mehr als {{ $ctrl.limit }} Ergebnisse</span>
+                    <span ng-show="$ctrl.searchResults.length > 0 && $ctrl.searchResults.length < $ctrl.limit">{{ $ctrl.searchResults.length }} Ergebnisse</span>
+                    <span ng-show="!$ctrl.searchResults || $ctrl.searchResults.length == 0">Suche nach Fragen</span>
                 </h3>
             </div>
 
@@ -65,9 +66,9 @@
 </div>
 
 <div class="spinner" us-spinner="{length: 0, radius: 18, color: '#333', shadow: false}" spinner-on="$ctrl.showSpinner" ng-show="$ctrl.showSpinner"></div>
-<div class="spinner-text">
+<div class="spinner-text" ng-show="$ctrl.searchResults.length == 0 && $ctrl.hasSearched">
     <p class="text-muted">
-        <span ng-show="$ctrl.searchResults.length == 0 && $ctrl.hasSearched">Nichts gefunden ;(</span>
+        <span>Nichts gefunden ;(</span>
     </p>
 </div>
 

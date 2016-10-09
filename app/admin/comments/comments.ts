@@ -4,10 +4,8 @@ class AdminCommentsController {
   comments: Comment[];
   questionsByComment: any;
 
-  constructor(Page, Auth, API) {
+  constructor(Auth, API) {
     this.API = API;
-
-    Page.setTitleAndNav('Verwaltung | Crucio', 'Admin');
 
     this.commentSearch = {};
 
