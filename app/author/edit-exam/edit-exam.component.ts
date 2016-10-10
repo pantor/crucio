@@ -86,9 +86,7 @@ class EditExamController {
   }
 
   loadExam(): void {
-    console.log(this.examId);
     this.API.get(`exams/${this.examId}`).then(result => {
-      console.log(result.data, this.examId);
       this.exam = result.data.exam;
       this.questions = result.data.questions;
 

@@ -1,20 +1,20 @@
 class DeleteOralExamModalController {
   API: API;
-  examId: number;
+  oralExamId: number;
   $uibModalInstance: any;
   $location: any;
 
-  constructor(API, examId, $location, $uibModalInstance) {
+  constructor(API, oralExamId, $location, $uibModalInstance) {
     this.API = API;
-    this.examId = examId;
+    this.oralExamId = oralExamId;
     this.$location = $location;
     this.$uibModalInstance = $uibModalInstance;
   }
 
   deleteOralExam(): void {
-    this.API.delete(`oral_exams/${this.examId}`).then(() => {
+    this.API.delete(`oral_exams/${this.oralExamId}`).then(() => {
       this.$uibModalInstance.close();
-      this.$location.url('/author');
+      this.$location.url('/author/oral-exams');
     });
 
   }

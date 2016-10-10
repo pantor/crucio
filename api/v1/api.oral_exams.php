@@ -72,11 +72,12 @@ $app->group('/oral_exams', function() {
 		$body = $request->getParsedBody();
 
 		$stmt = $mysql->prepare(
-		    "INSERT INTO oral_exams (examiner_count, semester)
-            VALUES (:examiner_count, :semester)"
+		    "INSERT INTO oral_exams (examiner_count, semester, year)
+            VALUES (:examiner_count, :semester, :year)"
 		);
 		$stmt->bindValue(':examiner_count', $body['examiner_count']);
 		$stmt->bindValue(':semester', $body['semester']);
+        $stmt->bindValue(':year', $body['year']);
 
 		$data['status'] = execute($stmt);
         $data['oral_exam_id'] = $mysql->lastInsertId();

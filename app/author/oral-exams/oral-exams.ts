@@ -39,10 +39,11 @@ class AuthorOralExamsController {
     const data = {
       examiner_count: 3,
       semester: 1,
+      year: 2016,
     };
 
     this.API.post('oral_exams', data).then(result => {
-      this.$location.path('/edit-oral-exam').search('id', result.data.oral_exam_id);
+      this.$location.path('/edit-oral-exam').search('oralExamId', result.data.oral_exam_id);
     });
   }
 }

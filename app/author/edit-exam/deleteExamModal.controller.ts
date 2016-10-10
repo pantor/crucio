@@ -14,7 +14,7 @@ class DeleteExamModalController {
   deleteExam(): void {
     this.API.delete(`exams/${this.examId}`).then(() => {
       this.$uibModalInstance.close();
-      this.$location.url('/author');
+      this.$location.url('/author/exams');
     });
 
   }

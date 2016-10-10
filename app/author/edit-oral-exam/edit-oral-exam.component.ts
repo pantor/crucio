@@ -64,15 +64,14 @@ class EditOralExamController {
     if (validate) {
       this.isSaving = true;
       this.API.put(`oral_exams/${this.oralExamId}`, this.oralExam).then(result => {
-        console.log(result);
         if (!result.data.status) {
           alert('Fehler beim Speichern der Klausur.');
         }
-      });
 
-      this.hasChanged = false;
-      this.numberChanged = 0;
-      this.isSaving = false;
+        this.hasChanged = false;
+        this.numberChanged = 0;
+        this.isSaving = false;
+      });
     } else {
       alert('Es fehlen noch allgemeine Infos zur Klausur.');
     }
@@ -84,7 +83,7 @@ class EditOralExamController {
       controller: 'deleteOralExamModalController',
       controllerAs: '$ctrl',
       resolve: {
-        examId: () => {
+        oralExamId: () => {
           return this.oralExamId;
         },
       },
