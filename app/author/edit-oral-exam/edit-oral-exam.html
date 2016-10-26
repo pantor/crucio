@@ -27,9 +27,11 @@
                 <div class="form-group">
                     <label class="col-md-2 col-sm-3 control-label">Semester</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="number" ng-model="$ctrl.oralExam.semester">
+                        <div class="btn-group">
+                            <label class="btn btn-default" ng-model="$ctrl.oralExam.semester" uib-btn-radio="0" uncheckable>Physikum</label>
+                            <label class="btn btn-default" ng-model="$ctrl.oralExam.semester" uib-btn-radio="1" uncheckable>Staatsexamen</label>
+                        </div>
                     </div>
-                    <span class="label validation-error label-danger" ng-show="$ctrl.oralExam.semester < 1">Kein echtes Semester</span>
                 </div>
 
                 <hr>

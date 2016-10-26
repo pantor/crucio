@@ -12,7 +12,7 @@ class LearnOralExamsController {
 
     this.user = Auth.getUser();
 
-    this.oralExamSearch = { semester: this.user.semester };
+    this.oralExamSearch = { semester: this.user.semester <= 4 ? 0 : 1 };
 
     this.API.get('oral_exams/distinct', {visibility: 1}).then(result => {
       this.distinctOralSemesters = result.data.semesters;

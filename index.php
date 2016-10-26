@@ -1,6 +1,6 @@
 <?php
     if(isset($_COOKIE["CrucioUser"])) {
-        header("Location: /learn");
+        header("Location: /learn/overview");
         exit;
     }
 ?>

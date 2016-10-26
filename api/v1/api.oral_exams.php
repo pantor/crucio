@@ -36,19 +36,12 @@ $app->group('/oral_exams', function() {
     $this->get('/distinct', function($request, $response, $args) {
 		$mysql = init();
 
-		$stmt_semesters = $mysql->prepare(
-		    "SELECT DISTINCT o.semester
-		    FROM oral_exams o
-		    ORDER BY o.semester ASC"
-		);
-
         $stmt_years = $mysql->prepare(
 		    "SELECT DISTINCT o.year
 		    FROM oral_exams o
 		    ORDER BY o.year ASC"
 		);
 
-		$data['semesters'] = getAll($stmt_semesters);
         $data['years'] = getAll($stmt_years);
 		return createResponse($response, $data);
 	});

@@ -235,7 +235,7 @@ angular.module('crucioApp', [
 
     const path = $location.path();
     if (pathsThatLogin.indexOf(path) > -1 && isLoggedIn && user.remember_user) {
-      $window.location.replace('/learn');
+      $window.location.replace('/learn/overview');
     }
 
     if (pathsForAuthor.indexOf(path) > -1 && !(isAuthor || isAdmin)) {

@@ -16,7 +16,6 @@ class AuthorOralExamsController {
     this.oralExamSearch = {};
 
     this.API.get('oral_exams/distinct').then(result => {
-      this.distinctOralSemesters = result.data.semesters;
       this.distinctOralYears = result.data.years;
     });
 
@@ -38,7 +37,7 @@ class AuthorOralExamsController {
   newOralExam(): void {
     const data = {
       examiner_count: 3,
-      semester: 1,
+      semester: 0,
       year: 2016,
     };
 

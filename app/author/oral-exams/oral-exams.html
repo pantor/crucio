@@ -9,13 +9,15 @@
 
             <div class="btn-group mtop" uib-dropdown>
                 <button class="btn btn-default" type="button" uib-dropdown-toggle>
-                    <span ng-show="$ctrl.oralExamSearch.semester">{{ $ctrl.oralExamSearch.semester }}. Semester</span>
-                    <span ng-show="!$ctrl.oralExamSearch.semester">Alle Semester</span>
+                    <span ng-show="$ctrl.oralExamSearch.semester == 0">Physikum</span>
+                    <span ng-show="$ctrl.oralExamSearch.semester == 1">Staatsexamen</span>
+                    <span ng-show="$ctrl.oralExamSearch.semester != 0 && $ctrl.oralExamSearch.semester != 1">Alle Semester</span>
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <ul class="dropdown-menu" role="menu">
-                    <li ng-repeat="ds in $ctrl.distinctOralSemesters">
-                        <a href ng-click="$ctrl.oralExamSearch.semester = ds.semester; $ctrl.loadOralExams()">{{ ds.semester }}. Semester</a>
+                    <li>
+                        <a href ng-click="$ctrl.oralExamSearch.semester = 0; $ctrl.loadOralExams()">Physikum</a>
+                        <a href ng-click="$ctrl.oralExamSearch.semester = 1; $ctrl.loadOralExams()">Staatsexamen</a>
                     </li>
                     <li class="divider"></li>
                     <li><a href ng-click="$ctrl.oralExamSearch.semester = null; $ctrl.loadOralExams()">Alle Semester</a></li>
@@ -51,8 +53,8 @@
 
 <table class="table mtop">
     <thead>
+        <th></th>
         <th><i class="fa fa-fw fa-calendar"></i> Jahr</th>
-        <th>Semester</th>
         <th>Prüfer</th>
         <th></th>
         <th></th>
@@ -60,8 +62,11 @@
 
     <tbody>
         <tr ng-repeat="exam in $ctrl.oralExams">
+            <td>
+                <span ng-show="exam.semester == 0" class="label label-primary">Physikum</span>
+                <span ng-show="exam.semester == 1" class="label label-primary">Staatsexamen</span>
+            </td>
             <td>{{ exam.year }}</td>
-            <td>{{ exam.semester }}</td>
             <td>
                 {{ exam.examiner_1 }}<br>
                 {{ exam.examiner_2 }}<br>

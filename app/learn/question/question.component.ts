@@ -44,7 +44,7 @@ class QuestionController {
 
     if (!this.questionId) {
       alert('Fehler: Konnte keine Frage finden.');
-      $window.location.replace('/learn');
+      $window.location.replace('/learn/overview');
     }
 
     this.noAnswer = true;

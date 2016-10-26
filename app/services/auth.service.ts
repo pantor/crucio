@@ -29,7 +29,7 @@ class Auth {
   /* login(newUser: User, rememberUser: boolean): void {
     newUser.remember_user = rememberUser;
     this.setUser(newUser, true);
-    this.$window.location.assign('/learn');
+    this.$window.location.assign('/learn/overview');
   } */
 
   logout(): void {

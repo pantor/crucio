@@ -58,8 +58,8 @@ class EditOralExamController {
   }
 
   saveOralExam(): void {
-    const validate = this.oralExam.semester > 0
-      && this.oralExam.semester <= 50;
+    const validate = this.oralExam.semester >= 0
+      && this.oralExam.semester <= 1;
 
     if (validate) {
       this.isSaving = true;

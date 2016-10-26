@@ -86,6 +86,19 @@ class UserController {
       },
     });
   }
+
+  deleteAllTagsModal(): void {
+    this.$uibModal.open({
+      templateUrl: 'deleteTagsModalContent.html',
+      controller: 'deleteTagsModalController',
+      controllerAs: '$ctrl',
+      resolve: {
+        userId: () => {
+          return this.user.user_id;
+        },
+      },
+    });
+  }
 }
 
 angular.module('crucioApp').component('usercomponent', {

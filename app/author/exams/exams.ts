@@ -52,7 +52,7 @@ class AuthorExamsController {
     };
 
     this.API.post('exams', data).then(result => {
-      this.$location.path('/edit-exam').search('id', result.data.exam_id);
+      this.$location.path('/edit-exam').search('examId', result.data.exam_id);
     });
   }
 }
