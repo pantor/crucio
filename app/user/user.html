@@ -1,0 +1,141 @@
+<div class="container">
+    <div class="page-header">
+        <h2>Account <small>von {{ $ctrl.user.username }} </small></h2>
+    </div>
+
+    <form class="form-horizontal" name="form" ng-submit="$ctrl.saveUser()">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Allgemein</label>
+            <div class="col-sm-8">
+                <div class="checkbox">
+                    <label><input type="checkbox" ng-model="$ctrl.user.highlightExams" ng-change="$ctrl.formChanged()" ng-true-value="1" ng-false-value="0">
+                        Empfohlene Fragen und Klausuren hervorheben
+                    </label>
+                </div>
+
+                <div class="checkbox">
+                    <label> <input type="checkbox" ng-model="$ctrl.user.showComments" ng-change="$ctrl.formChanged()" ng-true-value="1" ng-false-value="0">
+                        Kommentare automatisch ausblenden
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Datenschutz</label>
+            <div class="col-sm-8">
+                <div class="checkbox">
+                    <label><input type="checkbox" ng-model="$ctrl.user.useAnswers" ng-change="$ctrl.formChanged()" ng-true-value="1" ng-false-value="0">
+                        Meine Antworten verwenden, um schwere Fragen herauszufinden
+                    </label>
+                </div>
+
+                <div class="checkbox">
+                    <label><input type="checkbox" ng-model="$ctrl.user.useTags" ng-change="$ctrl.formChanged()" ng-true-value="1" ng-false-value="0">
+                        Meine Markierungen verwenden, um Fragen zu katalogisieren
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Zur&uuml;cksetzen</label>
+            <div class="col-sm-8">
+                <button class="btn btn-default" ng-click="$ctrl.deleteAllResultsModal()">Alle Klausuren zur&uuml;cksetzen</button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label"></label>
+            <div class="col-sm-8">
+                <button class="btn btn-default" ng-click="$ctrl.deleteAllTagsModal()">Alle Markierungen zur&uuml;cksetzen</button>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Studienfach</label>
+            <div class="col-sm-9">
+                <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-default active">
+                        <input type="radio" name="options" value="1">Humanmedizin
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Fachsemester</label>
+            <div class="col-sm-4">
+                <input class="form-control" name="semester" type="number" ng-model="$ctrl.user.semester" min="1" max="50" required />
+            </div>
+            <div ng-messages="form.semester.$error" ng-show="form.semester.$touched" role="alert">
+                <span class="label validation-error label-danger" ng-message="required || min || max">Kein Semester</span>
+            </div>
+            <span class="label validation-error label-info">Das Semester aktualisiert sich automatisch</span>
+        </div>
+
+        <hr>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Altes Passwort</label>
+            <div class="col-sm-4">
+                <input class="form-control" name="oldPassword" type="password" ng-model="$ctrl.oldPassword" ng-change="$ctrl.formChanged()">
+            </div>
+            <span class="label validation-error label-danger" ng-show="$ctrl.wrongPassword">Falsches Passwort</span>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Neues Passwort</label>
+            <div class="col-sm-4">
+                <input class="form-control" name="password" type="password" ng-model="$ctrl.newPassword" ng-change="$ctrl.formChanged()">
+            </div>
+            <span ng-show="$ctrl.newPassword.length < 4" class="label validation-error label-danger">Dein Passwort sollte l&auml;nger als 3 Zeichen sein</span>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Passwort best&auml;tigen</label>
+            <div class="col-sm-4">
+                <input class="form-control" name="passwordc" type="password" ng-model="$ctrl.newPasswordC" ng-change="$ctrl.formChanged()">
+            </div>
+            <span ng-show="$ctrl.newPassword != $ctrl.newPasswordC" class="label validation-error label-danger">Passw&ouml;rter verschieden</span>
+        </div>
+
+        <hr>
+
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-8">
+                <button class="btn btn-primary" type="submit" ng-disabled="form.$invalid">
+                    <span ng-show="!$ctrl.isSaved && !$ctrl.hasError">
+                        Speichern<span ng-show="$ctrl.isWorking">...</span>
+                    </span>
+                    <span ng-show="$ctrl.isSaved">Gespeichert</span>
+                    <span ng-show="$ctrl.hasError">Speichern nicht m&ouml;glich</span>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script type="text/ng-template" id="deleteResultsModalContent.html">
+    <div class="modal-header">
+        <h4 class="modal-title">Wirklich alle Klausuren zur&uuml;cksetzen?</h4>
+    </div>
+    <div class="modal-body">
+        <button type="button" class="btn btn-default" ng-click="$dismiss()">Abbrechen</button>
+        <button class="btn btn-danger pull-right" ng-click="$ctrl.deleteAllResults()">Zur&uuml;cksetzen</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="deleteTagsModalContent.html">
+    <div class="modal-header">
+        <h4 class="modal-title">Wirklich alle Markierungen zur&uuml;cksetzen?</h4>
+    </div>
+    <div class="modal-body">
+        <button type="button" class="btn btn-default" ng-click="$dismiss()">Abbrechen</button>
+        <button class="btn btn-danger pull-right" ng-click="$ctrl.deleteAllTags()">Zur&uuml;cksetzen</button>
+    </div>
+</script>

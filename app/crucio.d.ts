@@ -25,6 +25,18 @@ interface Exam {
   date: string;
 }
 
+interface OralExam {
+  oral_exam_id: number;
+  semester: number;
+  year: number;
+  examiner_count: number;
+  examiner_1: string;
+  examiner_2: string;
+  examiner_3: string;
+  examiner_4: string;
+  filename: string;
+}
+
 interface Comment {
   comment_id: number;
   comment: string;

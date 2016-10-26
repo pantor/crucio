@@ -1,40 +1,70 @@
 /// <reference path='../typings/tsd.d.ts' />
 
 angular.module('crucioApp', [
-  'ngRoute',
   'ngCookies',
   'ngMessages',
   'ngTagsInput',
+  'ui.router',
   'ui.bootstrap',
-  'angular-loading-bar',
   'angularFileUpload',
   'angularSpinner',
   'textAngular',
-  'chart.js',
   'rzModule',
   'duScroll',
 ])
-  .config(function config($routeProvider, $locationProvider, $provide) {
-    $routeProvider
-      .when('/learn', { template: '<learnComponent></learnComponent>' })
-      .when('/author', { template: '<authorComponent></authorComponent>' })
-      .when('/admin', { template: '<adminComponent></adminComponent>' })
-      .when('/global-statistic', { template: '<globalStatisticComponent></globalStatisticComponent>' })
-      .when('/account', { template: '<accountComponent></accountComponent>' })
-      .when('/settings', { template: '<settingsComponent></settingsComponent>' })
-      .when('/edit-exam', { template: '<editExamComponent></editExamComponent>' })
-      .when('/question', { template: '<questionComponent></questionComponent>' })
-      .when('/exam', { template: '<examComponent></examComponent>' })
-      .when('/statistic', { template: '<statisticComponent></statisticComponent>' })
-      .when('/analysis', { template: '<analysisComponent></analysisComponent>' })
-      .when('/help', { template: '<helpComponent></helpComponent>' })
-      .when('/403', { template: '<error403Component></error403Component>' })
-      .when('/404', { template: '<error404Component></error404Component>' })
-      .when('/500', { template: '<error500Component></error500Component>' })
-      .otherwise({ redirectTo: '/404' });
+  .config(function config($stateProvider, $urlRouterProvider, $locationProvider, $provide) {
+
+    function comp(name) {
+      return '<' + name + 'Component></' + name + 'Component>';
+    }
+
+    const states = [
+      { name: 'learn', url: '/learn', template: comp('learn') },
+      { name: 'learn.overview', url: '/overview', template: comp('learnoverview') },
+      { name: 'learn.subjects', url: '/subjects', template: comp('learnsubjects') },
+      { name: 'learn.exams', url: '/exams', template: comp('learnexams') },
+      { name: 'learn.search', url: '/search', template: comp('learnsearch') },
+      { name: 'learn.tags', url: '/tags', template: comp('learntags') },
+      { name: 'learn.comments', url: '/comments', template: comp('learncomments') },
+      { name: 'learn.oral-exams', url: '/oral-exams', template: comp('learnoralexams') },
+      { name: 'question', url: '/question?questionId&resetSession', template: comp('question') },
+      { name: 'exam', url: '/exam?examId', template: comp('exam') },
+      { name: 'statistic', url: '/statistic', template: comp('statistic') },
+      { name: 'analysis', url: '/analysis', template: comp('analysis') },
+
+      { name: 'author', url: '/author', template: comp('author') },
+      { name: 'author.exams', url: '/exams', template: comp('authorexams') },
+      { name: 'author.comments', url: '/comments', template: comp('authorcomments') },
+      { name: 'author.subjects', url: '/subjects', template: comp('authorsubjects') },
+      { name: 'author.oral-exams', url: '/oral-exams', template: comp('authororalexams') },
+      { name: 'author.advices', url: '/advices', template: comp('authoradvices') },
+      { name: 'edit-exam', url: '/edit-exam?examId&questionId', template: comp('editExam') },
+      { name: 'edit-oral-exam', url: '/edit-oral-exam?oralExamId', template: comp('editOralExam') },
+
+      { name: 'admin', url: '/admin', template: comp('admin') },
+      { name: 'admin.users', url: '/users', template: comp('adminusers') },
+      { name: 'admin.comments', url: '/comments', template: comp('admincomments') },
+      { name: 'admin.whitelist', url: '/whitelist', template: comp('adminwhitelist') },
+      { name: 'admin.tools', url: '/tools', template: comp('admintools') },
+      { name: 'admin.stats', url: '/stats', template: comp('adminstats') },
+      { name: 'admin.activity', url: '/activity', template: comp('adminactivity') },
+
+      { name: 'user', url: '/user', template: comp('user') },
+
+      { name: '403', url: '/403', template: comp('error403') },
+      { name: '404', url: '/404', template: comp('error404') },
+      { name: '500', url: '/500', template: comp('error500') },
+      { name: 'help', url: '/help?questionId', template: comp('help') },
+    ];
+
+    $urlRouterProvider.otherwise('/404');
 
     $locationProvider.html5Mode(true); // use the HTML5 History API
     // $compileProvider.debugInfoEnabled(false);
+
+    states.forEach(function(state) {
+      $stateProvider.state(state);
+    });
 
     // textAngular
     $provide.decorator('taOptions', ['taRegisterTool', '$delegate', function(taRegisterTool, taOptions) {
@@ -205,7 +235,7 @@ angular.module('crucioApp', [
 
     const path = $location.path();
     if (pathsThatLogin.indexOf(path) > -1 && isLoggedIn && user.remember_user) {
-      $window.location.replace('/learn');
+      $window.location.replace('/learn/overview');
     }
 
     if (pathsForAuthor.indexOf(path) > -1 && !(isAuthor || isAdmin)) {

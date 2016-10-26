@@ -1,0 +1,122 @@
+<div class="container" ng-show="$ctrl.ready == 0" style="padding-top: 100px;">
+    <div class="spinner" us-spinner="{length: 0, radius: 18, color: '#333', shadow: false}" spinner-on="$ctrl.ready == 0"></div>
+</div>
+
+<div class="container" ng-show="$ctrl.ready == 1">
+    <div class="row mtop-navbar-row">
+        <div class="col-sm-3 col-md-2">
+            <button class="btn btn-success btn-block" ng-click="$ctrl.saveOralExam()">
+                <i ng-show="!$ctrl.isSaving" class="fa fa-fw fa-save"></i>
+                <i ng-show="$ctrl.isSaving" class="fa fa-circle-o-notch fa-spin"></i>
+                <span ng-show="$ctrl.hasChanged">Speichern</span>
+                <span ng-show="!$ctrl.hasChanged">Gespeichert</span>
+            </button>
+
+            <a class="btn btn-default btn-block" href="/files/{{ ::$ctrl.oralExam.filename }}" target="_blank"><i class="fa fa-fw fa-external-link"></i></a>
+        </div>
+
+        <div class="col-sm-10">
+            <div class="form-horizontal mbotton-3x">
+                <div class="form-group">
+                    <label class="col-md-2 col-sm-3 control-label">Jahr</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="number" ng-model="$ctrl.oralExam.year">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 col-sm-3 control-label">Semester</label>
+                    <div class="col-sm-4">
+                        <div class="btn-group">
+                            <label class="btn btn-default" ng-model="$ctrl.oralExam.semester" uib-btn-radio="0" uncheckable>Physikum</label>
+                            <label class="btn btn-default" ng-model="$ctrl.oralExam.semester" uib-btn-radio="1" uncheckable>Staatsexamen</label>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="form-group">
+                    <label class="col-md-2 col-sm-3 control-label">Anzahl Pr&uuml;fer</label>
+                    <div class="col-sm-4">
+                        <div class="btn-group">
+                            <label class="btn btn-primary" ng-model="$ctrl.oralExam.examiner_count" uib-btn-radio="3">3 (M1)</label>
+                            <label class="btn btn-primary" ng-model="$ctrl.oralExam.examiner_count" uib-btn-radio="4">4 (M3)</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 col-sm-3 control-label">Prüfer 1</label>
+                    <div class="col-md-6 col-sm-7">
+                        <input class="form-control" type="text" ng-model="$ctrl.oralExam.examiner_1">
+                    </div>
+                    <span class="label validation-error label-danger" ng-show="!$ctrl.oralExam.examiner_1">Hier sollte etwas stehen</span>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 col-sm-3 control-label">Prüfer 2</label>
+                    <div class="col-md-6 col-sm-7">
+                        <input class="form-control" type="text" ng-model="$ctrl.oralExam.examiner_2">
+                    </div>
+                    <span class="label validation-error label-danger" ng-show="!$ctrl.oralExam.examiner_2">Hier sollte etwas stehen</span>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 col-sm-3 control-label">Prüfer 3</label>
+                    <div class="col-md-6 col-sm-7">
+                        <input class="form-control" type="text" ng-model="$ctrl.oralExam.examiner_3">
+                    </div>
+                    <span class="label validation-error label-danger" ng-show="!$ctrl.oralExam.examiner_3">Hier sollte etwas stehen</span>
+                </div>
+
+                <div class="form-group" ng-show="$ctrl.oralExam.examiner_count == 4">
+                    <label class="col-md-2 col-sm-3 control-label">Prüfer 4</label>
+                    <div class="col-md-6 col-sm-7">
+                        <input class="form-control" type="text" ng-model="$ctrl.oralExam.examiner_4">
+                    </div>
+                    <span class="label validation-error label-danger" ng-show="!$ctrl.oralExam.examiner_4">Hier sollte etwas stehen</span>
+                </div>
+
+                <hr>
+
+                <div class="form-group">
+                    <label class="col-md-2 col-sm-3 control-label">Dokument</label>
+                    <div class="col-md-8 col-sm-9">
+                        <div class="mtop-8 mbottom">
+                            <input type="file" nv-file-select uploader="$ctrl.uploader" accept="application/pdf"/><br/>
+                            <a href="/files/{{ $ctrl.oralExam.filename }}" target="_self" class="btn btn-primary" ng-show="$ctrl.oralExam.filename">
+                                <i class="fa fa-external-link fa-fw"></i> Originaldokument
+                            </a>
+                            <button ng-disabled="$ctrl.uploader.queue.length == 0" class="btn btn-default" ng-click="$ctrl.uploader.queue[$ctrl.uploader.queue.length - 1].upload()">
+                                <i class="fa fa-fw fa-upload"></i> Hochladen
+                            </button>
+                            <button class="btn btn-danger" ng-click="$ctrl.oralExam.filename = ''">Dokument l&ouml;schen</button>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="form-group">
+                    <div class="col-md-8 col-md-offset-2">
+                        <button class="btn btn-danger mtop" ng-click="$ctrl.deleteOralExamModal()">
+                            <i class="fa fa-fw fa-trash-o"></i> Pr&uuml;fung l&ouml;schen
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="deleteOralExamModalContent.html">
+    <div class="modal-header">
+        <h4 class="modal-title">Pr&uuml;fung wirklich l&ouml;schen?</h4>
+    </div>
+
+    <div class="modal-body">
+        <button type="button" class="btn btn-default" ng-click="$dismiss()">Abbrechen</button>
+        <button class="btn btn-danger pull-right" ng-click="$ctrl.deleteOralExam()">L&ouml;schen</button>
+    </div>
+</script>

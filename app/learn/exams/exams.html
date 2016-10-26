@@ -1,0 +1,110 @@
+<h4 class="mbottom">Alle Klausuren</h4>
+
+<div class="row mmtop">
+    <div class="col-sm-6">
+        <div class="btn-toolbar" role="toolbar">
+            <div class="btn-group mtop" uib-dropdown>
+                <button class="btn btn-default" type="button" uib-dropdown-toggle>
+                    <span ng-show="$ctrl.examSearch.semester">{{ $ctrl.examSearch.semester }}. Semester</span>
+                    <span ng-show="!$ctrl.examSearch.semester">Alle Semester</span>
+                    <i class="fa fa-caret-down"></i>
+                </button>
+
+                <ul class="dropdown-menu" role="menu">
+                    <li ng-repeat="ds in $ctrl.distinctSemesters">
+                        <a href ng-click="$ctrl.examSearch.semester = ds.semester; $ctrl.loadExams()">{{ ds.semester }}. Semester</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li><a href ng-click="$ctrl.examSearch.semester = null; $ctrl.loadExams()">Alle Semester</a></li>
+                </ul>
+            </div>
+
+            <div class="btn-group mtop" uib-dropdown>
+                <button class="btn btn-default" type="button" uib-dropdown-toggle>
+                    <span ng-show="$ctrl.examSearch.subject">{{ $ctrl.examSearch.subject.name }}</span>
+                    <span ng-show="!$ctrl.examSearch.subject">Alle F&auml;cher</span>
+                    <i class="fa fa-caret-down"></i>
+                </button>
+
+                <ul class="dropdown-menu" role="menu">
+                    <li ng-repeat="ds in $ctrl.distinctSubjects">
+                        <a href ng-click="$ctrl.examSearch.subject = ds; $ctrl.loadExams()">{{ ds.name }}</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li><a href ng-click="$ctrl.examSearch.subject = null; $ctrl.loadExams()">Alle F&auml;cher</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6">
+        <div class="input-group mtop">
+            <input class="form-control" type="text" ng-model="$ctrl.examSearch.query" ng-change="$ctrl.loadExams()">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button" ng-click="$ctrl.loadExams()"><i class="fa fa-search"></i></button>
+            </span>
+        </div>
+    </div>
+</div>
+
+<table class="table mtop">
+    <thead>
+        <th>Semester</th>
+        <th><i class="fa fa-fw fa-flask"></i> Fach</th>
+        <th><i class="fa fa-fw fa-calendar"></i>Termin</th>
+        <th class="hidden-xs hidden-sm">Gel&ouml;ste Fragen</th>
+        <th></th>
+    </thead>
+
+    <tbody>
+        <tr ng-repeat="exam in $ctrl.exams">
+            <td>{{ exam.semester }}</td>
+            <td>{{ exam.subject | cut:true:38:'...' }}</td>
+            <td>{{ exam.date }}</td>
+            <td class="hidden-xs hidden-sm">{{ exam.answered_questions }} / {{ exam.question_count }}</td>
+            <td style="min-width: 250px;">
+                <div class="btn-group" role="group">
+                    <a type="button" class="btn btn-default btn-xs" href ng-click="$ctrl.learnExam(exam.exam_id)">
+                        Fragen
+                    </a>
+
+                    <a type="button" class="btn btn-default btn-xs" href="exam?examId={{ exam.exam_id }}">
+                        Klausuransicht
+                    </a>
+
+                    <div class="btn-group" uib-dropdown>
+                        <button type="button" class="btn btn-default btn-xs" uib-dropdown-toggle>
+                            <i class="fa fa-fw fa-file-pdf-o"></i> PDF
+                        </button>
+
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                            <li><a href="api/v1/pdf/exam/{{ exam.exam_id }}" target="_self">Klausur als PDF</a></li>
+                            <li><a href="api/v1/pdf/solution/{{ exam.exam_id }}" target="_self">L&ouml;sungen als PDF</a></li>
+
+                            <li class="divider"></li>
+
+                            <li ng-class="{ disabled: exam.file_name == '' }">
+                                <a href="/public/files/{{exam.file_name}}" target="_self" ng-if="exam.file_name != ''">Originaldokument</a>
+                                <a ng-if="exam.file_name == ''">Originaldokument</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="btn-group" uib-dropdown>
+                        <button type="button" class="btn btn-default btn-xs" uib-dropdown-toggle>
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                            <li ng-class="{disabled: exam.answered_questions == 0}">
+                                <a href ng-click="$ctrl.resetExam(exam)">Klausur zur&uuml;cksetzen</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </td>
+        </tr>
+
+        <tr ng-show="!$ctrl.exams.length"><td class="text-muted" colspan="6">Nichts gefunden.</td></tr>
+    </tbody>
+</table>

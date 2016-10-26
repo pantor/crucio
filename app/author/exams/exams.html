@@ -1,0 +1,94 @@
+<h4 class="mbottom-2x">Von dir eingetragene Klausuren</h4>
+
+<div class="row mmtop">
+    <div class="col-md-8 col-sm-8">
+        <div class="btn-toolbar" role="toolbar">
+            <div class="btn-group mtop">
+                <a class="btn btn-success" id="newfeedform" ng-click="$ctrl.newExam()">Neue Klausur</a>
+            </div>
+
+            <div class="btn-group mtop" uib-dropdown>
+                <button class="btn btn-default" type="button" uib-dropdown-toggle>
+                    <span ng-show="$ctrl.examSearch.subject">{{ $ctrl.examSearch.subject.name }}</span>
+                    <span ng-show="!$ctrl.examSearch.subject">Alle F&auml;cher</span>
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li ng-repeat="ds in $ctrl.distinctSubjects">
+                        <a href ng-click="$ctrl.examSearch.subject = ds; $ctrl.loadExams()">{{ ds.name }}</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li><a href ng-click="$ctrl.examSearch.subject = null; $ctrl.loadExams()">Alle F&auml;cher</a></li>
+                </ul>
+            </div>
+
+            <div class="btn-group mtop" uib-dropdown>
+                <button class="btn btn-default" type="button" uib-dropdown-toggle>
+                    <span ng-show="$ctrl.examSearch.semester">{{ $ctrl.examSearch.semester }}. Semester</span>
+                    <span ng-show="!$ctrl.examSearch.semester">Alle Semester</span>
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li ng-repeat="ds in $ctrl.distinctSemesters">
+                        <a href ng-click="$ctrl.examSearch.semester = ds.semester; $ctrl.loadExams()">{{ ds.semester }}. Semester</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li><a href ng-click="$ctrl.examSearch.semester = null; $ctrl.loadExams()">Alle Semester</a></li>
+                </ul>
+            </div>
+
+            <div class="btn-group mtop" uib-dropdown>
+                <button class="btn btn-default" type="button" uib-dropdown-toggle>
+                    <span ng-show="$ctrl.examSearch.author">{{ $ctrl.examSearch.author.username }}</span>
+                    <span ng-show="!$ctrl.examSearch.author">Alle Autoren</span>
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li ng-repeat="da in $ctrl.distinctAuthors">
+                        <a href ng-click="$ctrl.examSearch.author = da; $ctrl.loadExams()">{{ da.username }}</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li><a href ng-click="$ctrl.examSearch.author = null; $ctrl.loadExams()">Alle Autoren</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-sm-4">
+        <div class="input-group mtop">
+            <input type="text" class="form-control" ng-model="$ctrl.examSearch.query" ng-change="$ctrl.loadExams()">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button" ng-click="$ctrl.loadExams()"><i class="fa fa-search"></i></button>
+            </span>
+        </div>
+    </div>
+</div>
+
+<table class="table mtop">
+    <thead>
+        <th></th>
+        <th><i class="fa fa-fw fa-flask"></i> Fach</th>
+        <th><i class="fa fa-fw fa-calendar"></i> Termin</th>
+        <th>Semester</th>
+        <th>Fragen</th>
+        <th>Autor</th>
+        <th></th>
+    </thead>
+
+    <tbody>
+        <tr ng-repeat="exam in $ctrl.exams">
+            <td>
+                <span ng-if="exam.visibility == 0" class="label label-danger"><i class="fa fa-eye-slash"></i></span>
+                <span ng-if="exam.visibility == 1" class="label label-success"><i class="fa fa-eye"></i></span>
+            </td>
+            <td>{{ exam.subject | cut:true:38:'...' }}</td>
+            <td>{{ exam.date | cut:true:28:'...' }}</td>
+            <td>{{ exam.semester }}</td>
+            <td>{{ exam.question_count }}</td>
+            <td>{{ exam.author }}</td>
+            <td><a ui-sref="edit-exam({ examId: exam.exam_id })"><i class="fa fa-pencil"></i></a></td>
+        </tr>
+
+        <tr class="search-sf" ng-show="!$ctrl.exams.length"><td class="text-muted" colspan="6">Nichts gefunden.</td></tr>
+    </tbody>
+</table>

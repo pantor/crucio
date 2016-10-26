@@ -1,0 +1,27 @@
+<h4>F&uuml;r fremde E-Mail-Adressen<small> die nicht ______@studserv.uni-leipzig.de entsprechen</small></h4>
+<div class="row">
+    <center>
+        <form class="input-group col-xs-10 col-sm-6" ng-submit="$ctrl.addMail()">
+            <input class="form-control" ng-model="$ctrl.newWhitelistEmail" type="email" placeholder="E-Mail-Adresse...">
+            <span class="input-group-btn">
+                <button class="btn btn-default"><i class="fa fa-plus"></i></button>
+            </span>
+        </form>
+    </center>
+</div>
+
+<table class="table mtop">
+    <thead>
+        <th>In Verwendung?</th>
+        <th>E-Mail-Adresse</th>
+        <th></th>
+    </thead>
+
+    <tbody>
+        <tr ng-repeat="email in $ctrl.whitelist">
+            <td><i ng-show="email.used > 0" class="fa fa-check"></i></td>
+            <td>{{ email.mail_address }}</td>
+            <td><button ng-click="$ctrl.removeMail($index)" type="button" class="close">&times;</button></td>
+        </tr>
+    </tbody>
+</table>

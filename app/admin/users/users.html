@@ -1,0 +1,108 @@
+<div class="row mmtop">
+    <div class="col-md-8 col-sm-8">
+        <div class="btn-toolbar" role="toolbar">
+            <div class="btn-group mtop" uib-dropdown>
+                <button class="btn btn-default" type="button" uib-dropdown-toggle>
+                    <span ng-show="$ctrl.userSearch.semester">{{ $ctrl.userSearch.semester }}. Semester</span>
+                    <span ng-show="!$ctrl.userSearch.semester">Alle Semester</span>
+                    <i class="fa fa-caret-down"></i>
+                </button>
+
+                <ul class="dropdown-menu" role="menu">
+                    <li ng-repeat="ds in $ctrl.distinctSemesters">
+                        <a href ng-click="$ctrl.userSearch.semester = ds.semester; $ctrl.loadUsers()">{{ ds.semester }}. Semester</a>
+                    </li>
+
+                    <li class="divider"></li>
+                    <li><a href ng-click="$ctrl.userSearch.semester = null; $ctrl.loadUsers()">Alle Semester</a></li>
+                </ul>
+            </div>
+
+            <div class="btn-group mtop" uib-dropdown>
+                <button class="btn btn-default" type="button" uib-dropdown-toggle>
+                    <span ng-show="$ctrl.userSearch.group">{{ $ctrl.distinctGroupsPerId[$ctrl.userSearch.group] }} </span>
+                    <span ng-show="!$ctrl.userSearch.group">Alle Gruppen</span>
+                    <i class="fa fa-caret-down"></i>
+                </button>
+
+                <ul class="dropdown-menu" role="menu">
+                    <li ng-repeat="g in $ctrl.distinctGroups">
+                        <a href ng-click="$ctrl.userSearch.group = g.group_id; $ctrl.loadUsers()">{{ g.name }}</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li><a href ng-click="$ctrl.userSearch.group = null; $ctrl.loadUsers()">Alle Gruppen</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-sm-4">
+        <div class="input-group mtop">
+            <input class="form-control" type="text" ng-model="$ctrl.userSearch.query" ng-change="$ctrl.loadUsers()">
+            <span class="input-group-btn">
+                <button class="btn btn-default" ng-click="$ctrl.loadUsers()"><i class="fa fa-search"></i></button>
+            </span>
+        </div>
+    </div>
+</div>
+
+<div class="table-responsive mtop">
+    <table id="user-table" class="table">
+        <thead>
+            <th></th>
+            <th>Name</th>
+            <th>Semester</th>
+            <th>Letzte Anmeldung</th>
+            <th>Registrierung</th>
+            <th></th>
+        </thead>
+
+        <tbody>
+            <tr ng-repeat="user in $ctrl.users">
+                <td>
+                    <button class="btn btn-xs btn-admin-group" ng-click="$ctrl.changeGroup($index)" ng-class="{ 'btn-danger': user.group_id == 2, 'btn-info': user.group_id == 3, 'btn-default': user.group_id == 1 }">
+                        {{ user.group_name }}
+                    </button>
+                </td>
+                <td>{{ ::user.username }}</td>
+                <td>{{ user.semester }}</td>
+                <td>
+                    <span ng-if="user.last_sign_in > 0 && !$ctrl.isToday(user.last_sign_in) && !$ctrl.isToday(user.last_sign_in, 24)">
+                        {{ ::user.last_sign_in * 1000 | date: 'dd.MM.yyyy, HH:mm' }}
+                    </span>
+
+                    <span ng-if="user.last_sign_in > 0 && $ctrl.isToday(user.last_sign_in)" class="label label-success">
+                        Heute, {{ ::user.last_sign_in * 1000 | date: 'HH:mm' }}
+                    </span>
+
+                    <span ng-if="user.last_sign_in > 0 && $ctrl.isToday(user.last_sign_in, 24)">
+                        Gestern, {{ ::user.last_sign_in * 1000 | date: 'HH:mm' }}
+                    </span>
+
+                    <span ng-if="user.last_sign_in == 0 && user.active == 0" class="label label-danger">Nicht Aktiviert</span>
+                    <span ng-if="user.last_sign_in == 0 && user.active == 1" class="label label-warning">Nie Angemeldet</span>
+                </td>
+                <td>{{ ::user.sign_up_date * 1000 | date: 'dd.MM.yyyy' }}</td>
+                <td>
+                    <a href="mailto:{{ ::user.email }}" uib-tooltip="{{ ::user.email }}">
+                        <i class="fa fa-envelope"></i>
+                    </a>
+                    <a ng-click="$ctrl.deleteUserModal($index)" href><i class="fa fa-trash"></i><a>
+                </td>
+            </tr>
+
+            <tr class="search-sf" ng-show="$ctrl.users.length >= 100"><td class="text-muted" colspan="6">...</td></tr>
+            <tr class="search-sf" ng-show="!$ctrl.users.length"><td class="text-muted" colspan="6">Nichts gefunden.</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<script type="text/ng-template" id="deleteUserModalContent.html">
+    <div class="modal-header">
+        <h4 class="modal-title">Wirklich {{ $ctrl.user.username }} l&ouml;schen? (Danach einmal neu laden)</h4>
+    </div>
+    <div class="modal-body">
+        <button type="button" class="btn btn-default" ng-click="$dismiss()">Abbrechen</button>
+        <button class="btn btn-danger pull-right" ng-click="$ctrl.deleteUser()">L&ouml;schen</button>
+    </div>
+</script>

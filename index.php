@@ -1,6 +1,6 @@
 <?php
     if(isset($_COOKIE["CrucioUser"])) {
-        header("Location: /learn");
+        header("Location: /learn/overview");
         exit;
     }
 ?>
@@ -165,7 +165,7 @@
                         if (data.status) {
                             data.logged_in_user.remember_me = $("[name='remember_me']").prop('checked');
                             Cookies.set('CrucioUser', data.logged_in_user);
-                            location.assign('/learn');
+                            location.assign('/learn/overview');
                         }
 
                         if (

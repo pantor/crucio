@@ -1,0 +1,37 @@
+<h4 class="mbottom">Deine Kommentare <small></small></h4>
+
+<div ng-if="!$ctrl.comments.length" class="container-center-align-sm">
+    <i class="fa fa-comments"></i>
+
+    <hr>
+    <h3>Du hast noch keine Kommentare geschrieben.</h3>
+    <h5>Du kannst zu jeder Frage Kommentare schreiben und so von deinen<br> Kommilitonen zus&auml;tzliche Informationen bekommen.</h5>
+    <br>
+</div>
+
+<div ng-if="$ctrl.comments.length">
+    <table class="table">
+        <thead>
+            <th>Frage</th>
+            <th style="min-width: 120px;"><i class="fa fa-fw fa-comment-o"></i> Kommentar</th>
+            <th style="min-width: 80px;"><i class="fa fa-fw fa-clock-o"></i>Datum</th>
+            <th></th>
+        </thead>
+
+        <tbody ng-repeat="(question, comment_array) in $ctrl.questionsByComment">
+            <tr>
+                <td rowspan="{{ comment_array.length }}" style="min-width:140px;">
+                    <span ng-bind-html="comment_array[0].question"></span>
+                </td>
+                <td>{{ comment_array[0].comment }}</td>
+                <td><timeago datetime="comment_array[0].date * 1000"></timeago></td>
+                <td><a ui-sref="question({ questionId: comment_array[0].question_id, resetSession: 1})"><i class="fa fa-chevron-right"></i></a></td>
+            </tr>
+            <tr ng-repeat="c in comment_array" ng-show="$index > 0">
+                <td>{{ c.comment }}</td>
+                <td><timeago datetime="c.date * 1000"></timeago></td>
+                <td><a ui-sref="question({ questionId: c.question_id, resetSession: 1 })"><i class="fa fa-chevron-right"></i></a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

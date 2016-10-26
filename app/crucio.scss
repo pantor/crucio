@@ -26,10 +26,8 @@ body, html {
     background-color: $white;
 }
 .body-padding {
-    padding-top: 62px;
+    padding-top: 73px;
 }
-
-
 
 
 .wrap {
@@ -373,7 +371,7 @@ body, html {
 // General spaces
 
 .mtop-8 { margin-top: 8px; }
-.mtop-navbar-row { margin-top: 46px; }
+.mtop-navbar-row { margin-top: 33px; }
 
 .mtop { margin-top: 10px; }
 .mtop-2x { margin-top: 20px; }
@@ -487,9 +485,7 @@ input[id^="textAngular"] {
 
 .navbar-crucio {
     color: $white;
-    background-image: url(../images/background.jpg);
-    background-position: 50% 25%;
-    border-bottom: 3px solid $orange;
+    background-color: $orange;
     height: 73px;
 
     .navbar-brand {
@@ -537,16 +533,18 @@ input[id^="textAngular"] {
     }
 
     .navbar-nav > li > a {
-        color: #461e05;
+        color: rgba(255, 255, 255, .7);
+
+        background-color: $orange;
 
         letter-spacing: 0.02em;
         text-align: center;
         font-weight: 400;
         font-family: 'Lato', sans-serif;
+        font-size: 15px;
 
         &:hover, &:focus {
             color: $white;
-            background-color: $orange;
             transition: all .2s;
         }
     }
@@ -555,8 +553,9 @@ input[id^="textAngular"] {
     .navbar-nav > .active > a:hover,
     .navbar-nav > .active > a:focus {
         color: $white;
-        background-color: $orange;
         font-weight: bold;
+        padding-bottom: 24px;
+        border-bottom: 3px solid $white;
     }
 
     .navbar-nav > .disabled > a,
@@ -628,6 +627,8 @@ input[id^="textAngular"] {
         font-family: 'Lato', sans-serif;
 
         cursor: pointer;
+
+        transition: all 0.2s;
     }
 
     &:hover {
@@ -834,7 +835,7 @@ sub {
 
 // Slider
 
-rzslider {
+.rzslider {
     position: relative;
     display: inline-block;
     width: 100%;
@@ -961,13 +962,12 @@ rzslider {
 
 rzslider[disabled] {
   cursor: not-allowed;
-}
 
-rzslider[disabled] .rz-pointer {
-  cursor: not-allowed;
-  background-color: darken($light-grey, 9%);
+  .rz-pointer {
+    cursor: not-allowed;
+    background-color: darken($light-grey, 9%);
+  }
 }
-
 
 // Loading animation
 

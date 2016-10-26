@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html ng-app="crucioApp" id="ng-app">
+<html ng-app="crucioApp">
     <head>
         <?php include('parts/header.php'); ?>
 
         <title>Crucio</title>
+
+        <script src="public/js/vendor.js"></script>
     </head>
 
     <body class="body-padding">
         <div class="wrap">
             <navbar></navbar>
 
-            <div ng-view class="external-ctrl"></div>
+            <ui-view></ui-view>
         </div>
 
         <div class="footer">
@@ -29,7 +31,6 @@
             </div>
         </div>
 
-        <script src="public/js/vendor.js"></script>
         <script src="public/js/crucio.js"></script>
     </body>
 </html>

@@ -1,0 +1,82 @@
+<h4 class="mbottom-2x">Alle hochgeladenen m&uuml;ndlichen Pr&uuml;fungen</h4>
+
+<div class="row mmtop">
+    <div class="col-md-8 col-sm-8">
+        <div class="btn-toolbar" role="toolbar">
+            <div class="btn-group mtop">
+                <a class="btn btn-success" id="newfeedform" ng-click="$ctrl.newOralExam()">Neue Pr&uuml;fung</a>
+            </div>
+
+            <div class="btn-group mtop" uib-dropdown>
+                <button class="btn btn-default" type="button" uib-dropdown-toggle>
+                    <span ng-show="$ctrl.oralExamSearch.semester == 0">Physikum</span>
+                    <span ng-show="$ctrl.oralExamSearch.semester == 1">Staatsexamen</span>
+                    <span ng-show="$ctrl.oralExamSearch.semester != 0 && $ctrl.oralExamSearch.semester != 1">Alle Semester</span>
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li>
+                        <a href ng-click="$ctrl.oralExamSearch.semester = 0; $ctrl.loadOralExams()">Physikum</a>
+                        <a href ng-click="$ctrl.oralExamSearch.semester = 1; $ctrl.loadOralExams()">Staatsexamen</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li><a href ng-click="$ctrl.oralExamSearch.semester = null; $ctrl.loadOralExams()">Alle Semester</a></li>
+                </ul>
+            </div>
+
+            <div class="btn-group mtop" uib-dropdown>
+                <button class="btn btn-default" type="button" uib-dropdown-toggle>
+                    <span ng-show="$ctrl.oralExamSearch.year">{{ $ctrl.oralExamSearch.year }}</span>
+                    <span ng-show="!$ctrl.oralExamSearch.year">Alle Jahre</span>
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li ng-repeat="ds in $ctrl.distinctOralYears">
+                        <a href ng-click="$ctrl.oralExamSearch.year = ds.year; $ctrl.loadOralExams()">{{ ds.year }}</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li><a href ng-click="$ctrl.oralExamSearch.year = null; $ctrl.loadOralExams()">Alle Jahre</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-sm-4">
+        <div class="input-group mtop">
+            <input type="text" class="form-control" ng-model="$ctrl.oralExamSearch.query" ng-change="$ctrl.loadOralExams()">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button" ng-click="$ctrl.loadOralExams()"><i class="fa fa-search"></i></button>
+            </span>
+        </div>
+    </div>
+</div>
+
+<table class="table mtop">
+    <thead>
+        <th></th>
+        <th><i class="fa fa-fw fa-calendar"></i> Jahr</th>
+        <th>Prüfer</th>
+        <th></th>
+        <th></th>
+    </thead>
+
+    <tbody>
+        <tr ng-repeat="exam in $ctrl.oralExams">
+            <td>
+                <span ng-show="exam.semester == 0" class="label label-primary">Physikum</span>
+                <span ng-show="exam.semester == 1" class="label label-primary">Staatsexamen</span>
+            </td>
+            <td>{{ exam.year }}</td>
+            <td>
+                {{ exam.examiner_1 }}<br>
+                {{ exam.examiner_2 }}<br>
+                {{ exam.examiner_3 }}<br>
+                <span ng-if="exam.examiner_count == 4">{{ exam.examiner_4 }}</span>
+            </td>
+            <td><a ui-sref="edit-oral-exam({ oralExamId: exam.oral_exam_id })"><i class="fa fa-pencil"></i></a></td>
+            <td><a href="/files/{{ exam.filename }}" target="_blank" ng-show="exam.filename"><i class="fa fa-external-link"></i></a></td>
+        </tr>
+
+        <tr class="search-sf" ng-show="!$ctrl.oralExams.length"><td class="text-muted" colspan="6">Nichts gefunden.</td></tr>
+    </tbody>
+</table>

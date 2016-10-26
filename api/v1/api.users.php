@@ -415,6 +415,20 @@ $app->group('/users', function() {
         $data['status'] = execute($stmt);
 		return createResponse($response, $data);
 	});
+
+    $this->delete('/{user_id}', function($request, $response, $args) {
+		$mysql = init();
+
+		$stmt = $mysql->prepare(
+		    "DELETE
+		    FROM users
+		    WHERE user_id = :user_id"
+		);
+		$stmt->bindValue(':user_id', $args['user_id'], PDO::PARAM_INT);
+
+		$data['status'] = execute($stmt);
+		return createResponse($response, $data);
+	});
 });
 
 ?>
