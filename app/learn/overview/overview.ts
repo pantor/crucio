@@ -37,7 +37,7 @@ class LearnOverviewController {
   }
 
   learnExam(examId: number): void {
-    const data = { random: true };
+    const data = { random: false };
     this.Collection.prepareExam(examId, data).then(result => {
       this.$location.path('/question').search('questionId', result.list[0].question_id);
     });
