@@ -161,7 +161,10 @@ function sendMail($destination, $subject, $message, $senderName, $senderMail) {
     $mail->isSendmail();
     $mail->setFrom($senderMail, $senderName);
     // $mail->addReplyTo('replyto@example.com', 'First Last');
-    $mail->addAddress($destination);
+    foreach(explode(',', $destination) as $address)
+    {
+        $mail->addAddress(trim($address));
+    }
     $mail->Subject = $subject;
     $mail->msgHTML($message);
     // $mail->AltBody = 'This is a plain-text message body';
