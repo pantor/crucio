@@ -103,17 +103,17 @@
                 <a class="btn btn-default" uib-dropdown-toggle>Melden <span class="caret"></span></a>
 
                 <ul class="dropdown-menu">
-                    <li><a ui-sref="/help({ questionId: $ctrl.questionId })" href tabindex="-1">
+                    <li><a ui-sref="help({ questionId: $ctrl.questionId })">
                         Allgemein
                     </a></li>
-                    <li><a ui-sref="/help({ questionId: $ctrl.questionId, s: 'Rechtschreibfehler' })" tabindex="-1">
+                    <li><a ui-sref="help({ questionId: $ctrl.questionId, s: 'Rechtschreibfehler' })" tabindex="-1">
                         Rechtschreibfehler
                     </a></li>
-                    <li><a ui-sref="/help({ questionId: $ctrl.questionId, s: 'Antwort' })" tabindex="-1">
+                    <li><a ui-sref="help({ questionId: $ctrl.questionId, s: 'Antwort' })" tabindex="-1">
                         {{ $ctrl.question.correct_answer >= 0 ? 'Falsche Antwort' : 'Antwort geben' }}
                     </a></li>
                     <li class="divider"></li>
-                    <li><a ui-sref="/help({ questionId: $ctrl.questionId })" tabindex="-1">
+                    <li><a ui-sref="help({ questionId: $ctrl.questionId })" tabindex="-1">
                         Erkl&auml;rung schreiben
                     </a></li>
                 </ul>
