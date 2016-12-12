@@ -1,5 +1,12 @@
 <?php
     $info = include(dirname(__FILE__).'/info.php');
+
+    if (isset($_SERVER['HTTPS'])){
+        $protocol = ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
+    }
+    else{
+        $protocol = 'http';
+    }
 ?>
 
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
@@ -11,7 +18,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="apple-mobile-web-app-title" content="Crucio">
 
-<base href="http://<?php echo $_SERVER['SERVER_NAME']; ?>/">
+<base href="<?php echo $protocol; ?>://<?php echo $_SERVER['SERVER_NAME']; ?>/">
 
 <link rel="shortcut icon" href="public/images/favicon.png" type="image/png" />
 <link rel="icon" href="public/images/favicon.png" type="image/png" />
