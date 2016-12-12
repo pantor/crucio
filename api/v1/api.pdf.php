@@ -51,7 +51,7 @@ $app->group('/pdf', function() {
                     $txt = sprintf($txt, $this->getGroupPageNo(), $this->getPageGroupAlias());
                 }
                 $this->MultiCell(0, 0, $txt, 0, 'C', false, 1, PDF_MARGIN_LEFT, $this->y);
-                $this->MultiCell(0, 0, 'www.crucio-leipzig.de', 0, 'C', false, 1, PDF_MARGIN_LEFT, $this->y, 'http://www.crucio-leipzig.de');
+                $this->MultiCell(0, 0, 'www.crucio-leipzig.de', 0, 'C', false, 1, PDF_MARGIN_LEFT, $this->y, 'https://www.crucio-leipzig.de');
             }
 
             function setData($exam) {

@@ -1,16 +1,24 @@
 # If the request is a file, folder or symlink that exists, serve it up
 
-AddDefaultCharset utf-8
+# <IfModule mod_rewrite.c>
+#     RewriteEngine on
+#     RewriteCond %{REMOTE_ADDR} !^123\.456\.789\.000
+#     RewriteCond %{REQUEST_URI} !/maintenance.html$ [NC]
+#     RewriteCond %{REQUEST_URI} !\.(jpe?g?|png|gif) [NC]
+#     RewriteRule .* /maintenance.html [R=302,L]
+# </IfModule>
 
 <FilesMatch "\.(ttf|otf|eot|woff)$">
-  <IfModule mod_headers.c>
-    Header set Access-Control-Allow-Origin "*"
-  </IfModule>
+    <IfModule mod_headers.c>
+        Header set Access-Control-Allow-Origin "*"
+    </IfModule>
 </FilesMatch>
 
 RewriteEngine On
-RewriteCond %{HTTP_HOST} ^[^.]+\.[^.]+$
-RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]
+RewriteCond %{SERVER_PORT} 80
+RewriteCond %{HTTP_HOST} ^www\.crucio-leipzig\.de.*$ [OR]
+RewriteCond %{HTTP_HOST} ^crucio-leipzig\.de.*$
+RewriteRule ^ https://www.crucio-leipzig.de/$1 [R=301,L]
 
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME}.php -f
