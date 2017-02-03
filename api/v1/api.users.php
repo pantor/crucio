@@ -367,7 +367,7 @@ $app->group('/users', function() {
     		$stmt->bindValue(3, sanitize($body['token']));
 
     		$data['status'] = execute($stmt);
-			$data['status_flag'] = flagLostpasswordRequest($mysql, $user["username_clean"], 0);
+			$data['status_flag'] = flagLostpasswordRequest($mysql, $user['username_clean'], 0);
 			return createResponse($response, $data);
 		});
 
@@ -398,7 +398,7 @@ $app->group('/users', function() {
             ];
 	        sendTemplateMail('lost-password-request', $email, 'Passwort vergessen...', $hooks);
 
-	        $data['status'] = flagLostpasswordRequest($mysql, $user['username'], 1);
+	        $data['status'] = flagLostpasswordRequest($mysql, $user['username_clean'], 1);
 			return createResponse($response, $data);
 		});
 	});
