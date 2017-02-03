@@ -159,6 +159,7 @@ function sendTemplateMail($templateName, $destination, $subject, $additionalHook
 function sendMail($destination, $subject, $message, $senderName, $senderMail) {
     $mail = new PHPMailer;
     $mail->isSendmail();
+    $mail->CharSet = 'UTF-8';
     $mail->setFrom($senderMail, $senderName);
     // $mail->addReplyTo('replyto@example.com', 'First Last');
     foreach(explode(',', $destination) as $address)
