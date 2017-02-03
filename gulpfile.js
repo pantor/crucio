@@ -33,7 +33,7 @@ gulp.task('sass', function () {
     .pipe(gulp.dest('public/css'));
 });
 
-gulp.task('ts', function () {
+gulp.task('tsc', function () {
   gulp.src([
     app + 'crucio.ts',
     app + '**/*.ts',
@@ -100,7 +100,7 @@ gulp.task('fonts', function () {
 gulp.task('watch', function () {
   gulp.watch(api + '**/*.php', ['php']);
   gulp.watch(app + '**/*.scss', ['sass']);
-  gulp.watch(app + '**/*.ts', ['ts']);
+  gulp.watch(app + '**/*.ts', ['tsc']);
   gulp.watch(app + 'mail-templates/**/*.html', ['mail']);
 });
 

@@ -16,6 +16,6 @@ class NavbarController {
 }
 
 angular.module('crucioApp').component('navbar', {
-  templateUrl: 'app/components/navbar.html',
+  templateUrl: 'app/components/navbar/navbar.html',
   controller: NavbarController,
 });

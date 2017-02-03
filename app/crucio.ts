@@ -1,4 +1,6 @@
-/// <reference path='../typings/tsd.d.ts' />
+/// <reference path='../node_modules/@types/angular/index.d.ts' />
+/// <reference path='../node_modules/@types/angular-ui-bootstrap/index.d.ts' />
+/// <reference path='../node_modules/@types/angular-ui-router/index.d.ts' />
 
 angular.module('crucioApp', [
   'ngCookies',
@@ -12,13 +14,13 @@ angular.module('crucioApp', [
   'rzModule',
   'duScroll',
 ])
-  .config(function config($stateProvider, $urlRouterProvider, $locationProvider, $provide) {
+  .config(function config($stateProvider: angular.ui.IStateProvider, $urlRouterProvider: angular.ui.IUrlRouterProvider, $locationProvider: angular.ILocationProvider, $provide) {
 
-    function comp(name) {
+    function comp(name: string): string {
       return '<' + name + 'Component></' + name + 'Component>';
     }
 
-    const states = [
+    const states: angular.ui.IState[] = [
       { name: 'learn', url: '/learn', template: comp('learn') },
       { name: 'learn.overview', url: '/overview', template: comp('learnoverview') },
       { name: 'learn.subjects', url: '/subjects', template: comp('learnsubjects') },
@@ -218,22 +220,22 @@ angular.module('crucioApp', [
 
   .run(function run(Auth, $location, $window) {
     // Enumerate paths that don't need authentication
-    const pathsThatLogin = ['/', '/register', '/forgot-password'];
-    const pathsForAuthor = ['/author', '/edit-exam'];
-    const pathsForAdmin = ['/admin', '/global-statistic']; // + Author paths
+    const pathsThatLogin: string[] = ['/', '/register', '/forgot-password'];
+    const pathsForAuthor: string[] = ['/author', '/edit-exam'];
+    const pathsForAdmin: string[] = ['/admin', '/global-statistic']; // + Author paths
 
-    const user = Auth.tryGetUser();
+    const user: User = Auth.tryGetUser();
 
-    let isLoggedIn = false;
-    let isAdmin = false;
-    let isAuthor = false;
+    let isLoggedIn: boolean = false;
+    let isAdmin: boolean = false;
+    let isAuthor: boolean = false;
     if (user) {
       isLoggedIn = Boolean(user.group_id);
       isAdmin = Boolean(user.group_id === 2);
       isAuthor = Boolean(user.group_id === 3);
     }
 
-    const path = $location.path();
+    const path: string = $location.path();
     if (pathsThatLogin.indexOf(path) > -1 && isLoggedIn && user.remember_user) {
       $window.location.replace('/learn/overview');
     }
