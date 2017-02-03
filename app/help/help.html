@@ -47,7 +47,7 @@
 
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
-					<button class="btn btn-primary" ng-click="$ctrl.sendMail()">
+					<button class="btn btn-primary" ng-click="$ctrl.sendMail()" ng-disabled="$ctrl.emailSend">
 						<i ng-show="ctrl.isWorking" class="fa fa-circle-o-notch fa-spin"></i>
 						<span ng-show="!$ctrl.emailSend">Senden</span>
                         <span ng-show="$ctrl.emailSend">Gesendet</span>
