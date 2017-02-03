@@ -59,7 +59,7 @@
     <tbody>
         <tr ng-repeat="exam in $ctrl.exams">
             <td>{{ exam.semester }}</td>
-            <td>{{ exam.subject | cut:true:38:'...' }}</td>
+            <td>{{ exam.subject }}</td>
             <td>{{ exam.date }}</td>
             <td class="hidden-xs hidden-sm">{{ exam.answered_questions }} / {{ exam.question_count }}</td>
             <td style="min-width: 250px;">

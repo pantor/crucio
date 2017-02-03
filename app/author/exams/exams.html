@@ -81,8 +81,8 @@
                 <span ng-if="exam.visibility == 0" class="label label-danger"><i class="fa fa-eye-slash"></i></span>
                 <span ng-if="exam.visibility == 1" class="label label-success"><i class="fa fa-eye"></i></span>
             </td>
-            <td>{{ exam.subject | cut:true:38:'...' }}</td>
-            <td>{{ exam.date | cut:true:28:'...' }}</td>
+            <td>{{ exam.subject }}</td>
+            <td>{{ exam.date }}</td>
             <td>{{ exam.semester }}</td>
             <td>{{ exam.question_count }}</td>
             <td>{{ exam.author }}</td>
