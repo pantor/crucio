@@ -1,10 +1,10 @@
 class AdminCommentsController {
-  API: API;
+  readonly API: API;
   commentSearch: any;
-  comments: Comment[];
+  comments: Crucio.Comment[];
   questionsByComment: any;
 
-  constructor(Auth, API) {
+  constructor(Auth: Auth, API: API) {
     this.API = API;
 
     this.commentSearch = {};

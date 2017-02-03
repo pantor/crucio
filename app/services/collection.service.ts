@@ -1,8 +1,8 @@
 class Collection {
-  API: API;
+  readonly API: API;
   collection: any;
 
-  constructor(API) {
+  constructor(API: API) {
     this.API = API;
   }
 
@@ -31,7 +31,7 @@ class Collection {
     return this.collection.list.filter(e => e.given_result);
   }
 
-  analyseCount(): AnalyseCount {
+  analyseCount(): Crucio.AnalyseCount {
     const workedCollection = this.getWorked();
 
     const result = {

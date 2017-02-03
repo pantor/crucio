@@ -1,13 +1,13 @@
 class AuthorOralExamsController {
-  API: API;
-  $location: any;
-  user: User;
+  readonly API: API;
+  $location: angular.ILocationService;
+  user: Crucio.User;
   oralExamSearch: any;
   distinctOralSemesters: any;
   distinctOralYears: any;
-  oralExams: OralExam[];
+  oralExams: Crucio.OralExam[];
 
-  constructor(Auth, API, $location) {
+  constructor(Auth: Auth, API: API, $location: angular.ILocationService) {
     this.API = API;
     this.$location = $location;
 

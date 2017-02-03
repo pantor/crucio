@@ -1,9 +1,9 @@
 class AdminStatsController {
-  API: API;
+  readonly API: API;
   stats: any;
   resultGraph: any;
 
-  constructor(Auth, API) {
+  constructor(Auth: Auth, API: API) {
     this.API = API;
 
     this.API.get('stats/summary').then(result => {
@@ -14,13 +14,6 @@ class AdminStatsController {
       console.log(result.data.resultGraph);
       this.resultGraph = result.data.resultGraph;
     }); */
-
-    /* this.labels = ["January", "February", "March", "April", "May", "June", "July"];
-    this.series = ['Motivation', 'Workload'];
-    this.data = [
-        [65, 59, 80, 81, 56, 55, 40],
-        [28, 48, 40, 19, 86, 27, 90]
-    ]; */
   }
 }
 

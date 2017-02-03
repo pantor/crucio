@@ -1,13 +1,13 @@
 class QuestionController {
-  Auth: Auth;
-  API: API;
+  readonly Auth: Auth;
+  readonly API: API;
   Collection: Collection;
-  $uibModal: any;
-  user: User;
+  $uibModal: angular.ui.bootstrap.IModalService;
+  user: Crucio.User;
   questionId: number;
   resetSession: boolean;
   commentsCollapsed: boolean;
-  $window: any;
+  $window: angular.IWindowService;
   noAnswer: boolean;
   showExplanation: boolean;
   collection: any;
@@ -16,7 +16,7 @@ class QuestionController {
   length: number;
   preQuestionId: number;
   postQuestionId: number;
-  question: Question;
+  question: Crucio.Question;
   comments: any;
   tags: any;
   checkedAnswer: any;
@@ -27,7 +27,7 @@ class QuestionController {
   isAnswerWrong: boolean;
   wrongAnswer: any;
 
-  constructor(Auth, Page, API, Collection, $stateParams, $window, $uibModal) {
+  constructor(Auth: Auth, Page: Page, API: API, Collection: Collection, $stateParams, $window: angular.IWindowService, $uibModal: angular.ui.bootstrap.IModalService) {
     this.Auth = Auth;
     this.API = API;
     this.Collection = Collection;
@@ -162,7 +162,7 @@ class QuestionController {
     this.comments.splice(index, 1);
   }
 
-  changeUserVoting(comment: Comment, change: number): void {
+  changeUserVoting(comment: Crucio.Comment, change: number): void {
     comment.user_voting = Math.min(Math.max(comment.user_voting + change, -1), 1);
     const data = { user_voting: comment.user_voting };
     this.API.post(`comments/${comment.comment_id}/user/${this.user.user_id}`, data, true);

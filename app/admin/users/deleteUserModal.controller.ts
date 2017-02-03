@@ -1,9 +1,9 @@
 class DeleteUserModalController {
   API: API;
-  user: User;
+  user: Crucio.User;
   $uibModalInstance: any;
 
-  constructor(API, user, $uibModalInstance) {
+  constructor(API: API, user: Crucio.User, $uibModalInstance) {
     this.API = API;
     this.user = user;
     this.$uibModalInstance = $uibModalInstance;

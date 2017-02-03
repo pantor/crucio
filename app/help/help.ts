@@ -1,6 +1,6 @@
 class HelpController {
   API: API;
-  user: User;
+  user: Crucio.User;
   question_id: number;
   subject: string;
   isWorking: boolean;
@@ -8,7 +8,7 @@ class HelpController {
   question: any;
   emailSend: boolean;
 
-  constructor(Auth, Page, API, $location, $stateParams) {
+  constructor(Auth: Auth, Page: Page, API: API, $location: angular.ILocationService, $stateParams) {
     this.API = API;
 
     Page.setTitleAndNav('Hilfe | Crucio', '');

@@ -1,9 +1,9 @@
 class DeleteTagsModalController {
-  API: API;
+  readonly API: API;
   userId: number;
   $uibModalInstance: any;
 
-  constructor(API, userId, $uibModalInstance) {
+  constructor(API: API, userId: number, $uibModalInstance) {
     this.API = API;
     this.userId = userId;
     this.$uibModalInstance = $uibModalInstance;

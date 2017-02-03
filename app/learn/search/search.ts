@@ -1,6 +1,6 @@
 class LearnSearchController {
-  API: API;
-  user: User;
+  readonly API: API;
+  readonly user: Crucio.User;
   questionSearch: any;
   distinctSemesters: any;
   distinctSubjects: any;
@@ -9,7 +9,7 @@ class LearnSearchController {
   showSpinner: boolean;
   limit: number;
 
-  constructor(Auth, API) {
+  constructor(Auth: Auth, API: API) {
     this.API = API;
 
     this.user = Auth.getUser();

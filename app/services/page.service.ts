@@ -1,9 +1,9 @@
 class Page {
-  $window: any;
+  $window: angular.IWindowService;
   title: string;
   nav: string;
 
-  constructor($window) {
+  constructor($window: angular.IWindowService) {
     this.$window = $window;
   }
 

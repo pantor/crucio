@@ -1,9 +1,9 @@
 class DeleteResultsModalController {
-  API: API;
-  userId: number;
+  readonly API: API;
+  readonly userId: number;
   $uibModalInstance: any;
 
-  constructor(API, userId, $uibModalInstance) {
+  constructor(API: API, userId: number, $uibModalInstance) {
     this.API = API;
     this.userId = userId;
     this.$uibModalInstance = $uibModalInstance;

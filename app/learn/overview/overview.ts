@@ -1,15 +1,15 @@
 class LearnOverviewController {
-  API: API;
+  readonly API: API;
   Collection: Collection;
-  $location: any;
-  user: User;
+  $location: angular.ILocationService;
+  user: Crucio.User;
   abstractExams: any;
   ready: number;
   distinctSemesters: any;
   distinctSubjects: any;
   subjectList: any;
 
-  constructor(Auth, API, Collection, $scope, $location, $timeout) {
+  constructor(Auth: Auth, API: API, Collection: Collection, $scope: angular.IScope, $location: angular.ILocationService, $timeout: angular.ITimeoutService) {
     this.API = API;
     this.Collection = Collection;
     this.$location = $location;

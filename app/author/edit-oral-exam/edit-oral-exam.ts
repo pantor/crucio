@@ -1,18 +1,18 @@
 class EditOralExamController {
-  API: API;
+  readonly API: API;
   FileUploader: any;
-  $location: any;
-  $uibModal: any;
-  user: User;
+  $location: angular.ILocationService;
+  $uibModal: angular.ui.bootstrap.IModalService;
+  user: Crucio.User;
   oralExamId: number;
   numberChanged: number;
   uploader: any;
   hasChanged: boolean;
-  oralExam: OralExam;
+  oralExam: Crucio.OralExam;
   ready: boolean;
   isSaving: boolean;
 
-  constructor(Page, Auth, API, FileUploader, $scope, $location, $stateParams, $uibModal) {
+  constructor(Page: Page, Auth: Auth, API: API, FileUploader, $scope: angular.IScope, $location: angular.ILocationService, $stateParams, $uibModal: angular.ui.bootstrap.IModalService) {
     this.API = API;
     this.FileUploader = FileUploader;
     this.$location = $location;

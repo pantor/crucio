@@ -1,9 +1,9 @@
 class UserController {
-  API: API;
-  Auth: Auth;
-  $scope: any;
-  $uibModal: any;
-  user: User;
+  readonly API: API;
+  readonly Auth: Auth;
+  readonly $scope: angular.IScope;
+  readonly $uibModal: angular.ui.bootstrap.IModalService;
+  user: Crucio.User;
   isWorking: boolean;
   isSaved: boolean;
   hasError: boolean;
@@ -12,7 +12,7 @@ class UserController {
   newPassword: string;
   newPasswordC: string;
 
-  constructor(Page, Auth, API, $scope, $uibModal) {
+  constructor(Page: Page, Auth: Auth, API: API, $scope: angular.IScope, $uibModal: angular.ui.bootstrap.IModalService) {
     this.API = API;
     this.Auth = Auth;
     this.$scope = $scope;

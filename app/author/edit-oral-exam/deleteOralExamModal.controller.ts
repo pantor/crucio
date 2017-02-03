@@ -2,9 +2,9 @@ class DeleteOralExamModalController {
   API: API;
   oralExamId: number;
   $uibModalInstance: any;
-  $location: any;
+  $location: angular.ILocationService;
 
-  constructor(API, oralExamId, $location, $uibModalInstance) {
+  constructor(API: API, oralExamId: number, $location: angular.ILocationService, $uibModalInstance) {
     this.API = API;
     this.oralExamId = oralExamId;
     this.$location = $location;

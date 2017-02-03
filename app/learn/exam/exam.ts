@@ -1,19 +1,19 @@
 class ExamController {
-  API: API;
+  readonly API: API;
   Collection: Collection;
-  $location: any;
+  $location: angular.ILocationService;
   $document: any;
-  $uibModal: any;
-  user: User;
+  $uibModal: angular.ui.bootstrap.IModalService;
+  user: Crucio.User;
   examId: number;
   currentIndex: number;
-  exam: Exam;
+  exam: Crucio.Exam;
   length: number;
-  questions: Question[];
+  questions: Crucio.Question[];
 
   constructor(
-    Page, Auth, API, Collection,
-    $location, $uibModal, $stateParams, $timeout, $document, $window
+    Page: Page, Auth: Auth, API: API, Collection: Collection,
+    $location: angular.ILocationService, $uibModal: angular.ui.bootstrap.IModalService, $stateParams, $timeout: angular.ITimeoutService, $document, $window
   ) {
     this.API = API;
     this.Collection = Collection;

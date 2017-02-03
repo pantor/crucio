@@ -1,8 +1,8 @@
 class AuthorSubjectsController {
-  API: API;
+  readonly API: API;
   subjectList: any;
 
-  constructor(API) {
+  constructor(API: API) {
     this.API = API;
 
     this.API.get('subjects').then(result => {

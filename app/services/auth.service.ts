@@ -1,14 +1,14 @@
 class Auth {
   $cookies: any;
-  $window: any;
-  user: User;
+  $window: angular.IWindowService;
+  user: Crucio.User;
 
-  constructor($cookies, $window) {
+  constructor($cookies, $window: angular.IWindowService) {
     this.$window = $window;
     this.$cookies = $cookies;
   }
 
-  getUser(): User {
+  getUser(): Crucio.User {
     this.tryGetUser();
     if (!this.user) {
       this.$window.location.replace('/');
@@ -16,7 +16,7 @@ class Auth {
     return this.user;
   }
 
-  tryGetUser(): User {
+  tryGetUser(): Crucio.User {
     // Check if user is in already in user object and check if cookies
     if (
       angular.isUndefined(this.user) && angular.isDefined(this.$cookies.getObject('CrucioUser'))
@@ -37,7 +37,7 @@ class Auth {
     this.$window.location.assign(this.$window.location.origin);
   }
 
-  setUser(newUser: User, saveNewCookie: boolean = false): void {
+  setUser(newUser: Crucio.User, saveNewCookie: boolean = false): void {
     this.user = newUser;
 
     if (saveNewCookie || angular.isDefined(this.$cookies.getObject('CrucioUser'))) {

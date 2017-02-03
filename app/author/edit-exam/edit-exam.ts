@@ -1,9 +1,9 @@
 class EditExamController {
-  API: API;
+  readonly API: API;
   FileUploader: any;
-  $location: any;
-  $uibModal: any;
-  user: User;
+  $location: angular.ILocationService;
+  $uibModal: angular.ui.bootstrap.IModalService;
+  user: Crucio.User;
   examId: number;
   openQuestionId: number;
   openQuestionIndex: number;
@@ -12,15 +12,15 @@ class EditExamController {
   uploaderArray: any;
   hasChanged: boolean;
   subjectList: any;
-  exam: Exam;
-  questions: Question[];
+  exam: Crucio.Exam;
+  questions: Crucio.Question[];
   ready: boolean;
   isSaving: boolean;
   exam_types: string[];
   subjectListPerId: any;
   categoryListPerId: any;
 
-  constructor(Page, Auth, API, FileUploader, $scope, $location, $stateParams, $uibModal) {
+  constructor(Page: Page, Auth: Auth, API: API, FileUploader, $scope: angular.IScope, $location: angular.ILocationService, $stateParams, $uibModal: angular.ui.bootstrap.IModalService) {
     this.API = API;
     this.FileUploader = FileUploader;
     this.$location = $location;

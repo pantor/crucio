@@ -1,14 +1,14 @@
 class LearnExamsController {
   API: API;
   Collection: Collection;
-  $location: any;
-  user: User;
+  $location: angular.ILocationService;
+  user: Crucio.User;
   examSearch: any;
-  exams: Exam[];
+  exams: Crucio.Exam[];
   distinctSemesters: any;
   distinctSubjects: any;
 
-  constructor(Auth, API, Collection, $scope, $location, $timeout) {
+  constructor(Auth: Auth, API: API, Collection: Collection, $scope: angular.IScope, $location: angular.ILocationService, $timeout: angular.ITimeoutService) {
     this.API = API;
     this.Collection = Collection;
     this.$location = $location;

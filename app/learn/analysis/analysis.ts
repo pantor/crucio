@@ -1,13 +1,13 @@
 class AnalysisController {
-  API: API;
-  user: User;
+  readonly API: API;
+  user: Crucio.User;
   random: number;
   examId: number;
   workedCollection: any;
-  count: AnalyseCount;
-  exam: Exam;
+  count: Crucio.AnalyseCount;
+  exam: Crucio.Exam;
 
-  constructor(Page, Auth, API, Collection) {
+  constructor(Page: Page, Auth: Auth, API: API, Collection: Collection) {
     this.API = API;
 
     Page.setTitleAndNav('Analyse | Crucio', 'Learn');

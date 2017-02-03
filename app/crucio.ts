@@ -224,7 +224,7 @@ angular.module('crucioApp', [
     const pathsForAuthor: string[] = ['/author', '/edit-exam'];
     const pathsForAdmin: string[] = ['/admin', '/global-statistic']; // + Author paths
 
-    const user: User = Auth.tryGetUser();
+    const user: Crucio.User = Auth.tryGetUser();
 
     let isLoggedIn: boolean = false;
     let isAdmin: boolean = false;

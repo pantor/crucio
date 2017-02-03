@@ -1,8 +1,8 @@
 class API {
-  $http: any;
-  base: string;
+  readonly $http: any;
+  readonly base: string;
 
-  constructor($http) {
+  constructor($http: angular.IHttpService) {
     this.$http = $http;
 
     this.base = 'api/v1/';

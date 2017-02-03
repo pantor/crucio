@@ -1,6 +1,6 @@
 class AuthorController {
-
-  constructor(Page) {
+  
+  constructor(Page: Page) {
     Page.setTitleAndNav('Autor | Crucio', 'Author');
   }
 }
