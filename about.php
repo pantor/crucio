@@ -22,7 +22,7 @@
                             <?php echo $info['address']; ?>
                         </address>
 
-                        <p>Crucio ist ein Open-Source Projekt. <a href="http://crucioproject.github.io">Mehr dazu...</a></p>
+                        <p>Crucio ist ein Open-Source Projekt. <a href="https://pantor.github.io/crucio/">Mehr dazu...</a></p>
                     </center>
                 </div>
             </div>
