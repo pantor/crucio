@@ -1,8 +1,8 @@
 class TimeagoController {
   result: string;
-  datetime: string;
+  datetime: number;
 
-  constructor() {
+  $onInit() {
     const strings = {
       prefixAgo: 'vor',
       prefixFromNow: 'in',
@@ -23,7 +23,7 @@ class TimeagoController {
       numbers: [],
     };
 
-    const given = parseInt(this.datetime, 0);
+    const given = this.datetime;
     const current = new Date().getTime();
 
     const distanceMillis = Math.abs(current - given);
@@ -70,6 +70,6 @@ angular.module('crucioApp').component('timeago', {
   template: '<span>{{ $ctrl.result }}</span>',
   controller: TimeagoController,
   bindings: {
-    datetime: '='
+    datetime: '<'
   }
 });
