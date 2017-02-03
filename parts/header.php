@@ -25,7 +25,7 @@
 <link rel="apple-touch-icon" href="public/images/apple-icon.png" />
 <link rel="apple-touch-icon-precomposed" href="public/images/apple-icon.png" />
 
-<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:300,400,700" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700" />
 <link rel="stylesheet" href="public/css/crucio.css" />
 
 <script>
