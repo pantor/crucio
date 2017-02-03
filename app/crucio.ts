@@ -45,7 +45,6 @@ angular.module('crucioApp', [
 
       { name: 'admin', url: '/admin', template: comp('admin') },
       { name: 'admin.users', url: '/users', template: comp('adminusers') },
-      { name: 'admin.comments', url: '/comments', template: comp('admincomments') },
       { name: 'admin.whitelist', url: '/whitelist', template: comp('adminwhitelist') },
       { name: 'admin.tools', url: '/tools', template: comp('admintools') },
       { name: 'admin.stats', url: '/stats', template: comp('adminstats') },
