@@ -40,7 +40,12 @@ $app->group('/questions', function() {
         $stmt->bindValue(':question_id', $question_id, PDO::PARAM_INT);
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 
-		$data['result'] = getAll($stmt);
+        $list = getAll($stmt);
+        foreach ($list as &$question) {
+            $question['answers'] = unserialize($question['answers']);
+        }
+
+        $data['result'] = $list;
 		return createResponse($response, $data);
 	});
 
