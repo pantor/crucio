@@ -59,10 +59,6 @@ declare namespace Crucio {
     answers: string[];
   }
 
-  interface Storage {
-    crucioCollection: any;
-  }
-
   interface AnalyseCount {
     correct: number;
     wrong: number;
@@ -72,5 +68,37 @@ declare namespace Crucio {
     no_answer: number;
     all: number;
     worked: number;
+  }
+
+  interface Category {
+    category_id: number;
+    category: string;
+  }
+
+  interface Subject {
+    subject_id: number;
+    subject: string;
+    categories: Category[];
+  }
+
+  interface Mail {
+    text: string;
+    name: string;
+    email: string;
+  }
+
+  interface MailQuestion extends Mail {
+    mail_subject: string;
+    question_id: number;
+    author: string;
+    question: string;
+    exam_id: number;
+    subject: string;
+    author_email: string;
+    date: any;
+  }
+
+  interface Storage {
+    crucioCollection: any;
   }
 }

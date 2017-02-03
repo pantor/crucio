@@ -11,7 +11,7 @@ class EditExamController {
   uploader: any;
   uploaderArray: any;
   hasChanged: boolean;
-  subjectList: any;
+  subjectList: Crucio.Subject[];
   exam: Crucio.Exam;
   questions: Crucio.Question[];
   ready: boolean;

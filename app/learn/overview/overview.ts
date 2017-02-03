@@ -7,7 +7,7 @@ class LearnOverviewController {
   ready: number;
   distinctSemesters: any;
   distinctSubjects: any;
-  subjectList: any;
+  subjectList: Crucio.Subject[];
 
   constructor(Auth: Auth, API: API, Collection: Collection, $scope: angular.IScope, $location: angular.ILocationService, $timeout: angular.ITimeoutService) {
     this.API = API;

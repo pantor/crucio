@@ -6,7 +6,7 @@ class AuthorExamsController {
   distinctSemesters: any;
   distinctAuthors: any;
   distinctSubjects: any;
-  subjectList: any;
+  subjectList: Crucio.Subject[];
   exams: Crucio.Exam[];
 
   constructor(Auth: Auth, API: API, $location: angular.ILocationService) {
