@@ -34,7 +34,7 @@ $app->group('/whitelist', function() {
 		);
 		$stmt->bindValue(':mail_address', str_replace('(@)', '@', sanitize($body['email'])));
 
-		$data['status'] = execute($stmt);
+		$data['status'] = $stmt->execute();
 		return createResponse($response, $data);
 	});
 
@@ -48,7 +48,7 @@ $app->group('/whitelist', function() {
 		);
 		$stmt->bindValue(':mail_address', $args['mail_address']);
 
-        $data['status'] = execute($stmt);
+        $data['status'] = $stmt->execute();
 		return createResponse($response, $data);
 	});
 });

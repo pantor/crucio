@@ -72,7 +72,7 @@ $app->group('/oral_exams', function() {
 		$stmt->bindValue(':semester', $body['semester']);
         $stmt->bindValue(':year', $body['year']);
 
-		$data['status'] = execute($stmt);
+		$data['status'] = $stmt->execute();
         $data['oral_exam_id'] = $mysql->lastInsertId();
 		return createResponse($response, $data);
 	});
@@ -96,7 +96,7 @@ $app->group('/oral_exams', function() {
 		$stmt->bindValue(':filename', $body['filename']);
 		$stmt->bindValue(':oral_exam_id', $args['oral_exam_id']);
 
-		$data['status'] = execute($stmt);
+		$data['status'] = $stmt->execute();
 		return createResponse($response, $data);
 	});
 
@@ -110,7 +110,7 @@ $app->group('/oral_exams', function() {
 		);
 		$stmt->bindValue(':oral_exam_id', $args['oral_exam_id'], PDO::PARAM_INT);
 
-		$data['status'] = execute($stmt);
+		$data['status'] = $stmt->execute();
 		return createResponse($response, $data);
 	});
 });

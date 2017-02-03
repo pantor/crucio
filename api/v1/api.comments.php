@@ -112,7 +112,7 @@ $app->group('/comments', function() {
 		$stmt->bindValue(':question_id', $body['question_id'], PDO::PARAM_INT);
 		$stmt->bindValue(':reply_to', $body['reply_to']);
 
-		$data['status'] = execute($stmt);
+		$data['status'] = $stmt->execute();
 		$data['comment_id'] = $mysql->lastInsertId();
 		return createResponse($response, $data);
 	});
@@ -130,7 +130,7 @@ $app->group('/comments', function() {
 		$stmt->bindValue(':comment_id', $args['comment_id'], PDO::PARAM_INT);
 		$stmt->bindValue(':user_voting', $body['user_voting']);
 
-		$data['status'] = execute($stmt);
+		$data['status'] = $stmt->execute();
 		return createResponse($response, $data);
 	});
 
@@ -144,7 +144,7 @@ $app->group('/comments', function() {
 		);
 		$stmt->bindValue(':comment_id', $args['comment_id'], PDO::PARAM_INT);
 
-		$data['status'] = execute($stmt);
+		$data['status'] = $stmt->execute();
 		return createResponse($response, $data);
 	});
 });

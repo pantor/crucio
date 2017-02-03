@@ -37,7 +37,7 @@ $app->group('/results', function() {
 		$stmt->bindValue(':given_result', $body['given_result'], PDO::PARAM_INT);
 		$stmt->bindValue(':date', time());
 
-		$data['status'] = execute($stmt);
+		$data['status'] = $stmt->execute();
 		return createResponse($response, $data);
 	});
 
@@ -51,7 +51,7 @@ $app->group('/results', function() {
 		);
 		$stmt->bindValue(':user_id', $args['user_id'], PDO::PARAM_INT);
 
-		$data['status'] = execute($stmt);
+		$data['status'] = $stmt->execute();
 		return createResponse($response, $data);
 	});
 
@@ -68,7 +68,7 @@ $app->group('/results', function() {
 		$stmt->bindValue(':exam_id', $args['exam_id'], PDO::PARAM_INT);
 		$stmt->bindValue(':user_id', $args['user_id'], PDO::PARAM_INT);
 
-		$data['status'] = execute($stmt);
+		$data['status'] = $stmt->execute();
 		return createResponse($response, $data);
 	});
 });

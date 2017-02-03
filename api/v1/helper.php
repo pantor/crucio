@@ -20,10 +20,6 @@ function init() {
     }
 }
 
-function execute($stmt, $params = null) {
-    return $stmt->execute($params);
-}
-
 function getAll($stmt, $params = null) {
     $stmt->execute($params);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -45,12 +41,7 @@ function getCustomCount($mysql, $query, $parameters = []) {
 }
 
 function createResponse($response, $data, $status = 200) {
-    $response = $response->withStatus($status);
-    $response = $response->withHeader('content-type', 'application/json');
-    $response = $response->withHeader('charset', 'utf-8');
-
-    $response->write( json_encode($data, JSON_NUMERIC_CHECK) );
-    return $response;
+    return $response->withJson($data, $status, JSON_NUMERIC_CHECK);
 }
 
 
@@ -94,7 +85,7 @@ function flagLostpasswordRequest($mysql, $username, $value) {
     );
     $stmt->bindValue(':request', $value);
     $stmt->bindValue(':username', sanitize($username));
-    return execute($stmt);
+    return $stmt->execute();
 }
 
 
@@ -194,7 +185,7 @@ function activate($token) {
     );
     $stmt->bindValue(':token', $token);
 
-    $data['status'] = execute($stmt);
+    $data['status'] = $stmt->execute();
     return $data;
 }
 

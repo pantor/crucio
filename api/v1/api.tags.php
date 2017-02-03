@@ -57,7 +57,7 @@ $app->group('/tags', function() {
     		$stmt->bindValue(':tags', $body['tags']);
         }
 
-        $data['status'] = execute($stmt);
+        $data['status'] = $stmt->execute();
 		return createResponse($response, $data);
 	});
 
@@ -71,7 +71,7 @@ $app->group('/tags', function() {
 		);
 		$stmt->bindValue(':user_id', $args['user_id'], PDO::PARAM_INT);
 
-		$data['status'] = execute($stmt);
+		$data['status'] = $stmt->execute();
 		return createResponse($response, $data);
 	});
 });

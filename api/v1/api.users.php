@@ -98,7 +98,7 @@ $app->group('/users', function() {
 		$stmt->bindValue(':last_sign_in', time());
 		$stmt->bindValue(':user_id', $user['user_id']);
 
-		$data['status'] = execute($stmt);
+		$data['status'] = $stmt->execute();
 		$data['logged_in_user'] = $user;
 		return createResponse($response, $data);
 	});
@@ -179,7 +179,7 @@ $app->group('/users', function() {
 		$stmt->bindValue(8, $course_id, PDO::PARAM_INT);
 		$stmt->bindValue(9, $semester, PDO::PARAM_INT);
 
-		$data['status'] = execute($stmt);
+		$data['status'] = $stmt->execute();
         return createResponse($response, $data);
 	});
 
@@ -199,7 +199,7 @@ $app->group('/users', function() {
         );
         $stmt->bindValue(':add', $body['difference'], PDO::PARAM_INT);
 
-        $data['status'] = execute($stmt);
+        $data['status'] = $stmt->execute();
 		return createResponse($response, $data);
 	});
 
@@ -219,7 +219,7 @@ $app->group('/users', function() {
 		$stmt->bindValue(3, $user_id, PDO::PARAM_INT);
 
         if (!$body['password']) {
-            $data['status'] = execute($stmt);
+            $data['status'] = $stmt->execute();
     	    return createResponse($response, $data);
         }
 
@@ -257,7 +257,7 @@ $app->group('/users', function() {
 		$stmt_password->bindValue(':password', $secure_pass);
 		$stmt_password->bindValue(':user_id', $user_id, PDO::PARAM_INT);
 
-        $data['status'] = execute($stmt) && execute($stmt_password);
+        $data['status'] = $stmt->execute() && $stmt_password->execute();
 	    return createResponse($response, $data);
 	});
 
@@ -300,7 +300,7 @@ $app->group('/users', function() {
 		$stmt->bindValue(':password', $secure_pass);
 		$stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
 
-		$data['status'] = execute($stmt);
+		$data['status'] = $stmt->execute();
 	    return createResponse($response, $data);
 	});
 
@@ -320,7 +320,7 @@ $app->group('/users', function() {
 		$stmt->bindValue(5, $body['useTags']);
 		$stmt->bindValue(6, $args['user_id']);
 
-        $data['status'] = execute($stmt);
+        $data['status'] = $stmt->execute();
 		return createResponse($response, $data);
 	});
 
@@ -336,7 +336,7 @@ $app->group('/users', function() {
 		$stmt->bindValue(':group_id', $body['group_id']);
 		$stmt->bindValue(':user_id', $args['user_id']);
 
-        $data['status'] = execute($stmt);
+        $data['status'] = $stmt->execute();
 		return createResponse($response, $data);
 	});
 
@@ -366,7 +366,7 @@ $app->group('/users', function() {
     		$stmt->bindValue(2, $new_activation_token);
     		$stmt->bindValue(3, sanitize($body['token']));
 
-    		$data['status'] = execute($stmt);
+    		$data['status'] = $stmt->execute();
 			$data['status_flag'] = flagLostpasswordRequest($mysql, $user['username_clean'], 0);
 			return createResponse($response, $data);
 		});
@@ -412,7 +412,7 @@ $app->group('/users', function() {
 		    WHERE email = 'siasola@gmail.com'"
 		);
 
-        $data['status'] = execute($stmt);
+        $data['status'] = $stmt->execute();
 		return createResponse($response, $data);
 	});
 
@@ -426,7 +426,7 @@ $app->group('/users', function() {
 		);
 		$stmt->bindValue(':user_id', $args['user_id'], PDO::PARAM_INT);
 
-		$data['status'] = execute($stmt);
+		$data['status'] = $stmt->execute();
 		return createResponse($response, $data);
 	});
 });

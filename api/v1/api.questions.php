@@ -229,7 +229,7 @@ $app->group('/questions', function() {
         $stmt->bindValue(':type', $body['type']);
         $stmt->bindValue(':category_id', $body['category_id']);
 
-        $data['status'] = execute($stmt);
+        $data['status'] = $stmt->execute();
         $data['question_id'] = $mysql->lastInsertId();
 		return createResponse($response, $data);
 	});
@@ -257,7 +257,7 @@ $app->group('/questions', function() {
         $stmt->bindValue(':question_id', $args['question_id'], PDO::PARAM_INT);
 
         $data['a'] = $body['answers'];
-        $data['status'] = execute($stmt);
+        $data['status'] = $stmt->execute();
 		return createResponse($response, $data);
 	});
 
@@ -272,7 +272,7 @@ $app->group('/questions', function() {
         );
         $stmt->bindValue(':question_id', $args['question_id'], PDO::PARAM_INT);
 
-        $data['status'] = execute($stmt);
+        $data['status'] = $stmt->execute();
 		return createResponse($response, $data);
 	});
 });

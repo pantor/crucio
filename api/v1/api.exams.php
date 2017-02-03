@@ -197,7 +197,7 @@ $app->group('/exams', function() {
 		$stmt->bindValue(':user_id_added', $body['user_id_added']);
 		$stmt->bindValue(':sort', $body['sort']);
 
-		$data['status'] = execute($stmt);
+		$data['status'] = $stmt->execute();
         $data['exam_id'] = $mysql->lastInsertId();
 		return createResponse($response, $data);
 	});
@@ -225,7 +225,7 @@ $app->group('/exams', function() {
 		$stmt->bindValue(':date_updated', time());
 		$stmt->bindValue(':exam_id', $args['exam_id']);
 
-		$data['status'] = execute($stmt);
+		$data['status'] = $stmt->execute();
 		return createResponse($response, $data);
 	});
 
@@ -239,7 +239,7 @@ $app->group('/exams', function() {
 		);
 		$stmt->bindValue(':exam_id', $args['exam_id'], PDO::PARAM_INT);
 
-		$data['status'] = execute($stmt);
+		$data['status'] = $stmt->execute();
 		return createResponse($response, $data);
 	});
 });
