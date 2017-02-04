@@ -79,13 +79,9 @@ class EditOralExamController {
 
   deleteOralExamModal(): void {
     this.$uibModal.open({
-      templateUrl: 'deleteOralExamModalContent.html',
-      controller: 'deleteOralExamModalController',
-      controllerAs: '$ctrl',
+      component: 'deleteOralExamModalComponent',
       resolve: {
-        oralExamId: () => {
-          return this.oralExamId;
-        },
+        oralExamId: () => this.oralExamId,
       },
     });
   }

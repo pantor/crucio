@@ -96,13 +96,3 @@
         </tbody>
     </table>
 </div>
-
-<script type="text/ng-template" id="deleteUserModalContent.html">
-    <div class="modal-header">
-        <h4 class="modal-title">Wirklich {{ $ctrl.user.username }} l&ouml;schen? (Danach einmal neu laden)</h4>
-    </div>
-    <div class="modal-body">
-        <button type="button" class="btn btn-default" ng-click="$dismiss()">Abbrechen</button>
-        <button class="btn btn-danger pull-right" ng-click="$ctrl.deleteUser()">L&ouml;schen</button>
-    </div>
-</script>

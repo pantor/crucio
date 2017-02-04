@@ -76,26 +76,18 @@ class UserController {
 
   deleteAllResultsModal(): void {
     this.$uibModal.open({
-      templateUrl: 'deleteResultsModalContent.html',
-      controller: 'deleteResultsModalController',
-      controllerAs: '$ctrl',
+      component: 'deleteResultsModalComponent',
       resolve: {
-        userId: () => {
-          return this.user.user_id;
-        },
+        userId: () => this.user.user_id,
       },
     });
   }
 
   deleteAllTagsModal(): void {
     this.$uibModal.open({
-      templateUrl: 'deleteTagsModalContent.html',
-      controller: 'deleteTagsModalController',
-      controllerAs: '$ctrl',
+      component: 'deleteTagsModalComponent',
       resolve: {
-        userId: () => {
-          return this.user.user_id;
-        },
+        userId: () => this.user.user_id,
       },
     });
   }

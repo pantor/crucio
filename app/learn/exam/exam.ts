@@ -74,13 +74,9 @@ class ExamController {
 
   openImageModal(fileName: string): void {
     this.$uibModal.open({
-      templateUrl: 'imageModalContent.html',
-      controller: 'ModalInstanceController',
-      controllerAs: '$ctrl',
+      component: 'imageModalComponent',
       resolve: {
-        data: () => {
-          return fileName;
-        },
+        data: () => fileName,
       },
     });
   }

@@ -1,5 +1,6 @@
 class EditExamController {
   readonly API: API;
+  readonly Cut: Cut;
   FileUploader: any;
   $location: angular.ILocationService;
   $uibModal: angular.ui.bootstrap.IModalService;
@@ -20,8 +21,9 @@ class EditExamController {
   subjectListPerId: any;
   categoryListPerId: any;
 
-  constructor(Page: Page, Auth: Auth, API: API, FileUploader, $scope: angular.IScope, $location: angular.ILocationService, $stateParams, $uibModal: angular.ui.bootstrap.IModalService) {
+  constructor(Page: Page, Auth: Auth, API: API, Cut: Cut, FileUploader, $scope: angular.IScope, $location: angular.ILocationService, $stateParams, $uibModal: angular.ui.bootstrap.IModalService) {
     this.API = API;
+    this.Cut = Cut;
     this.FileUploader = FileUploader;
     this.$location = $location;
     this.$uibModal = $uibModal;
@@ -206,13 +208,9 @@ class EditExamController {
 
   deleteExamModal(): void {
     this.$uibModal.open({
-      templateUrl: 'deleteExamModalContent.html',
-      controller: 'deleteExamModalController',
-      controllerAs: '$ctrl',
+      component: 'deleteExamModalComponent',
       resolve: {
-        examId: () => {
-          return this.examId;
-        },
+        examId: () => this.examId,
       },
     });
   }

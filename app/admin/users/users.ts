@@ -68,20 +68,17 @@ class AdminUsersController {
   }
 
   deleteUserModal(index: number): void {
-    var modal = this.$uibModal.open({
-      templateUrl: 'deleteUserModalContent.html',
-      controller: 'deleteUserModalController',
-      controllerAs: '$ctrl',
+    const modal = this.$uibModal.open({
+      component: 'deleteUserModalComponent',
       resolve: {
-        user: () => {
-          return this.users[index];
-        },
+        user: () => this.users[index],
       },
     });
 
-    modal.result.then(function () {
-      this.users.splice(index, 1);
-    }, function () {
+    modal.result.then(response => {
+      if (response == 'delete') {
+        this.users.splice(index, 1);
+      }
     });
   }
 }

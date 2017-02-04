@@ -1,10 +1,11 @@
-function Cut() {
-  return (value: string, wordwise: boolean, max: string, tail: string): string => {
+class Cut {
+
+  cut(value: string, wordwise: boolean, max: string, tail: string): string {
     if (!value) {
       return '';
     }
 
-    const newMax = parseInt(max, 10);
+    const newMax: number = parseInt(max, 10);
     if (value.length <= newMax) {
       return value;
     }
@@ -18,7 +19,7 @@ function Cut() {
     }
 
     return newValue + (tail || ' ?');
-  };
+  }
 }
 
-angular.module('crucioApp').filter('cut', Cut);
+angular.module('crucioApp').service('Cut', Cut);
