@@ -99,25 +99,7 @@
                 Bearbeiten
             </a>
 
-            <div class="btn-group pull-right mtop" uib-dropdown>
-                <a class="btn btn-default" uib-dropdown-toggle>Melden <span class="caret"></span></a>
-
-                <ul class="dropdown-menu">
-                    <li><a ui-sref="help({ questionId: $ctrl.questionId })">
-                        Allgemein
-                    </a></li>
-                    <li><a ui-sref="help({ questionId: $ctrl.questionId, s: 'Rechtschreibfehler' })" tabindex="-1">
-                        Rechtschreibfehler
-                    </a></li>
-                    <li><a ui-sref="help({ questionId: $ctrl.questionId, s: 'Antwort' })" tabindex="-1">
-                        {{ $ctrl.question.correct_answer >= 0 ? 'Falsche Antwort' : 'Antwort geben' }}
-                    </a></li>
-                    <li class="divider"></li>
-                    <li><a ui-sref="help({ questionId: $ctrl.questionId })" tabindex="-1">
-                        Erkl&auml;rung schreiben
-                    </a></li>
-                </ul>
-            </div>
+            <button class="btn btn-default pull-right mtop" ng-click="$ctrl.openReportModal()">Melden</button>
 
             <div class="btn-group pull-right mtop hidden-xs" role="group" uib-dropdown>
                 <button type="button" class="btn btn-default" uib-dropdown-toggle>

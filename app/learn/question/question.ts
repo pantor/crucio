@@ -176,6 +176,16 @@ class QuestionController {
       },
     });
   }
+
+  openReportModal(): void {
+    this.$uibModal.open({
+      component: 'reportModalComponent',
+      resolve: {
+        question: () => this.question,
+        questionId: () => this.questionId,
+      },
+    });
+  }
 }
 
 angular.module('crucioApp').component('questioncomponent', {

@@ -51,7 +51,7 @@ angular.module('crucioApp', [
       { name: '403', url: '/403', template: comp('error403') },
       { name: '404', url: '/404', template: comp('error404') },
       { name: '500', url: '/500', template: comp('error500') },
-      { name: 'help', url: '/help?questionId', template: comp('help') },
+      { name: 'help', url: '/help', template: comp('help') },
     ];
 
     $urlRouterProvider.otherwise('/404');

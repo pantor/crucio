@@ -15,5 +15,8 @@
     ],
     "include": [
         "app/**/*"
+    ],
+    "filesGlob": [
+        "app/**/*"
     ]
 }
