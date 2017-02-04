@@ -97,6 +97,12 @@ declare namespace Crucio {
     author_email: string;
     date: any;
   }
+
+  interface Collection {
+    list: any[];
+    exam_id?: number;
+    type: string;
+  }
 }
 
 interface Storage {

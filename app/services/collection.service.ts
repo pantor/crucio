@@ -1,12 +1,12 @@
 class CollectionService {
   readonly API: APIService;
-  collection: any;
+  collection: Crucio.Collection;
 
   constructor(API: APIService) {
     this.API = API;
   }
 
-  get() {
+  get(): Crucio.Collection {
     if (angular.isUndefined(this.collection)
       && angular.isDefined(sessionStorage.crucioCollection)
     ) {
@@ -16,7 +16,7 @@ class CollectionService {
     return this.collection;
   }
 
-  set(collection: any): void {
+  set(collection: Crucio.Collection): void {
     this.collection = collection;
     sessionStorage.crucioCollection = angular.toJson(collection);
   }
@@ -97,7 +97,7 @@ class CollectionService {
 
   prepareExam(examId: number, data: any) {
     return this.API.get(`exams/action/prepare/${examId}`, data).then(result => {
-      const collection = { list: result.data.list, exam_id: examId };
+      const collection = { type: 'exam', list: result.data.list, exam_id: examId };
       this.set(collection);
       return collection;
     });
@@ -105,7 +105,7 @@ class CollectionService {
 
   prepareSubjects(data): any {
     return this.API.get('questions/prepare-subjects', data).then(result => {
-      const collection = { list: result.data.list, selection: data.selection };
+      const collection = { type: 'subjects', list: result.data.list, selection: data.selection };
       this.set(collection);
       return collection;
     });

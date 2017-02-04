@@ -1779,7 +1779,7 @@ var CollectionService = (function () {
     CollectionService.prototype.prepareExam = function (examId, data) {
         var _this = this;
         return this.API.get("exams/action/prepare/" + examId, data).then(function (result) {
-            var collection = { list: result.data.list, exam_id: examId };
+            var collection = { type: 'exam', list: result.data.list, exam_id: examId };
             _this.set(collection);
             return collection;
         });
@@ -1787,7 +1787,7 @@ var CollectionService = (function () {
     CollectionService.prototype.prepareSubjects = function (data) {
         var _this = this;
         return this.API.get('questions/prepare-subjects', data).then(function (result) {
-            var collection = { list: result.data.list, selection: data.selection };
+            var collection = { type: 'subjects', list: result.data.list, selection: data.selection };
             _this.set(collection);
             return collection;
         });
