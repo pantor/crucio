@@ -1,11 +1,11 @@
 class HelpController {
-  API: API;
+  API: APIService;
   user: Crucio.User;
   isWorking: boolean;
   text: string;
   emailSend: boolean;
 
-  constructor(Auth: Auth, Page: Page, API: API) {
+  constructor(Auth: AuthService, Page: PageService, API: APIService) {
     this.API = API;
 
     Page.setTitleAndNav('Hilfe | Crucio', '');

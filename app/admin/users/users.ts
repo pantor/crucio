@@ -1,5 +1,5 @@
 class AdminUsersController {
-  readonly API: API;
+  readonly API: APIService;
   $uibModal: angular.ui.bootstrap.IModalService;
   user: Crucio.User;
   userSearch: any;
@@ -8,7 +8,7 @@ class AdminUsersController {
   distinctGroupsPerId: any;
   users: Crucio.User[];
 
-  constructor(Auth: Auth, API: API, $uibModal: angular.ui.bootstrap.IModalService) {
+  constructor(Auth: AuthService, API: APIService, $uibModal: angular.ui.bootstrap.IModalService) {
     this.API = API;
     this.$uibModal = $uibModal;
 

@@ -1,4 +1,4 @@
-class Cut {
+class CutService {
 
   cut(value: string, wordwise: boolean, max: string, tail: string): string {
     if (!value) {
@@ -22,4 +22,4 @@ class Cut {
   }
 }
 
-angular.module('crucioApp').service('Cut', Cut);
+angular.module('crucioApp').service('Cut', CutService);

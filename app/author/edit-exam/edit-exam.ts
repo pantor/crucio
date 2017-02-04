@@ -1,6 +1,6 @@
 class EditExamController {
-  readonly API: API;
-  readonly Cut: Cut;
+  readonly API: APIService;
+  readonly Cut: CutService;
   FileUploader: any;
   $location: angular.ILocationService;
   $uibModal: angular.ui.bootstrap.IModalService;
@@ -21,7 +21,7 @@ class EditExamController {
   subjectListPerId: any;
   categoryListPerId: any;
 
-  constructor(Page: Page, Auth: Auth, API: API, Cut: Cut, FileUploader, $scope: angular.IScope, $location: angular.ILocationService, $stateParams, $uibModal: angular.ui.bootstrap.IModalService) {
+  constructor(Page: PageService, Auth: AuthService, API: APIService, Cut: CutService, FileUploader, $scope: angular.IScope, $location: angular.ILocationService, $stateParams, $uibModal: angular.ui.bootstrap.IModalService) {
     this.API = API;
     this.Cut = Cut;
     this.FileUploader = FileUploader;

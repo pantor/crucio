@@ -1,8 +1,8 @@
 class CollectionService {
-  readonly API: API;
+  readonly API: APIService;
   collection: any;
 
-  constructor(API: API) {
+  constructor(API: APIService) {
     this.API = API;
   }
 

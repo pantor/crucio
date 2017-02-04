@@ -1633,59 +1633,59 @@ angular.module('crucioApp').component('learntagscomponent', {
     templateUrl: 'app/learn/tags/tags.html',
     controller: LearnTagsController
 });
-var API = (function () {
-    function API($http) {
+var APIService = (function () {
+    function APIService($http) {
         this.$http = $http;
         this.base = 'api/v1/';
     }
-    API.prototype.sanitize = function (data) {
+    APIService.prototype.sanitize = function (data) {
         data.email = data.email && data.email.replace('@', '(@)');
         return data;
     };
-    API.prototype.get = function (path, data, ignoreLoadingBar) {
+    APIService.prototype.get = function (path, data, ignoreLoadingBar) {
         if (data === void 0) { data = {}; }
         if (ignoreLoadingBar === void 0) { ignoreLoadingBar = false; }
         return this.$http.get(this.base + path, { params: this.sanitize(data) });
     };
-    API.prototype.post = function (path, data, ignoreLoadingBar) {
+    APIService.prototype.post = function (path, data, ignoreLoadingBar) {
         if (ignoreLoadingBar === void 0) { ignoreLoadingBar = false; }
         return this.$http.post(this.base + path, this.sanitize(data));
     };
-    API.prototype.put = function (path, data, ignoreLoadingBar) {
+    APIService.prototype.put = function (path, data, ignoreLoadingBar) {
         if (ignoreLoadingBar === void 0) { ignoreLoadingBar = false; }
         return this.$http.put(this.base + path, this.sanitize(data));
     };
-    API.prototype["delete"] = function (path, data, ignoreLoadingBar) {
+    APIService.prototype["delete"] = function (path, data, ignoreLoadingBar) {
         if (data === void 0) { data = {}; }
         if (ignoreLoadingBar === void 0) { ignoreLoadingBar = false; }
         return this.$http["delete"](this.base + path, { params: this.sanitize(data) });
     };
-    return API;
+    return APIService;
 }());
-angular.module('crucioApp').service('API', API);
-var Auth = (function () {
-    function Auth($cookies, $window) {
+angular.module('crucioApp').service('API', APIService);
+var AuthService = (function () {
+    function AuthService($cookies, $window) {
         this.$window = $window;
         this.$cookies = $cookies;
     }
-    Auth.prototype.getUser = function () {
+    AuthService.prototype.getUser = function () {
         this.tryGetUser();
         if (!this.user) {
             this.$window.location.replace('/');
         }
         return this.user;
     };
-    Auth.prototype.tryGetUser = function () {
+    AuthService.prototype.tryGetUser = function () {
         if (angular.isUndefined(this.user) && angular.isDefined(this.$cookies.getObject('CrucioUser'))) {
             this.setUser(this.$cookies.getObject('CrucioUser'));
         }
         return this.user;
     };
-    Auth.prototype.logout = function () {
+    AuthService.prototype.logout = function () {
         this.$cookies.remove('CrucioUser');
         this.$window.location.assign(this.$window.location.origin);
     };
-    Auth.prototype.setUser = function (newUser, saveNewCookie) {
+    AuthService.prototype.setUser = function (newUser, saveNewCookie) {
         if (saveNewCookie === void 0) { saveNewCookie = false; }
         this.user = newUser;
         if (saveNewCookie || angular.isDefined(this.$cookies.getObject('CrucioUser'))) {
@@ -1697,9 +1697,9 @@ var Auth = (function () {
             this.$cookies.remove('CrucioUser');
         }
     };
-    return Auth;
+    return AuthService;
 }());
-angular.module('crucioApp').service('Auth', Auth);
+angular.module('crucioApp').service('Auth', AuthService);
 var CollectionService = (function () {
     function CollectionService(API) {
         this.API = API;
@@ -1809,10 +1809,10 @@ var CollectionService = (function () {
     return CollectionService;
 }());
 angular.module('crucioApp').service('Collection', CollectionService);
-var Cut = (function () {
-    function Cut() {
+var CutService = (function () {
+    function CutService() {
     }
-    Cut.prototype.cut = function (value, wordwise, max, tail) {
+    CutService.prototype.cut = function (value, wordwise, max, tail) {
         if (!value) {
             return '';
         }
@@ -1829,28 +1829,28 @@ var Cut = (function () {
         }
         return newValue + (tail || ' ?');
     };
-    return Cut;
+    return CutService;
 }());
-angular.module('crucioApp').service('Cut', Cut);
-var Page = (function () {
-    function Page($window) {
+angular.module('crucioApp').service('Cut', CutService);
+var PageService = (function () {
+    function PageService($window) {
         this.$window = $window;
     }
-    Page.prototype.setTitle = function (newTitle) {
+    PageService.prototype.setTitle = function (newTitle) {
         this.title = newTitle;
     };
-    Page.prototype.setNav = function (newNav) {
+    PageService.prototype.setNav = function (newNav) {
         this.nav = newNav;
     };
-    Page.prototype.setTitleAndNav = function (newTitle, newNav) {
+    PageService.prototype.setTitleAndNav = function (newTitle, newNav) {
         if (newNav === void 0) { newNav = ''; }
         this.title = newTitle;
         this.nav = newNav;
         this.$window.document.title = this.title;
     };
-    return Page;
+    return PageService;
 }());
-angular.module('crucioApp').service('Page', Page);
+angular.module('crucioApp').service('Page', PageService);
 var DeleteResultsModalController = (function () {
     function DeleteResultsModalController(API) {
         this.API = API;

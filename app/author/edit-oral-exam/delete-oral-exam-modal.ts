@@ -1,12 +1,12 @@
 class DeleteOralExamModalController {
-  readonly API: API;
+  readonly API: APIService;
   $location: any;
   oralExamId: number;
   resolve: any;
   close: any;
   dismiss: any;
 
-  constructor(API: API, $location: angular.ILocationService) {
+  constructor(API: APIService, $location: angular.ILocationService) {
     this.API = API;
     this.$location = $location;
   }

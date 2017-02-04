@@ -1,9 +1,9 @@
 class NavbarController {
-  Page: Page;
-  Auth: Auth;
+  Page: PageService;
+  Auth: AuthService;
   user: Crucio.User;
 
-  constructor(Auth: Auth, Page: Page) {
+  constructor(Auth: AuthService, Page: PageService) {
     this.Page = Page;
     this.Auth = Auth;
 

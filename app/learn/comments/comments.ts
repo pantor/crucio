@@ -1,11 +1,11 @@
 class LearnCommentsController {
-  readonly API: API;
+  readonly API: APIService;
   user: Crucio.User;
   commentSearch: any;
   comments: Crucio.Comment[];
   questionsByComment: any;
 
-  constructor(Auth: Auth, API: API) {
+  constructor(Auth: AuthService, API: APIService) {
     this.API = API;
 
     this.user = Auth.getUser();

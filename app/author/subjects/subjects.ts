@@ -1,8 +1,8 @@
 class AuthorSubjectsController {
-  readonly API: API;
+  readonly API: APIService;
   subjectList: Crucio.Subject[];
 
-  constructor(API: API) {
+  constructor(API: APIService) {
     this.API = API;
 
     this.API.get('subjects').then(result => {

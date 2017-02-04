@@ -1,4 +1,4 @@
-class Page {
+class PageService {
   $window: angular.IWindowService;
   title: string;
   nav: string;
@@ -23,4 +23,4 @@ class Page {
   }
 }
 
-angular.module('crucioApp').service('Page', Page);
+angular.module('crucioApp').service('Page', PageService);

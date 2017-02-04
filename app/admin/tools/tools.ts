@@ -1,7 +1,7 @@
 class AdminToolsController {
-  readonly API: API;
+  readonly API: APIService;
 
-  constructor(Auth: Auth, API: API) {
+  constructor(Auth: AuthService, API: APIService) {
     this.API = API;
   }
 

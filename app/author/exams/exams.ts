@@ -1,5 +1,5 @@
 class AuthorExamsController {
-  readonly API: API;
+  readonly API: APIService;
   $location: angular.ILocationService;
   user: Crucio.User;
   examSearch: any;
@@ -9,7 +9,7 @@ class AuthorExamsController {
   subjectList: Crucio.Subject[];
   exams: Crucio.Exam[];
 
-  constructor(Auth: Auth, API: API, $location: angular.ILocationService) {
+  constructor(Auth: AuthService, API: APIService, $location: angular.ILocationService) {
     this.API = API;
     this.$location = $location;
 

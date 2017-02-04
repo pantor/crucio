@@ -1,5 +1,5 @@
 class EditOralExamController {
-  readonly API: API;
+  readonly API: APIService;
   FileUploader: any;
   $location: angular.ILocationService;
   $uibModal: angular.ui.bootstrap.IModalService;
@@ -12,7 +12,7 @@ class EditOralExamController {
   ready: boolean;
   isSaving: boolean;
 
-  constructor(Page: Page, Auth: Auth, API: API, FileUploader, $scope: angular.IScope, $location: angular.ILocationService, $stateParams, $uibModal: angular.ui.bootstrap.IModalService) {
+  constructor(Page: PageService, Auth: AuthService, API: APIService, FileUploader, $scope: angular.IScope, $location: angular.ILocationService, $stateParams, $uibModal: angular.ui.bootstrap.IModalService) {
     this.API = API;
     this.FileUploader = FileUploader;
     this.$location = $location;

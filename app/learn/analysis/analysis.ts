@@ -1,5 +1,5 @@
 class AnalysisController {
-  readonly API: API;
+  readonly API: APIService;
   user: Crucio.User;
   random: number;
   examId: number;
@@ -7,7 +7,7 @@ class AnalysisController {
   count: Crucio.AnalyseCount;
   exam: Crucio.Exam;
 
-  constructor(Page: Page, Auth: Auth, API: API, Collection: CollectionService) {
+  constructor(Page: PageService, Auth: AuthService, API: APIService, Collection: CollectionService) {
     this.API = API;
 
     Page.setTitleAndNav('Analyse | Crucio', 'Learn');

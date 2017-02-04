@@ -1,12 +1,12 @@
 class ImageModalController {
-  readonly API: API;
+  readonly API: APIService;
   user: Crucio.User;
   data: any;
   resolve: any;
   close: any;
   dismiss: any;
 
-  constructor(API: API) {
+  constructor(API: APIService) {
     this.API = API;
   }
 

@@ -1,11 +1,11 @@
 class DeleteUserModalController {
-  readonly API: API;
+  readonly API: APIService;
   user: Crucio.User;
   resolve: any;
   close: any;
   dismiss: any;
 
-  constructor(API: API) {
+  constructor(API: APIService) {
     this.API = API;
   }
 

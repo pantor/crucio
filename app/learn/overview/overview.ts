@@ -1,5 +1,5 @@
 class LearnOverviewController {
-  readonly API: API;
+  readonly API: APIService;
   Collection: CollectionService;
   $location: angular.ILocationService;
   user: Crucio.User;
@@ -9,7 +9,7 @@ class LearnOverviewController {
   distinctSubjects: any;
   subjectList: Crucio.Subject[];
 
-  constructor(Auth: Auth, API: API, Collection: CollectionService, $scope: angular.IScope, $location: angular.ILocationService, $timeout: angular.ITimeoutService) {
+  constructor(Auth: AuthService, API: APIService, Collection: CollectionService, $scope: angular.IScope, $location: angular.ILocationService, $timeout: angular.ITimeoutService) {
     this.API = API;
     this.Collection = Collection;
     this.$location = $location;

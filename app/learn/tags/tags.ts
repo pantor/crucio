@@ -1,11 +1,11 @@
 class LearnTagsController {
-  readonly API: API;
+  readonly API: APIService;
   readonly user: Crucio.User;
   tags: any;
   distinctTags: any;
   questionsByTag: any;
 
-  constructor(Auth: Auth, API: API) {
+  constructor(Auth: AuthService, API: APIService) {
     this.API = API;
 
     this.user = Auth.getUser();

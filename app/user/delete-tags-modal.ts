@@ -1,11 +1,11 @@
 class DeleteTagsModalController {
-  API: API;
+  API: APIService;
   userId: number;
   resolve: any;
   close: any;
   dismiss: any;
 
-  constructor(API: API) {
+  constructor(API: APIService) {
     this.API = API;
   }
 

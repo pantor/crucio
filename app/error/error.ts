@@ -1,6 +1,6 @@
 class ErrorController {
   
-  constructor(Page: Page) {
+  constructor(Page: PageService) {
     Page.setTitleAndNav('Fehler | Crucio', '');
   }
 }

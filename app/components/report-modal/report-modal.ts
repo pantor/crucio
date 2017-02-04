@@ -1,6 +1,6 @@
 class ReportModalController {
-  readonly Auth: Auth;
-  readonly API: API;
+  readonly Auth: AuthService;
+  readonly API: APIService;
   readonly user: Crucio.User;
   readonly $uibModal: angular.ui.bootstrap.IModalService;
   questionId: number;
@@ -9,7 +9,7 @@ class ReportModalController {
   close: any;
   message: string;
 
-  constructor(API: API, Auth: Auth, $uibModal: angular.ui.bootstrap.IModalService) {
+  constructor(API: APIService, Auth: AuthService, $uibModal: angular.ui.bootstrap.IModalService) {
     this.Auth = Auth;
     this.API = API;
     this.$uibModal = $uibModal;

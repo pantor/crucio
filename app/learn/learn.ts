@@ -1,6 +1,6 @@
 class LearnController {
 
-  constructor(Page: Page) {
+  constructor(Page: PageService) {
     Page.setTitleAndNav('Lernen | Crucio', 'Learn');
   }
 }

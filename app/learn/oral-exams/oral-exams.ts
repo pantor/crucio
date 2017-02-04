@@ -1,5 +1,5 @@
 class LearnOralExamsController {
-  readonly API: API;
+  readonly API: APIService;
   user: Crucio.User;
   oralExamSearch: any;
   oralExams: Crucio.OralExam[];
@@ -7,7 +7,7 @@ class LearnOralExamsController {
   distinctOralYears: any;
   hasSearched: boolean;
 
-  constructor(Auth: Auth, API: API, $scope: angular.IScope, $location: angular.ILocationService, $timeout: angular.ITimeoutService) {
+  constructor(Auth: AuthService, API: APIService, $scope: angular.IScope, $location: angular.ILocationService, $timeout: angular.ITimeoutService) {
     this.API = API;
 
     this.user = Auth.getUser();

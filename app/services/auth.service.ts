@@ -1,4 +1,4 @@
-class Auth {
+class AuthService {
   $cookies: any;
   $window: angular.IWindowService;
   user: Crucio.User;
@@ -52,4 +52,4 @@ class Auth {
   }
 }
 
-angular.module('crucioApp').service('Auth', Auth);
+angular.module('crucioApp').service('Auth', AuthService);

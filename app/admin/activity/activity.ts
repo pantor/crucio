@@ -1,10 +1,10 @@
 class AdminActivityController {
-  readonly API: API;
+  readonly API: APIService;
   updateActivity: boolean;
   showActivity: any;
   activities: any;
 
-  constructor(Page: Page, Auth: Auth, API: API, $interval: angular.IIntervalService) {
+  constructor(Page: PageService, Auth: AuthService, API: APIService, $interval: angular.IIntervalService) {
     this.API = API;
 
     Page.setTitleAndNav('Statistik | Crucio', 'Admin');

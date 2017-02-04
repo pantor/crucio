@@ -1,4 +1,4 @@
-class API {
+class APIService {
   readonly $http: any;
   readonly base: string;
 
@@ -30,4 +30,4 @@ class API {
   }
 }
 
-angular.module('crucioApp').service('API', API);
+angular.module('crucioApp').service('API', APIService);
