@@ -7,7 +7,7 @@ class LearnOralExamsController {
   distinctOralYears: any;
   hasSearched: boolean;
 
-  constructor(Auth: Auth, API: API, Collection: Collection, $scope: angular.IScope, $location: angular.ILocationService, $timeout: angular.ITimeoutService) {
+  constructor(Auth: Auth, API: API, $scope: angular.IScope, $location: angular.ILocationService, $timeout: angular.ITimeoutService) {
     this.API = API;
 
     this.user = Auth.getUser();

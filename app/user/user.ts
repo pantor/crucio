@@ -1,7 +1,7 @@
 class UserController {
   readonly API: API;
   readonly Auth: Auth;
-  readonly $scope: angular.IScope;
+  readonly $scope: any; // Property form does not exist
   readonly $uibModal: angular.ui.bootstrap.IModalService;
   user: Crucio.User;
   isWorking: boolean;

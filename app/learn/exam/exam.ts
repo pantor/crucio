@@ -1,6 +1,6 @@
 class ExamController {
   readonly API: API;
-  Collection: Collection;
+  Collection: CollectionService;
   $location: angular.ILocationService;
   $document: any;
   $uibModal: angular.ui.bootstrap.IModalService;
@@ -12,7 +12,7 @@ class ExamController {
   questions: Crucio.Question[];
 
   constructor(
-    Page: Page, Auth: Auth, API: API, Collection: Collection,
+    Page: Page, Auth: Auth, API: API, Collection: CollectionService,
     $location: angular.ILocationService, $uibModal: angular.ui.bootstrap.IModalService, $stateParams, $timeout: angular.ITimeoutService, $document, $window
   ) {
     this.API = API;

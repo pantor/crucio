@@ -1,7 +1,7 @@
 class QuestionController {
   readonly Auth: Auth;
   readonly API: API;
-  Collection: Collection;
+  Collection: CollectionService;
   $uibModal: angular.ui.bootstrap.IModalService;
   user: Crucio.User;
   questionId: number;
@@ -27,7 +27,7 @@ class QuestionController {
   isAnswerWrong: boolean;
   wrongAnswer: any;
 
-  constructor(Auth: Auth, Page: Page, API: API, Collection: Collection, $stateParams, $window: angular.IWindowService, $uibModal: angular.ui.bootstrap.IModalService) {
+  constructor(Auth: Auth, Page: Page, API: API, Collection: CollectionService, $stateParams, $window: angular.IWindowService, $uibModal: angular.ui.bootstrap.IModalService) {
     this.Auth = Auth;
     this.API = API;
     this.Collection = Collection;

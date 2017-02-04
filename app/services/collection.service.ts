@@ -1,4 +1,4 @@
-class Collection {
+class CollectionService {
   readonly API: API;
   collection: any;
 
@@ -130,4 +130,4 @@ class Collection {
   }
 }
 
-angular.module('crucioApp').service('Collection', Collection);
+angular.module('crucioApp').service('Collection', CollectionService);

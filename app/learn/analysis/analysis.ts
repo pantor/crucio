@@ -7,7 +7,7 @@ class AnalysisController {
   count: Crucio.AnalyseCount;
   exam: Crucio.Exam;
 
-  constructor(Page: Page, Auth: Auth, API: API, Collection: Collection) {
+  constructor(Page: Page, Auth: Auth, API: API, Collection: CollectionService) {
     this.API = API;
 
     Page.setTitleAndNav('Analyse | Crucio', 'Learn');

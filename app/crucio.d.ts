@@ -97,8 +97,8 @@ declare namespace Crucio {
     author_email: string;
     date: any;
   }
+}
 
-  interface Storage {
-    crucioCollection: any;
-  }
+interface Storage {
+  crucioCollection: any;
 }
