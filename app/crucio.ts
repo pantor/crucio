@@ -217,11 +217,11 @@ angular.module('crucioApp', [
     }]);
   })
 
-  .run(function run(Auth, $location, $window) {
+  .run(function run(Auth: Auth, $location: angular.ILocationService, $window: angular.IWindowService) {
     // Enumerate paths that don't need authentication
     const pathsThatLogin: string[] = ['/', '/register', '/forgot-password'];
-    const pathsForAuthor: string[] = ['/author', '/edit-exam'];
-    const pathsForAdmin: string[] = ['/admin', '/global-statistic']; // + Author paths
+    const pathsForAuthor: string[] = ['/author', '/edit-exam', '/edit-oral-exam'];
+    const pathsForAdmin: string[] = ['/admin']; // + Author paths
 
     const user: Crucio.User = Auth.tryGetUser();
 
