@@ -34,11 +34,9 @@ gulp.task('sass', function () {
 });
 
 gulp.task('tsc', function () {
-  gulp.src([
-    app + 'crucio.ts',
-    app + '**/*.ts',
-  ])
-    .pipe(ts({ noImplicitAny: false, out: 'crucio.js' }))
+  var tsProject = ts.createProject('tsconfig.json');
+  tsProject.src()
+    .pipe(tsProject())
     .pipe(ngAnnotate())
     .pipe(uglify())
     .pipe(gulp.dest('public/js'));

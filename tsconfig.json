@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "noImplicitAny": false,
+        "outFile": "crucio.js",
+        "removeComments": true,
+        "types" : [
+            "angular",
+            "angular-ui-bootstrap",
+            "angular-ui-router"
+        ]
+    },
+    "files": [
+        "app/crucio.d.ts",
+        "app/crucio.ts"
+    ],
+    "include": [
+        "app/**/*"
+    ]
+}

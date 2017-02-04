@@ -1,7 +1,3 @@
-/// <reference path='../node_modules/@types/angular/index.d.ts' />
-/// <reference path='../node_modules/@types/angular-ui-bootstrap/index.d.ts' />
-/// <reference path='../node_modules/@types/angular-ui-router/index.d.ts' />
-
 angular.module('crucioApp', [
   'ngCookies',
   'ngMessages',
