@@ -4,10 +4,9 @@ $app->group('/tags', function() {
 
 	$this->get('', function($request, $response, $args) {
 		$mysql = init();
-		$query_params = $request->getQueryParams();
 
-		$limit = $query_params['limit'] ? intval($query_params['limit']) : 10000;
-		$query = strlen($query_params['query']) > 0 ? "%".$query_params['query']."%" : null;
+		$limit = intval($request->getQueryParam('limit', 10000));
+		$query = strlen($request->getQueryParam('query')) > 0 ? "%".$request->getQueryParam('query')."%" : null;
 
 		$stmt = $mysql->prepare(
 		    "SELECT DISTINCT t.*, q.question, q.exam_id, s.name AS 'subject', u.username
@@ -23,8 +22,8 @@ $app->group('/tags', function() {
             ORDER BY t.question_id ASC
             LIMIT :limit"
 		);
-		$stmt->bindValue(':user_id', $query_params['user_id'], PDO::PARAM_INT);
-		$stmt->bindValue(':question_id', $query_params['question_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':user_id', $request->getQueryParam('user_id'), PDO::PARAM_INT);
+		$stmt->bindValue(':question_id', $request->getQueryParam('question_id'), PDO::PARAM_INT);
 		$stmt->bindValue(':query', $query);
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 

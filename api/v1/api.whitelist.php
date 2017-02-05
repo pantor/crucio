@@ -4,10 +4,9 @@ $app->group('/whitelist', function() {
 
 	$this->get('', function($request, $response, $args) {
 		$mysql = init();
-		$query_params = $request->getQueryParams();
 
-        $limit = $query_params['limit'] ? intval($query_params['limit']) : 10000;
-        $query = strlen($query_params['query']) > 0 ? "%".$query_params['query']."%" : null;
+        $limit = intval($request->getQueryParam('limit', 10000));
+        $query = strlen($request->getQueryParam('query')) > 0 ? "%".$request->getQueryParam('query')."%" : null;
 
 		$stmt = $mysql->prepare(
 		    "SELECT w.*, IF(u.user_id IS NOT NULL, 1, 0) as 'used'

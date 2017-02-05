@@ -4,17 +4,16 @@ $app->group('/questions', function() {
 
     $this->get('', function($request, $response, $args) {
 		$mysql = init();
-		$query_params = $request->getQueryParams();
 
-		$subquery_array = explode(' ', $query_params['query']);
+		$subquery_array = explode(' ', $request->getQueryParam('query'));
 		$sql_query = "";
 		for ($i = 0; $i < count($subquery_array); $i++) {
     		$sql_query .= "AND ( q.question LIKE :sub$i
     		    OR q.answers LIKE :sub$i
     		    OR q.explanation LIKE :sub$i ) ";
 		}
-		// $question_id = ( intval($query_params['query']) > 0) ? intval($query) : null; // Query is question id
-        $limit = ($query_params['limit']) ? intval($query_params['limit']) : 10000;
+		// $question_id = ( intval($request->getQueryParam('query')) > 0) ? intval($query) : null; // Query is question id
+        $limit = intval($request->getQueryParam('limit', 10000));
 
 		$stmt = $mysql->prepare(
 		    "SELECT q.*, c.name AS 'topic', s.name AS 'subject', e.subject_id, e.semester
@@ -30,10 +29,10 @@ $app->group('/questions', function() {
 		        AND q.question_id = IFNULL(:question_id, q.question_id)
 		    LIMIT :limit"
 		);
-        $stmt->bindValue(':visibility', $query_params['visibility']);
-        $stmt->bindValue(':semester', $query_params['semester']);
-        $stmt->bindValue(':subject_id', $query_params['subject_id'], PDO::PARAM_INT);
-        $stmt->bindValue(':category_id', $query_params['category_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':visibility', $request->getQueryParam('visibility'));
+        $stmt->bindValue(':semester', $request->getQueryParam('semester'));
+        $stmt->bindValue(':subject_id', $request->getQueryParam('subject_id'), PDO::PARAM_INT);
+        $stmt->bindValue(':category_id', $request->getQueryParam('category_id'), PDO::PARAM_INT);
         for ($i = 0; $i < count($subquery_array); $i++) {
             $stmt->bindValue(":sub$i", '%'.$subquery_array[$i].'%');
         }
@@ -52,9 +51,8 @@ $app->group('/questions', function() {
 
 	$this->get('/count', function($request, $response, $args) {
 		$mysql = init();
-		$query_params = $request->getQueryParams();
 
-		$selection = json_decode($query_params['selection']);
+		$selection = json_decode($request->getQueryParam('selection'));
 
 		$sql = '0 = 1 ';
 		$sql_params = [];
@@ -84,10 +82,9 @@ $app->group('/questions', function() {
 
 	$this->get('/prepare-subjects', function($request, $response, $args) {
         $mysql = init();
-		$query_params = $request->getQueryParams();
 
-		$selection = json_decode($query_params['selection']);
-		$limit = $query_params['limit'] ? intval($query_params['limit']) : 10000;
+		$selection = json_decode($request->getQueryParam('selection'));
+		$limit = intval($request->getQueryParam('limit', 10000));
 
 		$sql = '0 = 1 ';
 		$sql_params = [];

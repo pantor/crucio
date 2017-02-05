@@ -4,10 +4,9 @@ $app->group('/comments', function() {
 
     $this->get('', function($request, $response, $args) {
 		$mysql = init();
-		$query_params = $request->getQueryParams();
 
-		$limit = $query_params['limit'] ? intval($query_params['limit']) : 10000;
-		$query = strlen($query_params['query']) > 0 ? "%".$query_params['query']."%" : null;
+        $limit = intval($request->getQueryParam('limit', 10000));
+        $query = strlen($request->getQueryParam('query')) > 0 ? "%".$request->getQueryParam('query')."%" : null;
 
 		$stmt = $mysql->prepare(
 		    "SELECT c.*, q.question, u.username
@@ -23,8 +22,8 @@ $app->group('/comments', function() {
             ORDER BY c.comment_id DESC
             LIMIT :limit"
 		);
-		$stmt->bindValue(':user_id', $query_params['user_id'], PDO::PARAM_INT);
-		$stmt->bindValue(':question_id', $query_params['question_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':user_id', $request->getQueryParam('user_id'), PDO::PARAM_INT);
+		$stmt->bindValue(':question_id', $request->getQueryParam('question_id'), PDO::PARAM_INT);
 		$stmt->bindValue(':query', $query);
 		$stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 
@@ -34,10 +33,9 @@ $app->group('/comments', function() {
 
     $this->get('/author', function($request, $response, $args) {
 		$mysql = init();
-		$query_params = $request->getQueryParams();
 
-		$limit = $query_params['limit'] ? intval($query_params['limit']) : 10000;
-		$query = strlen($query_params['query']) > 0 ? "%".$query_params['query']."%" : null;
+		$limit = intval($request->getQueryParam('limit', 10000));
+		$query = strlen($request->getQueryParam('query')) > 0 ? "%".$request->getQueryParam('query')."%" : null;
 
 		$stmt = $mysql->prepare(
 		    "SELECT c.*, u.username, q.question, q.exam_id, e.user_id_added, (
@@ -58,9 +56,9 @@ $app->group('/comments', function() {
             ORDER BY c.comment_id DESC
             LIMIT :limit"
 		);
-		$stmt->bindValue(':user_id', $query_params['user_id'], PDO::PARAM_INT);
-		$stmt->bindValue(':question_id', $query_params['question_id'], PDO::PARAM_INT);
-		$stmt->bindValue(':author_id', $query_params['author_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':user_id', $request->getQueryParam('user_id'), PDO::PARAM_INT);
+		$stmt->bindValue(':question_id', $request->getQueryParam('question_id'), PDO::PARAM_INT);
+		$stmt->bindValue(':author_id', $request->getQueryParam('author_id'), PDO::PARAM_INT);
 		$stmt->bindValue(':query', $query);
 		$stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 

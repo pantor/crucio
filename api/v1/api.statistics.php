@@ -51,11 +51,10 @@ $app->group('/stats', function() {
 
 	$this->get('/activities', function($request, $response, $args) {
 		$mysql = init();
-		$query_params = $request->getQueryParams();
 
 		$activities = [];
 
-		if ($query_params['result']) {
+		if ($request->getQueryParam('result')) {
     		$stmt = $mysql->prepare(
         		"SELECT 'result' activity, r.*, q.*, u.username
         		FROM results r
@@ -67,7 +66,7 @@ $app->group('/stats', function() {
 			$activities = array_merge( $activities, getAll($stmt) );
 		}
 
-		if ($query_params['register']) {
+		if ($request->getQueryParam('register')) {
     		$stmt = $mysql->prepare(
         		"SELECT 'register' activity, u.*, u.sign_up_date as date
         		FROM users u
@@ -77,7 +76,7 @@ $app->group('/stats', function() {
 			$activities = array_merge( $activities, getAll($stmt) );
 		}
 
-		if ($query_params['login']) {
+		if ($request->getQueryParam('login')) {
     		$stmt = $mysql->prepare(
         		"SELECT 'login' activity, u.*, u.last_sign_in as date
         		FROM users u
@@ -87,7 +86,7 @@ $app->group('/stats', function() {
 			$activities = array_merge( $activities, getAll($stmt) );
 		}
 
-		if ($query_params['comment']) {
+		if ($request->getQueryParam('comment')) {
     		$stmt = $mysql->prepare(
         		"SELECT 'comment' activity, c.*, u.username
         		FROM comments c
@@ -98,7 +97,7 @@ $app->group('/stats', function() {
 			$activities = array_merge( $activities, getAll($stmt) );
 		}
 
-		if ($query_params['examNew']) {
+		if ($request->getQueryParam('examNew')) {
     		$stmt = $mysql->prepare(
         		"SELECT 'exam_new' activity, e.*, e.date as year, e.date_added as date, u.username
         		FROM exams e
@@ -109,7 +108,7 @@ $app->group('/stats', function() {
 			$activities = array_merge( $activities, getAll($stmt) );
 		}
 
-		if ($query_params['examUpdate']) {
+		if ($request->getQueryParam('examUpdate')) {
     		$stmt = $mysql->prepare(
         		"SELECT 'exam_update' activity, e.*, e.date as year, e.date_updated as date, u.username
         		FROM exams e

@@ -4,7 +4,6 @@ $app->group('/results', function() {
 
 	$this->get('', function($request, $response, $args) {
 		$mysql = init();
-		$query_params = $request->getQueryParams();
 
 		$stmt = $mysql->prepare(
 		    "SELECT r.*
@@ -12,8 +11,8 @@ $app->group('/results', function() {
 		    WHERE r.user_id = IFNULL(:user_id, r.user_id)
 		        AND r.question_id = IFNULL(:question_id, r.question_id)"
 		);
-		$stmt->bindValue(':user_id', $query_params['user_id'], PDO::PARAM_INT);
-		$stmt->bindValue(':question_id', $query_params['question_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':user_id', $request->getQueryParam('user_id'), PDO::PARAM_INT);
+		$stmt->bindValue(':question_id', $request->getQueryParam('question_id'), PDO::PARAM_INT);
 
 		$data['results'] = getAll($stmt);
 		return createResponse($response, $data);

@@ -4,10 +4,9 @@ $app->group('/oral_exams', function() {
 
     $this->get('', function($request, $response, $args) {
 		$mysql = init();
-		$query_params = $request->getQueryParams();
 
-		$limit = $query_params['limit'] ? intval($query_params['limit']) : 10000;
-		$query = strlen($query_params['query']) > 0 ? "%".$query_params['query']."%" : null;
+		$limit = intval($request->getQueryParam('limit', 10000));
+		$query = strlen($request->getQueryParam('query')) > 0 ? "%".$request->getQueryParam('query')."%" : null;
 
 		$stmt = $mysql->prepare(
 		    "SELECT o.*
@@ -22,9 +21,9 @@ $app->group('/oral_exams', function() {
             ORDER BY o.oral_exam_id DESC
             LIMIT :limit "
 		);
-		$stmt->bindValue(':oral_exam_id', $query_params['oral_exam_id'], PDO::PARAM_INT);
-		$stmt->bindValue(':year', $query_params['year'], PDO::PARAM_INT);
-        $stmt->bindValue(':semester', $query_params['semester'], PDO::PARAM_INT);
+		$stmt->bindValue(':oral_exam_id', $request->getQueryParam('oral_exam_id'), PDO::PARAM_INT);
+		$stmt->bindValue(':year', $request->getQueryParam('year'), PDO::PARAM_INT);
+        $stmt->bindValue(':semester', $request->getQueryParam('semester'), PDO::PARAM_INT);
 		$stmt->bindValue(':query', $query);
 
 		$stmt->bindValue(':limit', $limit, PDO::PARAM_INT);

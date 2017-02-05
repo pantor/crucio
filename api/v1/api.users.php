@@ -4,10 +4,9 @@ $app->group('/users', function() {
 
     $this->get('', function($request, $response, $args) {
         $mysql = init();
-        $query_params = $request->getQueryParams();
 
-        $limit = $query_params['limit'] ? intval($query_params['limit']) : 10000;
-        $query = strlen($query_params['query']) > 0 ? '%'.$query_params['query'].'%' : null;
+        $limit = intval($request->getQueryParam('limit', 10000));
+        $query = strlen($request->getQueryParam('query')) > 0 ? '%'.$request->getQueryParam('query').'%' : null;
 
         $stmt = $mysql->prepare(
 		    "SELECT u.*, g.name AS 'group_name'
@@ -20,8 +19,8 @@ $app->group('/users', function() {
 		    ORDER BY g.name ASC, u.user_id DESC
 		    LIMIT :limit"
 		);
-		$stmt->bindValue(':group_id', $query_params['group_id']);
-		$stmt->bindValue(':semester', $query_params['semester']);
+		$stmt->bindValue(':group_id', $request->getQueryParam('group_id'));
+		$stmt->bindValue(':semester', $request->getQueryParam('semester'));
 		$stmt->bindValue(':query', $query);
 		$stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 
@@ -51,11 +50,10 @@ $app->group('/users', function() {
 
 	$this->get('/login', function($request, $response, $args) {
 		$mysql = init();
-		$query_params = $request->getQueryParams();
 
-		$email = str_replace('(@)', '@', $query_params['email']);
-		$password = $query_params['password'];
-		$remember_choice = !empty($query_params['remember_me']) ? $query_params['remember_me'] : 0;
+		$email = str_replace('(@)', '@', $request->getQueryParam('email'));
+		$password = $request->getQueryParam('password');
+		$remember_choice = !empty($request->getQueryParam('remember_me')) ? $request->getQueryParam('remember_me') : 0;
 
 		if (!$email) {
 		    $data['error'] = 'error_no_email';

@@ -37,7 +37,6 @@ $app->group('/subjects', function (){
 
 	$this->get('/categories', function($request, $response, $args) {
 		$mysql = init();
-		$query_params = $request->getQueryParams();
 
         $stmt = $mysql->prepare(
 		    "SELECT c.*, s.subject_id, s.name as 'subject'
@@ -46,7 +45,7 @@ $app->group('/subjects', function (){
 		    WHERE s.subject_id = IFNULL(:subject_id, s.subject_id)
             ORDER BY s.name, c.name ASC"
 		);
-		$stmt->bindValue(':subject_id', $query_params['subject_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':subject_id', $request->getQueryParam('subject_id'), PDO::PARAM_INT);
 
 		$data['categories'] = getAll($stmt);
 		return createResponse($response, $data);

@@ -4,14 +4,13 @@ $app->group('/exams', function() {
 
 	$this->get('', function($request, $response, $args) {
 		$mysql = init();
-		$query_params = $request->getQueryParams();
 
-		$limit = $query_params['limit'] ? intval($query_params['limit']) : 10000;
-		$query = strlen($query_params['query']) > 0 ? "%".$query_params['query']."%" : null;
+		$limit = intval($request->getQueryParam('limit', 10000));
+		$query = strlen($request->getQueryParam('query')) > 0 ? "%".$request->getQueryParam('query')."%" : null;
 
         $answered_questions_sql_select = "";
 		$answered_questions_sql_join = "";
-		if ($query_params['user_id']) {
+		if ($request->getQueryParam('user_id')) {
     		$answered_questions_sql_select = ", IFNULL(answered_questions, 0) AS 'answered_questions'";
     		$answered_questions_sql_join = " LEFT JOIN (SELECT q.exam_id, COUNT(*) AS 'answered_questions'
                 FROM results r
@@ -21,7 +20,7 @@ $app->group('/exams', function() {
 		}
 
 		$questions_sql_join = "INNER";
-		if ($query_params['showEmpty']) {
+		if ($request->getQueryParam('showEmpty')) {
     		$questions_sql_join = "LEFT";
 		}
 
@@ -42,11 +41,11 @@ $app->group('/exams', function() {
             ORDER BY e.semester ASC, s.name ASC, e.date DESC
             LIMIT :limit"
 		);
-		$stmt->bindValue(':user_id', $query_params['user_id'], PDO::PARAM_INT);
-        $stmt->bindValue(':visibility', $query_params['visibility']);
-        $stmt->bindValue(':semester', $query_params['semester']);
-        $stmt->bindValue(':author_id', $query_params['author_id'], PDO::PARAM_INT);
-        $stmt->bindValue(':subject_id', $query_params['subject_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':user_id', $request->getQueryParam('user_id'), PDO::PARAM_INT);
+        $stmt->bindValue(':visibility', $request->getQueryParam('visibility'));
+        $stmt->bindValue(':semester', $request->getQueryParam('semester'));
+        $stmt->bindValue(':author_id', $request->getQueryParam('author_id'), PDO::PARAM_INT);
+        $stmt->bindValue(':subject_id', $request->getQueryParam('subject_id'), PDO::PARAM_INT);
         $stmt->bindValue(':query', $query);
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 
@@ -56,7 +55,6 @@ $app->group('/exams', function() {
 
 	$this->get('/distinct', function($request, $response, $args) {
 		$mysql = init();
-		$query_params = $request->getQueryParams();
 
 		$stmt_authors = $mysql->prepare(
 		    "SELECT DISTINCT u.*
@@ -65,7 +63,7 @@ $app->group('/exams', function() {
 			WHERE e.visibility = IFNULL(:visibility, e.visibility)
 		    ORDER BY u.username ASC"
 		);
-		$stmt_authors->bindValue(':visibility', $query_params['visibility']);
+		$stmt_authors->bindValue(':visibility', $request->getQueryParam('visibility'));
 
 		$stmt_semesters = $mysql->prepare(
 		    "SELECT DISTINCT e.semester
@@ -73,7 +71,7 @@ $app->group('/exams', function() {
 			WHERE e.visibility = IFNULL(:visibility, e.visibility)
 		    ORDER BY e.semester ASC"
 		);
-		$stmt_semesters->bindValue(':visibility', $query_params['visibility']);
+		$stmt_semesters->bindValue(':visibility', $request->getQueryParam('visibility'));
 
 		$stmt_subjects = $mysql->prepare(
 		    "SELECT DISTINCT s.*
@@ -120,9 +118,8 @@ $app->group('/exams', function() {
 
 	$this->get('/abstract/{user_id}', function($request, $response, $args) {
 		$mysql = init();
-		$query_params = $request->getQueryParams();
 
-		$limit = $query_params['limit'] ? intval($query_params['limit']) : 10000;
+		$limit = intval($request->getQueryParam('limit', 10000));
 
 		$stmt_user = $mysql->prepare(
 		    "SELECT *
@@ -161,10 +158,9 @@ $app->group('/exams', function() {
 
 	$this->get('/action/prepare/{exam_id}', function($request, $response, $args) {
 		$mysql = init();
-		$query_params = $request->getQueryParams();
 
 		$order_sql = '';
-		if ($query_params['random']) {
+		if ($request->getQueryParam('random')) {
 			$order_sql = "ORDER BY RAND()";
 		}
 
