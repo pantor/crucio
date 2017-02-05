@@ -1,0 +1,38 @@
+<div class="modal-header">
+    <h4 class="modal-title"><i class="fa fa-user fa-fw"></i>{{ $ctrl.user.username }}</h4>
+</div>
+<div class="modal-body">
+    <dl class="dl-horizontal">
+        <dt>Fachsemester</dt>
+        <dd>{{ $ctrl.user.semester }}</dd>
+        <dt>E-Mail-Adresse</dt>
+        <dd><a href="mailto:{{ $ctrl.user.email }}">{{ $ctrl.user.email }}</a></dd>
+
+        <hr>
+
+        <dt>Gruppe</dt>
+        <dd>
+            <div class="btn-group">
+                <label class="btn btn-default" ng-repeat="group in $ctrl.distinctGroups" ng-model="$ctrl.newGroupID" uib-btn-radio="group.group_id" uncheckable>{{ group.name }}</label>
+            </div>
+        </dd>
+
+        <hr>
+
+        <dt>Registriert am</dt>
+        <dd>{{ $ctrl.user.sign_up_date * 1000 | date: 'dd.MM.yyyy' }}</dd>
+        <dt>Zuletzt Angemeldet</dt>
+        <dd><timeago datetime="$ctrl.user.last_sign_in * 1000"></timeago></dd>
+        <dt>Passwort zur&uuml;ckgesetzt</dt>
+        <dd><i class="fa" ng-class="{ 'fa-check': $ctrl.user.LostpasswordRequest, 'fa-remove': !$ctrl.user.LostpasswordRequest}"></i></dd>
+        <dt>Aktiviert</dt>
+        <dd><i class="fa" ng-class="{ 'fa-check': $ctrl.user.active, 'fa-remove': !$ctrl.user.active}"></i></dd>
+    </dl>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="$ctrl.dismiss({$value: 'cancel'})">Abbrechen</button>
+
+    <button type="button" class="btn btn-primary" ng-click="$ctrl.save()">Speichern</button>
+
+    <button type="button" class="btn btn-danger pull-left" ng-click="$ctrl.deleteUser()">L&ouml;schen</button>
+</div>
