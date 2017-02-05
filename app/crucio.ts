@@ -16,6 +16,7 @@ angular.module('crucioApp', [
       return '<' + name + 'Component></' + name + 'Component>';
     }
 
+    // Use components directly in ui-router@1.0
     const states: angular.ui.IState[] = [
       { name: 'learn', url: '/learn', template: comp('learn') },
       { name: 'learn.overview', url: '/overview', template: comp('learnoverview') },
