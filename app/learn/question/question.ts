@@ -3,29 +3,29 @@ class QuestionController {
   readonly API: APIService;
   Collection: CollectionService;
   $uibModal: angular.ui.bootstrap.IModalService;
+  $window: angular.IWindowService;
   user: Crucio.User;
   questionId: number;
   resetSession: boolean;
+  question: Crucio.Question;
+  comments: Crucio.Comment[];
+  tags: any;
   commentsCollapsed: boolean;
-  $window: angular.IWindowService;
   noAnswer: boolean;
   showExplanation: boolean;
-  collection: any;
+  collection: Crucio.Collection;
   index: number;
-  questionData: any;
+  questionData: Crucio.CollectionListItem;
   length: number;
   preQuestionId: number;
   postQuestionId: number;
-  question: Crucio.Question;
-  comments: any;
-  tags: any;
-  checkedAnswer: any;
-  isAnswerGiven: boolean;
+  checkedAnswer: number;
   correctAnswer: number;
+  isAnswerGiven: boolean;
   isAnswerRight: boolean;
-  commentText: string;
   isAnswerWrong: boolean;
-  wrongAnswer: any;
+  commentText: string;
+  wrongAnswer: number;
 
   constructor(Auth: AuthService, Page: PageService, API: APIService, Collection: CollectionService, $stateParams, $window: angular.IWindowService, $uibModal: angular.ui.bootstrap.IModalService) {
     this.Auth = Auth;
@@ -54,7 +54,7 @@ class QuestionController {
       this.index = -1;
       delete this.collection;
       Collection.remove();
-      this.questionData = {};
+      this.questionData = undefined;
     } else {
       this.collection = this.Collection.get();
       this.index = this.Collection.getIndexOfQuestion(this.questionId);
@@ -90,7 +90,7 @@ class QuestionController {
 
   // If tag field is changed
   updateTags($tag: any): void {
-    const string = this.tags.map(entry => entry.text).join(',');
+    const string: string = this.tags.map(entry => entry.text).join(',');
     const data = { tags: string, question_id: this.questionId, user_id: this.user.user_id };
     this.API.post('tags', data, true);
   }
@@ -140,7 +140,7 @@ class QuestionController {
 
   addComment(): void {
     const now = +new Date() / 1000;
-    const data = {
+    const data: Crucio.Comment = {
       comment: this.commentText,
       question_id: this.questionId,
       reply_to: 0,

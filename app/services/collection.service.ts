@@ -26,7 +26,7 @@ class CollectionService {
     sessionStorage.removeItem('crucioCollection');
   }
 
-  getWorked(): any {
+  getWorked(): Crucio.CollectionListItem[] {
     this.get();
     return this.collection.list.filter(e => e.given_result);
   }
@@ -81,7 +81,7 @@ class CollectionService {
     }
   }
 
-  saveStrike(index: number, strike: any): void {
+  saveStrike(index: number, strike: boolean[]): void {
     if (this.collection && Object.keys(this.collection).length) {
       this.collection.list[index].strike = strike;
       this.set(this.collection);
@@ -95,9 +95,9 @@ class CollectionService {
     }
   }
 
-  prepareExam(examId: number, data: any) {
+  prepareExam(examId: number, data: any): any {
     return this.API.get(`exams/action/prepare/${examId}`, data).then(result => {
-      const collection = { type: 'exam', list: result.data.list, exam_id: examId };
+      const collection: Crucio.Collection = { type: 'exam', list: result.data.list, exam_id: examId };
       this.set(collection);
       return collection;
     });
@@ -105,7 +105,7 @@ class CollectionService {
 
   prepareSubjects(data): any {
     return this.API.get('questions/prepare-subjects', data).then(result => {
-      const collection = { type: 'subjects', list: result.data.list, selection: data.selection };
+      const collection: Crucio.Collection = { type: 'subjects', list: result.data.list, selection: data.selection };
       this.set(collection);
       return collection;
     });
@@ -121,7 +121,7 @@ class CollectionService {
     return -1;
   }
 
-  getQuestionData(index: number): any {
+  getQuestionData(index: number): Crucio.CollectionListItem {
     return this.collection.list[index];
   }
 

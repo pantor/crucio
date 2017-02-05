@@ -1100,7 +1100,7 @@ var AnalysisController = (function () {
             var question = _a[_i];
             if (!question.mark_answer && question.type > 1 && question.given_result > 0) {
                 var correct = (question.correct_answer === question.given_result) ? 1 : 0;
-                if (question.correct_answer === 0 || question.question.type === 1) {
+                if (question.correct_answer === 0 || question.type === 1) {
                     correct = -1;
                 }
                 var data = {
@@ -1371,7 +1371,7 @@ var QuestionController = (function () {
             this.index = -1;
             delete this.collection;
             Collection.remove();
-            this.questionData = {};
+            this.questionData = undefined;
         }
         else {
             this.collection = this.Collection.get();

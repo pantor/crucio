@@ -1,10 +1,11 @@
 declare namespace Crucio {
   interface User {
+    user_id: number;
+    username: string;
     active: number;
     course_id: number;
     email: string;
     group_id: number;
-    group_name?: string;
     highlightExams: number;
     last_sign_in: number;
     password: string;
@@ -14,8 +15,7 @@ declare namespace Crucio {
     showComments: number;
     useAnswers: number;
     useTags: number;
-    user_id: number;
-    username: string;
+    group_name?: string;
   }
 
   interface Exam {
@@ -39,10 +39,13 @@ declare namespace Crucio {
   }
 
   interface Comment {
-    comment_id: number;
+    comment_id?: number;
     comment: string;
     reply_to: number;
     date: number;
+    question_id: number;
+    user_id?: number;
+    username: string;
     question?: string;
     voting?: number;
     user_voting?: number;
@@ -98,10 +101,20 @@ declare namespace Crucio {
     date: any;
   }
 
+  interface CollectionListItem extends Question {
+    question_id: number;
+    mark_answer: number;
+    given_result: number;
+    givenAnswer: number; // Depreceated...
+    show_correct_answer: number; // For analysis
+    strike: boolean[];
+  }
+
   interface Collection {
-    list: any[];
-    exam_id?: number;
-    type: string;
+    list: CollectionListItem[];
+    type: string; // Exam, subjects, (query, tags)
+    exam_id?: number; // Exam
+    selection?: any; // Subjects
   }
 }
 

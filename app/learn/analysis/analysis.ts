@@ -3,7 +3,7 @@ class AnalysisController {
   user: Crucio.User;
   random: number;
   examId: number;
-  workedCollection: any;
+  workedCollection: Crucio.CollectionListItem[];
   count: Crucio.AnalyseCount;
   exam: Crucio.Exam;
 
@@ -18,7 +18,7 @@ class AnalysisController {
     for (const question of Collection.get().list) {
       if (!question.mark_answer && question.type > 1 && question.given_result > 0) {
         let correct = (question.correct_answer === question.given_result) ? 1 : 0;
-        if (question.correct_answer === 0 || question.question.type === 1) {
+        if (question.correct_answer === 0 || question.type === 1) {
           correct = -1;
         }
 
