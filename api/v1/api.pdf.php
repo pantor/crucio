@@ -121,7 +121,7 @@ $app->group('/pdf', function() {
 
             	$pdf->Ln(8);
             }
-            $response->withBody( $pdf->Output('crucio-klausur-'.$exam_id.'.pdf', 'I') );
+            return $response->write( $pdf->Output('crucio-klausur-'.$exam_id.'.pdf', 'I') );
 
         } else if ($args['view'] == 'solution') {
             $pdf->SetFont($font, '', 11);
@@ -157,11 +157,11 @@ $app->group('/pdf', function() {
             	// $pdf->MultiCell(140, 4, utf8_decode($questions[$i]['explanation']));
             	$pdf->Ln(5);
             }
-            $response->withBody( $pdf->Output('crucio-loesungen-'.$exam_id.'.pdf', 'I') );
+            return $response->write( $pdf->Output('crucio-loesungen-'.$exam_id.'.pdf', 'I') );
 
         } else {
             $response = $response->withStatus(404);
-            $response->write('Not found. Neither exam or solution.');
+            return $response->write('Not found. Neither exam or solution.');
         }
     });
 });
