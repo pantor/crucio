@@ -13,7 +13,7 @@ class ExamController {
 
   constructor(
     Page: PageService, Auth: AuthService, API: APIService, Collection: CollectionService,
-    $location: angular.ILocationService, $uibModal: angular.ui.bootstrap.IModalService, $stateParams, $timeout: angular.ITimeoutService, $document, $window
+    $location: angular.ILocationService, $uibModal: angular.ui.bootstrap.IModalService, $stateParams, $timeout: angular.ITimeoutService, $document: angular.IDocumentService, $window: angular.IWindowService
   ) {
     this.API = API;
     this.Collection = Collection;
@@ -30,7 +30,7 @@ class ExamController {
     $document.on('scroll', () => {
       const positionTop = $document.scrollTop();
 
-      const isIdAbovePosition = (i) => {
+      const isIdAbovePosition = (i: number) => {
         const question = angular.element($window.document.getElementById(`id${i}`));
         if (question.prop('offsetTop') > positionTop) {
           $timeout(() => {

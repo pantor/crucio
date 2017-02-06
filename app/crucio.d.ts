@@ -24,6 +24,7 @@ declare namespace Crucio {
     subject_id: number;
     semester: number;
     date: string;
+    answered_questions?: number;
   }
 
   interface OralExam {

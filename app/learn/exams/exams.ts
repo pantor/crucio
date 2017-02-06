@@ -50,7 +50,7 @@ class LearnExamsController {
     });
   }
 
-  resetExam(exam): void {
+  resetExam(exam: Crucio.Exam): void {
     exam.answered_questions = 0;
     this.API.delete(`results/${this.user.user_id}/${exam.exam_id}`, true);
   }

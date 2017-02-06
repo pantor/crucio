@@ -1,6 +1,5 @@
 {
     "compilerOptions": {
-        "noImplicitAny": false,
         "outFile": "crucio.js",
         "removeComments": true,
         "types" : [
