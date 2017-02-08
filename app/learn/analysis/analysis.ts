@@ -1,7 +1,7 @@
 class AnalysisController {
   readonly API: APIService;
+  readonly Collection: CollectionService;
   user: Crucio.User;
-  random: number;
   examId: number;
   workedCollection: Crucio.CollectionListItem[];
   count: Crucio.AnalyseCount;
@@ -9,16 +9,20 @@ class AnalysisController {
 
   constructor(Page: PageService, Auth: AuthService, API: APIService, Collection: CollectionService) {
     this.API = API;
+    this.Collection = Collection;
 
     Page.setTitleAndNav('Analyse | Crucio', 'Learn');
 
     this.user = Auth.getUser();
 
+    this.workedCollection = this.Collection.getWorked();
+    this.count = this.Collection.analyseCount();
+
     // Post results, but not which are already saved or are free questions
-    for (const question of Collection.get().list) {
-      if (!question.mark_answer && question.type > 1 && question.given_result > 0) {
+    for (const question of this.workedCollection) {
+      if (!question.mark_answer && question.type > 1) {
         let correct = (question.correct_answer === question.given_result) ? 1 : 0;
-        if (question.correct_answer === 0 || question.type === 1) {
+        if (question.correct_answer === 0) {
           correct = -1;
         }
 
@@ -32,25 +36,15 @@ class AnalysisController {
       }
     }
 
-    function getRandom(min: number, max: number): number {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    this.random = getRandom(0, 1000);
-
-    this.examId = Collection.get().exam_id;
-    this.workedCollection = Collection.getWorked();
-    this.count = Collection.analyseCount();
-
-    if (this.examId) {
-      this.API.get(`exams/${this.examId}`).then(result => {
+    if (this.Collection.get().type == 'exam') {
+      this.API.get(`exams/${Collection.get().exam_id}`).then(result => {
         this.exam = result.data.exam;
       });
     }
   }
 
   showCorrectAnswerClicked(index: number) {
-    this.workedCollection[index].show_correct_answer = 1;
+    this.workedCollection[index].mark_answer = 1;
     // this.Collection.saveMarkAnswer(this.index); wrong index
   }
 }

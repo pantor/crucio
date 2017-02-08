@@ -106,8 +106,7 @@ declare namespace Crucio {
     question_id: number;
     mark_answer: number;
     given_result: number;
-    givenAnswer: number; // Depreceated...
-    show_correct_answer: number; // For analysis
+    givenAnswer: number; // Depreceated?
     strike: boolean[];
   }
 

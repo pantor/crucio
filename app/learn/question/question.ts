@@ -118,14 +118,13 @@ class QuestionController {
 
   saveAnswer(givenAnswer: number): void {
     this.questionData.givenAnswer = givenAnswer;
-    this.Collection.saveAnswer(this.index, this.questionData.givenAnswer);
+    this.Collection.saveAnswer(this.index, givenAnswer);
   }
 
   // Colors the given answers and shows the correct solution
   markAnswer(givenAnswer: number): void {
     this.isAnswerGiven = true;
-    const type = this.question.type;
-    if (type > 1) {
+    if (this.question.type > 1) {
       this.correctAnswer = this.question.correct_answer;
       this.checkedAnswer = givenAnswer > 0 ? givenAnswer : this.correctAnswer;
 

@@ -111,12 +111,12 @@
                                         <span ng-bind-html="question.answers[question.given_result - 1]"></span>
                                     </p>
 
-                                    <p class="question-answer strong text-success bg-success" ng-show="question.correct_answer > 0 && question.show_correct_answer == 1 || question.correct_answer == question.given_result">
+                                    <p class="question-answer strong text-success bg-success" ng-show="question.correct_answer > 0 && question.mark_answer == 1 || question.correct_answer == question.given_result">
                                         <span ng-bind-html="question.answers[question.correct_answer - 1]"></span>
                                     </p>
 
                                     <center>
-                                        <button class="btn btn-sm btn-success" ng-click="$ctrl.showCorrectAnswerClicked($index)" ng-show="question.show_correct_answer != 1 && question.correct_answer != question.given_result && question.correct_answer > 0" style="width: 200px;">L&ouml;sung anzeigen</button>
+                                        <button class="btn btn-sm btn-success" ng-click="$ctrl.showCorrectAnswerClicked($index)" ng-show="question.mark_answer != 1 && question.correct_answer != question.given_result && question.correct_answer > 0" style="width: 200px;">L&ouml;sung anzeigen</button>
                                     </center>
                                 </td>
                                 <td style="width: 30px;">
