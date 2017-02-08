@@ -1,17 +1,15 @@
-<h4 class="mbottom-2x">&Uuml;bersicht deiner Klausuren<small></small></h4>
+<h4>&Uuml;bersicht deiner Klausuren</h4>
 
-<div ng-if="!$ctrl.abstractExams.length && $ctrl.ready" class="container-center-align-sm">
+<div ng-if="$ctrl.abstractExams.length && $ctrl.ready" class="container-center-align-sm mbottom-2x">
     <i class="fa fa-pencil"></i>
 
     <hr>
 
     <h3>Hier ist dein Stift.</h3>
     <h5>Leider haben wir keine empfohlenen Klausuren f&uuml;r dich.<br> Du kannst aber links Klausuren heraussuchen und lernen;<br> alle angefangenen Klausuren werden dann hier angezeigt.</h5>
-
-    <br>
 </div>
 
-<div ng-if="$ctrl.abstractExams.length && $ctrl.ready">
+<div ng-if="!$ctrl.abstractExams.length && $ctrl.ready">
     <table class="table table-hover">
         <thead>
             <th><i class="fa fa-flask fa-fw"></i> Fach</th>
@@ -22,9 +20,9 @@
         </thead>
         <tbody>
             <tr ng-repeat="exam in $ctrl.abstractExams">
-                <td id="subject">{{ exam.subject }}</td>
+                <td>{{ exam.subject }}</td>
                 <td>{{ exam.date }}</td>
-                <td id="semester">{{ exam.semester }}</td>
+                <td>{{ exam.semester }}</td>
                 <td class="hidden-xs hidden-sm">{{ exam.answered_questions }} / {{ exam.question_count }}</td>
                 <td style="min-width: 250px;">
                     <div class="btn-group pull-right" role="group">
