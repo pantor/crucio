@@ -43,9 +43,10 @@ class AnalysisController {
     }
   }
 
-  showCorrectAnswerClicked(index: number) {
+  showCorrectAnswerClicked(index: number): void {
     this.workedCollection[index].mark_answer = 1;
-    // this.Collection.saveMarkAnswer(this.index); wrong index
+    const questionId = this.workedCollection[index].question_id;
+    this.Collection.saveMarkAnswer(this.Collection.getIndexOfQuestion(questionId));
   }
 }
 

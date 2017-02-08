@@ -81,10 +81,6 @@
 
                         <uib-progressbar value="($ctrl.currentIndex + 1) / $ctrl.length * 100" type="success"></uib-progressbar>
 
-                        <div class="exam-progress-comment text-success" ng-show="$ctrl.Collection.isHalftime($ctrl.currentIndex)">
-                            Halbzeit!
-                        </div>
-
                         <div class="btn-toolbar" role="toolbar" ng-if="$ctrl.user.group_id == 2 || $ctrl.user.group_id == 3">
                             <div class="btn-group pull-right" role="group">
                                 <a class="btn btn-default" ui-sref="edit-exam({ examId: $ctrl.exam.exam_id, questionId: $ctrl.Collection.getQuestionData($ctrl.currentIndex).question_id })">Bearbeiten</a>

@@ -13,7 +13,6 @@ class QuestionController {
   commentsCollapsed: boolean;
   noAnswer: boolean;
   showExplanation: boolean;
-  collection: Crucio.Collection;
   index: number;
   questionData: Crucio.CollectionListItem;
   length: number;
@@ -51,19 +50,14 @@ class QuestionController {
     this.showExplanation = false;
 
     if (this.resetSession) {
-      this.index = -1;
-      delete this.collection;
       Collection.remove();
-      this.questionData = undefined;
     } else {
-      this.collection = this.Collection.get();
       this.index = this.Collection.getIndexOfQuestion(this.questionId);
       if (this.index > -1) {
-        const list = this.collection.list;
         this.questionData = this.Collection.getQuestionData(this.index);
-        this.length = list.length;
-        this.preQuestionId = this.index > 0 ? list[this.index - 1].question_id : this.questionId;
-        this.postQuestionId = this.index < this.length - 1 ? list[this.index + 1].question_id : this.questionId;
+        this.length = this.Collection.get().list.length;
+        this.preQuestionId = this.index > 0 ? this.Collection.getQuestionData(this.index - 1).question_id : this.questionId;
+        this.postQuestionId = this.index < this.length - 1 ? this.Collection.getQuestionData(this.index + 1).question_id : this.questionId;
       }
     }
 
@@ -98,7 +92,6 @@ class QuestionController {
   // If show solution button is clicked
   showSolution(): void {
     const correctAnswer = this.question.correct_answer;
-    this.checkedAnswer = correctAnswer;
     let correct = (correctAnswer === this.questionData.givenAnswer) ? 1 : 0;
     if (correctAnswer === 0 || this.question.type === 1) {
       correct = -1;
@@ -135,6 +128,10 @@ class QuestionController {
         this.wrongAnswer = givenAnswer;
       }
     }
+  }
+
+  saveStrike(strike: boolean[]): void {
+    this.Collection.saveStrike(this.index, strike);
   }
 
   addComment(): void {

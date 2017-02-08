@@ -18,7 +18,7 @@
                 <div class="form-group showhim" ng-repeat="answer in $ctrl.question.answers track by $index" ng-show="$ctrl.question.type > 1 && answer">
                     <div class="col-sm-offset-1 col-sm-10">
                         <div class="btn-group btn-group-strike hidden-xs">
-                            <button type="button" class="btn btn-default btn-xs showme" ng-model="$ctrl.questionData.strike[$index + 1]" ng-change="$ctrl.Collection.saveStrike($ctrl.index, $ctrl.questionData.strike)" uib-btn-checkbox>
+                            <button type="button" class="btn btn-default btn-xs showme" ng-model="$ctrl.questionData.strike[$index + 1]" ng-change="$ctrl.saveStrike($ctrl.questionData.strike)" uib-btn-checkbox>
                                 <i class="fa fa-fw fa-strikethrough"></i>
                             </button>
                         </div>
@@ -54,14 +54,10 @@
                             <i class="fa fa-fw fa-angle-right"></i> {{ $ctrl.question.topic }}
                         </li>
 
-                        <li class="list-group-item" ng-if="$ctrl.index != -1">
+                        <li class="list-group-item" ng-if="$ctrl.index != undefined">
                             <p><strong>Frage {{ $ctrl.index + 1 }} von {{ $ctrl.length }}</strong></p>
 
                             <uib-progressbar value="($ctrl.index + 1) / $ctrl.length * 100" type="success"></uib-progressbar>
-
-                            <div class="exam-progress-comment text-success" ng-show="$ctrl.Collection.isHalftime($ctrl.currentIndex)">
-                                Halbzeit!
-                            </div>
                         </li>
                     </ul>
                 </div>
