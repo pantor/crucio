@@ -35,7 +35,7 @@ class LearnSubjectsController {
       this.distinctSubjects = result.data.subjects;
     });
 
-    this.API.get('subjects').then(result => {
+    this.API.get('subjects', {has_questions: true}).then(result => {
       this.subjectList = result.data.subjects;
     });
   }

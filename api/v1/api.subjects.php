@@ -5,12 +5,28 @@ $app->group('/subjects', function (){
     $this->get('', function($request, $response, $args) {
         $mysql = init();
 
-        $stmt = $mysql->prepare(
+        /* $stmt = $mysql->prepare(
 		    "SELECT c.*, s.subject_id, s.name as 'subject'
 		    FROM subjects s
 		    LEFT JOIN categories c ON c.subject_id = s.subject_id
             ORDER BY s.name, c.name ASC"
+		); */
+
+        $sql_has_questions = "";
+        if ($request->getQueryParam('has_questions')) {
+            $sql_has_questions = "LEFT JOIN exams e ON e.subject_id = s.subject_id
+            WHERE e.subject_id IS NOT NULL";
+        }
+
+        $stmt = $mysql->prepare(
+		    "SELECT c.*, s.subject_id, s.name as 'subject'
+		    FROM subjects s
+		    LEFT JOIN categories c ON c.subject_id = s.subject_id
+            $sql_has_questions
+            GROUP BY s.subject_id, c.category_id
+            ORDER BY s.name, c.name ASC"
 		);
+
 
 		$categories = getAll($stmt);
 
