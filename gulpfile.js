@@ -18,7 +18,6 @@ var node = 'node_modules/';
 gulp.task('sass', function () {
   return streamqueue({ objectMode: true },
       gulp.src([
-        node + 'angular-loading-bar/build/loading-bar.min.css',
         node + 'bootstrap/dist/css/bootstrap.min.css',
         node + 'font-awesome/css/font-awesome.min.css',
         node + 'angularjs-slider/dist/rzslider.min.css',
@@ -55,7 +54,7 @@ gulp.task('js-vendor', function () {
     node + 'angular-messages/angular-messages.min.js',
     node + 'angular-ui-router/release/angular-ui-router.min.js',
     node + 'angular-scroll/angular-scroll.min.js',
-    node + 'angular-spinner/angular-spinner.min.js',
+    node + 'angular-spinner/dist/angular-spinner.min.js',
     node + 'angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
     node + 'angularjs-slider/dist/rzslider.min.js',
     node + 'ng-tags-input/build/ng-tags-input.min.js',
