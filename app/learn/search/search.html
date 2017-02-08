@@ -68,11 +68,11 @@
 <div class="spinner" us-spinner="{length: 0, radius: 18, color: '#333', shadow: false}" spinner-on="$ctrl.showSpinner" ng-show="$ctrl.showSpinner"></div>
 <div class="spinner-text" ng-show="$ctrl.searchResults.length == 0 && $ctrl.hasSearched">
     <p class="text-muted">
-        <span>Nichts gefunden ;(</span>
+        <span>Nichts gefunden.</span>
     </p>
 </div>
 
-<table class="table" ng-show="$ctrl.searchResults.length > 0">
+<table class="table table-hover" ng-show="$ctrl.searchResults.length > 0">
     <thead>
         <th></th>
         <th>Semester</th>
