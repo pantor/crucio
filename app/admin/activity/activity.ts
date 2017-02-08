@@ -37,7 +37,7 @@ class AdminActivityController {
       examNew: this.showActivity.examNew | 0,
       examUpdate: this.showActivity.examUpdate | 0,
     };
-    this.API.get('stats/activities', showActivityBoolean, true).then(result => {
+    this.API.get('stats/activities', showActivityBoolean).then(result => {
       this.activities = result.data.activities;
     });
   }

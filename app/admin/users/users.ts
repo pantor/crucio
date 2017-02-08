@@ -55,7 +55,7 @@ class AdminUsersController {
     }
 
     const data = { group_id: groupId };
-    this.API.put(`users/${userId}/group`, data, true);
+    this.API.put(`users/${userId}/group`, data);
   }
 
   isToday(dateString: any, hourDiff: number = 0): boolean {

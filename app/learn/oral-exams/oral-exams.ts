@@ -31,7 +31,7 @@ class LearnOralExamsController {
         query: this.oralExamSearch.query,
         limit: 200,
       };
-      this.API.get('oral_exams', data, true).then(result => {
+      this.API.get('oral_exams', data).then(result => {
         this.oralExams = result.data.oral_exams;
 
         this.hasSearched = true;

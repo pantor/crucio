@@ -41,7 +41,7 @@ class UserController {
       current_password: this.oldPassword,
       password: this.newPassword,
     };
-    this.API.put(`users/${this.user.user_id}/account`, data, true).then(result => {
+    this.API.put(`users/${this.user.user_id}/account`, data).then(result => {
       if (result.data.status) {
         this.Auth.setUser(this.user);
       } else {
@@ -61,7 +61,7 @@ class UserController {
       useAnswers: this.user.useAnswers,
       useTags: this.user.useTags,
     };
-    this.API.put(`users/${this.user.user_id}/settings`, dataSettings, true).then(result => {
+    this.API.put(`users/${this.user.user_id}/settings`, dataSettings).then(result => {
       if (result.data.status) {
         this.Auth.setUser(this.user);
       } else {

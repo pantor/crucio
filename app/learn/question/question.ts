@@ -92,7 +92,7 @@ class QuestionController {
   updateTags($tag: any): void {
     const string: string = this.tags.map(entry => entry.text).join(',');
     const data = { tags: string, question_id: this.questionId, user_id: this.user.user_id };
-    this.API.post('tags', data, true);
+    this.API.post('tags', data);
   }
 
   // If show solution button is clicked
@@ -110,7 +110,7 @@ class QuestionController {
       user_id: this.user.user_id,
       given_result: this.questionData.givenAnswer,
     };
-    this.API.post('results', data, true);
+    this.API.post('results', data);
 
     this.Collection.saveMarkAnswer(this.index);
     this.markAnswer(this.questionData.givenAnswer);
@@ -165,7 +165,7 @@ class QuestionController {
   changeUserVoting(comment: Crucio.Comment, change: number): void {
     comment.user_voting = Math.min(Math.max(comment.user_voting + change, -1), 1);
     const data = { user_voting: comment.user_voting };
-    this.API.post(`comments/${comment.comment_id}/user/${this.user.user_id}`, data, true);
+    this.API.post(`comments/${comment.comment_id}/user/${this.user.user_id}`, data);
   }
 
   openImageModal(): void {

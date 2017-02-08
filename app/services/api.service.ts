@@ -13,19 +13,19 @@ class APIService {
     return data;
   }
 
-  get(path: string, data: any = {}, ignoreLoadingBar: boolean = false) {
+  get(path: string, data: any = {}) {
     return this.$http.get(this.base + path, { params: this.sanitize(data) });
   }
 
-  post(path: string, data: any, ignoreLoadingBar: boolean = false) {
+  post(path: string, data: any) {
     return this.$http.post(this.base + path, this.sanitize(data));
   }
 
-  put(path: string, data: any, ignoreLoadingBar: boolean = false) {
+  put(path: string, data: any) {
     return this.$http.put(this.base + path, this.sanitize(data));
   }
 
-  delete(path: string, data: any = {}, ignoreLoadingBar: boolean = false) {
+  delete(path: string, data: any = {}) {
     return this.$http.delete(this.base + path, { params: this.sanitize(data) });
   }
 }

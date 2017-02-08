@@ -38,7 +38,7 @@ class LearnSearchController {
         visibility: 1,
         limit: this.limit,
       };
-      this.API.get('questions', data, true).then(result => {
+      this.API.get('questions', data).then(result => {
         this.searchResults = result.data.result;
 
         this.showSpinner = false;

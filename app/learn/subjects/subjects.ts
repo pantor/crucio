@@ -42,7 +42,7 @@ class LearnSubjectsController {
 
   loadNumberQuestions(): void {
     const data = { selection: this.selection };
-    this.API.get('questions/count', data, true).then(result => {
+    this.API.get('questions/count', data).then(result => {
       this.numberQuestionsInSelection = result.data.count;
 
       const sliderMax = Math.min(this.numberQuestionsInSelection, 500);
