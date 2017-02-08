@@ -41,7 +41,7 @@
 
     <tbody ng-repeat="comment_array in $ctrl.questionsByComment">
         <tr ng-repeat="c in comment_array">
-            <td ng-show="$index==0" rowspan="{{ comment_array.length }}" style="min-width:140px;">
+            <td rowspan="{{ comment_array.length }}" style="min-width:140px;" ng-if="$first">
                 <span ng-bind-html="c.question"></span>
             </td>
             <td>{{ c.username }}</td>

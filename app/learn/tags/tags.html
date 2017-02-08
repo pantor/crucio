@@ -22,17 +22,12 @@
         </thead>
 
         <tbody ng-repeat="(tag, tag_array) in $ctrl.questionsByTag">
-            <tr>
-                <td rowspan="{{tag_array.length}}" style="min-width:140px;">
+            <tr ng-repeat="q in tag_array">
+                <td rowspan="{{ tag_array.length }}" style="min-width:140px;" ng-if="$first">
                     <span class="tags tag-item pull-left">
                         {{ tag }}
                     </span>
                 </td>
-                <td>{{ tag_array[0].subject }}</td>
-                <td><span ng-bind-html="tag_array[0].question"></span></td>
-                <td><a ui-sref="question({ questionId: tag_array[0].question_id, resetSession: 1 })"><i class="fa fa-chevron-right"></i></a></td>
-            </tr>
-            <tr ng-repeat="q in tag_array" ng-show="$index > 0">
                 <td>{{ q.subject }}</td>
                 <td><span ng-bind-html="q.question"></span></td>
                 <td><a ui-sref="question({ questionId: q.question_id, resetSession: 1 })"><i class="fa fa-chevron-right"></i></a></td>
