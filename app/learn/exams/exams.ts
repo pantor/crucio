@@ -44,10 +44,14 @@ class LearnExamsController {
   }
 
   learnExam(examId: number): void {
-    const data = { random: false };
+    const data = { random: 0 };
     this.Collection.prepareExam(examId, data).then(result => {
-      this.$state.go('/question', {questionId: result.list[0].question_id});
+      this.$state.go('question', {questionId: result.list[0].question_id});
     });
+  }
+
+  learnExamView(examId: number): void {
+    this.$state.go('exam', {examId: examId});
   }
 
   resetExam(exam: Crucio.Exam): void {

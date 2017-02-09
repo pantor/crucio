@@ -1,7 +1,7 @@
 class ExamController {
   readonly API: APIService;
   Collection: CollectionService;
-  $location: angular.ILocationService;
+  $state: angular.ui.IStateService;
   $document: any;
   $uibModal: angular.ui.bootstrap.IModalService;
   user: Crucio.User;
@@ -13,11 +13,11 @@ class ExamController {
 
   constructor(
     Page: PageService, Auth: AuthService, API: APIService, Collection: CollectionService,
-    $location: angular.ILocationService, $uibModal: angular.ui.bootstrap.IModalService, $stateParams, $timeout: angular.ITimeoutService, $document: angular.IDocumentService, $window: angular.IWindowService
+    $state: angular.ui.IStateService, $uibModal: angular.ui.bootstrap.IModalService, $stateParams, $timeout: angular.ITimeoutService, $document: angular.IDocumentService, $window: angular.IWindowService
   ) {
     this.API = API;
     this.Collection = Collection;
-    this.$location = $location;
+    this.$state = $state;
     this.$document = $document;
     this.$uibModal = $uibModal;
 
@@ -69,7 +69,7 @@ class ExamController {
   }
 
   handExam(): void {
-    this.$location.path('/analysis').search('id', null);
+    this.$state.go('analysis');
   }
 
   openImageModal(fileName: string): void {

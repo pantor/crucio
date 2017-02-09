@@ -16,9 +16,33 @@ class CollectionService {
     return this.collection;
   }
 
-  set(collection: Crucio.Collection): void {
+  private set(collection: Crucio.Collection): void {
     this.collection = collection;
     sessionStorage.crucioCollection = angular.toJson(collection);
+  }
+
+  prepareExam(examId: number, data: any): any {
+    return this.API.get(`exams/action/prepare/${examId}`, data).then(result => {
+      const collection: Crucio.Collection = { type: 'exam', list: result.data.list, exam_id: examId };
+      this.set(collection);
+      return collection;
+    });
+  }
+
+  prepareSubjects(data): any {
+    return this.API.get('questions/prepare-subjects', data).then(result => {
+      const collection: Crucio.Collection = { type: 'subjects', list: result.data.list, selection: data.selection };
+      this.set(collection);
+      return collection;
+    });
+  }
+
+  prepareTag(tag: string): any {
+
+  }
+
+  prepareQuery(query: string): any {
+
   }
 
   remove(): void {
@@ -93,22 +117,6 @@ class CollectionService {
       this.collection.list[index].mark_answer = 1;
       this.set(this.collection);
     }
-  }
-
-  prepareExam(examId: number, data: any): any {
-    return this.API.get(`exams/action/prepare/${examId}`, data).then(result => {
-      const collection: Crucio.Collection = { type: 'exam', list: result.data.list, exam_id: examId };
-      this.set(collection);
-      return collection;
-    });
-  }
-
-  prepareSubjects(data): any {
-    return this.API.get('questions/prepare-subjects', data).then(result => {
-      const collection: Crucio.Collection = { type: 'subjects', list: result.data.list, selection: data.selection };
-      this.set(collection);
-      return collection;
-    });
   }
 
   getIndexOfQuestion(questionId: number): number {

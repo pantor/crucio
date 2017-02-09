@@ -1364,12 +1364,12 @@ angular.module('crucioApp').component('learncommentscomponent', {
     controller: LearnCommentsController
 });
 var ExamController = (function () {
-    ExamController.$inject = ["Page", "Auth", "API", "Collection", "$location", "$uibModal", "$stateParams", "$timeout", "$document", "$window"];
-    function ExamController(Page, Auth, API, Collection, $location, $uibModal, $stateParams, $timeout, $document, $window) {
+    ExamController.$inject = ["Page", "Auth", "API", "Collection", "$state", "$uibModal", "$stateParams", "$timeout", "$document", "$window"];
+    function ExamController(Page, Auth, API, Collection, $state, $uibModal, $stateParams, $timeout, $document, $window) {
         var _this = this;
         this.API = API;
         this.Collection = Collection;
-        this.$location = $location;
+        this.$state = $state;
         this.$document = $document;
         this.$uibModal = $uibModal;
         Page.setTitleAndNav('Klausur | Crucio', 'Learn');
@@ -1409,7 +1409,7 @@ var ExamController = (function () {
         });
     };
     ExamController.prototype.handExam = function () {
-        this.$location.path('/analysis').search('id', null);
+        this.$state.go('analysis');
     };
     ExamController.prototype.openImageModal = function (fileName) {
         this.$uibModal.open({
@@ -1455,10 +1455,13 @@ var LearnExamsController = (function () {
     };
     LearnExamsController.prototype.learnExam = function (examId) {
         var _this = this;
-        var data = { random: false };
+        var data = { random: 0 };
         this.Collection.prepareExam(examId, data).then(function (result) {
-            _this.$state.go('/question', { questionId: result.list[0].question_id });
+            _this.$state.go('question', { questionId: result.list[0].question_id });
         });
+    };
+    LearnExamsController.prototype.learnExamView = function (examId) {
+        this.$state.go('exam', { examId: examId });
     };
     LearnExamsController.prototype.resetExam = function (exam) {
         exam.answered_questions = 0;
@@ -1506,12 +1509,12 @@ angular.module('crucioApp').component('learnoralexamscomponent', {
     controller: LearnOralExamsController
 });
 var LearnOverviewController = (function () {
-    LearnOverviewController.$inject = ["Auth", "API", "Collection", "$scope", "$location", "$timeout"];
-    function LearnOverviewController(Auth, API, Collection, $scope, $location, $timeout) {
+    LearnOverviewController.$inject = ["Auth", "API", "Collection", "$scope", "$state", "$timeout"];
+    function LearnOverviewController(Auth, API, Collection, $scope, $state, $timeout) {
         var _this = this;
         this.API = API;
         this.Collection = Collection;
-        this.$location = $location;
+        this.$state = $state;
         this.user = Auth.getUser();
         this.API.get('exams/distinct', { visibility: 1 }).then(function (result) {
             _this.distinctSemesters = result.data.semesters;
@@ -1529,10 +1532,13 @@ var LearnOverviewController = (function () {
     };
     LearnOverviewController.prototype.learnExam = function (examId) {
         var _this = this;
-        var data = { random: false };
+        var data = { random: 0 };
         this.Collection.prepareExam(examId, data).then(function (result) {
-            _this.$location.path('/question').search('questionId', result.list[0].question_id);
+            _this.$state.go('question', { questionId: result.list[0].question_id });
         });
+    };
+    LearnOverviewController.prototype.learnExamView = function (examId) {
+        this.$state.go('exam', { examId: examId });
     };
     LearnOverviewController.prototype.resetExam = function (exam) {
         exam.answered_questions = 0;
@@ -1909,6 +1915,26 @@ var CollectionService = (function () {
         this.collection = collection;
         sessionStorage.crucioCollection = angular.toJson(collection);
     };
+    CollectionService.prototype.prepareExam = function (examId, data) {
+        var _this = this;
+        return this.API.get("exams/action/prepare/" + examId, data).then(function (result) {
+            var collection = { type: 'exam', list: result.data.list, exam_id: examId };
+            _this.set(collection);
+            return collection;
+        });
+    };
+    CollectionService.prototype.prepareSubjects = function (data) {
+        var _this = this;
+        return this.API.get('questions/prepare-subjects', data).then(function (result) {
+            var collection = { type: 'subjects', list: result.data.list, selection: data.selection };
+            _this.set(collection);
+            return collection;
+        });
+    };
+    CollectionService.prototype.prepareTag = function (tag) {
+    };
+    CollectionService.prototype.prepareQuery = function (query) {
+    };
     CollectionService.prototype.remove = function () {
         delete this.collection;
         sessionStorage.removeItem('crucioCollection');
@@ -1969,22 +1995,6 @@ var CollectionService = (function () {
             this.collection.list[index].mark_answer = 1;
             this.set(this.collection);
         }
-    };
-    CollectionService.prototype.prepareExam = function (examId, data) {
-        var _this = this;
-        return this.API.get("exams/action/prepare/" + examId, data).then(function (result) {
-            var collection = { type: 'exam', list: result.data.list, exam_id: examId };
-            _this.set(collection);
-            return collection;
-        });
-    };
-    CollectionService.prototype.prepareSubjects = function (data) {
-        var _this = this;
-        return this.API.get('questions/prepare-subjects', data).then(function (result) {
-            var collection = { type: 'subjects', list: result.data.list, selection: data.selection };
-            _this.set(collection);
-            return collection;
-        });
     };
     CollectionService.prototype.getIndexOfQuestion = function (questionId) {
         this.get();
