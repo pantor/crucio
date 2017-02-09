@@ -37,7 +37,7 @@ gulp.task('tsc', function () {
   tsProject.src()
     .pipe(tsProject())
     .pipe(ngAnnotate())
-    // .pipe(uglify())
+    .pipe(uglify())
     .pipe(gulp.dest('public/js'));
 });
 
