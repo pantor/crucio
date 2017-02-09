@@ -112,6 +112,7 @@ class CollectionService {
   }
 
   getIndexOfQuestion(questionId: number): number {
+    this.get();
     // this.index = this.collection.list.findIndex(e => e.question_id === this.questionId);
     for (let i = 0; i < this.collection.list.length; i++) {
       if (this.collection.list[i].question_id === questionId) {
@@ -122,6 +123,7 @@ class CollectionService {
   }
 
   getQuestionData(index: number): Crucio.CollectionListItem {
+    this.get();
     return this.collection.list[index];
   }
 

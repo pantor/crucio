@@ -50,7 +50,7 @@ class QuestionController {
     this.showExplanation = false;
 
     if (this.resetSession) {
-      Collection.remove();
+      this.Collection.remove();
     } else {
       this.index = this.Collection.getIndexOfQuestion(this.questionId);
       if (this.index > -1) {
