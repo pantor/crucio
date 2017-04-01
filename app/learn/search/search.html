@@ -12,7 +12,7 @@
 
             <div class="panel-body">
                 <div class="row mmtop">
-                    <div class="col-sm-4">
+                    <div class="col-sm-12">
                         <div class="btn-toolbar" role="toolbar">
                             <div class="btn-group mtop" uib-dropdown>
                                 <button class="btn btn-default" type="button" uib-dropdown-toggle>
@@ -45,19 +45,21 @@
                                     <li><a href ng-click="$ctrl.questionSearch.subject = null; $ctrl.searchQuestion()">Alle F&auml;cher</a></li>
                                 </ul>
                             </div>
+
+                            <!--button class="btn btn-success mtop pull-right" ng-show="$ctrl.searchResults.length > 0" type="button" ng-click="$ctrl.learnQuery()">
+                                Lernen
+                            </button-->
+
+                            <form class="input-group mtop pull-right" style="width: 400px;" submit="$ctrl.searchQuestion()">
+                                <input class="form-control" type="text" ng-model="$ctrl.questionSearch.query" placeholder="...">
+
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" ng-click="$ctrl.searchQuestion()">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+                            </form>
                         </div>
-                    </div>
-
-                    <div class="col-sm-8">
-                        <form class="input-group mtop" submit="$ctrl.searchQuestion()">
-                            <input class="form-control" type="text" ng-model="$ctrl.questionSearch.query" placeholder="...">
-
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" ng-click="$ctrl.searchQuestion()">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                        </form>
                     </div>
                 </div>
             </div>

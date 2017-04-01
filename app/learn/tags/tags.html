@@ -10,6 +10,38 @@
 </div>
 
 <div ng-if="$ctrl.tags.length">
+
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group mtop" uib-dropdown>
+                    <button class="btn btn-default" type="button" uib-dropdown-toggle>
+                        <span ng-show="$ctrl.selectedTag">{{ $ctrl.selectedTag }}</span>
+                        <span ng-show="!$ctrl.selectedTag">Alle Markierungen</span>
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+
+                    <ul class="dropdown-menu" role="menu">
+                        <li ng-repeat="(t, tag_array) in $ctrl.questionsByTag">
+                            <a href ng-click="$ctrl.selectedTag = t">{{ t }}</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href ng-click="$ctrl.selectedTag = null">Alle Markierungen</a></li>
+                    </ul>
+                </div>
+
+                <div class="btn-group mtop">
+                    <button type="button" class="btn btn-success" ng-click="$ctrl.learnSelectedTag()">
+                        Lernen
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
     <table class="table table-hover">
         <thead>
             <th style="min-width:120px;"><i class="fa fa-fw fa-tag"></i> Markierung</th>

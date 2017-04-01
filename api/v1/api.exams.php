@@ -165,17 +165,19 @@ $app->group('/exams', function() {
 		}
 
 		$stmt = $mysql->prepare(
-		    "SELECT DISTINCT *
+		    "SELECT DISTINCT question_id
 		    FROM questions
 		    WHERE exam_id = :exam_id
 		    $order_sql"
         );
         $stmt->bindValue(':exam_id', $args['exam_id'], PDO::PARAM_INT);
 
-		$data['list'] = getAll($stmt);
-		foreach ($data['list'] as &$question) {
-            $question['answers'] = unserialize($question['answers']);
-        }
+		$collection['list'] = getAll($stmt);
+        // $collection['questions'] = undefined;
+        $collection['type'] = 'exam';
+        $collection['tag'] = $args['exam_id'];
+
+        $data['collection'] = $collection;
 		return createResponse($response, $data);
 	});
 

@@ -1,7 +1,6 @@
 class LearnSubjectsController {
   readonly API: APIService;
   readonly Collection: CollectionService;
-  $location: any;
   readonly user: Crucio.User;
   selection: any;
   selectedQuestionNumber: number;
@@ -13,10 +12,9 @@ class LearnSubjectsController {
   distinctSubjects: any;
   subjectList: Crucio.Subject[];
 
-  constructor(Auth: AuthService, API: APIService, Collection: CollectionService, $scope: angular.IScope, $location: angular.ILocationService, $timeout: angular.ITimeoutService) {
+  constructor(Auth: AuthService, API: APIService, Collection: CollectionService, $scope: angular.IScope, $timeout: angular.ITimeoutService) {
     this.API = API;
     this.Collection = Collection;
-    this.$location = $location;
 
     this.user = Auth.getUser();
 
@@ -60,9 +58,7 @@ class LearnSubjectsController {
 
   learnSubjects(): void {
     const data = { selection: this.selection, limit: this.selectedQuestionNumber };
-    this.Collection.prepareSubjects(data).then(result => {
-      this.$location.path('/question').search('questionId', result.list[0].question_id);
-    });
+    this.Collection.learn('subjects', 'question', data);
   }
 }
 

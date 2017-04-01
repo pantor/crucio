@@ -1,13 +1,13 @@
 <div class="container">
     <div class="row mtop-navbar-row">
         <div class="col-sm-12 col-md-4 visible-xs visible-sm">
-            <div class="panel panel-default" ng-show="$ctrl.exam">
-                <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-fw fa-flask"></i> {{ $ctrl.exam.subject }}</h3></div>
+            <div class="panel panel-default" ng-if="$ctrl.currentQuestion()">
+                <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-fw fa-flask"></i> {{ $ctrl.currentQuestion().subject }}</h3></div>
                 <ul class="list-group">
-                    <li class="list-group-item">{{ $ctrl.exam.semester }}. Semester<span ng-show="$ctrl.exam.sort">, {{ $ctrl.exam.sort }}</span></li>
-                    <li class="list-group-item"><i class="fa fa-fw fa-calendar"></i> {{ $ctrl.exam.date }}</li>
-                    <li class="list-group-item" ng-show="$ctrl.exam.professor"><i class="fa fa-fw fa-user-md"></i> {{ $ctrl.exam.professor }}</li>
-                    <li class="list-group-item" ng-show="$ctrl.exam.notes"><i class="fa fa-fw fa-pencil-square-o"></i> {{ $ctrl.exam.notes }}</li>
+                    <li class="list-group-item">{{ $ctrl.currentQuestion().semester }}. Semester<span ng-show="$ctrl.currentQuestion().sort">, {{ $ctrl.currentQuestion().sort }}</span></li>
+                    <li class="list-group-item"><i class="fa fa-fw fa-calendar"></i> {{ $ctrl.currentQuestion().date }}</li>
+                    <li class="list-group-item" ng-show="$ctrl.currentQuestion().professor"><i class="fa fa-fw fa-user-md"></i> {{ $ctrl.currentQuestion().professor }}</li>
+                    <li class="list-group-item" ng-show="$ctrl.currentQuestion().notes"><i class="fa fa-fw fa-pencil-square-o"></i> {{ $ctrl.currentQuestion().notes }}</li>
 
                     <li class="list-group-item">
                         <div class="btn-toolbar" role="toolbar">
@@ -17,18 +17,18 @@
                                 </button>
 
                                 <ul class="dropdown-menu" role="menu">
-                                    <li ng-class="{'disabled': $ctrl.exam.file_name == ''}">
-                                        <a href="/files/{{ $ctrl.exam.file_name }}" target="_self" ng-if="$ctrl.exam.file_name != ''">Originaldokument</a>
-                                        <a ng-if="$ctrl.exam.file_name == ''">Originaldokument</a>
+                                    <li ng-class="{'disabled': $ctrl.currentQuestion().file_name == ''}">
+                                        <a href="/files/{{ $ctrl.currentQuestion().file_name }}" target="_self" ng-if="$ctrl.currentQuestion().file_name != ''">Originaldokument</a>
+                                        <a ng-if="$ctrl.currentQuestion().file_name == ''">Originaldokument</a>
                                     </li>
 
-                                    <li><a href="/api/v1/pdf/exam/{{ $ctrl.exam.exam_id }}" target="_self">Klausur als PDF</a></li>
-                                    <li><a href="/api/v1/pdf/solution/{{ $ctrl.exam.exam_id }}" target="_self">L&ouml;sungen als PDF</a></li>
+                                    <li><a href="/api/v1/pdf/exam/{{ $ctrl.currentQuestion().exam_id }}" target="_self">Klausur als PDF</a></li>
+                                    <li><a href="/api/v1/pdf/solution/{{ $ctrl.currentQuestion().exam_id }}" target="_self">L&ouml;sungen als PDF</a></li>
                                 </ul>
                             </div>
 
                             <div class="btn-group pull-right" role="group">
-                                <button type="button" class="btn btn-danger" ng-click="$ctrl.handExam()">Klausur abgeben</button>
+
                             </div>
                         </div>
                     </li>
@@ -37,7 +37,7 @@
         </div>
 
         <div class="col-sm-12 col-md-8 mbottom-3x">
-            <div ng-repeat="q in ::$ctrl.Collection.get().list" id="{{ $index + 1 }}">
+            <div ng-repeat="q in ::$ctrl.Collection.get().questions" id="{{ $index + 1 }}">
                 <div class="form-horizontal" id="id{{ $index }}">
                     <blockquote>
                         <p>
@@ -68,13 +68,13 @@
         </div>
 
         <div class="col-md-4 hidden-xs hidden-sm">
-            <div class="panel panel-default" ng-show="$ctrl.exam" style="position:fixed; width:300px;">
-                <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-fw fa-flask"></i> {{ $ctrl.exam.subject }}</h3></div>
+            <div class="panel panel-default" ng-if="$ctrl.currentQuestion()" style="position:fixed; width:300px;">
+                <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-fw fa-flask"></i> {{ $ctrl.currentQuestion().subject }}</h3></div>
                 <ul class="list-group">
-                    <li class="list-group-item">{{ $ctrl.exam.semester }}. Semester<span ng-show="$ctrl.exam.sort">, {{ $ctrl.exam.sort }}</span></li>
-                    <li class="list-group-item"><i class="fa fa-fw fa-calendar"></i> {{ $ctrl.exam.date }}</li>
-                    <li class="list-group-item" ng-show="$ctrl.exam.professor"><i class="fa fa-fw fa-user-md"></i> {{ $ctrl.exam.professor }}</li>
-                    <li class="list-group-item" ng-show="$ctrl.exam.notes"><i class="fa fa-fw fa-pencil-square-o"></i> {{ $ctrl.exam.notes }}</li>
+                    <li class="list-group-item">{{ $ctrl.currentQuestion().semester }}. Semester<span ng-show="$ctrl.currentQuestion().sort">, {{ $ctrl.currentQuestion().sort }}</span></li>
+                    <li class="list-group-item"><i class="fa fa-fw fa-calendar"></i> {{ $ctrl.currentQuestion().date }}</li>
+                    <li class="list-group-item" ng-show="$ctrl.currentQuestion().professor"><i class="fa fa-fw fa-user-md"></i> {{ $ctrl.currentQuestion().professor }}</li>
+                    <li class="list-group-item" ng-show="$ctrl.currentQuestion().notes"><i class="fa fa-fw fa-pencil-square-o"></i> {{ $ctrl.currentQuestion().notes }}</li>
 
                     <li class="list-group-item">
                         <p class="strong">Frage {{ $ctrl.currentIndex + 1 }} von {{ $ctrl.length }}</p>
@@ -83,7 +83,7 @@
 
                         <div class="btn-toolbar" role="toolbar" ng-if="$ctrl.user.group_id == 2 || $ctrl.user.group_id == 3">
                             <div class="btn-group pull-right" role="group">
-                                <a class="btn btn-default" ui-sref="edit-exam({ examId: $ctrl.exam.exam_id, questionId: $ctrl.Collection.getQuestionData($ctrl.currentIndex).question_id })">Bearbeiten</a>
+                                <a class="btn btn-default" ui-sref="edit-exam({ examId: $ctrl.currentQuestion().exam_id, questionId: $ctrl.Collection.getQuestionData($ctrl.currentIndex).question_id })">Bearbeiten</a>
                             </div>
                         </div>
                     </li>
@@ -98,13 +98,13 @@
                                 </button>
 
                                 <ul class="dropdown-menu" role="menu">
-                                    <li ng-class="{'disabled': $ctrl.exam.file_name == ''}">
-                                        <a href="/files/{{ $ctrl.exam.file_name }}" target="_self" ng-if="$ctrl.exam.file_name != ''">Originaldokument</a>
-                                        <a ng-if="$ctrl.exam.file_name == ''">Originaldokument</a>
+                                    <li ng-class="{'disabled': $ctrl.currentQuestion().file_name == ''}">
+                                        <a href="/files/{{ $ctrl.currentQuestion().file_name }}" target="_self" ng-if="$ctrl.currentQuestion().file_name != ''">Originaldokument</a>
+                                        <a ng-if="$ctrl.currentQuestion().file_name == ''">Originaldokument</a>
                                     </li>
 
-                                    <li><a href="/api/v1/pdf/exam/{{ $ctrl.exam.exam_id }}" target="_self">Klausur als PDF</a></li>
-                                    <li><a href="/api/v1/pdf/solution/{{ $ctrl.exam.exam_id }}" target="_self">L&ouml;sungen als PDF</a></li>
+                                    <li><a href="/api/v1/pdf/exam/{{ $ctrl.currentQuestion().exam_id }}" target="_self">Klausur als PDF</a></li>
+                                    <li><a href="/api/v1/pdf/solution/{{ $ctrl.currentQuestion().exam_id }}" target="_self">L&ouml;sungen als PDF</a></li>
                                 </ul>
                             </div>
 

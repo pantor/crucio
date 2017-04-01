@@ -103,7 +103,7 @@ $app->group('/questions', function() {
         }
 
 		$stmt = $mysql->prepare(
-		    "SELECT q.*, c.name AS 'topic'
+		    "SELECT q.question_id
 		    FROM questions q
 		    INNER JOIN exams e ON e.exam_id = q.exam_id
             LEFT JOIN categories c ON q.category_id = c.category_id
@@ -116,12 +116,12 @@ $app->group('/questions', function() {
         }
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 
-        $list = getAll($stmt);
-        foreach ($list as &$question) {
-            $question['answers'] = unserialize($question['answers']);
-        }
+		$collection['list'] = getAll($stmt);;
+        // $collection['questions'] = [];
+        $collection['type'] = 'subjects';
+        $collection['selection'] = $selection;
 
-		$data['list'] = $list;
+        $data['collection'] = $collection;
 	    return createResponse($response, $data);
     });
 
@@ -148,8 +148,11 @@ $app->group('/questions', function() {
         $question_id_list_sql_order = rtrim($question_id_list_sql_order, ', ');
 
         $stmt = $mysql->prepare(
-		    "SELECT q.*
+		    "SELECT q.*, e.*, c.name AS 'topic', s.name AS 'subject'
 		    FROM questions q
+            INNER JOIN exams e ON e.exam_id = q.exam_id
+            LEFT JOIN categories c ON q.category_id = c.category_id
+            INNER JOIN subjects s ON s.subject_id = e.subject_id
             WHERE q.question_id IN ($question_id_list_sql)
             ORDER BY FIELD(q.question_id, $question_id_list_sql_order)"
 		);

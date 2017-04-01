@@ -1,13 +1,11 @@
 class ExamController {
   readonly API: APIService;
-  Collection: CollectionService;
-  $state: angular.ui.IStateService;
-  $document: any;
-  $uibModal: angular.ui.bootstrap.IModalService;
-  user: Crucio.User;
-  examId: number;
+  readonly Collection: CollectionService;
+  readonly $state: angular.ui.IStateService;
+  readonly $document: any;
+  readonly $uibModal: angular.ui.bootstrap.IModalService;
+  readonly user: Crucio.User;
   currentIndex: number;
-  exam: Crucio.Exam;
   length: number;
   questions: Crucio.Question[];
 
@@ -24,7 +22,9 @@ class ExamController {
     Page.setTitleAndNav('Klausur | Crucio', 'Learn');
 
     this.user = Auth.getUser();
-    this.examId = $stateParams.examId;
+    this.Collection.loadQuestions();
+    this.length = this.Collection.getLength();
+
     this.currentIndex = 0;
 
     $document.on('scroll', () => {
@@ -41,7 +41,7 @@ class ExamController {
         return false;
       };
 
-      for (let i = 0; i < this.Collection.get().list.length; i++) {
+      for (let i = 0; i < this.length; i++) {
         if (isIdAbovePosition(i)) {
           break;
         }
@@ -53,19 +53,15 @@ class ExamController {
       }); */
     });
 
-    this.loadExam();
+    /* if (this.Collection.getType() == 'exam') {
+      this.API.get(`exams/${this.Collection.getExamId()}`).then(result => {
+        this.exam = result.data.exam;
+      });
+    } */
   }
 
-  loadExam(): void {
-    this.API.get(`exams/${this.examId}`).then(result => {
-      this.exam = result.data.exam;
-      this.length = result.data.questions.length;
-      this.Collection.set({
-        type: 'exam',
-        exam_id: this.examId,
-        list: result.data.questions,
-      });
-    });
+  currentQuestion(): Crucio.Question {
+    return this.Collection.getQuestion(this.currentIndex);
   }
 
   handExam(): void {

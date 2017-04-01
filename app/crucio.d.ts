@@ -116,9 +116,9 @@ declare namespace Crucio {
     questions: Question[];
     type: string; // Exam, subjects, (query, tag)
     exam_id?: number; // Exam
-    selection?: any; // Subjects
+    selection?: any; // Subjects, Categories
     tag?: string; // Tag
-    query?: string; // Query
+    questionSearch?: any; // Query, Subject, Semester
   }
 }
 

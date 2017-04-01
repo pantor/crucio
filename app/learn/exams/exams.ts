@@ -1,17 +1,15 @@
 class LearnExamsController {
-  API: APIService;
-  Collection: CollectionService;
-  $state: angular.ui.IStateService;
-  user: Crucio.User;
+  readonly API: APIService;
+  readonly Collection: CollectionService;
+  readonly user: Crucio.User;
   examSearch: any;
   exams: Crucio.Exam[];
   distinctSemesters: any;
   distinctSubjects: any;
 
-  constructor(Auth: AuthService, API: APIService, Collection: CollectionService, $scope: angular.IScope, $state: angular.ui.IStateService, $timeout: angular.ITimeoutService) {
+  constructor(Auth: AuthService, API: APIService, Collection: CollectionService, $scope: angular.IScope, $timeout: angular.ITimeoutService) {
     this.API = API;
     this.Collection = Collection;
-    this.$state = $state;
 
     this.user = Auth.getUser();
 
@@ -44,14 +42,12 @@ class LearnExamsController {
   }
 
   learnExam(examId: number): void {
-    const data = { random: 0 };
-    this.Collection.prepareExam(examId, data).then(result => {
-      this.$state.go('question', {questionId: result.list[0].question_id});
-    });
+    const data = { examId, random: 0 };
+    this.Collection.learn('exam', 'question', data);
   }
 
   learnExamView(examId: number): void {
-    this.$state.go('exam', {examId: examId});
+    this.Collection.learn('exam', 'exam', { examId });
   }
 
   resetExam(exam: Crucio.Exam): void {

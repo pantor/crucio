@@ -31,6 +31,36 @@ $app->group('/tags', function() {
 		return createResponse($response, $data);
 	});
 
+    $this->get('/prepare', function($request, $response, $args) {
+		$mysql = init();
+
+		$limit = intval($request->getQueryParam('limit', 10000));
+		$tag = $request->getQueryParam('tag');
+        $tag_query = "%".$tag."%";
+
+		$stmt = $mysql->prepare(
+		    "SELECT q.question_id
+            FROM tags t
+            INNER JOIN questions q ON q.question_id = t.question_id
+            INNER JOIN users u ON u.user_id = t.user_id
+            WHERE t.tags != ''
+                AND t.user_id = :user_id
+                AND t.tags LIKE IFNULL(:tag, t.tags)
+            LIMIT :limit"
+		);
+		$stmt->bindValue(':user_id', $request->getQueryParam('user_id'), PDO::PARAM_INT);
+		$stmt->bindValue(':tag', $tag_query);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+
+		$collection['list'] = getAll($stmt);
+        // $collection['questions'] = [];
+        $collection['type'] = 'tags';
+        $collection['tag'] = $tag;
+
+        $data['collection'] = $collection;
+		return createResponse($response, $data);
+	});
+
 	$this->post('', function($request, $response, $args) {
 		$mysql = init();
 		$body = $request->getParsedBody();

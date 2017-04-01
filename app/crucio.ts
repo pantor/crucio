@@ -27,7 +27,7 @@ angular.module('crucioApp', [
       { name: 'learn.comments', url: '/comments', template: comp('learncomments') },
       { name: 'learn.oral-exams', url: '/oral-exams', template: comp('learnoralexams') },
       { name: 'question', url: '/question?questionId&resetSession', template: comp('question') },
-      { name: 'exam', url: '/exam?examId', template: comp('exam') },
+      { name: 'exam', url: '/exam', template: comp('exam') },
       { name: 'statistic', url: '/statistic', template: comp('statistic') },
       { name: 'analysis', url: '/analysis', template: comp('analysis') },
 

@@ -1,8 +1,7 @@
 class AnalysisController {
   readonly API: APIService;
   readonly Collection: CollectionService;
-  user: Crucio.User;
-  examId: number;
+  readonly user: Crucio.User;
   workedCollection: Crucio.CollectionListItem[];
   count: Crucio.AnalyseCount;
   exam: Crucio.Exam;
@@ -63,8 +62,8 @@ class AnalysisController {
       }
     } */
 
-    if (this.Collection.get().type == 'exam') {
-      this.API.get(`exams/${Collection.get().exam_id}`).then(result => {
+    if (this.Collection.getType() == 'exam') {
+      this.API.get(`exams/${Collection.getExamId()}`).then(result => {
         this.exam = result.data.exam;
       });
     }

@@ -1,12 +1,14 @@
 class CollectionService {
   readonly API: APIService;
-  collection: Crucio.Collection;
+  readonly $state: angular.ui.IStateService;
+  private collection: Crucio.Collection;
 
-  constructor(API: APIService) {
+  constructor(API: APIService, $state: angular.ui.IStateService) {
     this.API = API;
+    this.$state = $state;
   }
 
-  get(): Crucio.Collection {
+  private get(): Crucio.Collection {
     if (angular.isUndefined(this.collection)
       && angular.isDefined(sessionStorage.crucioCollection)
     ) {
@@ -16,44 +18,10 @@ class CollectionService {
     return this.collection;
   }
 
-  set(collection: Crucio.Collection): void {
+  private set(collection: Crucio.Collection): void {
     this.collection = collection;
     sessionStorage.crucioCollection = angular.toJson(collection);
   }
-
-  prepareExam(examId: number, data: any): any {
-    return this.API.get(`exams/action/prepare/${examId}`, data).then(result => {
-      const collection: Crucio.Collection = {
-        list: result.data.list,
-        questions: [],
-        type: 'exam',
-        exam_id: examId,
-      };
-      this.set(collection);
-      return collection;
-    });
-  }
-
-  prepareSubjects(data): any {
-    return this.API.get('questions/prepare-subjects', data).then(result => {
-      const collection: Crucio.Collection = {
-        list: result.data.list,
-        questions: [],
-        type: 'subjects',
-        selection: data.selection,
-      };
-      this.set(collection);
-      return collection;
-    });
-  }
-
-  /* prepareTag(tag: string): any {
-
-  }
-
-  prepareQuery(query: string): any {
-
-  } */
 
   remove(): void {
     delete this.collection;
@@ -61,14 +29,110 @@ class CollectionService {
   }
 
 
+  learn(type: string, method: string, params: any): void {
+    // if (method === 'question') { params.load_first_question = true; }
+    // if (method === 'exam') { params.load_all_questions = true; }
+
+    let url = '';
+    switch (type) {
+      case 'tags':
+        url = 'tags/prepare';
+        break;
+
+      case 'exam':
+        url = `exams/action/prepare/${params.examId}`;
+        break;
+
+      case 'subjects':
+        url = 'questions/prepare-subjects';
+        break;
+
+      case 'query':
+        url = '';
+        break;
+    }
+
+    this.API.get(url, params).then(result => {
+      this.set(result.data.collection);
+
+      switch (method) {
+        case 'question':
+          const goToQuestionId = this.collection.list[0].question_id;
+
+          // Go to first question which is not answered yet
+          /* if (true) {
+            for (var i = 0; i < this.collection.list.length; i++) {
+              if (!this.collection.user_datas[this.collection.list[i]]) {
+                goToQuestionID = this.collection.list[i];
+                break;
+              }
+            }
+          } */
+
+          this.$state.go('question', {questionId: goToQuestionId});
+          break;
+
+        // Currently only with type exam
+        case 'exam':
+          this.$state.go('exam');
+          break;
+
+        /* case 'pdf':
+          var question_id_list = this.collection.list.join(',');
+          var collection_info = encodeURIComponent(angular.toJson(data.collection.info));
+          $window.location.assign('http://dev.crucio-leipzig.de/api/v1/pdf/collection?question_id_list='+question_id_list+'&collection_info='+collection_info);
+          break;
+
+        case 'pdf-both':
+          var question_id_list = data.collection.question_id_list.join(',');
+          var collection_info = encodeURIComponent(angular.toJson(data.collection.info));
+          $window.location.assign('http://dev.crucio-leipzig.de/api/v1/pdf/both?question_id_list='+question_id_list+'&collection_info='+collection_info);
+          break; */
+      }
+    });
+  }
+
+  getType(): string {
+    this.get();
+    return this.collection.type;
+  }
+
+  getExamId(): number {
+    this.get();
+    return this.collection.exam_id;
+  }
+
+  getTag(): string {
+    this.get();
+    return this.collection.tag;
+  }
+
+  getLength(): number {
+    this.get();
+    return this.collection.list.length;
+  }
+
+  getQuestion(index: number): Crucio.Question {
+    this.get();
+    if (this.collection.questions) {
+      return this.collection.questions[index];
+    }
+    return undefined;
+  }
+
   getWorked(): Crucio.CollectionListItem[] {
     this.get();
     return this.collection.list.filter(e => e.given_result);
   }
 
-  getQuestions(list: number[]): any {
-    return this.API.get('questions/list', {list: JSON.stringify(list)}).then(result => {
-      return result.data.list;
+
+  loadQuestions(): any {
+    this.get();
+    const listQuestionIds = this.getQuestionIds(this.collection.list);
+    return this.getQuestions(listQuestionIds).then(result => {
+      this.collection.questions = result;
+      this.set(this.collection);
+      return this.collection.questions;
     });
   }
 
@@ -158,6 +222,14 @@ class CollectionService {
     }
 
     return result;
+  }
+
+
+
+  getQuestions(list: number[]): any { // List of questionIds
+    return this.API.get('questions/list', {list: JSON.stringify(list)}).then(result => {
+      return result.data.list;
+    });
   }
 }
 

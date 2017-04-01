@@ -1,10 +1,10 @@
 class QuestionController {
   readonly Auth: AuthService;
   readonly API: APIService;
-  Collection: CollectionService;
-  $uibModal: angular.ui.bootstrap.IModalService;
-  $window: angular.IWindowService;
-  user: Crucio.User;
+  readonly Collection: CollectionService;
+  readonly $uibModal: angular.ui.bootstrap.IModalService;
+  readonly $window: angular.IWindowService;
+  readonly user: Crucio.User;
   questionId: number;
   resetSession: boolean;
   question: Crucio.Question;
@@ -55,7 +55,7 @@ class QuestionController {
       this.index = this.Collection.getIndexOfQuestion(this.questionId);
       if (this.index > -1) {
         this.questionData = this.Collection.getQuestionData(this.index);
-        this.length = this.Collection.get().list.length;
+        this.length = this.Collection.getLength();
         this.preQuestionId = this.index > 0 ? this.Collection.getQuestionData(this.index - 1).question_id : this.questionId;
         this.postQuestionId = this.index < this.length - 1 ? this.Collection.getQuestionData(this.index + 1).question_id : this.questionId;
       }
