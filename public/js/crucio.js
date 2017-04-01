@@ -1300,22 +1300,28 @@ var AnalysisController = (function () {
         this.user = Auth.getUser();
         this.workedCollection = this.Collection.getWorked();
         this.count = this.Collection.analyseCount();
-        for (var _i = 0, _a = this.workedCollection; _i < _a.length; _i++) {
-            var question = _a[_i];
-            if (!question.mark_answer && question.type > 1) {
-                var correct = (question.correct_answer === question.given_result) ? 1 : 0;
-                if (question.correct_answer === 0) {
-                    correct = -1;
-                }
-                var data = {
-                    correct: correct,
-                    given_result: question.given_result,
-                    question_id: question.question_id,
-                    user_id: this.user.user_id
-                };
-                this.API.post('results', data);
+        this.Collection.getQuestions(this.Collection.getQuestionIds(this.workedCollection)).then(function (questions) {
+            if (questions.length != _this.workedCollection.length) {
+                alert('Analyse konnte nicht durchgeführt werden...');
             }
-        }
+            for (var i = 0; i < questions.length; i++) {
+                var question = questions[i];
+                var questionData = _this.workedCollection[i];
+                if (!questionData.mark_answer && question.type > 1) {
+                    var correct = (question.correct_answer === questionData.given_result) ? 1 : 0;
+                    if (question.correct_answer === 0) {
+                        correct = -1;
+                    }
+                    var data = {
+                        correct: correct,
+                        given_result: questionData.given_result,
+                        question_id: questionData.question_id,
+                        user_id: _this.user.user_id
+                    };
+                    _this.API.post('results', data);
+                }
+            }
+        });
         if (this.Collection.get().type == 'exam') {
             this.API.get("exams/" + Collection.get().exam_id).then(function (result) {
                 _this.exam = result.data.exam;
@@ -1943,6 +1949,11 @@ var CollectionService = (function () {
         this.get();
         return this.collection.list.filter(function (e) { return e.given_result; });
     };
+    CollectionService.prototype.getQuestions = function (list) {
+        return this.API.get('questions/list', { list: JSON.stringify(list) }).then(function (result) {
+            return result.data.list;
+        });
+    };
     CollectionService.prototype.analyseCount = function () {
         var workedCollection = this.getWorked();
         var result = {
@@ -2008,6 +2019,13 @@ var CollectionService = (function () {
     CollectionService.prototype.getQuestionData = function (index) {
         this.get();
         return this.collection.list[index];
+    };
+    CollectionService.prototype.getQuestionIds = function (list) {
+        var result = [];
+        for (var i = 0; i < list.length; i++) {
+            result.push(list[i].question_id);
+        }
+        return result;
     };
     CollectionService.prototype.isHalftime = function (index) {
         return (Math.abs(index + 1 - this.collection.list.length / 2) < 1) && (index > 3);

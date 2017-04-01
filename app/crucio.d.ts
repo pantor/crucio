@@ -102,19 +102,23 @@ declare namespace Crucio {
     date: any;
   }
 
-  interface CollectionListItem extends Question {
+  interface CollectionListItem {
     question_id: number;
     mark_answer: number;
-    given_result: number;
+    given_answer: number;
+    given_result: number; // Depreceated?
     givenAnswer: number; // Depreceated?
     strike: boolean[];
   }
 
   interface Collection {
     list: CollectionListItem[];
-    type: string; // Exam, subjects, (query, tags)
+    questions: Question[];
+    type: string; // Exam, subjects, (query, tag)
     exam_id?: number; // Exam
     selection?: any; // Subjects
+    tag?: string; // Tag
+    query?: string; // Query
   }
 }
 

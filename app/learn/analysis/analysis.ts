@@ -18,8 +18,35 @@ class AnalysisController {
     this.workedCollection = this.Collection.getWorked();
     this.count = this.Collection.analyseCount();
 
+    this.Collection.getQuestions(this.Collection.getQuestionIds(this.workedCollection)).then(questions => {
+
+      if (questions.length != this.workedCollection.length) {
+        alert('Analyse konnte nicht durchgeführt werden...');
+      }
+
+      for (let i = 0; i < questions.length; i++) {
+        const question = questions[i];
+        const questionData = this.workedCollection[i];
+
+        if (!questionData.mark_answer && question.type > 1) {
+          let correct = (question.correct_answer === questionData.given_result) ? 1 : 0;
+          if (question.correct_answer === 0) {
+            correct = -1;
+          }
+
+          const data = {
+            correct,
+            given_result: questionData.given_result,
+            question_id: questionData.question_id,
+            user_id: this.user.user_id,
+          };
+          this.API.post('results', data);
+        }
+      }
+    });
+
     // Post results, but not which are already saved or are free questions
-    for (const question of this.workedCollection) {
+    /* for (const question of this.workedCollection) {
       if (!question.mark_answer && question.type > 1) {
         let correct = (question.correct_answer === question.given_result) ? 1 : 0;
         if (question.correct_answer === 0) {
@@ -34,7 +61,7 @@ class AnalysisController {
         };
         this.API.post('results', data);
       }
-    }
+    } */
 
     if (this.Collection.get().type == 'exam') {
       this.API.get(`exams/${Collection.get().exam_id}`).then(result => {

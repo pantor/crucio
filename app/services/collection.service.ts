@@ -16,14 +16,19 @@ class CollectionService {
     return this.collection;
   }
 
-  private set(collection: Crucio.Collection): void {
+  set(collection: Crucio.Collection): void {
     this.collection = collection;
     sessionStorage.crucioCollection = angular.toJson(collection);
   }
 
   prepareExam(examId: number, data: any): any {
     return this.API.get(`exams/action/prepare/${examId}`, data).then(result => {
-      const collection: Crucio.Collection = { type: 'exam', list: result.data.list, exam_id: examId };
+      const collection: Crucio.Collection = {
+        list: result.data.list,
+        questions: [],
+        type: 'exam',
+        exam_id: examId,
+      };
       this.set(collection);
       return collection;
     });
@@ -31,28 +36,85 @@ class CollectionService {
 
   prepareSubjects(data): any {
     return this.API.get('questions/prepare-subjects', data).then(result => {
-      const collection: Crucio.Collection = { type: 'subjects', list: result.data.list, selection: data.selection };
+      const collection: Crucio.Collection = {
+        list: result.data.list,
+        questions: [],
+        type: 'subjects',
+        selection: data.selection,
+      };
       this.set(collection);
       return collection;
     });
   }
 
-  prepareTag(tag: string): any {
+  /* prepareTag(tag: string): any {
 
   }
 
   prepareQuery(query: string): any {
 
-  }
+  } */
 
   remove(): void {
     delete this.collection;
     sessionStorage.removeItem('crucioCollection');
   }
 
+
   getWorked(): Crucio.CollectionListItem[] {
     this.get();
     return this.collection.list.filter(e => e.given_result);
+  }
+
+  getQuestions(list: number[]): any {
+    return this.API.get('questions/list', {list: JSON.stringify(list)}).then(result => {
+      return result.data.list;
+    });
+  }
+
+  getIndexOfQuestion(questionId: number): number {
+    this.get();
+    // this.index = this.collection.list.findIndex(e => e.question_id === this.questionId);
+    for (let i = 0; i < this.collection.list.length; i++) {
+      if (this.collection.list[i].question_id === questionId) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  getQuestionData(index: number): Crucio.CollectionListItem {
+    this.get();
+    return this.collection.list[index];
+  }
+
+  getQuestionIds(list: Crucio.CollectionListItem[]): number[] {
+    let result = [];
+    for (let i = 0; i < list.length; i++) {
+      result.push(list[i].question_id);
+    }
+    return result;
+  }
+
+  saveMarkAnswer(index: number): void {
+    if (this.collection && Object.keys(this.collection).length) {
+      this.collection.list[index].mark_answer = 1;
+      this.set(this.collection);
+    }
+  }
+
+  saveAnswer(index: number, answer: number): void {
+    if (this.collection && Object.keys(this.collection).length) {
+      this.collection.list[index].given_result = answer;
+      this.set(this.collection);
+    }
+  }
+
+  saveStrike(index: number, strike: boolean[]): void {
+    if (this.collection && Object.keys(this.collection).length) {
+      this.collection.list[index].strike = strike;
+      this.set(this.collection);
+    }
   }
 
   analyseCount(): Crucio.AnalyseCount {
@@ -96,47 +158,6 @@ class CollectionService {
     }
 
     return result;
-  }
-
-  saveAnswer(index: number, answer: number): void {
-    if (this.collection && Object.keys(this.collection).length) {
-      this.collection.list[index].given_result = answer;
-      this.set(this.collection);
-    }
-  }
-
-  saveStrike(index: number, strike: boolean[]): void {
-    if (this.collection && Object.keys(this.collection).length) {
-      this.collection.list[index].strike = strike;
-      this.set(this.collection);
-    }
-  }
-
-  saveMarkAnswer(index: number): void {
-    if (this.collection && Object.keys(this.collection).length) {
-      this.collection.list[index].mark_answer = 1;
-      this.set(this.collection);
-    }
-  }
-
-  getIndexOfQuestion(questionId: number): number {
-    this.get();
-    // this.index = this.collection.list.findIndex(e => e.question_id === this.questionId);
-    for (let i = 0; i < this.collection.list.length; i++) {
-      if (this.collection.list[i].question_id === questionId) {
-        return i;
-      }
-    }
-    return -1;
-  }
-
-  getQuestionData(index: number): Crucio.CollectionListItem {
-    this.get();
-    return this.collection.list[index];
-  }
-
-  isHalftime(index: number): boolean {
-    return (Math.abs(index + 1 - this.collection.list.length / 2) < 1) && (index > 3);
   }
 }
 
