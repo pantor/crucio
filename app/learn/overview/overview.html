@@ -26,11 +26,11 @@
                 <td class="hidden-xs hidden-sm">{{ exam.answered_questions }} / {{ exam.question_count }}</td>
                 <td style="min-width: 250px;">
                     <div class="btn-group pull-right" role="group">
-                        <a type="button" class="btn btn-default btn-xs" href ng-click="$ctrl.learnExam(exam.exam_id)">
+                        <a type="button" class="btn btn-default btn-xs" href ng-click="$ctrl.learnExam('question', exam.exam_id)">
                             Fragen
                         </a>
 
-                        <a type="button" class="btn btn-default btn-xs" href ng-click="$ctrl.learnExamView(exam.exam_id)">
+                        <a type="button" class="btn btn-default btn-xs" href ng-click="$ctrl.learnExam('exam', exam.exam_id)">
                             Klausuransicht
                         </a>
 
@@ -40,8 +40,8 @@
                             </button>
 
                             <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                                <li><a href ng-click="$ctrl.Collection.learn('exam', 'pdf', {examId: exam.exam_id})">Klausur als PDF</a></li>
-                                <li><a href ng-click="$ctrl.Collection.learn('exam', 'pdf-solution', {examId: exam.exam_id})">L&ouml;sungen als PDF</a></li>
+                                <li><a href ng-click="$ctrl.learnExam('pdf', exam.exam_id)">Klausur als PDF</a></li>
+                                <li><a href ng-click="$ctrl.learnExam('pdf-solution', exam.exam_id)">L&ouml;sungen als PDF</a></li>
 
                                 <li class="divider"></li>
 

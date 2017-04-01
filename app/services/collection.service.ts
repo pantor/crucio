@@ -1,6 +1,6 @@
 class CollectionService {
-  readonly API: APIService;
-  readonly $state: angular.ui.IStateService;
+  private readonly API: APIService;
+  private readonly $state: angular.ui.IStateService;
   private readonly $window: any;
   private collection: Crucio.Collection;
 
@@ -96,11 +96,6 @@ class CollectionService {
     return this.collection.exam_id;
   }
 
-  getTag(): string {
-    this.get();
-    return this.collection.tag;
-  }
-
   getLength(): number {
     this.get();
     return this.collection.list.length;
@@ -118,7 +113,6 @@ class CollectionService {
     this.get();
     return this.collection.list.filter(e => e.given_result);
   }
-
 
   loadQuestions(): any {
     this.get();
@@ -230,9 +224,7 @@ class CollectionService {
     return result;
   }
 
-
-
-  getQuestions(list: number[]): any { // List is list of questionIds
+  private getQuestions(list: number[]): any { // List is list of questionIds
     return this.API.get('questions/list', {list: JSON.stringify(list)}).then(result => {
       return result.data.list as Crucio.Question[];
     });

@@ -1,5 +1,5 @@
 class PageService {
-  $window: angular.IWindowService;
+  private readonly $window: angular.IWindowService;
   title: string;
   nav: string;
 

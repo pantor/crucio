@@ -41,13 +41,9 @@ class LearnExamsController {
     });
   }
 
-  learnExam(examId: number): void {
+  learnExam(method: string, examId: number): void {
     const data = { examId, random: 0 };
-    this.Collection.learn('exam', 'question', data);
-  }
-
-  learnExamView(examId: number): void {
-    this.Collection.learn('exam', 'exam', { examId });
+    this.Collection.learn('exam', method, data);
   }
 
   resetExam(exam: Crucio.Exam): void {

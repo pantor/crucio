@@ -10,8 +10,6 @@
 </div>
 
 <div ng-if="$ctrl.tags.length">
-
-
     <div class="row">
         <div class="col-sm-6">
             <div class="btn-toolbar" role="toolbar">
@@ -32,9 +30,17 @@
                 </div>
 
                 <div class="btn-group mtop">
-                    <button type="button" class="btn btn-success" ng-click="$ctrl.learnSelectedTag()">
-                        Lernen
-                    </button>
+                    <div class="btn-group" uib-dropdown>
+                        <button type="button" ng-disabled="$ctrl.selectedQuestionNumber == 0" class="btn btn-success" ng-click="$ctrl.learnTags('question')"><i class="fa fa-fw fa-graduation-cap"></i> Lernen</button>
+                        <button type="button" ng-disabled="$ctrl.selectedQuestionNumber == 0" class="btn btn-success" uib-dropdown-toggle>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" uib-dropdown-menu role="menu">
+                            <li role="menuitem"><a href ng-click="$ctrl.learnTags('exam')">Klausuransicht</a></li>
+                            <li role="menuitem"><a href ng-click="$ctrl.learnTags('pdf')">PDF Klausur</a></li>
+                            <li role="menuitem"><a href ng-click="$ctrl.learnTags('pdf-solution')">PDF L&ouml;sungen</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>

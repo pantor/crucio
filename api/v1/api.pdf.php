@@ -52,6 +52,7 @@ $app->group('/pdf', function() {
         $pdf->SetTitle('Klausur Nr. '.$exam_id);
         $pdf->SetMargins(PDF_MARGIN_LEFT, 35, PDF_MARGIN_RIGHT);
 
+        // Make title and filename
         if ($info['type'] == 'exam') {
             $stmt_exam = $mysql->prepare(
                 "SELECT e.*, s.name AS 'subject'
@@ -66,13 +67,26 @@ $app->group('/pdf', function() {
             $pdf->cTitle = $exam['subject'];
             $pdf->cSubtitle = $exam['semester'].'. Semester  |  '.$exam['date'];
 
-            $filename = 'crucio-'.$view_name.'-'.$exam_id.'.pdf';
+            $filename = 'crucio-'.$view_name.'-'.$info['examId'].'.pdf';
         } else if ($info['type'] == 'subjects') {
+            $pdf->cTitle = 'Fächer';
+            $pdf->cSubtitle = '';
 
+            $filename = 'crucio-'.$view_name.'.pdf';
         } else if ($info['type'] == 'tags') {
+            $pdf->cTitle = $info['tag'];
+            $pdf->cSubtitle = 'Deine Markierung';
 
+            $filename = 'crucio-'.$view_name.'-'.$info['tag'].'.pdf';
         } else if ($info['type'] == 'query') {
+            $pdf->cTitle = $info['questionSearch']['query'];
 
+            if ($info['questionSearch']['semester']) {
+                $pdf->cSubtitle = $info['questionSearch']['semester'].'. Semester';
+            }
+            // TODO Subjects
+
+            $filename = 'crucio-'.$view_name.'-'.$info['questionSearch']['query'].'.pdf';
         } else {
             $response = $response->withStatus(404);
             return $response->write('Not found. Neither exam or solution.');

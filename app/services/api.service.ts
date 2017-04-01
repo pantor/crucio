@@ -1,6 +1,6 @@
 class APIService {
-  readonly $http: any;
-  readonly base: string;
+  private readonly $http: any;
+  private readonly base: string;
 
   constructor($http: angular.IHttpService) {
     this.$http = $http;

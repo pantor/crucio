@@ -1,7 +1,7 @@
 class AuthService {
-  $cookies: any;
-  $window: angular.IWindowService;
-  user: Crucio.User;
+  private readonly $cookies: any;
+  private readonly $window: angular.IWindowService;
+  private user: Crucio.User;
 
   constructor($cookies, $window: angular.IWindowService) {
     this.$window = $window;

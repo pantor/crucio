@@ -1,14 +1,14 @@
 class LearnSearchController {
-  readonly API: APIService;
-  readonly Collection: CollectionService;
-  readonly user: Crucio.User;
-  questionSearch: any;
-  distinctSemesters: any;
-  distinctSubjects: any;
-  searchResults: any;
-  hasSearched: boolean;
-  showSpinner: boolean;
-  limit: number;
+  private readonly API: APIService;
+  private readonly Collection: CollectionService;
+  private readonly user: Crucio.User;
+  private questionSearch: any;
+  private distinctSemesters: any;
+  private distinctSubjects: any;
+  private searchResults: any;
+  private hasSearched: boolean;
+  private showSpinner: boolean;
+  private limit: number;
 
   constructor(Auth: AuthService, API: APIService, Collection: CollectionService) {
     this.API = API;
@@ -49,8 +49,8 @@ class LearnSearchController {
     }
   }
 
-  learnQuery(): void {
-    this.Collection.learn('query', 'question', {
+  learnQuery(method: string): void {
+    this.Collection.learn('query', method, {
       query: this.questionSearch.query,
       subject_id: this.questionSearch.subject && this.questionSearch.subject.subject_id,
       semester: this.questionSearch.semester,

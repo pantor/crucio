@@ -1,16 +1,17 @@
 class LearnSubjectsController {
-  readonly API: APIService;
-  readonly Collection: CollectionService;
-  readonly user: Crucio.User;
-  selection: any;
-  selectedQuestionNumber: number;
-  numberQuestionsInSelection: number;
-  sliderOptions: any;
-  abstractExams: any;
-  ready: number;
-  distinctSemesters: any;
-  distinctSubjects: any;
-  subjectList: Crucio.Subject[];
+  private readonly API: APIService;
+  private readonly Collection: CollectionService;
+  private readonly user: Crucio.User;
+  private selection: any;
+  private selectedQuestionNumber: number;
+  private numberQuestionsInSelection: number;
+  private sliderOptions: any;
+  private abstractExams: any;
+  private ready: number;
+  private distinctSemesters: any;
+  private distinctSubjects: any;
+  private subjectList: Crucio.Subject[];
+  private method: string;
 
   constructor(Auth: AuthService, API: APIService, Collection: CollectionService, $scope: angular.IScope, $timeout: angular.ITimeoutService) {
     this.API = API;
@@ -21,6 +22,7 @@ class LearnSubjectsController {
     this.selection = {};
     this.selectedQuestionNumber = 0;
     this.numberQuestionsInSelection = 0;
+    this.method = 'question';
 
     this.sliderOptions = { floor: 0, ceil: this.numberQuestionsInSelection };
     $timeout(() => { // Force slider rendering, a common problem, see angularjs-slider github repo
@@ -56,9 +58,9 @@ class LearnSubjectsController {
     });
   }
 
-  learnSubjects(): void {
+  learnSubjects(method: string): void {
     const data = { selection: this.selection, limit: this.selectedQuestionNumber };
-    this.Collection.learn('subjects', 'question', data);
+    this.Collection.learn('subjects', method, data);
   }
 }
 

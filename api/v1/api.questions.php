@@ -213,7 +213,7 @@ $app->group('/questions', function() {
 
         $list = json_decode($request->getQueryParam('list'));
 
-        $data['list'] = getQuestionsFromList($list);
+        $data['list'] = getQuestionsFromList($mysql, $list);
         return createResponse($response, $data);
     });
 

@@ -1,6 +1,6 @@
 class LearnCommentsController {
-  readonly API: APIService;
-  user: Crucio.User;
+  private readonly API: APIService;
+  private readonly user: Crucio.User;
   commentSearch: any;
   comments: Crucio.Comment[];
   questionsByComment: any;
