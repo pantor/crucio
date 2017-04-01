@@ -1,6 +1,6 @@
 class LearnOralExamsController {
   readonly API: APIService;
-  user: Crucio.User;
+  readonly user: Crucio.User;
   oralExamSearch: any;
   oralExams: Crucio.OralExam[];
   distinctOralSemesters: any;

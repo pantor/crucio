@@ -1,7 +1,7 @@
 class AdminUsersController {
   readonly API: APIService;
-  $uibModal: angular.ui.bootstrap.IModalService;
-  user: Crucio.User;
+  readonly $uibModal: angular.ui.bootstrap.IModalService;
+  readonly user: Crucio.User;
   userSearch: any;
   distinctGroups: any;
   distinctSemesters: any;

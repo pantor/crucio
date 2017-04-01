@@ -1,5 +1,46 @@
 <?php
 
+function getQuestionsFromList($mysql, $list) {
+    $question_id_list = $list; // json_decode($request->getQueryParam('list'));
+
+    $question_id_list_sql_params = [];
+
+    $question_id_list_sql = '';
+    foreach ($question_id_list as $question_id) {
+        $count = count($question_id_list_sql_params);
+        $question_id_list_sql .= ":sp$count, ";
+        array_push($question_id_list_sql_params, $question_id);
+    }
+    $question_id_list_sql = rtrim($question_id_list_sql, ', ');
+    $question_id_list_sql_order = '';
+    foreach ($question_id_list as $question_id) {
+        $count = count($question_id_list_sql_params);
+        $question_id_list_sql_order .= ":sp$count, ";
+        array_push($question_id_list_sql_params, $question_id);
+    }
+    $question_id_list_sql_order = rtrim($question_id_list_sql_order, ', ');
+
+    $stmt = $mysql->prepare(
+        "SELECT q.*, e.*, c.name AS 'topic', s.name AS 'subject'
+        FROM questions q
+        INNER JOIN exams e ON e.exam_id = q.exam_id
+        LEFT JOIN categories c ON q.category_id = c.category_id
+        INNER JOIN subjects s ON s.subject_id = e.subject_id
+        WHERE q.question_id IN ($question_id_list_sql)
+        ORDER BY FIELD(q.question_id, $question_id_list_sql_order)"
+    );
+    for ($i = 0; $i < count($question_id_list_sql_params); $i++) {
+        $stmt->bindValue(":sp$i", $question_id_list_sql_params[$i]);
+    }
+
+    $result = getAll($stmt);
+    foreach ($result as &$question) {
+        $question['answers'] = unserialize($question['answers']);
+    }
+
+    return $result;
+}
+
 $app->group('/questions', function() {
 
     $this->get('', function($request, $response, $args) {
@@ -125,48 +166,55 @@ $app->group('/questions', function() {
 	    return createResponse($response, $data);
     });
 
+    $this->get('/prepare-query', function($request, $response, $args) {
+		$mysql = init();
+
+		$subquery_array = explode(' ', $request->getQueryParam('query'));
+		$sql_query = "";
+		for ($i = 0; $i < count($subquery_array); $i++) {
+    		$sql_query .= "AND ( q.question LIKE :sub$i
+    		    OR q.answers LIKE :sub$i
+    		    OR q.explanation LIKE :sub$i ) ";
+		}
+        $limit = intval($request->getQueryParam('limit', 10000));
+
+		$stmt = $mysql->prepare(
+		    "SELECT q.question_id
+		    FROM questions q
+		    INNER JOIN exams e ON q.exam_id = e.exam_id
+		    INNER JOIN subjects s ON e.subject_id = s.subject_id
+		    WHERE e.visibility = 1
+		        AND e.semester = IFNULL(:semester, e.semester)
+		        AND e.subject_id = IFNULL(:subject_id, e.subject_id)
+		        $sql_query
+		    LIMIT :limit"
+		);
+        $stmt->bindValue(':semester', $request->getQueryParam('semester'));
+        $stmt->bindValue(':subject_id', $request->getQueryParam('subject_id'), PDO::PARAM_INT);
+        for ($i = 0; $i < count($subquery_array); $i++) {
+            $stmt->bindValue(":sub$i", '%'.$subquery_array[$i].'%');
+        }
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+
+        $collection['list'] = getAll($stmt);;
+        // $collection['questions'] = [];
+        $collection['type'] = 'query';
+        $questionSearch['query'] = $request->getQueryParam('query');
+        $questionSearch['semester'] = $request->getQueryParam('semester');
+        $questionSearch['subject_id'] = $request->getQueryParam('subject_id');
+        $collection['questionSearch'] = $questionSearch;
+
+        $data['collection'] = $collection;
+		return createResponse($response, $data);
+	});
+
     $this->get('/list', function($request, $response, $args) {
         $mysql = init();
 
-        $question_id_list = json_decode($request->getQueryParam('list'));
+        $list = json_decode($request->getQueryParam('list'));
 
-        $question_id_list_sql_params = [];
-
-        $question_id_list_sql = '';
-        foreach ($question_id_list as $question_id) {
-            $count = count($question_id_list_sql_params);
-            $question_id_list_sql .= ":sp$count, ";
-            array_push($question_id_list_sql_params, $question_id);
-        }
-        $question_id_list_sql = rtrim($question_id_list_sql, ', ');
-        $question_id_list_sql_order = '';
-        foreach ($question_id_list as $question_id) {
-            $count = count($question_id_list_sql_params);
-            $question_id_list_sql_order .= ":sp$count, ";
-            array_push($question_id_list_sql_params, $question_id);
-        }
-        $question_id_list_sql_order = rtrim($question_id_list_sql_order, ', ');
-
-        $stmt = $mysql->prepare(
-		    "SELECT q.*, e.*, c.name AS 'topic', s.name AS 'subject'
-		    FROM questions q
-            INNER JOIN exams e ON e.exam_id = q.exam_id
-            LEFT JOIN categories c ON q.category_id = c.category_id
-            INNER JOIN subjects s ON s.subject_id = e.subject_id
-            WHERE q.question_id IN ($question_id_list_sql)
-            ORDER BY FIELD(q.question_id, $question_id_list_sql_order)"
-		);
-        for ($i = 0; $i < count($question_id_list_sql_params); $i++) {
-            $stmt->bindValue(":sp$i", $question_id_list_sql_params[$i]);
-        }
-
-        $list = getAll($stmt);
-        foreach ($list as &$question) {
-            $question['answers'] = unserialize($question['answers']);
-        }
-
-        $data['list'] = $list;
-	    return createResponse($response, $data);
+        $data['list'] = getQuestionsFromList($list);
+        return createResponse($response, $data);
     });
 
 	$this->get('/{question_id}', function($request, $response, $args) {

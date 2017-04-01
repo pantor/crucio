@@ -1,6 +1,6 @@
 class DeleteExamModalController {
   readonly API: APIService;
-  $location: any;
+  readonly $location: any;
   examId: number;
   resolve: any;
   close: any;
@@ -12,7 +12,7 @@ class DeleteExamModalController {
   }
 
   $onInit() {
-      this.examId = this.resolve.examId;
+    this.examId = this.resolve.examId;
   }
 
   deleteExam(): void {

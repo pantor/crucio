@@ -1,6 +1,6 @@
 class ImageModalController {
   readonly API: APIService;
-  user: Crucio.User;
+  readonly user: Crucio.User;
   data: any;
   resolve: any;
   close: any;

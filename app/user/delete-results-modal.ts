@@ -1,5 +1,5 @@
 class DeleteResultsModalController {
-  API: APIService;
+  readonly API: APIService;
   userId: number;
   resolve: any;
   close: any;

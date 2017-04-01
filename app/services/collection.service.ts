@@ -1,11 +1,13 @@
 class CollectionService {
   readonly API: APIService;
   readonly $state: angular.ui.IStateService;
+  private readonly $window: any;
   private collection: Crucio.Collection;
 
-  constructor(API: APIService, $state: angular.ui.IStateService) {
+  constructor(API: APIService, $state: angular.ui.IStateService, $window: any) {
     this.API = API;
     this.$state = $state;
+    this.$window = $window;
   }
 
   private get(): Crucio.Collection {
@@ -48,7 +50,7 @@ class CollectionService {
         break;
 
       case 'query':
-        url = '';
+        url = 'questions/prepare-query';
         break;
     }
 
@@ -57,37 +59,29 @@ class CollectionService {
 
       switch (method) {
         case 'question':
+          // TODO Go to first question which is not answered yet
           const goToQuestionId = this.collection.list[0].question_id;
-
-          // Go to first question which is not answered yet
-          /* if (true) {
-            for (var i = 0; i < this.collection.list.length; i++) {
-              if (!this.collection.user_datas[this.collection.list[i]]) {
-                goToQuestionID = this.collection.list[i];
-                break;
-              }
-            }
-          } */
-
           this.$state.go('question', {questionId: goToQuestionId});
           break;
 
-        // Currently only with type exam
         case 'exam':
           this.$state.go('exam');
           break;
 
-        /* case 'pdf':
-          var question_id_list = this.collection.list.join(',');
-          var collection_info = encodeURIComponent(angular.toJson(data.collection.info));
-          $window.location.assign('http://dev.crucio-leipzig.de/api/v1/pdf/collection?question_id_list='+question_id_list+'&collection_info='+collection_info);
-          break;
+        case 'pdf':
+        case 'pdf-solution':
+          const listString = this.getQuestionIds(this.collection.list).join(',');
+          const info = encodeURIComponent(angular.toJson({
+            type: this.collection.type,
+            examId: this.collection.exam_id,
+            selection: this.collection.selection,
+            tag: this.collection.tag,
+            questionSearch: this.collection.questionSearch,
+          }));
 
-        case 'pdf-both':
-          var question_id_list = data.collection.question_id_list.join(',');
-          var collection_info = encodeURIComponent(angular.toJson(data.collection.info));
-          $window.location.assign('http://dev.crucio-leipzig.de/api/v1/pdf/both?question_id_list='+question_id_list+'&collection_info='+collection_info);
-          break; */
+          const view = method == 'pdf' ? 'exam' : 'solution';
+          this.$window.location.assign(`api/v1/pdf/collection/${view}?list=${listString}&info=${info}`);
+          break;
       }
     });
   }
@@ -120,7 +114,7 @@ class CollectionService {
     return undefined;
   }
 
-  getWorked(): Crucio.CollectionListItem[] {
+  getWorkedList(): Crucio.CollectionListItem[] {
     this.get();
     return this.collection.list.filter(e => e.given_result);
   }
@@ -133,6 +127,15 @@ class CollectionService {
       this.collection.questions = result;
       this.set(this.collection);
       return this.collection.questions;
+    });
+  }
+
+  loadWorkedQuestions(): any {
+    this.get();
+    const workedList = this.getWorkedList();
+    const workedListQuestionIds = this.getQuestionIds(workedList);
+    return this.getQuestions(workedListQuestionIds).then(result => {
+      return result;
     });
   }
 
@@ -181,8 +184,8 @@ class CollectionService {
     }
   }
 
-  analyseCount(): Crucio.AnalyseCount {
-    const workedCollection = this.getWorked();
+  analyseCount(workedQuestions: Crucio.Question[]): Crucio.AnalyseCount {
+    const workedCollectionList = this.getWorkedList();
 
     const result = {
       correct: 0,
@@ -192,31 +195,34 @@ class CollectionService {
       free: 0,
       no_answer: 0,
       all: this.collection.list.length,
-      worked: workedCollection.length,
+      worked: workedCollectionList.length,
     };
 
-    for (const q of workedCollection) {
-      if (q.correct_answer === q.given_result && q.given_result > 0 && q.correct_answer > 0) {
+    for (let i = 0; i < workedQuestions.length; i++) {
+      const question = workedQuestions[i];
+      const questionData = workedCollectionList[i];
+
+      if (question.correct_answer === questionData.given_result && questionData.given_result > 0 && question.correct_answer > 0) {
         result.correct++;
       }
 
-      if (q.correct_answer !== q.given_result && q.given_result > 0 && q.correct_answer > 0) {
+      if (question.correct_answer !== questionData.given_result && questionData.given_result > 0 && question.correct_answer > 0) {
         result.wrong++;
       }
 
-      if (q.given_result > 0) {
+      if (questionData.given_result > 0) {
         result.solved++;
       }
 
-      if (q.given_result > -2) {
+      if (questionData.given_result > -2) {
         result.seen++;
       }
 
-      if (q.type === 1) {
+      if (question.type === 1) {
         result.free++;
       }
 
-      if (q.correct_answer === 0 && q.type !== 1) {
+      if (question.correct_answer === 0 && question.type !== 1) {
         result.no_answer++;
       }
     }
@@ -226,9 +232,9 @@ class CollectionService {
 
 
 
-  getQuestions(list: number[]): any { // List of questionIds
+  getQuestions(list: number[]): any { // List is list of questionIds
     return this.API.get('questions/list', {list: JSON.stringify(list)}).then(result => {
-      return result.data.list;
+      return result.data.list as Crucio.Question[];
     });
   }
 }

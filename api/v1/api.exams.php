@@ -175,7 +175,7 @@ $app->group('/exams', function() {
 		$collection['list'] = getAll($stmt);
         // $collection['questions'] = undefined;
         $collection['type'] = 'exam';
-        $collection['tag'] = $args['exam_id'];
+        $collection['exam_id'] = $args['exam_id'];
 
         $data['collection'] = $collection;
 		return createResponse($response, $data);

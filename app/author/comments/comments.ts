@@ -1,6 +1,6 @@
 class AuthorCommentsController {
   readonly API: APIService;
-  user: Crucio.User;
+  readonly user: Crucio.User;
   distinctAuthors: any;
   commentSearch: any;
   comments: Crucio.Comment[];

@@ -1,6 +1,6 @@
 class HelpController {
-  API: APIService;
-  user: Crucio.User;
+  readonly API: APIService;
+  readonly user: Crucio.User;
   isWorking: boolean;
   text: string;
   emailSend: boolean;

@@ -1,11 +1,11 @@
 class EditExamController {
   readonly API: APIService;
   readonly Cut: CutService;
-  FileUploader: any;
-  $location: angular.ILocationService;
-  $uibModal: angular.ui.bootstrap.IModalService;
-  user: Crucio.User;
-  examId: number;
+  readonly FileUploader: any;
+  readonly $location: angular.ILocationService;
+  readonly $uibModal: angular.ui.bootstrap.IModalService;
+  readonly user: Crucio.User;
+  readonly examId: number;
   openQuestionId: number;
   openQuestionIndex: number;
   numberChanged: number;

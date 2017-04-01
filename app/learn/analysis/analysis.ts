@@ -2,7 +2,7 @@ class AnalysisController {
   readonly API: APIService;
   readonly Collection: CollectionService;
   readonly user: Crucio.User;
-  workedCollection: Crucio.CollectionListItem[];
+  workedCollectionList: Crucio.CollectionListItem[];
   count: Crucio.AnalyseCount;
   exam: Crucio.Exam;
 
@@ -14,18 +14,17 @@ class AnalysisController {
 
     this.user = Auth.getUser();
 
-    this.workedCollection = this.Collection.getWorked();
-    this.count = this.Collection.analyseCount();
+    this.workedCollectionList = this.Collection.getWorkedList();
+    this.Collection.loadWorkedQuestions().then(questions => {
+      this.count = this.Collection.analyseCount(questions);
 
-    this.Collection.getQuestions(this.Collection.getQuestionIds(this.workedCollection)).then(questions => {
-
-      if (questions.length != this.workedCollection.length) {
+      if (questions.length != this.workedCollectionList.length) {
         alert('Analyse konnte nicht durchgeführt werden...');
       }
 
       for (let i = 0; i < questions.length; i++) {
         const question = questions[i];
-        const questionData = this.workedCollection[i];
+        const questionData = this.workedCollectionList[i];
 
         if (!questionData.mark_answer && question.type > 1) {
           let correct = (question.correct_answer === questionData.given_result) ? 1 : 0;
@@ -70,8 +69,8 @@ class AnalysisController {
   }
 
   showCorrectAnswerClicked(index: number): void {
-    this.workedCollection[index].mark_answer = 1;
-    const questionId = this.workedCollection[index].question_id;
+    this.workedCollectionList[index].mark_answer = 1;
+    const questionId = this.workedCollectionList[index].question_id;
     this.Collection.saveMarkAnswer(this.Collection.getIndexOfQuestion(questionId));
   }
 }

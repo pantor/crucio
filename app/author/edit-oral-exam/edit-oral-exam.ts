@@ -1,10 +1,10 @@
 class EditOralExamController {
   readonly API: APIService;
-  FileUploader: any;
-  $location: angular.ILocationService;
-  $uibModal: angular.ui.bootstrap.IModalService;
-  user: Crucio.User;
-  oralExamId: number;
+  readonly FileUploader: any;
+  readonly $location: angular.ILocationService;
+  readonly $uibModal: angular.ui.bootstrap.IModalService;
+  readonly user: Crucio.User;
+  readonly oralExamId: number;
   numberChanged: number;
   uploader: any;
   hasChanged: boolean;

@@ -1,7 +1,7 @@
 class AuthorOralExamsController {
   readonly API: APIService;
-  $location: angular.ILocationService;
-  user: Crucio.User;
+  readonly $location: angular.ILocationService;
+  readonly user: Crucio.User;
   oralExamSearch: any;
   distinctOralSemesters: any;
   distinctOralYears: any;

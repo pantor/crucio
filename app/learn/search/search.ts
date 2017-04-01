@@ -51,8 +51,11 @@ class LearnSearchController {
 
   learnQuery(): void {
     this.Collection.learn('query', 'question', {
-      questionSearch: this.questionSearch,
-      user_id: this.user.user_id
+      query: this.questionSearch.query,
+      subject_id: this.questionSearch.subject && this.questionSearch.subject.subject_id,
+      semester: this.questionSearch.semester,
+      limit: this.limit,
+      user_id: this.user.user_id,
     });
   }
 }

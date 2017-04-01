@@ -1,6 +1,6 @@
 class DeleteOralExamModalController {
   readonly API: APIService;
-  $location: any;
+  readonly $location: any;
   oralExamId: number;
   resolve: any;
   close: any;

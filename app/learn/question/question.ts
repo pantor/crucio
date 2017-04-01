@@ -5,8 +5,8 @@ class QuestionController {
   readonly $uibModal: angular.ui.bootstrap.IModalService;
   readonly $window: angular.IWindowService;
   readonly user: Crucio.User;
-  questionId: number;
-  resetSession: boolean;
+  readonly questionId: number;
+  readonly resetSession: boolean;
   question: Crucio.Question;
   comments: Crucio.Comment[];
   tags: any;
