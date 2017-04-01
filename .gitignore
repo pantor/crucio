@@ -13,5 +13,6 @@ google*.html
 api/config.php
 files
 ftp.json
-public/*
-!public/images
+public/css
+public/fonts
+public/js
