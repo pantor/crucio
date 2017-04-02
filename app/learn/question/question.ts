@@ -43,7 +43,6 @@ class QuestionController {
       this.Collection.remove();
       this.index = -1;
       this.questionData = { question_id: this.questionId, given_result: undefined, mark_answer: undefined, strike: undefined };
-      console.log(this.index);
     } else {
       this.index = this.Collection.getIndexOfQuestion(this.questionId);
       if (this.index > -1) {

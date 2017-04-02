@@ -109,7 +109,7 @@
                                     <div ng-if="c.question.type == 1" class="dot dot-info"></div>
                                 </td>
                                 <td>
-                                    <div ng-bind-html="question.question" style="margin-bottom: 3px;"></div>
+                                    <div ng-bind-html="c.question.question" style="margin-bottom: 3px;"></div>
 
                                     <p class="question-answer strong text-danger bg-danger" ng-show="c.question.correct_answer != c.data.given_result && c.data.given_result > 0 && c.question.correct_answer > 0">
                                         <span ng-bind-html="c.question.answers[c.data.given_result - 1]"></span>

@@ -805,7 +805,11 @@ sub {
     display : block;
 }
 
-.question-answer,
+.question-answer {
+    padding: 5px;
+    border-radius: 4px;
+}
+
 .answer {
     padding: 5px;
     margin-top: -5px;
