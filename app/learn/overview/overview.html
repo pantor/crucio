@@ -1,112 +1,59 @@
-<h4>&Uuml;bersicht deiner Sammlungen & Klausuren</h4>
+<h4>&Uuml;bersicht deiner Sammlungen</h4>
 
-<div ng-if="!$ctrl.abstractExams.length && $ctrl.ready" class="container-center-align-sm mbottom-2x">
-    <i class="fa fa-pencil"></i>
+<div ng-if="!$ctrl.collections.length && $ctrl.ready" class="container-center-align-sm mbottom-2x">
+    <i class="fa fa-inbox"></i>
 
     <hr>
 
-    <h3>Hier ist dein Stift.</h3>
-    <h5>Leider haben wir keine empfohlenen Klausuren f&uuml;r dich.<br> Du kannst aber links Klausuren heraussuchen und lernen;<br> alle angefangenen Klausuren werden dann hier angezeigt.</h5>
+    <h3>Du hast noch keine Sammlungen gespeichert.</h3>
+    <h5>Wenn du eine Klausur oder eine andere Sammlung an Fragen lernst, kannst du sie speichern und dann sp&auml;ter weiterlernen. <br> Alle gespeicherten Sammlungen werden hier angezeigt.</h5>
 </div>
 
 <div ng-if="$ctrl.collections.length && $ctrl.ready" class="mtop-2x">
     <div class="row">
         <div class=" col-sm-4" ng-repeat="collection in $ctrl.collections">
             <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
+                <div class="panel-heading" style="background-color: #f5f5f5; height: 52px;">
+                    <h3 class="panel-title" style="font-size: 18px;">
                         <span ng-if="collection.type == 'exam'"><i class="fa fa-list fa-fw"></i> {{ collection.exam.subject }}</span>
                         <span ng-if="collection.type == 'subjects'"><i class="fa fa-flask fa-fw"></i>  {{ collection.main_subject }}</span>
                         <span ng-if="collection.type == 'query'"><i class="fa fa-search fa-fw"></i>  {{ collection.questionSearch.query }}</span>
                         <span ng-if="collection.type == 'tags'"><i class="fa fa-tag fa-fw"></i>  {{ collection.tag }}</span>
                     </h3>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body" style="background-color: #f5f5f5; text-align: center; height: 38px; padding: 10px;">
                     <div ng-if="collection.type == 'exam'">
                         {{ collection.exam.semester }}. Semester <i class="fa fa-calendar fa-fw"></i> {{ collection.exam.date }}
-                    </div>
-                    <div ng-if="collection.type == 'subjects'">
                     </div>
                     <div ng-if="collection.type == 'query'">
                         <span ng-if="collection.questionSearch.semester">{{ collection.questionSearch.semester }}. Semester</span>
                         <span ng-if="collection.questionSearch.subject"><i class="fa fa-flask fa-fw"></i> {{ collection.questionSearch.subject }}</span>
                     </div>
-                    <div ng-if="collection.type == 'tags'">
+                </div>
+                <div class="panel-footer" style="background-color: #f5f5f5;">
+                    <div class="btn-group">
+                        {{ $ctrl.getWorkedList(collection.list).length }} / {{ collection.list.length }} Fragen
                     </div>
 
-                    <div style="margin-top: 5px;">
-                        <!--uib-progressbar max="collection.list.length" type="warning" value="$ctrl.getWorkedList(collection.list).length"><span style="color:black; white-space:nowrap;">{{$ctrl.getWorkedList(collection.list).length}} / {{collection.list.length}}</span></uib-progressbar-->
-                        <div class="btn-group">
-                            {{ $ctrl.getWorkedList(collection.list).length }} / {{ collection.list.length }}
-                        </div>
+                    <div class="btn-group pull-right" uib-dropdown>
+                        <button type="button" class="btn btn-success btn-xs" ng-click="$ctrl.learnCollection('question', $index)"><i class="fa fa-fw fa-graduation-cap"></i> Lernen</button>
+                        <button type="button" class="btn btn-success btn-xs" uib-dropdown-toggle>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" uib-dropdown-menu role="menu">
+                            <li role="menuitem"><a href ng-click="$ctrl.learnCollection('exam', $index)">Klausuransicht</a></li>
+                            <li role="menuitem"><a href ng-click="$ctrl.learnCollection('pdf', $index)">PDF Fragen</a></li>
+                            <li role="menuitem"><a href ng-click="$ctrl.learnCollection('pdf-solution', $index)">PDF L&ouml;sungen</a></li>
 
-                        <div class="btn-group pull-right" uib-dropdown>
-                            <button type="button" class="btn btn-success btn-xs" ng-click="$ctrl.learnCollection('question', $index)"><i class="fa fa-fw fa-graduation-cap"></i> Lernen</button>
-                            <button type="button" class="btn btn-success btn-xs" uib-dropdown-toggle>
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" uib-dropdown-menu role="menu">
-                                <li role="menuitem"><a href ng-click="$ctrl.learnCollection('exam', $index)">Klausuransicht</a></li>
-                                <li role="menuitem"><a href ng-click="$ctrl.learnCollection('pdf', $index)">PDF Fragen</a></li>
-                                <li role="menuitem"><a href ng-click="$ctrl.learnCollection('pdf-solution', $index)">PDF L&ouml;sungen</a></li>
+                            <li class="divider"></li>
 
-                                <li class="divider"></li>
-
-                                <li role="menuitem">
-                                    <a href ng-click="$ctrl.removeCollection($index)">Sammlung l&ouml;schen</a>
-                                </li>
-                            </ul>
-                        </div>
+                            <li role="menuitem">
+                                <a href ng-click="$ctrl.removeCollection($index)">Sammlung l&ouml;schen</a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-<div ng-if="$ctrl.abstractExams.length && $ctrl.ready" class="mtop">
-    <table class="table table-hover">
-        <thead>
-            <th><i class="fa fa-flask fa-fw"></i> Fach</th>
-            <th><i class="fa fa-calendar fa-fw"></i> Termin</th>
-            <th>Semester</th>
-            <th class="hidden-xs hidden-sm">Gel&ouml;ste Fragen</th>
-            <th></th>
-        </thead>
-        <tbody>
-            <tr ng-repeat="exam in $ctrl.abstractExams">
-                <td>{{ exam.subject }}</td>
-                <td>{{ exam.date }}</td>
-                <td>{{ exam.semester }}</td>
-                <td class="hidden-xs hidden-sm">{{ exam.answered_questions }} / {{ exam.question_count }}</td>
-                <td style="min-width: 120px;">
-                    <div class="btn-group pull-right" uib-dropdown>
-                        <button type="button" class="btn btn-success btn-xs" ng-click="$ctrl.learnExam('question', exam.exam_id)"><i class="fa fa-fw fa-graduation-cap"></i> Lernen</button>
-                        <button type="button" class="btn btn-success btn-xs" uib-dropdown-toggle>
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" uib-dropdown-menu role="menu">
-                            <li role="menuitem"><a href ng-click="$ctrl.learnExam('exam', exam.exam_id)">Klausuransicht</a></li>
-                            <li role="menuitem"><a href ng-click="$ctrl.learnExam('pdf', exam.exam_id)">PDF Fragen</a></li>
-                            <li role="menuitem"><a href ng-click="$ctrl.learnExam('pdf-solution', exam.exam_id)">PDF L&ouml;sungen</a></li>
-                            <li role="menuitem" ng-class="{ disabled: exam.file_name == '' }">
-                                <a href="/files/{{ exam.file_name }}" target="_self" ng-if="exam.file_name != ''">
-                                    Originaldokument
-                                </a>
-                                <a ng-if="exam.file_name == ''">
-                                    Originaldokument
-                                </a>
-                            </li>
-
-                            <li class="divider"></li>
-
-                            <li role="menuitem" ng-class="{disabled: exam.answered_questions == 0}">
-                                <a href ng-click="$ctrl.resetExam(exam)">Klausur zur&uuml;cksetzen</a>
-                            </li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
 </div>

@@ -651,11 +651,10 @@ input[id^="textAngular"] {
 
 
 // --- Stats box ---
-
 .stats-box {
     text-align: center;
     padding: 10px;
-    margin: 10px 5px;
+    margin: 12px 0px;
 
     background-color: $light-grey;
     border-radius: 8px;
@@ -810,6 +809,7 @@ sub {
 .answer {
     padding: 5px;
     margin-top: -5px;
+    border-radius: 4px;
 }
 
 

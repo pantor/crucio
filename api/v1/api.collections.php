@@ -11,7 +11,7 @@ $app->group('/collections', function() {
             FROM collections c
             WHERE c.user_id = IFNULL(:user_id, c.user_id)
                 AND c.collection_id = IFNULL(:collection_id, c.collection_id)
-            ORDER BY c.collection_id ASC
+            ORDER BY c.save_date DESC
             LIMIT :limit"
 		);
 		$stmt->bindValue(':user_id', $request->getQueryParam('user_id'), PDO::PARAM_INT);
