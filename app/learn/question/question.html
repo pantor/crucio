@@ -59,6 +59,12 @@
 
                             <uib-progressbar value="($ctrl.index + 1) / $ctrl.length * 100" type="success"></uib-progressbar>
                         </li>
+
+                        <li class="list-group-item" ng-if="$ctrl.index != -1">
+                            <button type="button" class="btn btn-default" ng-click="$ctrl.Collection.save()">
+                                Speichern
+                            </button>
+                        </li>
                     </ul>
                 </div>
 

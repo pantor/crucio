@@ -19,7 +19,7 @@ require 'api.tags.php';
 require 'api.users.php';
 require 'api.whitelist.php';
 require 'api.pdf.php';
-require 'api.collection.php';
+require 'api.collections.php';
 
 $app->run();
 

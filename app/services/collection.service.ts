@@ -1,8 +1,9 @@
 class CollectionService {
   private collection: Crucio.Collection;
+  private readonly user: Crucio.User;
 
-  constructor(private readonly API: APIService, private readonly $state: angular.ui.IStateService, private readonly $window: angular.IWindowService) {
-
+  constructor(Auth: AuthService, private readonly API: APIService, private readonly $state: angular.ui.IStateService, private readonly $window: angular.IWindowService) {
+      this.user = Auth.getUser();
   }
 
   private get(): Crucio.Collection {
@@ -35,39 +36,44 @@ class CollectionService {
     const url = url_type[type];
 
     this.API.get(url, params).then(result => {
-      this.set(result.data.collection);
-
-      switch (method) {
-        case 'question':
-          let goToQuestionId = this.collection.list[0].question_id;
-          for (const listElement of this.collection.list) { // Go to first question which is not answered yet
-            if (listElement.given_result > -1) {
-              goToQuestionId = listElement.question_id;
-            }
-          }
-          this.$state.go('question', {questionId: goToQuestionId});
-          break;
-
-        case 'exam':
-          this.$state.go('exam');
-          break;
-
-        case 'pdf':
-        case 'pdf-solution':
-          const listString = this.getQuestionIds(this.collection.list).join(',');
-          const info = encodeURIComponent(angular.toJson({
-            type: this.collection.type,
-            examId: this.collection.exam_id,
-            selection: this.collection.selection,
-            tag: this.collection.tag,
-            questionSearch: this.collection.questionSearch,
-          }));
-
-          const view = method == 'pdf' ? 'exam' : 'solution';
-          this.$window.location.assign(`api/v1/pdf/collection/${view}?list=${listString}&info=${info}`);
-          break;
-      }
+      this.learnCollection(method, result.data.collection);
     });
+  }
+
+  learnCollection(method: Crucio.Method, collection: Crucio.Collection): void {
+    this.set(collection);
+
+    switch (method) {
+      case 'question':
+        let goToQuestionId = this.collection.list[0].question_id;
+        for (const listElement of this.collection.list) { // Go to first question which is not answered yet
+          if (listElement.given_result === undefined) {
+            goToQuestionId = listElement.question_id;
+            break;
+          }
+        }
+        this.$state.go('question', {questionId: goToQuestionId});
+        break;
+
+      case 'exam':
+        this.$state.go('exam');
+        break;
+
+      case 'pdf':
+      case 'pdf-solution':
+        const listString = this.getQuestionIds(this.collection.list).join(',');
+        const info = encodeURIComponent(angular.toJson({
+          type: this.collection.type,
+          examId: this.collection.exam_id,
+          selection: this.collection.selection,
+          tag: this.collection.tag,
+          questionSearch: this.collection.questionSearch,
+        }));
+
+        const view = method == 'pdf' ? 'exam' : 'solution';
+        this.$window.location.assign(`api/v1/pdf/collection/${view}?list=${listString}&info=${info}`);
+        break;
+    }
   }
 
   getType(): string {
@@ -197,6 +203,26 @@ class CollectionService {
 
     return result;
   }
+
+  save(): void {
+    if (this.collection.collection_id > -1) {
+      const data = { collection: this.collection };
+      this.API.put(`collections/${this.collection.collection_id}`, data).then(result => {
+
+      });
+    } else {
+      const data = { user_id: this.user.user_id, collection: this.collection };
+      this.API.post('collections', data).then(result => {
+        this.collection.collection_id = result.data.collection_id;
+        this.set(this.collection);
+      });
+    }
+  }
+
+  delete(collection_id: number): void {
+    this.API.delete(`collections/${collection_id}`);
+  }
+
 
   private getQuestions(listOfQuestionIds: number[]): any {
     return this.API.get('questions/list', {list: JSON.stringify(listOfQuestionIds)}).then(result => {

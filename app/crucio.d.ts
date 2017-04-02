@@ -113,6 +113,7 @@ declare namespace Crucio {
   type Type = 'exam' | 'subjects' | 'query' | 'tags';
 
   interface Collection {
+    collection_id?: number;
     list: CollectionListItem[];
     questions: Question[];
     type: Type;
