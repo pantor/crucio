@@ -109,10 +109,13 @@ declare namespace Crucio {
     strike: boolean[];
   }
 
+  type Method = 'question' | 'exam' | 'pdf' | 'pdf-solution';
+  type Type = 'exam' | 'subjects' | 'query' | 'tags';
+
   interface Collection {
     list: CollectionListItem[];
     questions: Question[];
-    type: string; // Exam, subjects, (query, tag)
+    type: Type;
     exam_id?: number; // Exam
     selection?: any; // Subjects, Categories
     tag?: string; // Tag

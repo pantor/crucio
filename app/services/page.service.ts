@@ -1,6 +1,6 @@
 class PageService {
-  title: string;
-  nav: string;
+  public title: string;
+  public nav: string;
 
   constructor(private readonly $window: angular.IWindowService) {
 

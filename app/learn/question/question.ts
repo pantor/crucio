@@ -1,37 +1,27 @@
 class QuestionController {
-  readonly Auth: AuthService;
-  readonly API: APIService;
-  readonly Collection: CollectionService;
-  readonly $uibModal: angular.ui.bootstrap.IModalService;
-  readonly $window: angular.IWindowService;
-  readonly user: Crucio.User;
-  readonly questionId: number;
-  readonly resetSession: boolean;
-  question: Crucio.Question;
-  comments: Crucio.Comment[];
-  tags: any;
-  commentsCollapsed: boolean;
-  noAnswer: boolean;
-  showExplanation: boolean;
-  index: number;
-  questionData: Crucio.CollectionListItem;
-  length: number;
-  preQuestionId: number;
-  postQuestionId: number;
-  checkedAnswer: number;
-  correctAnswer: number;
-  isAnswerGiven: boolean;
-  isAnswerRight: boolean;
-  isAnswerWrong: boolean;
-  commentText: string;
-  wrongAnswer: number;
+  private readonly user: Crucio.User;
+  private readonly questionId: number;
+  private readonly resetSession: boolean;
+  private question: Crucio.Question;
+  private comments: Crucio.Comment[];
+  private tags: any;
+  private commentsCollapsed: boolean;
+  private noAnswer: boolean;
+  private showExplanation: boolean;
+  private index: number;
+  private questionData: Crucio.CollectionListItem;
+  private length: number;
+  private preQuestionId: number;
+  private postQuestionId: number;
+  private checkedAnswer: number;
+  private correctAnswer: number;
+  private isAnswerGiven: boolean;
+  private isAnswerRight: boolean;
+  private isAnswerWrong: boolean;
+  private commentText: string;
+  private wrongAnswer: number;
 
-  constructor(Auth: AuthService, Page: PageService, API: APIService, Collection: CollectionService, $stateParams, $window: angular.IWindowService, $uibModal: angular.ui.bootstrap.IModalService) {
-    this.Auth = Auth;
-    this.API = API;
-    this.Collection = Collection;
-    this.$uibModal = $uibModal;
-
+  constructor(private readonly Auth: AuthService, Page: PageService, private readonly API: APIService, private readonly Collection: CollectionService, $stateParams, $window: angular.IWindowService, private readonly $uibModal: angular.ui.bootstrap.IModalService) {
     Page.setTitleAndNav('Frage | Crucio', 'Learn');
 
     this.user = Auth.getUser();

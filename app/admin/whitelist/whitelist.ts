@@ -1,11 +1,8 @@
 class AdminWhitelistController {
-  readonly API: APIService;
-  whitelist: any;
-  newWhitelistEmail: string;
+  private whitelist: any;
+  private newWhitelistEmail: string;
 
-  constructor(Auth: AuthService, API: APIService) {
-    this.API = API;
-
+  constructor(Auth: AuthService, private readonly API: APIService) {
     this.API.get('whitelist').then(result => {
       this.whitelist = result.data.whitelist;
     });

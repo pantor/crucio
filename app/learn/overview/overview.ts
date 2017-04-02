@@ -1,17 +1,12 @@
 class LearnOverviewController {
-  readonly API: APIService;
-  readonly Collection: CollectionService;
-  readonly user: Crucio.User;
-  abstractExams: any;
-  ready: number;
-  distinctSemesters: any;
-  distinctSubjects: any;
-  subjectList: Crucio.Subject[];
+  private readonly user: Crucio.User;
+  private abstractExams: any;
+  private ready: number;
+  private distinctSemesters: any;
+  private distinctSubjects: any;
+  private subjectList: Crucio.Subject[];
 
-  constructor(Auth: AuthService, API: APIService, Collection: CollectionService, $scope: angular.IScope, $timeout: angular.ITimeoutService) {
-    this.API = API;
-    this.Collection = Collection;
-
+  constructor(Auth: AuthService, private readonly API: APIService, private readonly Collection: CollectionService, $scope: angular.IScope, $timeout: angular.ITimeoutService) {
     this.user = Auth.getUser();
 
     this.API.get('exams/distinct', {visibility: 1}).then(result => {
@@ -34,7 +29,7 @@ class LearnOverviewController {
     });
   }
 
-  learnExam(method: string, examId: number): void {
+  learnExam(method: Crucio.Method, examId: number): void {
     const data = { examId, random: 0 };
     this.Collection.learn('exam', method, data);
   }

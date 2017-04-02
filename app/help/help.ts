@@ -1,13 +1,10 @@
 class HelpController {
-  readonly API: APIService;
-  readonly user: Crucio.User;
-  isWorking: boolean;
-  text: string;
-  emailSend: boolean;
+  private readonly user: Crucio.User;
+  private isWorking: boolean;
+  private text: string;
+  private emailSend: boolean;
 
-  constructor(Auth: AuthService, Page: PageService, API: APIService) {
-    this.API = API;
-
+  constructor(Auth: AuthService, Page: PageService, private readonly API: APIService) {
     Page.setTitleAndNav('Hilfe | Crucio', '');
 
     this.user = Auth.getUser();

@@ -1,32 +1,25 @@
 class QuestionModalController {
-  readonly Auth: AuthService;
-  readonly API: APIService;
-  readonly user: Crucio.User;
-  readonly $uibModal: angular.ui.bootstrap.IModalService;
-  questionId: number;
-  resolve: any;
-  close: any;
-  dismiss: any;
-  commentsCollapsed: boolean;
-  noAnswer: boolean;
-  showExplanation: boolean;
-  question: Crucio.Question;
-  comments: Crucio.Comment[];
-  tags: any;
-  checkedAnswer: number;
-  isAnswerGiven: boolean;
-  correctAnswer: number;
-  isAnswerRight: boolean;
-  commentText: string;
-  isAnswerWrong: boolean;
-  wrongAnswer: number;
-  givenAnswer: number;
+  private readonly user: Crucio.User;
+  private questionId: number;
+  private resolve: any;
+  private close: any;
+  private dismiss: any;
+  private commentsCollapsed: boolean;
+  private noAnswer: boolean;
+  private showExplanation: boolean;
+  private question: Crucio.Question;
+  private comments: Crucio.Comment[];
+  private tags: any;
+  private checkedAnswer: number;
+  private isAnswerGiven: boolean;
+  private correctAnswer: number;
+  private isAnswerRight: boolean;
+  private commentText: string;
+  private isAnswerWrong: boolean;
+  private wrongAnswer: number;
+  private givenAnswer: number;
 
-  constructor(API: APIService, Auth: AuthService, $uibModal: angular.ui.bootstrap.IModalService) {
-    this.Auth = Auth;
-    this.API = API;
-    this.$uibModal = $uibModal;
-
+  constructor(private readonly API: APIService, private readonly Auth: AuthService, private readonly $uibModal: angular.ui.bootstrap.IModalService) {
     this.user = Auth.getUser();
 
     this.commentsCollapsed = Boolean(this.user.showComments);

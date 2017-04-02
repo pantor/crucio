@@ -1,18 +1,13 @@
 class AuthorExamsController {
-  readonly API: APIService;
-  readonly $location: angular.ILocationService;
-  readonly user: Crucio.User;
-  examSearch: any;
-  distinctSemesters: any;
-  distinctAuthors: any;
-  distinctSubjects: any;
-  subjectList: Crucio.Subject[];
-  exams: Crucio.Exam[];
+  private readonly user: Crucio.User;
+  private examSearch: any;
+  private distinctSemesters: any;
+  private distinctAuthors: any;
+  private distinctSubjects: any;
+  private subjectList: Crucio.Subject[];
+  private exams: Crucio.Exam[];
 
-  constructor(Auth: AuthService, API: APIService, $location: angular.ILocationService) {
-    this.API = API;
-    this.$location = $location;
-
+  constructor(Auth: AuthService, private readonly API: APIService, private readonly $location: angular.ILocationService) {
     this.user = Auth.getUser();
 
     this.examSearch = { author: this.user };

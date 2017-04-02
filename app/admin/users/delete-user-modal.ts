@@ -1,12 +1,11 @@
 class DeleteUserModalController {
-  readonly API: APIService;
-  user: Crucio.User;
-  resolve: any;
-  close: any;
-  dismiss: any;
+  private user: Crucio.User;
+  private resolve: any;
+  private close: any;
+  private dismiss: any;
 
-  constructor(API: APIService) {
-    this.API = API;
+  constructor(private readonly API: APIService) {
+
   }
 
   $onInit() {

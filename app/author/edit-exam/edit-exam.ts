@@ -1,33 +1,22 @@
 class EditExamController {
-  readonly API: APIService;
-  readonly Cut: CutService;
-  readonly FileUploader: any;
-  readonly $location: angular.ILocationService;
-  readonly $uibModal: angular.ui.bootstrap.IModalService;
-  readonly user: Crucio.User;
-  readonly examId: number;
-  openQuestionId: number;
-  openQuestionIndex: number;
-  numberChanged: number;
-  uploader: any;
-  uploaderArray: any;
-  hasChanged: boolean;
-  subjectList: Crucio.Subject[];
-  exam: Crucio.Exam;
-  questions: Crucio.Question[];
-  ready: boolean;
-  isSaving: boolean;
-  exam_types: string[];
-  subjectListPerId: any;
-  categoryListPerId: any;
+  private readonly user: Crucio.User;
+  private readonly examId: number;
+  private openQuestionId: number;
+  private openQuestionIndex: number;
+  private numberChanged: number;
+  private uploader: any;
+  private uploaderArray: any;
+  private hasChanged: boolean;
+  private subjectList: Crucio.Subject[];
+  private exam: Crucio.Exam;
+  private questions: Crucio.Question[];
+  private ready: boolean;
+  private isSaving: boolean;
+  private exam_types: string[];
+  private subjectListPerId: any;
+  private categoryListPerId: any;
 
-  constructor(Page: PageService, Auth: AuthService, API: APIService, Cut: CutService, FileUploader, $scope: angular.IScope, $location: angular.ILocationService, $stateParams, $uibModal: angular.ui.bootstrap.IModalService) {
-    this.API = API;
-    this.Cut = Cut;
-    this.FileUploader = FileUploader;
-    this.$location = $location;
-    this.$uibModal = $uibModal;
-
+  constructor(Page: PageService, Auth: AuthService, private readonly API: APIService, private readonly Cut: CutService, private readonly FileUploader, $scope: angular.IScope, private readonly $location: angular.ILocationService, $stateParams, private readonly $uibModal: angular.ui.bootstrap.IModalService) {
     Page.setTitleAndNav('Klausur | Crucio', 'Author');
 
     this.user = Auth.getUser();

@@ -1,8 +1,4 @@
 class UserController {
-  readonly API: APIService;
-  readonly Auth: AuthService;
-  readonly $scope: any; // Property form does not exist
-  readonly $uibModal: angular.ui.bootstrap.IModalService;
   user: Crucio.User;
   isWorking: boolean;
   isSaved: boolean;
@@ -12,12 +8,7 @@ class UserController {
   newPassword: string;
   newPasswordC: string;
 
-  constructor(Page: PageService, Auth: AuthService, API: APIService, $scope: angular.IScope, $uibModal: angular.ui.bootstrap.IModalService) {
-    this.API = API;
-    this.Auth = Auth;
-    this.$scope = $scope;
-    this.$uibModal = $uibModal;
-
+  constructor(Page: PageService, private readonly Auth: AuthService, private readonly API: APIService, private readonly $scope: angular.IScope, private readonly $uibModal: angular.ui.bootstrap.IModalService) {
     Page.setTitleAndNav('Account | Crucio', 'User');
 
     this.user = this.Auth.getUser();

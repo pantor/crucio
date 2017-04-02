@@ -1,12 +1,11 @@
 class DeleteTagsModalController {
-  readonly API: APIService;
   userId: number;
   resolve: any;
   close: any;
   dismiss: any;
 
-  constructor(API: APIService) {
-    this.API = API;
+  constructor(private readonly API: APIService) {
+    
   }
 
   $onInit() {

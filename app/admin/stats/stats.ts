@@ -1,11 +1,8 @@
 class AdminStatsController {
-  readonly API: APIService;
-  stats: any;
-  resultGraph: any;
+  private stats: any;
+  private resultGraph: any;
 
-  constructor(Auth: AuthService, API: APIService) {
-    this.API = API;
-
+  constructor(Auth: AuthService, private readonly API: APIService) {
     this.API.get('stats/summary').then(result => {
       this.stats = result.data.stats;
     });

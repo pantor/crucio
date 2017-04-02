@@ -1,24 +1,13 @@
 class ExamController {
-  readonly API: APIService;
-  readonly Collection: CollectionService;
-  readonly $state: angular.ui.IStateService;
-  readonly $document: any;
-  readonly $uibModal: angular.ui.bootstrap.IModalService;
-  readonly user: Crucio.User;
-  currentIndex: number;
-  length: number;
-  questions: Crucio.Question[];
+  private readonly user: Crucio.User;
+  private currentIndex: number;
+  private length: number;
+  private questions: Crucio.Question[];
 
   constructor(
-    Page: PageService, Auth: AuthService, API: APIService, Collection: CollectionService,
-    $state: angular.ui.IStateService, $uibModal: angular.ui.bootstrap.IModalService, $stateParams, $timeout: angular.ITimeoutService, $document: angular.IDocumentService, $window: angular.IWindowService
+    Page: PageService, Auth: AuthService, private readonly API: APIService, private readonly Collection: CollectionService,
+    private readonly $state: angular.ui.IStateService, private readonly $uibModal: angular.ui.bootstrap.IModalService, $stateParams, $timeout: angular.ITimeoutService, private readonly $document: angular.IDocumentService, $window: angular.IWindowService
   ) {
-    this.API = API;
-    this.Collection = Collection;
-    this.$state = $state;
-    this.$document = $document;
-    this.$uibModal = $uibModal;
-
     Page.setTitleAndNav('Klausur | Crucio', 'Learn');
 
     this.user = Auth.getUser();

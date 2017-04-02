@@ -1,23 +1,14 @@
 class EditOralExamController {
-  readonly API: APIService;
-  readonly FileUploader: any;
-  readonly $location: angular.ILocationService;
-  readonly $uibModal: angular.ui.bootstrap.IModalService;
-  readonly user: Crucio.User;
-  readonly oralExamId: number;
-  numberChanged: number;
-  uploader: any;
-  hasChanged: boolean;
-  oralExam: Crucio.OralExam;
-  ready: boolean;
-  isSaving: boolean;
+  private readonly user: Crucio.User;
+  private readonly oralExamId: number;
+  private numberChanged: number;
+  private uploader: any;
+  private hasChanged: boolean;
+  private oralExam: Crucio.OralExam;
+  private ready: boolean;
+  private isSaving: boolean;
 
-  constructor(Page: PageService, Auth: AuthService, API: APIService, FileUploader, $scope: angular.IScope, $location: angular.ILocationService, $stateParams, $uibModal: angular.ui.bootstrap.IModalService) {
-    this.API = API;
-    this.FileUploader = FileUploader;
-    this.$location = $location;
-    this.$uibModal = $uibModal;
-
+  constructor(Page: PageService, Auth: AuthService, private readonly API: APIService, private readonly FileUploader, $scope: angular.IScope, private readonly $location: angular.ILocationService, $stateParams, private readonly $uibModal: angular.ui.bootstrap.IModalService) {
     Page.setTitleAndNav('Mündliche Prüfung | Crucio', 'Author');
 
     this.user = Auth.getUser();

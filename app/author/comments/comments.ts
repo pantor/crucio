@@ -1,14 +1,11 @@
 class AuthorCommentsController {
-  readonly API: APIService;
-  readonly user: Crucio.User;
-  distinctAuthors: any;
-  commentSearch: any;
-  comments: Crucio.Comment[];
-  questionsByComment: any;
+  private readonly user: Crucio.User;
+  private distinctAuthors: any;
+  private commentSearch: any;
+  private comments: Crucio.Comment[];
+  private questionsByComment: any;
 
-  constructor(Auth: AuthService, API: APIService) {
-    this.API = API;
-
+  constructor(Auth: AuthService, private readonly API: APIService) {
     this.user = Auth.getUser();
 
     this.commentSearch = { author: this.user };

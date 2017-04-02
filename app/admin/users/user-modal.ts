@@ -1,16 +1,13 @@
 class UserModalController {
-  readonly API: APIService;
-  user: Crucio.User;
-  newGroupID: number;
-  resolve: any;
-  close: any;
-  dismiss: any;
-  distinctGroups: any;
-  distinctGroupsPerId: any;
+  private user: Crucio.User;
+  private newGroupID: number;
+  private resolve: any;
+  private close: any;
+  private dismiss: any;
+  private distinctGroups: any;
+  private distinctGroupsPerId: any;
 
-  constructor(API: APIService) {
-    this.API = API;
-
+  constructor(private readonly API: APIService) {
     this.API.get('users/distinct').then(result => {
       this.distinctGroups = result.data.groups;
       this.distinctGroupsPerId = {};

@@ -1,14 +1,11 @@
 class DeleteExamModalController {
-  readonly API: APIService;
-  readonly $location: any;
-  examId: number;
-  resolve: any;
-  close: any;
-  dismiss: any;
+  private examId: number;
+  private resolve: any;
+  private close: any;
+  private dismiss: any;
 
-  constructor(API: APIService, $location: angular.ILocationService) {
-    this.API = API;
-    this.$location = $location;
+  constructor(private readonly API: APIService, private readonly $location: angular.ILocationService) {
+    
   }
 
   $onInit() {

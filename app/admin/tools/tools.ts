@@ -1,8 +1,7 @@
 class AdminToolsController {
-  readonly API: APIService;
+  
+  constructor(Auth: AuthService, private readonly API: APIService) {
 
-  constructor(Auth: AuthService, API: APIService) {
-    this.API = API;
   }
 
   changeSemester(difference: number): void {

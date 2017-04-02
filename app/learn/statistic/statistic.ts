@@ -1,5 +1,5 @@
 class StatisticController {
-  readonly user: Crucio.User;
+  private readonly user: Crucio.User;
 
   constructor(Auth: AuthService, Page: PageService) {
     Page.setTitleAndNav('Statistik | Crucio', 'Learn');

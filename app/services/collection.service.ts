@@ -25,11 +25,7 @@ class CollectionService {
     sessionStorage.removeItem('crucioCollection');
   }
 
-
-  learn(type: string, method: string, params: any): void {
-    // if (method === 'question') { params.load_first_question = true; }
-    // if (method === 'exam') { params.load_all_questions = true; }
-
+  learn(type: Crucio.Type, method: Crucio.Method, params: any): void {
     const url_type = {
       tags: 'tags/prepare',
       exam: `exams/action/prepare/${params.examId}`,
@@ -112,15 +108,6 @@ class CollectionService {
     });
   }
 
-  loadWorkedQuestions(): any {
-    this.get();
-    const workedList = this.getWorkedList();
-    const workedListQuestionIds = this.getQuestionIds(workedList);
-    return this.getQuestions(workedListQuestionIds).then(questions => {
-      return questions;
-    });
-  }
-
   loadCombinedListAndQuestions(list: Crucio.CollectionListItem[]): any {
     this.get();
     const listQuestionIds = this.getQuestionIds(list);
@@ -171,7 +158,7 @@ class CollectionService {
   }
 
   analyseCombination(combination: Crucio.CombinationElement[]): Crucio.AnalyseCount {
-    const result = {
+    const result: Crucio.AnalyseCount = {
       correct: 0,
       wrong: 0,
       seen: 0,

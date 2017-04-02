@@ -1,16 +1,11 @@
 class AuthorOralExamsController {
-  readonly API: APIService;
-  readonly $location: angular.ILocationService;
-  readonly user: Crucio.User;
-  oralExamSearch: any;
-  distinctOralSemesters: any;
-  distinctOralYears: any;
-  oralExams: Crucio.OralExam[];
+  private readonly user: Crucio.User;
+  private oralExamSearch: any;
+  private distinctOralSemesters: any;
+  private distinctOralYears: any;
+  private oralExams: Crucio.OralExam[];
 
-  constructor(Auth: AuthService, API: APIService, $location: angular.ILocationService) {
-    this.API = API;
-    this.$location = $location;
-
+  constructor(Auth: AuthService, private readonly API: APIService, private readonly $location: angular.ILocationService) {
     this.user = Auth.getUser();
 
     this.oralExamSearch = {};

@@ -1,12 +1,7 @@
 class NavbarController {
-  readonly Page: PageService;
-  readonly Auth: AuthService;
-  readonly user: Crucio.User;
+  private readonly user: Crucio.User;
 
-  constructor(Auth: AuthService, Page: PageService) {
-    this.Page = Page;
-    this.Auth = Auth;
-
+  constructor(private readonly Auth: AuthService, private readonly Page: PageService) {
     this.user = Auth.getUser();
   }
 

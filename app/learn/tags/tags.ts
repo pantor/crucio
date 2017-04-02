@@ -1,16 +1,11 @@
 class LearnTagsController {
-  private readonly API: APIService;
-  private readonly Collection: CollectionService;
   private readonly user: Crucio.User;
   private tags: any;
   private distinctTags: any;
   private questionsByTag: any;
   private selectedTag: string;
 
-  constructor(Auth: AuthService, API: APIService, Collection: CollectionService) {
-    this.API = API;
-    this.Collection = Collection;
-
+  constructor(Auth: AuthService, private readonly API: APIService, private readonly Collection: CollectionService) {
     this.user = Auth.getUser();
 
     this.loadTags();
@@ -44,7 +39,7 @@ class LearnTagsController {
     });
   }
 
-  learnTags(method: string): void {
+  learnTags(method: Crucio.Method): void {
     this.Collection.learn('tags', method, {tag: this.selectedTag, user_id: this.user.user_id});
   }
 }
