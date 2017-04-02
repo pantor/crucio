@@ -1,10 +1,9 @@
 class PageService {
-  private readonly $window: angular.IWindowService;
   title: string;
   nav: string;
 
-  constructor($window: angular.IWindowService) {
-    this.$window = $window;
+  constructor(private readonly $window: angular.IWindowService) {
+
   }
 
   setTitle(newTitle: string): void {

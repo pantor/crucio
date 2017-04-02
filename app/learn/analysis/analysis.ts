@@ -1,41 +1,31 @@
 class AnalysisController {
-  readonly API: APIService;
-  readonly Collection: CollectionService;
-  readonly user: Crucio.User;
-  workedCollectionList: Crucio.CollectionListItem[];
-  count: Crucio.AnalyseCount;
-  exam: Crucio.Exam;
+  private readonly user: Crucio.User;
+  private workedCombination: Crucio.CombinationElement[];
+  private workedCollectionList: Crucio.CollectionListItem[];
+  private count: Crucio.AnalyseCount;
+  private exam: Crucio.Exam;
 
-  constructor(Page: PageService, Auth: AuthService, API: APIService, Collection: CollectionService) {
-    this.API = API;
-    this.Collection = Collection;
-
+  constructor(Page: PageService, Auth: AuthService, private readonly API: APIService, private readonly Collection: CollectionService) {
     Page.setTitleAndNav('Analyse | Crucio', 'Learn');
 
     this.user = Auth.getUser();
 
     this.workedCollectionList = this.Collection.getWorkedList();
-    this.Collection.loadWorkedQuestions().then(questions => {
-      this.count = this.Collection.analyseCount(questions);
+    this.Collection.loadCombinedListAndQuestions(this.workedCollectionList).then(result => {
+      this.workedCombination = result;
+      this.count = this.Collection.analyseCombination(this.workedCombination);
 
-      if (questions.length != this.workedCollectionList.length) {
-        alert('Analyse konnte nicht durchgeführt werden...');
-      }
-
-      for (let i = 0; i < questions.length; i++) {
-        const question = questions[i];
-        const questionData = this.workedCollectionList[i];
-
-        if (!questionData.mark_answer && question.type > 1) {
-          let correct = (question.correct_answer === questionData.given_result) ? 1 : 0;
-          if (question.correct_answer === 0) {
+      for (let c of this.workedCombination) {
+        if (!c.data.mark_answer && c.question.type > 1) {
+          let correct = (c.question.correct_answer === c.data.given_result) ? 1 : 0;
+          if (c.question.correct_answer === 0) {
             correct = -1;
           }
 
           const data = {
             correct,
-            given_result: questionData.given_result,
-            question_id: questionData.question_id,
+            given_result: c.data.given_result,
+            question_id: c.question.question_id,
             user_id: this.user.user_id,
           };
           this.API.post('results', data);
@@ -43,25 +33,7 @@ class AnalysisController {
       }
     });
 
-    // Post results, but not which are already saved or are free questions
-    /* for (const question of this.workedCollection) {
-      if (!question.mark_answer && question.type > 1) {
-        let correct = (question.correct_answer === question.given_result) ? 1 : 0;
-        if (question.correct_answer === 0) {
-          correct = -1;
-        }
-
-        const data = {
-          correct,
-          given_result: question.given_result,
-          question_id: question.question_id,
-          user_id: this.user.user_id,
-        };
-        this.API.post('results', data);
-      }
-    } */
-
-    if (this.Collection.getType() == 'exam') {
+    if (this.Collection.getType() === 'exam') {
       this.API.get(`exams/${Collection.getExamId()}`).then(result => {
         this.exam = result.data.exam;
       });

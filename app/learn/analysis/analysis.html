@@ -97,30 +97,30 @@
                         </thead>
 
                         <tbody>
-                            <tr ng-repeat="question in $ctrl.workedCollection">
+                            <tr ng-repeat="c in $ctrl.workedCombination">
                                 <td style="width: 30px;">
-                                    <div ng-if="question.correct_answer == 0" class="dot dot-warning"></div>
-                                    <div ng-if="question.correct_answer == question.given_result && question.given_result > 0 && question.correct_answer > 0" class="dot dot-success"></div>
-                                    <div ng-if="question.correct_answer != question.given_result && question.given_result > 0 && question.correct_answer > 0" class="dot dot-danger"></div>
-                                    <div ng-if="question.type == 1" class="dot dot-info"></div>
+                                    <div ng-if="c.question.correct_answer == 0" class="dot dot-warning"></div>
+                                    <div ng-if="c.question.correct_answer == c.data.given_result && c.data.given_result > 0 && question.correct_answer > 0" class="dot dot-success"></div>
+                                    <div ng-if="c.question.correct_answer != c.data.given_result && c.data.given_result > 0 && question.correct_answer > 0" class="dot dot-danger"></div>
+                                    <div ng-if="c.question.type == 1" class="dot dot-info"></div>
                                 </td>
                                 <td style="padding-top: 11px;">
                                     <div ng-bind-html="question.question" style="margin-bottom: 12px;"></div>
 
-                                    <p class="question-answer strong text-danger bg-danger" ng-show="question.correct_answer != question.given_result && question.given_result > 0 && question.correct_answer > 0">
-                                        <span ng-bind-html="question.answers[question.given_result - 1]"></span>
+                                    <p class="question-answer strong text-danger bg-danger" ng-show="c.question.correct_answer != c.data.given_result && c.data.given_result > 0 && c.question.correct_answer > 0">
+                                        <span ng-bind-html="c.question.answers[c.data.given_result - 1]"></span>
                                     </p>
 
-                                    <p class="question-answer strong text-success bg-success" ng-show="question.correct_answer > 0 && question.mark_answer == 1 || question.correct_answer == question.given_result">
-                                        <span ng-bind-html="question.answers[question.correct_answer - 1]"></span>
+                                    <p class="question-answer strong text-success bg-success" ng-show="c.question.correct_answer > 0 && c.data.mark_answer == 1 || c.question.correct_answer == c.data.given_result">
+                                        <span ng-bind-html="c.question.answers[c.question.correct_answer - 1]"></span>
                                     </p>
 
                                     <center>
-                                        <button class="btn btn-sm btn-success" ng-click="$ctrl.showCorrectAnswerClicked($index)" ng-show="question.mark_answer != 1 && question.correct_answer != question.given_result && question.correct_answer > 0" style="width: 200px;">L&ouml;sung anzeigen</button>
+                                        <button class="btn btn-sm btn-success" ng-click="$ctrl.showCorrectAnswerClicked($index)" ng-show="c.data.mark_answer != 1 && c.question.correct_answer != c.data.given_result && c.question.correct_answer > 0" style="width: 200px;">L&ouml;sung anzeigen</button>
                                     </center>
                                 </td>
                                 <td style="width: 30px;">
-                                    <a ui-sref="question({ questionId: question.question_id })">
+                                    <a ui-sref="question({ questionId: c.question.question_id })">
                                         <i class="fa fa-chevron-right"></i>
                                     </a>
                                 </td>

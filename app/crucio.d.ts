@@ -105,9 +105,7 @@ declare namespace Crucio {
   interface CollectionListItem {
     question_id: number;
     mark_answer: number;
-    given_answer: number;
-    given_result: number; // Depreceated?
-    givenAnswer: number; // Depreceated?
+    given_result: number; // rename to given_answer
     strike: boolean[];
   }
 
@@ -119,6 +117,11 @@ declare namespace Crucio {
     selection?: any; // Subjects, Categories
     tag?: string; // Tag
     questionSearch?: any; // Query, Subject, Semester
+  }
+
+  interface CombinationElement {
+    data: CollectionListItem;
+    question: Question;
   }
 }
 

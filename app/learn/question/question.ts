@@ -74,10 +74,10 @@ class QuestionController {
         this.tags = result.data.tags.split(',').map(entry => { return { text: entry }; });
       }
 
-      this.checkedAnswer = this.questionData.givenAnswer;
+      this.checkedAnswer = this.questionData.given_result;
 
       if (this.questionData.mark_answer) {
-        this.markAnswer(this.questionData.givenAnswer);
+        this.markAnswer(this.questionData.given_result);
       }
     });
   }
@@ -92,7 +92,7 @@ class QuestionController {
   // If show solution button is clicked
   showSolution(): void {
     const correctAnswer = this.question.correct_answer;
-    let correct = (correctAnswer === this.questionData.givenAnswer) ? 1 : 0;
+    let correct = (correctAnswer === this.questionData.given_result) ? 1 : 0;
     if (correctAnswer === 0 || this.question.type === 1) {
       correct = -1;
     }
@@ -101,16 +101,16 @@ class QuestionController {
       correct,
       question_id: this.questionId,
       user_id: this.user.user_id,
-      given_result: this.questionData.givenAnswer,
+      given_result: this.questionData.given_result,
     };
     this.API.post('results', data);
 
     this.Collection.saveMarkAnswer(this.index);
-    this.markAnswer(this.questionData.givenAnswer);
+    this.markAnswer(this.questionData.given_result);
   }
 
   saveAnswer(givenAnswer: number): void {
-    this.questionData.givenAnswer = givenAnswer;
+    this.questionData.given_result = givenAnswer;
     this.Collection.saveAnswer(this.index, givenAnswer);
   }
 

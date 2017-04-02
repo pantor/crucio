@@ -1,13 +1,8 @@
 class CollectionService {
-  private readonly API: APIService;
-  private readonly $state: angular.ui.IStateService;
-  private readonly $window: any;
   private collection: Crucio.Collection;
 
-  constructor(API: APIService, $state: angular.ui.IStateService, $window: any) {
-    this.API = API;
-    this.$state = $state;
-    this.$window = $window;
+  constructor(private readonly API: APIService, private readonly $state: angular.ui.IStateService, private readonly $window: angular.IWindowService) {
+
   }
 
   private get(): Crucio.Collection {
@@ -35,32 +30,25 @@ class CollectionService {
     // if (method === 'question') { params.load_first_question = true; }
     // if (method === 'exam') { params.load_all_questions = true; }
 
-    let url = '';
-    switch (type) {
-      case 'tags':
-        url = 'tags/prepare';
-        break;
-
-      case 'exam':
-        url = `exams/action/prepare/${params.examId}`;
-        break;
-
-      case 'subjects':
-        url = 'questions/prepare-subjects';
-        break;
-
-      case 'query':
-        url = 'questions/prepare-query';
-        break;
+    const url_type = {
+      tags: 'tags/prepare',
+      exam: `exams/action/prepare/${params.examId}`,
+      subjects: 'questions/prepare-subjects',
+      query: 'questions/prepare-query',
     }
+    const url = url_type[type];
 
     this.API.get(url, params).then(result => {
       this.set(result.data.collection);
 
       switch (method) {
         case 'question':
-          // TODO Go to first question which is not answered yet
-          const goToQuestionId = this.collection.list[0].question_id;
+          let goToQuestionId = this.collection.list[0].question_id;
+          for (const listElement of this.collection.list) { // Go to first question which is not answered yet
+            if (listElement.given_result > -1) {
+              goToQuestionId = listElement.question_id;
+            }
+          }
           this.$state.go('question', {questionId: goToQuestionId});
           break;
 
@@ -128,7 +116,19 @@ class CollectionService {
     this.get();
     const workedList = this.getWorkedList();
     const workedListQuestionIds = this.getQuestionIds(workedList);
-    return this.getQuestions(workedListQuestionIds).then(result => {
+    return this.getQuestions(workedListQuestionIds).then(questions => {
+      return questions;
+    });
+  }
+
+  loadCombinedListAndQuestions(list: Crucio.CollectionListItem[]): any {
+    this.get();
+    const listQuestionIds = this.getQuestionIds(list);
+    return this.getQuestions(listQuestionIds).then(questions => {
+      let result: Crucio.CombinationElement[] = [];
+      for (let i = 0; i < list.length; i++) {
+        result.push({ data: list[i], question: questions[i] });
+      }
       return result;
     });
   }
@@ -147,14 +147,6 @@ class CollectionService {
   getQuestionData(index: number): Crucio.CollectionListItem {
     this.get();
     return this.collection.list[index];
-  }
-
-  getQuestionIds(list: Crucio.CollectionListItem[]): number[] {
-    let result = [];
-    for (let i = 0; i < list.length; i++) {
-      result.push(list[i].question_id);
-    }
-    return result;
   }
 
   saveMarkAnswer(index: number): void {
@@ -178,9 +170,7 @@ class CollectionService {
     }
   }
 
-  analyseCount(workedQuestions: Crucio.Question[]): Crucio.AnalyseCount {
-    const workedCollectionList = this.getWorkedList();
-
+  analyseCombination(combination: Crucio.CombinationElement[]): Crucio.AnalyseCount {
     const result = {
       correct: 0,
       wrong: 0,
@@ -189,34 +179,31 @@ class CollectionService {
       free: 0,
       no_answer: 0,
       all: this.collection.list.length,
-      worked: workedCollectionList.length,
+      worked: combination.length,
     };
 
-    for (let i = 0; i < workedQuestions.length; i++) {
-      const question = workedQuestions[i];
-      const questionData = workedCollectionList[i];
-
-      if (question.correct_answer === questionData.given_result && questionData.given_result > 0 && question.correct_answer > 0) {
+    for (let c of combination) {
+      if (c.question.correct_answer === c.data.given_result && c.data.given_result > 0 && c.question.correct_answer > 0) {
         result.correct++;
       }
 
-      if (question.correct_answer !== questionData.given_result && questionData.given_result > 0 && question.correct_answer > 0) {
+      if (c.question.correct_answer !== c.data.given_result && c.data.given_result > 0 && c.question.correct_answer > 0) {
         result.wrong++;
       }
 
-      if (questionData.given_result > 0) {
+      if (c.data.given_result > 0) {
         result.solved++;
       }
 
-      if (questionData.given_result > -2) {
+      if (c.data.given_result > -2) {
         result.seen++;
       }
 
-      if (question.type === 1) {
+      if (c.question.type === 1) {
         result.free++;
       }
 
-      if (question.correct_answer === 0 && question.type !== 1) {
+      if (c.question.correct_answer === 0 && c.question.type !== 1) {
         result.no_answer++;
       }
     }
@@ -224,10 +211,18 @@ class CollectionService {
     return result;
   }
 
-  private getQuestions(list: number[]): any { // List is list of questionIds
-    return this.API.get('questions/list', {list: JSON.stringify(list)}).then(result => {
+  private getQuestions(listOfQuestionIds: number[]): any {
+    return this.API.get('questions/list', {list: JSON.stringify(listOfQuestionIds)}).then(result => {
       return result.data.list as Crucio.Question[];
     });
+  }
+
+  private getQuestionIds(list: Crucio.CollectionListItem[]): number[] {
+    let result = [];
+    for (let i = 0; i < list.length; i++) {
+      result.push(list[i].question_id);
+    }
+    return result;
   }
 }
 
