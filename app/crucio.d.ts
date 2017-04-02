@@ -104,7 +104,7 @@ declare namespace Crucio {
 
   interface CollectionListItem {
     question_id: number;
-    mark_answer: number;
+    mark_answer: number; // boolean
     given_result: number; // rename to given_answer
     strike: boolean[];
   }

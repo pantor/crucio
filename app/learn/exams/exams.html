@@ -62,49 +62,31 @@
             <td>{{ exam.subject }}</td>
             <td>{{ exam.date }}</td>
             <td class="hidden-xs hidden-sm">{{ exam.answered_questions }} / {{ exam.question_count }}</td>
-            <td style="min-width: 250px;">
-                <div class="btn-group pull-right" role="group">
-                    <a type="button" class="btn btn-default btn-xs" href ng-click="$ctrl.learnExam('question', exam.exam_id)">
-                        Fragen
-                    </a>
+            <td style="min-width: 120px;">
+                <div class="btn-group pull-right" uib-dropdown>
+                    <button type="button" class="btn btn-success btn-xs" ng-click="$ctrl.learnExam('question', exam.exam_id)"><i class="fa fa-fw fa-graduation-cap"></i> Lernen</button>
+                    <button type="button" class="btn btn-success btn-xs" uib-dropdown-toggle>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" uib-dropdown-menu role="menu">
+                        <li role="menuitem"><a href ng-click="$ctrl.learnExam('exam', exam.exam_id)">Klausuransicht</a></li>
+                        <li role="menuitem"><a href ng-click="$ctrl.learnExam('pdf', exam.exam_id)">PDF Fragen</a></li>
+                        <li role="menuitem"><a href ng-click="$ctrl.learnExam('pdf-solution', exam.exam_id)">PDF L&ouml;sungen</a></li>
+                        <li role="menuitem" ng-class="{ disabled: exam.file_name == '' }">
+                            <a href="/files/{{ exam.file_name }}" target="_self" ng-if="exam.file_name != ''">
+                                Originaldokument
+                            </a>
+                            <a ng-if="exam.file_name == ''">
+                                Originaldokument
+                            </a>
+                        </li>
 
-                    <a type="button" class="btn btn-default btn-xs" href ng-click="$ctrl.learnExam('exam', exam.exam_id)">
-                        Klausuransicht
-                    </a>
+                        <li class="divider"></li>
 
-                    <div class="btn-group" uib-dropdown>
-                        <button type="button" class="btn btn-default btn-xs" uib-dropdown-toggle>
-                            <i class="fa fa-fw fa-file-pdf-o"></i> PDF
-                        </button>
-
-                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                            <li><a href ng-click="$ctrl.learnExam('pdf', exam.exam_id)">Klausur als PDF</a></li>
-                            <li><a href ng-click="$ctrl.learnExam('pdf-solution', exam.exam_id)">L&ouml;sungen als PDF</a></li>
-
-                            <li class="divider"></li>
-
-                            <li ng-class="{ disabled: exam.file_name == '' }">
-                                <a href="/files/{{ exam.file_name }}" target="_self" ng-if="exam.file_name != ''">
-                                    Originaldokument
-                                </a>
-                                <a ng-if="exam.file_name == ''">
-                                    Originaldokument
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="btn-group" uib-dropdown>
-                        <button type="button" class="btn btn-default btn-xs" uib-dropdown-toggle>
-                            <i class="fa fa-caret-down"></i>
-                        </button>
-
-                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                            <li ng-class="{disabled: exam.answered_questions == 0}">
-                                <a href ng-click="$ctrl.resetExam(exam)">Klausur zur&uuml;cksetzen</a>
-                            </li>
-                        </ul>
-                    </div>
+                        <li role="menuitem" ng-class="{disabled: exam.answered_questions == 0}">
+                            <a href ng-click="$ctrl.resetExam(exam)">Klausur zur&uuml;cksetzen</a>
+                        </li>
+                    </ul>
                 </div>
             </td>
         </tr>

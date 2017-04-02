@@ -41,6 +41,9 @@ class QuestionController {
 
     if (this.resetSession) {
       this.Collection.remove();
+      this.index = -1;
+      this.questionData = { question_id: this.questionId, given_result: undefined, mark_answer: undefined, strike: undefined };
+      console.log(this.index);
     } else {
       this.index = this.Collection.getIndexOfQuestion(this.questionId);
       if (this.index > -1) {
@@ -48,6 +51,9 @@ class QuestionController {
         this.length = this.Collection.getLength();
         this.preQuestionId = this.index > 0 ? this.Collection.getQuestionData(this.index - 1).question_id : this.questionId;
         this.postQuestionId = this.index < this.length - 1 ? this.Collection.getQuestionData(this.index + 1).question_id : this.questionId;
+      } else {
+        alert('Fehler: Konnte die Frage nicht finden.');
+        $window.location.replace('/learn/overview');
       }
     }
 

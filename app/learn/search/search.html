@@ -46,18 +46,14 @@
                                 </ul>
                             </div>
 
-                            <!--button class="btn btn-success mtop pull-right" ng-show="$ctrl.searchResults.length > 0" type="button" ng-click="$ctrl.learnQuery('question')">
-                                Lernen
-                            </button-->
-
-                            <div class="btn-group mtop pull-right" ng-show="$ctrl.searchResults.length > 0" uib-dropdown>
-                                <button type="button" ng-disabled="$ctrl.selectedQuestionNumber == 0" class="btn btn-success" ng-click="$ctrl.learnQuery('question')"><i class="fa fa-fw fa-graduation-cap"></i> Lernen</button>
-                                <button type="button" ng-disabled="$ctrl.selectedQuestionNumber == 0" class="btn btn-success" uib-dropdown-toggle>
+                            <div class="btn-group mtop pull-right" uib-dropdown>
+                                <button type="button" ng-disabled="!($ctrl.searchResults.length > 0)" class="btn btn-success" ng-click="$ctrl.learnQuery('question')"><i class="fa fa-fw fa-graduation-cap"></i> Lernen</button>
+                                <button type="button" ng-disabled="!($ctrl.searchResults.length > 0)" class="btn btn-success" uib-dropdown-toggle>
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu" uib-dropdown-menu role="menu">
                                     <li role="menuitem"><a href ng-click="$ctrl.learnQuery('exam')">Klausuransicht</a></li>
-                                    <li role="menuitem"><a href ng-click="$ctrl.learnQuery('pdf')">PDF Klausur</a></li>
+                                    <li role="menuitem"><a href ng-click="$ctrl.learnQuery('pdf')">PDF Fragen</a></li>
                                     <li role="menuitem"><a href ng-click="$ctrl.learnQuery('pdf-solution')">PDF L&ouml;sungen</a></li>
                                 </ul>
                             </div>

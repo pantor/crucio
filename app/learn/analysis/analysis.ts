@@ -21,6 +21,9 @@ class AnalysisController {
           if (c.question.correct_answer === 0) {
             correct = -1;
           }
+          if (correct === 1) { // Mark correct answers
+            this.Collection.saveMarkAnswer(this.Collection.getIndexOfQuestion(c.question.question_id));
+          }
 
           const data = {
             correct,

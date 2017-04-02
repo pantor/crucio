@@ -54,7 +54,7 @@
                             <i class="fa fa-fw fa-angle-right"></i> {{ $ctrl.question.topic }}
                         </li>
 
-                        <li class="list-group-item" ng-if="$ctrl.index != undefined">
+                        <li class="list-group-item" ng-if="$ctrl.index != -1">
                             <p><strong>Frage {{ $ctrl.index + 1 }} von {{ $ctrl.length }}</strong></p>
 
                             <uib-progressbar value="($ctrl.index + 1) / $ctrl.length * 100" type="success"></uib-progressbar>
