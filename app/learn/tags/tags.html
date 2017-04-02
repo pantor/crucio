@@ -11,7 +11,7 @@
 
 <div ng-if="$ctrl.tags.length">
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-12">
             <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group mtop" uib-dropdown>
                     <button class="btn btn-default" type="button" uib-dropdown-toggle>
@@ -29,7 +29,7 @@
                     </ul>
                 </div>
 
-                <div class="btn-group mtop">
+                <div class="btn-group mtop pull-right">
                     <div class="btn-group" uib-dropdown>
                         <button type="button" ng-disabled="$ctrl.selectedQuestionNumber == 0" class="btn btn-success" ng-click="$ctrl.learnTags('question')"><i class="fa fa-fw fa-graduation-cap"></i> Lernen</button>
                         <button type="button" ng-disabled="$ctrl.selectedQuestionNumber == 0" class="btn btn-success" uib-dropdown-toggle>
@@ -46,8 +46,6 @@
         </div>
     </div>
 
-    <hr>
-
     <table class="table table-hover">
         <thead>
             <th style="min-width:120px;"><i class="fa fa-fw fa-tag"></i> Markierung</th>
@@ -56,7 +54,7 @@
             <th></th>
         </thead>
 
-        <tbody ng-repeat="(tag, tag_array) in $ctrl.questionsByTag">
+        <tbody ng-repeat="(tag, tag_array) in $ctrl.questionsByTag" ng-show="tag == $ctrl.selectedTag || $ctrl.selectedTag == undefined">
             <tr ng-repeat="q in tag_array">
                 <td rowspan="{{ tag_array.length }}" style="min-width:140px;" ng-if="$first">
                     <span class="tags tag-item pull-left">
