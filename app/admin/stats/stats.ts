@@ -6,11 +6,6 @@ class AdminStatsController {
     this.API.get('stats/summary').then(result => {
       this.stats = result.data.stats;
     });
-
-    /* this.API.get('stats/result_graph').then(result => {
-      console.log(result.data.resultGraph);
-      this.resultGraph = result.data.resultGraph;
-    }); */
   }
 }
 

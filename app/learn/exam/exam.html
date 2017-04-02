@@ -8,51 +8,31 @@
                     <li class="list-group-item"><i class="fa fa-fw fa-calendar"></i> {{ $ctrl.currentQuestion().date }}</li>
                     <li class="list-group-item" ng-show="$ctrl.currentQuestion().professor"><i class="fa fa-fw fa-user-md"></i> {{ $ctrl.currentQuestion().professor }}</li>
                     <li class="list-group-item" ng-show="$ctrl.currentQuestion().notes"><i class="fa fa-fw fa-pencil-square-o"></i> {{ $ctrl.currentQuestion().notes }}</li>
-
-                    <li class="list-group-item">
-                        <div class="btn-toolbar" role="toolbar">
-                            <div class="btn-group" role="group" role="group" uib-dropdown>
-                                <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                                    <i class="fa fa-fw fa-file-pdf-o"></i> PDF <i class="fa fa-caret-down"></i>
-                                </button>
-
-                                <ul class="dropdown-menu" role="menu">
-                                    <li ng-class="{'disabled': $ctrl.currentQuestion().file_name == ''}">
-                                        <a href="/files/{{ $ctrl.currentQuestion().file_name }}" target="_self" ng-if="$ctrl.currentQuestion().file_name != ''">Originaldokument</a>
-                                        <a ng-if="$ctrl.currentQuestion().file_name == ''">Originaldokument</a>
-                                    </li>
-
-                                    <li><a href="/api/v1/pdf/exam/{{ $ctrl.currentQuestion().exam_id }}" target="_self">Klausur als PDF</a></li>
-                                    <li><a href="/api/v1/pdf/solution/{{ $ctrl.currentQuestion().exam_id }}" target="_self">L&ouml;sungen als PDF</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </li>
                 </ul>
             </div>
         </div>
 
         <div class="col-sm-12 col-md-8 mbottom-3x">
-            <div ng-repeat="q in ::$ctrl.Collection.get().questions" id="{{ $index + 1 }}">
+            <div ng-repeat="c in ::$ctrl.combination" id="{{ $index + 1 }}">
                 <div class="form-horizontal" id="id{{ $index }}">
                     <blockquote>
                         <p>
-                            <a href data-toggle="modal" data-target="#myModal" ng-show="q.question_image_url" ng-click="$ctrl.openImageModal(q.question_image_url)">
-                                <img class="img-thumbnail pull-right" width="250px" ng-src="/files/{{ q.question_image_url }}">
+                            <a href data-toggle="modal" data-target="#myModal" ng-show="c.question.question_image_url" ng-click="$ctrl.openImageModal(c.question.question_image_url)">
+                                <img class="img-thumbnail pull-right" width="250px" ng-src="/files/{{ c.question.question_image_url }}">
                             </a>
 
-                            <span ng-bind-html="q.question"></span>
+                            <span ng-bind-html="c.question.question"></span>
 
-                            <span class="label label-info" ng-show="question.type == 1"> Freie Frage</span>
-                            <span class="label label-danger" ng-show="question.type > 1 && !question.correct_answer"> Keine Antwort</span>
+                            <span class="label label-info" ng-show="c.question.type == 1"> Freie Frage</span>
+                            <span class="label label-danger" ng-show="c.question.type > 1 && !c.question.correct_answer"> Keine Antwort</span>
                         </p>
                     </blockquote>
 
-                    <div class="form-group" ng-repeat="answer in q.answers track by $index" ng-show="q.type > 1 && answer">
+                    <div class="form-group" ng-repeat="answer in c.question.answers track by $index" ng-show="c.question.type > 1 && answer">
                         <div class="col-sm-offset-1 col-sm-10">
                             <div class="radio" ng-click="$ctrl.Collection.saveAnswer($parent.$index, $index + 1)">
                                 <label>
-                                    <input type="radio" name="answers{{ $parent.$index }}" ng-checked="q.answers.result == $index + 1" ng-value="$index + 1" />
+                                    <input type="radio" name="answers{{ $parent.$index }}" ng-checked="c.data.given_result == $index + 1" ng-value="$index + 1" />
                                     <p ng-bind-html="answer"></p>
                                 </label>
                             </div>
@@ -72,42 +52,22 @@
                     <li class="list-group-item" ng-show="$ctrl.currentQuestion().professor"><i class="fa fa-fw fa-user-md"></i> {{ $ctrl.currentQuestion().professor }}</li>
                     <li class="list-group-item" ng-show="$ctrl.currentQuestion().notes"><i class="fa fa-fw fa-pencil-square-o"></i> {{ $ctrl.currentQuestion().notes }}</li>
 
+                    <li class="list-group-item" ng-show="$ctrl.Collection.getQuestionData($ctrl.currentIndex).topic && $ctrl.Collection.getQuestionData($ctrl.currentIndex).topic != '' && $ctrl.Collection.getQuestionData($ctrl.currentIndex).topic != 'Sonstiges'">
+                        <i class="fa fa-fw fa-angle-right"></i> {{ $ctrl.Collection.getQuestionData($ctrl.currentIndex).topic }}
+                    </li>
+
                     <li class="list-group-item">
                         <p class="strong">Frage {{ $ctrl.currentIndex + 1 }} von {{ $ctrl.length }}</p>
 
                         <uib-progressbar value="($ctrl.currentIndex + 1) / $ctrl.length * 100" type="success"></uib-progressbar>
-
-                        <div class="btn-toolbar" role="toolbar" ng-if="$ctrl.user.group_id == 2 || $ctrl.user.group_id == 3">
-                            <div class="btn-group pull-right" role="group">
-                                <a class="btn btn-default" ui-sref="edit-exam({ examId: $ctrl.currentQuestion().exam_id, questionId: $ctrl.Collection.getQuestionData($ctrl.currentIndex).question_id })">Bearbeiten</a>
-                            </div>
-                        </div>
                     </li>
 
-                    <li class="list-group-item" ng-show="$ctrl.Collection.getQuestionData($ctrl.currentIndex).topic && $ctrl.Collection.getQuestionData($ctrl.currentIndex).topic != '' && $ctrl.Collection.getQuestionData($ctrl.currentIndex).topic != 'Sonstiges'"><i class="fa fa-fw fa-angle-right"></i> {{ $ctrl.Collection.getQuestionData($ctrl.currentIndex).topic }}</li>
+                    <li class="list-group-item" ng-if="$ctrl.index != -1">
+                        <button type="button" class="btn btn-default" ng-click="$ctrl.Collection.save()">
+                            Speichern
+                        </button>
 
-                    <li class="list-group-item">
-                        <div class="btn-toolbar" role="toolbar">
-                            <div class="btn-group" role="group" role="group" uib-dropdown>
-                                <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                                    <i class="fa fa-fw fa-file-pdf-o"></i> PDF <i class="fa fa-caret-down"></i>
-                                </button>
-
-                                <ul class="dropdown-menu" role="menu">
-                                    <li ng-class="{'disabled': $ctrl.currentQuestion().file_name == ''}">
-                                        <a href="/files/{{ $ctrl.currentQuestion().file_name }}" target="_self" ng-if="$ctrl.currentQuestion().file_name != ''">Originaldokument</a>
-                                        <a ng-if="$ctrl.currentQuestion().file_name == ''">Originaldokument</a>
-                                    </li>
-
-                                    <li><a href="/api/v1/pdf/exam/{{ $ctrl.currentQuestion().exam_id }}" target="_self">Klausur als PDF</a></li>
-                                    <li><a href="/api/v1/pdf/solution/{{ $ctrl.currentQuestion().exam_id }}" target="_self">L&ouml;sungen als PDF</a></li>
-                                </ul>
-                            </div>
-
-                            <div class="btn-group pull-right" role="group">
-                                <button type="button" class="btn btn-danger" ng-click="$ctrl.handExam()">Klausur abgeben</button>
-                            </div>
-                        </div>
+                        <button type="button" class="btn btn-danger pull-right" ui-sref="analysis">Klausur beenden</button>
                     </li>
                 </ul>
             </div>
@@ -119,8 +79,10 @@
             <i class="fa fa-fw fa-arrow-circle-o-up"></i> Nach Oben
         </button>
 
-        <div class="btn-group pull-right" role="group">
-            <button type="button" class="btn btn-danger" ng-click="$ctrl.handExam()">Klausur abgeben</button>
-        </div>
+        <button type="button" class="btn btn-default" ng-click="$ctrl.Collection.save()">
+            Speichern
+        </button>
+
+        <button type="button" class="btn btn-danger pull-right" ui-sref="analysis">Klausur beenden</button>
     </div>
 </div>

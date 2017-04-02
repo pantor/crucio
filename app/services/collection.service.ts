@@ -99,9 +99,13 @@ class CollectionService {
     return undefined;
   }
 
-  getWorkedList(): Crucio.CollectionListItem[] {
+  getList(): Crucio.CollectionListItem[] {
     this.get();
-    return this.collection.list.filter(e => e.given_result);
+    return this.collection.list;
+  }
+
+  getWorkedList(): Crucio.CollectionListItem[] {
+    return this.getList().filter(e => e.given_result);
   }
 
   loadQuestions(): any {
@@ -118,6 +122,9 @@ class CollectionService {
     this.get();
     const listQuestionIds = this.getQuestionIds(list);
     return this.getQuestions(listQuestionIds).then(questions => {
+      this.collection.questions = questions;
+      this.set(this.collection);
+
       let result: Crucio.CombinationElement[] = [];
       for (let i = 0; i < list.length; i++) {
         result.push({ data: list[i], question: questions[i] });

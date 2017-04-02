@@ -69,7 +69,16 @@ $app->group('/pdf', function() {
 
             $filename = 'crucio-'.$view_name.'-'.$info['examId'].'.pdf';
         } else if ($info['type'] == 'subjects') {
-            $pdf->cTitle = 'Fächer';
+            $stmt_subject = $mysql->prepare(
+                "SELECT s.name as 'subject'
+                FROM subjects s
+                WHERE s.subject_id = :subject_id"
+            );
+
+            $stmt_subject->bindValue(':subject_id', array_keys($info['selection'])[0]);
+            $main_subject = getFetch($stmt_subject)['subject'];
+
+            $pdf->cTitle = $main_subject;
             $pdf->cSubtitle = '';
 
             $filename = 'crucio-'.$view_name.'.pdf';

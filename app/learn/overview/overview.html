@@ -16,32 +16,47 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">
                         <span ng-if="collection.type == 'exam'"><i class="fa fa-list fa-fw"></i> {{ collection.exam.subject }}</span>
-                        <span ng-if="collection.type == 'subjects'"><i class="fa fa-flask fa-fw"></i>  {{ collection.subject_id }}</span>
-                        <span ng-if="collection.type == 'query'"><i class="fa fa-list fa-fw"></i>  {{ collection.questionSearch.query }}</span>
+                        <span ng-if="collection.type == 'subjects'"><i class="fa fa-flask fa-fw"></i>  {{ collection.main_subject }}</span>
+                        <span ng-if="collection.type == 'query'"><i class="fa fa-search fa-fw"></i>  {{ collection.questionSearch.query }}</span>
                         <span ng-if="collection.type == 'tags'"><i class="fa fa-tag fa-fw"></i>  {{ collection.tag }}</span>
                     </h3>
                 </div>
                 <div class="panel-body">
-                    {{ $ctrl.getWorkedList(collection.list).length }} /
-                    {{ collection.list.length }}
-                </div>
-                <div class="panel-footer">
-                    <div class="btn-group" uib-dropdown>
-                        <button type="button" class="btn btn-success btn-xs" ng-click="$ctrl.learnCollection('question', $index)"><i class="fa fa-fw fa-graduation-cap"></i> Lernen</button>
-                        <button type="button" class="btn btn-success btn-xs" uib-dropdown-toggle>
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" uib-dropdown-menu role="menu">
-                            <li role="menuitem"><a href ng-click="$ctrl.learnCollection('exam', $index)">Klausuransicht</a></li>
-                            <li role="menuitem"><a href ng-click="$ctrl.learnCollection('pdf', $index)">PDF Fragen</a></li>
-                            <li role="menuitem"><a href ng-click="$ctrl.learnCollection('pdf-solution', $index)">PDF L&ouml;sungen</a></li>
+                    <div ng-if="collection.type == 'exam'">
+                        {{ collection.exam.semester }}. Semester <i class="fa fa-calendar fa-fw"></i> {{ collection.exam.date }}
+                    </div>
+                    <div ng-if="collection.type == 'subjects'">
+                    </div>
+                    <div ng-if="collection.type == 'query'">
+                        <span ng-if="collection.questionSearch.semester">{{ collection.questionSearch.semester }}. Semester</span>
+                        <span ng-if="collection.questionSearch.subject"><i class="fa fa-flask fa-fw"></i> {{ collection.questionSearch.subject }}</span>
+                    </div>
+                    <div ng-if="collection.type == 'tags'">
+                    </div>
 
-                            <li class="divider"></li>
+                    <div style="margin-top: 5px;">
+                        <!--uib-progressbar max="collection.list.length" type="warning" value="$ctrl.getWorkedList(collection.list).length"><span style="color:black; white-space:nowrap;">{{$ctrl.getWorkedList(collection.list).length}} / {{collection.list.length}}</span></uib-progressbar-->
+                        <div class="btn-group">
+                            {{ $ctrl.getWorkedList(collection.list).length }} / {{ collection.list.length }}
+                        </div>
 
-                            <li role="menuitem">
-                                <a href ng-click="$ctrl.removeCollection($index)">Sammlung l&ouml;schen</a>
-                            </li>
-                        </ul>
+                        <div class="btn-group pull-right" uib-dropdown>
+                            <button type="button" class="btn btn-success btn-xs" ng-click="$ctrl.learnCollection('question', $index)"><i class="fa fa-fw fa-graduation-cap"></i> Lernen</button>
+                            <button type="button" class="btn btn-success btn-xs" uib-dropdown-toggle>
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" uib-dropdown-menu role="menu">
+                                <li role="menuitem"><a href ng-click="$ctrl.learnCollection('exam', $index)">Klausuransicht</a></li>
+                                <li role="menuitem"><a href ng-click="$ctrl.learnCollection('pdf', $index)">PDF Fragen</a></li>
+                                <li role="menuitem"><a href ng-click="$ctrl.learnCollection('pdf-solution', $index)">PDF L&ouml;sungen</a></li>
+
+                                <li class="divider"></li>
+
+                                <li role="menuitem">
+                                    <a href ng-click="$ctrl.removeCollection($index)">Sammlung l&ouml;schen</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

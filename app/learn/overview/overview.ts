@@ -15,12 +15,12 @@ class LearnOverviewController {
       this.distinctSubjects = result.data.subjects;
     });
 
-    this.API.get(`exams/abstract/${this.user.user_id}`, { limit: 12 }).then(result => {
+    this.API.get(`exams/abstract/${this.user.user_id}`, { limit: 10 }).then(result => {
       this.abstractExams = result.data.exams;
       this.ready = 1;
     });
 
-    this.API.get('collections', { user_id: this.user.user_id, limit: 12 }).then(result => {
+    this.API.get('collections', { user_id: this.user.user_id, limit: 100 }).then(result => {
       this.collections = result.data.collections;
     });
 

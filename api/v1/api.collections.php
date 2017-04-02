@@ -46,6 +46,17 @@ $app->group('/collections', function() {
         		$stmt_subject->bindValue(':subject_id', $collection['questionSearch']['subject_id']);
         		$collection['questionSearch']['subject'] = getFetch($stmt_subject)['subject'];
             }
+
+            if ($collection['type'] == 'subjects') {
+                $stmt_subject = $mysql->prepare(
+        		    "SELECT s.name as 'subject'
+        		    FROM subjects s
+                    WHERE s.subject_id = :subject_id"
+        		);
+
+        		$stmt_subject->bindValue(':subject_id', array_keys($collection['selection'])[0]);
+        		$collection['main_subject'] = getFetch($stmt_subject)['subject'];
+            }
         }
 
 		$data['collections'] = $collections;

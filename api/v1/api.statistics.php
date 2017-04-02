@@ -23,6 +23,7 @@ $app->group('/stats', function() {
 
 		$stats['comment_count'] = getCount($mysql, 'comments');
 		$stats['tag_count'] = getCount($mysql, 'tags');
+        $stats['collection_count'] = getCount($mysql, 'collections');
 
 
 		$data['stats'] = $stats;
