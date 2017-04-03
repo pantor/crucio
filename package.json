@@ -1,7 +1,7 @@
 {
   "name": "Crucio",
   "author": "lbersch",
-  "version": "0.9.1",
+  "version": "1.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/pantor/crucio.git"
@@ -36,13 +36,13 @@
     "angular-spinner": "^1.0.1",
     "angular-ui-bootstrap": "^2.5.0",
     "angular-ui-router": "^0.4.2",
-    "angularjs-slider": "^6.0.0",
+    "angularjs-slider": "^6.1.1",
     "bootstrap": "^3.3.7",
     "font-awesome": "^4.7.0",
     "jquery": "^3.2.1",
     "jquery-validation": "^1.16.0",
     "js-cookie": "^2.1.3",
-    "ng-tags-input": "^3.1.1",
+    "ng-tags-input": "^3.1.2",
     "spin.js": "^2.3.2",
     "textangular": "^1.5.16"
   }
