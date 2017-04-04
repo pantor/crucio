@@ -27,7 +27,7 @@ $app->group('/stats', function() {
 
 
 		$data['stats'] = $stats;
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->get('/result_graph', function($request, $response, $args) {
@@ -47,7 +47,7 @@ $app->group('/stats', function() {
 		$resultGraph['data'] = $result_dep_time_today;
 
 		$data['resultGraph'] = $resultGraph;
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->get('/activities', function($request, $response, $args) {
@@ -125,7 +125,7 @@ $app->group('/stats', function() {
 		});
 
 		$data['activities'] = array_slice($activities, 0, 101);
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 });
 

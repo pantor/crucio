@@ -76,7 +76,7 @@ class CollectionService {
     }
   }
 
-  getType(): string {
+  getType(): Crucio.Type {
     this.get();
     return this.collection.type;
   }

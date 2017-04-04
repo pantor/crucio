@@ -62,6 +62,15 @@ class AdminUsersController {
     return (compareDate.toDateString() === date.toDateString());
   }
 
+  userModal(index: number): void {
+    this.$uibModal.open({
+      component: 'userModalComponent',
+      resolve: {
+        user: () => this.users[index],
+      },
+    });
+  }
+
   deleteUserModal(index: number): void {
     const modal = this.$uibModal.open({
       component: 'deleteUserModalComponent',
@@ -71,6 +80,7 @@ class AdminUsersController {
     });
 
     modal.result.then(response => {
+      console.log(response);
       if (response == 'delete') {
         this.users.splice(index, 1);
       }

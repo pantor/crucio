@@ -29,7 +29,7 @@ $app->group('/file', function() {
         	$data['status'] = 'error';
         }
 
-        return createResponse($response, $data);
+        return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 });

@@ -9,7 +9,6 @@ class LearnSubjectsController {
   private distinctSemesters: any;
   private distinctSubjects: any;
   private subjectList: Crucio.Subject[];
-  private method: string;
 
   constructor(Auth: AuthService, private readonly API: APIService, private readonly Collection: CollectionService, $scope: angular.IScope, $timeout: angular.ITimeoutService) {
     this.user = Auth.getUser();
@@ -17,7 +16,6 @@ class LearnSubjectsController {
     this.selection = {};
     this.selectedQuestionNumber = 0;
     this.numberQuestionsInSelection = 0;
-    this.method = 'question';
 
     this.sliderOptions = { floor: 0, ceil: this.numberQuestionsInSelection };
     $timeout(() => { // Force slider rendering, a common problem, see angularjs-slider github repo

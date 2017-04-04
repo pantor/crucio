@@ -20,8 +20,8 @@ function init() {
     }
 }
 
-function getAll($stmt, $params = null) {
-    $stmt->execute($params);
+function getAll($stmt) {
+    $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
@@ -31,21 +31,11 @@ function getFetch($stmt, $params = null) {
 }
 
 function getCount($mysql, $sub_query, $parameters = []) {
-    return getCustomCount($mysql, "SELECT COUNT(*) AS 'count' FROM $sub_query", $parameters);
-}
-
-function getCustomCount($mysql, $query, $parameters = []) {
-    $stmt = $mysql->prepare($query);
+    $stmt = $mysql->prepare("SELECT COUNT(*) AS 'count' FROM $sub_query");
     $stmt->execute($parameters);
     return $stmt->fetch(PDO::FETCH_ASSOC)['count'];
 }
 
-function createResponse($response, $data, $status = 200) {
-    return $response->withJson($data, $status, JSON_NUMERIC_CHECK);
-}
-
-
-// ---------
 
 function validateActivationToken($mysql, $token) {
 	return (getCount($mysql, "users WHERE activationtoken = ?", [$token]) > 0);

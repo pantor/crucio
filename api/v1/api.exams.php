@@ -50,7 +50,7 @@ $app->group('/exams', function() {
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 
         $data['exams'] = getAll($stmt);
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->get('/distinct', function($request, $response, $args) {
@@ -82,7 +82,7 @@ $app->group('/exams', function() {
         $data['authors'] = getAll($stmt_authors);
         $data['semesters'] = getAll($stmt_semesters);
 		$data['subjects'] = getAll($stmt_subjects);
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->get('/{exam_id}', function($request, $response, $args) {
@@ -113,7 +113,7 @@ $app->group('/exams', function() {
 
 		$data['exam'] = $exam;
 		$data['questions'] = $questions;
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->get('/abstract/{user_id}', function($request, $response, $args) {
@@ -153,7 +153,7 @@ $app->group('/exams', function() {
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 
         $data['exams'] = getAll($stmt);
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->get('/action/prepare/{exam_id}', function($request, $response, $args) {
@@ -178,7 +178,7 @@ $app->group('/exams', function() {
         $collection['exam_id'] = $args['exam_id'];
 
         $data['collection'] = $collection;
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->post('', function($request, $response, $args) {
@@ -197,7 +197,7 @@ $app->group('/exams', function() {
 
 		$data['status'] = $stmt->execute();
         $data['exam_id'] = $mysql->lastInsertId();
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->put('/{exam_id}', function($request, $response, $args) {
@@ -224,7 +224,7 @@ $app->group('/exams', function() {
 		$stmt->bindValue(':exam_id', $args['exam_id']);
 
 		$data['status'] = $stmt->execute();
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->delete('/{exam_id}', function($request, $response, $args) {
@@ -238,7 +238,7 @@ $app->group('/exams', function() {
 		$stmt->bindValue(':exam_id', $args['exam_id'], PDO::PARAM_INT);
 
 		$data['status'] = $stmt->execute();
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 });
 

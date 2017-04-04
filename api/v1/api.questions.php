@@ -86,7 +86,7 @@ $app->group('/questions', function() {
         }
 
         $data['result'] = $list;
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->get('/count', function($request, $response, $args) {
@@ -117,7 +117,7 @@ $app->group('/questions', function() {
 		);
 
 		$data['count'] = getFetch($stmt, $sql_params)['c'];
-	    return createResponse($response, $data);
+	    return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->get('/prepare-subjects', function($request, $response, $args) {
@@ -157,13 +157,13 @@ $app->group('/questions', function() {
         }
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 
-		$collection['list'] = getAll($stmt);;
+		$collection['list'] = getAll($stmt);
         // $collection['questions'] = [];
         $collection['type'] = 'subjects';
         $collection['selection'] = $selection;
 
         $data['collection'] = $collection;
-	    return createResponse($response, $data);
+	    return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
     });
 
     $this->get('/prepare-query', function($request, $response, $args) {
@@ -196,7 +196,7 @@ $app->group('/questions', function() {
         }
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 
-        $collection['list'] = getAll($stmt);;
+        $collection['list'] = getAll($stmt);
         // $collection['questions'] = [];
         $collection['type'] = 'query';
         $questionSearch['query'] = $request->getQueryParam('query');
@@ -205,7 +205,7 @@ $app->group('/questions', function() {
         $collection['questionSearch'] = $questionSearch;
 
         $data['collection'] = $collection;
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
     $this->get('/list', function($request, $response, $args) {
@@ -214,7 +214,7 @@ $app->group('/questions', function() {
         $list = json_decode($request->getQueryParam('list'));
 
         $data['list'] = getQuestionsFromList($mysql, $list);
-        return createResponse($response, $data);
+        return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
     });
 
 	$this->get('/{question_id}', function($request, $response, $args) {
@@ -244,7 +244,7 @@ $app->group('/questions', function() {
 
 		$data['question'] = $question;
 		$data['comments'] = $comments;
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->get('/{question_id}/user/{user_id}', function($request, $response, $args) {
@@ -291,7 +291,7 @@ $app->group('/questions', function() {
 		$data['question'] = $question;
 		$data['tags'] = $tags['tags'];
 		$data['comments'] = $comments;
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 
@@ -318,7 +318,7 @@ $app->group('/questions', function() {
 
         $data['status'] = $stmt->execute();
         $data['question_id'] = $mysql->lastInsertId();
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 
@@ -345,7 +345,7 @@ $app->group('/questions', function() {
 
         $data['a'] = $body['answers'];
         $data['status'] = $stmt->execute();
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 
@@ -360,7 +360,7 @@ $app->group('/questions', function() {
         $stmt->bindValue(':question_id', $args['question_id'], PDO::PARAM_INT);
 
         $data['status'] = $stmt->execute();
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 });
 

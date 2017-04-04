@@ -48,7 +48,7 @@ $app->group('/subjects', function (){
 		}
 
 		$data['subjects'] = $subjects;
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->get('/categories', function($request, $response, $args) {
@@ -64,7 +64,7 @@ $app->group('/subjects', function (){
 		$stmt->bindValue(':subject_id', $request->getQueryParam('subject_id'), PDO::PARAM_INT);
 
 		$data['categories'] = getAll($stmt);
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 });
 

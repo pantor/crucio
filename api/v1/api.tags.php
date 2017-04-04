@@ -28,7 +28,7 @@ $app->group('/tags', function() {
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 
 		$data['tags'] = getAll($stmt);
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
     $this->get('/prepare', function($request, $response, $args) {
@@ -58,7 +58,7 @@ $app->group('/tags', function() {
         $collection['tag'] = $tag;
 
         $data['collection'] = $collection;
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->post('', function($request, $response, $args) {
@@ -87,7 +87,7 @@ $app->group('/tags', function() {
         }
 
         $data['status'] = $stmt->execute();
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
     $this->delete('/{user_id}', function($request, $response, $args) {
@@ -101,7 +101,7 @@ $app->group('/tags', function() {
 		$stmt->bindValue(':user_id', $args['user_id'], PDO::PARAM_INT);
 
 		$data['status'] = $stmt->execute();
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 });
 

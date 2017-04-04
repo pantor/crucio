@@ -22,7 +22,7 @@ $app->group('/learn', function() {
 		}
 
 		$data['number_questions'] = $result;
-	    return createResponse($response, $data);
+	    return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->post('/prepare', function($request, $response, $args) {
@@ -77,7 +77,7 @@ $app->group('/learn', function() {
 
 	    $data['list'] = $list;
 	    $data['selection_subject_list'] = $subject_list;
-	    return createResponse($response, $data);
+	    return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 });
 
