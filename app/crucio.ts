@@ -12,47 +12,42 @@ angular.module('crucioApp', [
 ])
   .config(function config($stateProvider: angular.ui.IStateProvider, $urlRouterProvider: angular.ui.IUrlRouterProvider, $locationProvider: angular.ILocationProvider, $provide) {
 
-    function comp(name: string): string {
-      return '<' + name + 'Component></' + name + 'Component>';
-    }
-
-    // Use components directly in ui-router@1.0
     const states: angular.ui.IState[] = [
-      { name: 'learn', url: '/learn', template: comp('learn') },
-      { name: 'learn.overview', url: '/overview', template: comp('learnoverview') },
-      { name: 'learn.subjects', url: '/subjects', template: comp('learnsubjects') },
-      { name: 'learn.exams', url: '/exams', template: comp('learnexams') },
-      { name: 'learn.search', url: '/search', template: comp('learnsearch') },
-      { name: 'learn.tags', url: '/tags', template: comp('learntags') },
-      { name: 'learn.comments', url: '/comments', template: comp('learncomments') },
-      { name: 'learn.oral-exams', url: '/oral-exams', template: comp('learnoralexams') },
-      { name: 'question', url: '/question?questionId&resetSession', template: comp('question') },
-      { name: 'exam', url: '/exam', template: comp('exam') },
-      { name: 'statistic', url: '/statistic', template: comp('statistic') },
-      { name: 'analysis', url: '/analysis', template: comp('analysis') },
+      { name: 'learn', url: '/learn', component: 'learncomponent' },
+      { name: 'learn.overview', url: '/overview', component: 'learnoverviewcomponent' },
+      { name: 'learn.subjects', url: '/subjects', component: 'learnsubjectscomponent' },
+      { name: 'learn.exams', url: '/exams', component: 'learnexamscomponent' },
+      { name: 'learn.search', url: '/search', component: 'learnsearchcomponent' },
+      { name: 'learn.tags', url: '/tags', component: 'learntagscomponent' },
+      { name: 'learn.comments', url: '/comments', component: 'learncommentscomponent' },
+      { name: 'learn.oral-exams', url: '/oral-exams', component: 'learnoralexamscomponent' },
+      { name: 'question', url: '/question?questionId&resetSession', component: 'questioncomponent' },
+      { name: 'exam', url: '/exam', component: 'examcomponent' },
+      { name: 'statistic', url: '/statistic', component: 'statisticcomponent' },
+      { name: 'analysis', url: '/analysis', component: 'analysiscomponent' },
 
-      { name: 'author', url: '/author', template: comp('author') },
-      { name: 'author.exams', url: '/exams', template: comp('authorexams') },
-      { name: 'author.comments', url: '/comments', template: comp('authorcomments') },
-      { name: 'author.subjects', url: '/subjects', template: comp('authorsubjects') },
-      { name: 'author.oral-exams', url: '/oral-exams', template: comp('authororalexams') },
-      { name: 'author.advices', url: '/advices', template: comp('authoradvices') },
-      { name: 'edit-exam', url: '/edit-exam?examId&questionId', template: comp('editExam') },
-      { name: 'edit-oral-exam', url: '/edit-oral-exam?oralExamId', template: comp('editOralExam') },
+      { name: 'author', url: '/author', component: 'authorcomponent' },
+      { name: 'author.exams', url: '/exams', component: 'authorexamscomponent' },
+      { name: 'author.comments', url: '/comments', component: 'authorcommentscomponent' },
+      { name: 'author.subjects', url: '/subjects', component: 'authorsubjectscomponent' },
+      { name: 'author.oral-exams', url: '/oral-exams', component: 'authororalexamscomponent' },
+      { name: 'author.advices', url: '/advices', component: 'authoradvicescomponent' },
+      { name: 'edit-exam', url: '/edit-exam?examId&questionId', component: 'editExamcomponent' },
+      { name: 'edit-oral-exam', url: '/edit-oral-exam?oralExamId', component: 'editOralExamcomponent' },
 
-      { name: 'admin', url: '/admin', template: comp('admin') },
-      { name: 'admin.users', url: '/users', template: comp('adminusers') },
-      { name: 'admin.whitelist', url: '/whitelist', template: comp('adminwhitelist') },
-      { name: 'admin.tools', url: '/tools', template: comp('admintools') },
-      { name: 'admin.stats', url: '/stats', template: comp('adminstats') },
-      { name: 'admin.activity', url: '/activity', template: comp('adminactivity') },
+      { name: 'admin', url: '/admin', component: 'admincomponent' },
+      { name: 'admin.users', url: '/users', component: 'adminuserscomponent' },
+      { name: 'admin.whitelist', url: '/whitelist', component: 'adminwhitelistcomponent' },
+      { name: 'admin.tools', url: '/tools', component: 'admintoolscomponent' },
+      { name: 'admin.stats', url: '/stats', component: 'adminstatscomponent' },
+      { name: 'admin.activity', url: '/activity', component: 'adminactivitycomponent' },
 
-      { name: 'user', url: '/user', template: comp('user') },
+      { name: 'user', url: '/user', component: 'usercomponent' },
 
-      { name: '403', url: '/403', template: comp('error403') },
-      { name: '404', url: '/404', template: comp('error404') },
-      { name: '500', url: '/500', template: comp('error500') },
-      { name: 'help', url: '/help', template: comp('help') },
+      { name: '403', url: '/403', component: 'error403component' },
+      { name: '404', url: '/404', component: 'error404component' },
+      { name: '500', url: '/500', component: 'error500component' },
+      { name: 'help', url: '/help', component: 'helpcomponent' },
     ];
 
     $urlRouterProvider.otherwise('/404');

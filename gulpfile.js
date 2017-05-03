@@ -52,7 +52,7 @@ gulp.task('js-vendor', function () {
     node + 'angular-cookies/angular-cookies.min.js',
     node + 'angular-file-upload/dist/angular-file-upload.min.js',
     node + 'angular-messages/angular-messages.min.js',
-    node + 'angular-ui-router/release/angular-ui-router.min.js',
+    node + '@uirouter/angularjs/release/angular-ui-router.min.js',
     node + 'angular-scroll/angular-scroll.min.js',
     node + 'angular-spinner/dist/angular-spinner.min.js',
     node + 'angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
