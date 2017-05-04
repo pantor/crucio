@@ -28,7 +28,7 @@
     "typescript": "^2.2.2"
   },
   "dependencies": {
-    "@uirouter/angularjs": "^1.0.0",
+    "@uirouter/angularjs": "^1.0.1",
     "angular": "^1.6.4",
     "angular-cookies": "^1.6.4",
     "angular-file-upload": "^2.5.0",
