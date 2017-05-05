@@ -32,8 +32,8 @@ angular.module('crucioApp', [
       { name: 'author.subjects', url: '/subjects', component: 'authorsubjectscomponent' },
       { name: 'author.oral-exams', url: '/oral-exams', component: 'authororalexamscomponent' },
       { name: 'author.advices', url: '/advices', component: 'authoradvicescomponent' },
-      { name: 'edit-exam', url: '/edit-exam?examId&questionId', component: 'editExamcomponent' },
-      { name: 'edit-oral-exam', url: '/edit-oral-exam?oralExamId', component: 'editOralExamcomponent' },
+      { name: 'edit-exam', url: '/edit-exam?examId&questionId', component: 'editexamcomponent' },
+      { name: 'edit-oral-exam', url: '/edit-oral-exam?oralExamId', component: 'editoralexamcomponent' },
 
       { name: 'admin', url: '/admin', component: 'admincomponent' },
       { name: 'admin.users', url: '/users', component: 'adminuserscomponent' },
@@ -211,15 +211,15 @@ angular.module('crucioApp', [
 
   .run(function run(Auth: AuthService, $location: angular.ILocationService, $window: angular.IWindowService) {
     // Enumerate paths that don't need authentication
-    const pathsThatLogin: string[] = ['/', '/register', '/forgot-password'];
-    const pathsForAuthor: string[] = ['/author', '/edit-exam', '/edit-oral-exam'];
-    const pathsForAdmin: string[] = ['/admin']; // + Author paths
+    const pathsThatLogin = ['/', '/register', '/forgot-password'];
+    const pathsForAuthor = ['/author', '/edit-exam', '/edit-oral-exam'];
+    const pathsForAdmin = ['/admin']; // + Author paths
 
-    const user: Crucio.User = Auth.tryGetUser();
+    const user = Auth.tryGetUser();
 
-    let isLoggedIn: boolean = false;
-    let isAdmin: boolean = false;
-    let isAuthor: boolean = false;
+    let isLoggedIn = false;
+    let isAdmin = false;
+    let isAuthor = false;
     if (user) {
       isLoggedIn = Boolean(user.group_id);
       isAdmin = Boolean(user.group_id === 2);

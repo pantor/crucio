@@ -45,25 +45,18 @@ function validateEMail($mysql, $email) {
 	return (getCount($mysql, "whitelist WHERE mail_address = ?", [$email]) > 0);
 }
 
-function fetchUserDetails($mysql, $token = null, $email = null) {
-    $stmt = $mysql->prepare(
-	    "SELECT *
-	    FROM users
-	    WHERE email = :email
-	        OR activationtoken = :token"
-	);
+function fetchUserDetailsByMail($mysql, $email) {
+    $stmt = $mysql->prepare("SELECT * FROM users WHERE email = :email");
 	$stmt->bindValue(':email', sanitize($email));
-	$stmt->bindValue(':token', sanitize($token));
 
 	return getFetch($stmt);
 }
 
-function fetchUserDetailsByMail($mysql, $email) {
-    return fetchUserDetails($mysql, null, $email);
-}
-
 function fetchUserDetailsByToken($mysql, $token) {
-    return fetchUserDetails($mysql, $token, null);
+    $stmt = $mysql->prepare("SELECT * FROM users WHERE activationtoken = :token");
+	$stmt->bindValue(':token', sanitize($token));
+
+	return getFetch($stmt);
 }
 
 function flagLostpasswordRequest($mysql, $username, $value) {

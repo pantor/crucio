@@ -1,7 +1,7 @@
 class EditExamController {
   private readonly user: Crucio.User;
   private readonly examId: number;
-  private openQuestionId: number;
+  private readonly openQuestionId: number;
   private openQuestionIndex: number;
   private numberChanged: number;
   private uploader: any;
@@ -16,7 +16,7 @@ class EditExamController {
   private subjectListPerId: any;
   private categoryListPerId: any;
 
-  constructor(Page: PageService, Auth: AuthService, private readonly API: APIService, private readonly Cut: CutService, private readonly FileUploader, $scope: angular.IScope, private readonly $location: angular.ILocationService, $stateParams, private readonly $uibModal: angular.ui.bootstrap.IModalService) {
+  constructor(Page: PageService, Auth: AuthService, private readonly API: APIService, private readonly FileUploader, $scope: angular.IScope, private readonly $location: angular.ILocationService, $stateParams, private readonly $uibModal: angular.ui.bootstrap.IModalService) {
     Page.setTitleAndNav('Klausur | Crucio', 'Author');
 
     this.user = Auth.getUser();
@@ -66,6 +66,7 @@ class EditExamController {
       this.subjectList = result.data.subjects;
       this.subjectListPerId = {};
       this.categoryListPerId = {};
+
       for (const subject of this.subjectList) {
         this.subjectListPerId[subject.subject_id] = subject.subject;
         this.categoryListPerId[subject.subject_id] = subject.categories;
@@ -73,10 +74,6 @@ class EditExamController {
       }
     });
 
-    this.loadExam();
-  }
-
-  loadExam(): void {
     this.API.get(`exams/${this.examId}`).then(result => {
       this.exam = result.data.exam;
       this.questions = result.data.questions;
