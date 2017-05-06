@@ -53,7 +53,7 @@ class AuthorCommentsController {
   }
 }
 
-export const AuthorCommentsComponent = 'authorcommentsComponent';
+export const AuthorCommentsComponent = 'authorCommentsComponent';
 app.component(AuthorCommentsComponent, {
   templateUrl: 'app/author/comments/comments.html',
   controller: AuthorCommentsController,

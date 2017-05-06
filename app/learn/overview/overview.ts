@@ -36,7 +36,7 @@ class LearnOverviewController {
   }
 }
 
-export const LearnOverviewComponent = 'learnoverviewComponent';
+export const LearnOverviewComponent = 'learnOverviewComponent';
 app.component(LearnOverviewComponent, {
   templateUrl: 'app/learn/overview/overview.html',
   controller: LearnOverviewController,

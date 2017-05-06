@@ -1,13 +1,12 @@
 import { app } from './../../crucio';
 
-import AuthService from './../../services/auth.service';
 import APIService from './../../services/api.service';
 
 class AdminWhitelistController {
   private whitelist: any;
   private newWhitelistEmail: string;
 
-  constructor(Auth: AuthService, private readonly API: APIService) {
+  constructor(private readonly API: APIService) {
     this.API.get('whitelist').then(result => {
       this.whitelist = result.data.whitelist;
     });
@@ -32,7 +31,7 @@ class AdminWhitelistController {
   }
 }
 
-export const AdminWhitelistComponent = 'adminwhitelistComponent';
+export const AdminWhitelistComponent = 'adminWhitelistComponent';
 app.component(AdminWhitelistComponent, {
   templateUrl: 'app/admin/whitelist/whitelist.html',
   controller: AdminWhitelistController,

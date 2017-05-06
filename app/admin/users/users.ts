@@ -63,7 +63,7 @@ class AdminUsersController {
 
   isToday(dateString: any, hourDiff: number = 0): boolean {
     const today: any = new Date();
-    const diff: number = today - 1000 * 60 * 60 * hourDiff;
+    const diff = today - 1000 * 60 * 60 * hourDiff;
     const compareDate = new Date(diff);
 
     const date = new Date(dateString * 1000);
@@ -88,7 +88,6 @@ class AdminUsersController {
     });
 
     modal.result.then(response => {
-      console.log(response);
       if (response == 'delete') {
         this.users.splice(index, 1);
       }
@@ -96,7 +95,7 @@ class AdminUsersController {
   }
 }
 
-export const AdminUsersComponent = 'adminusersComponent';
+export const AdminUsersComponent = 'adminUsersComponent';
 app.component(AdminUsersComponent, {
   templateUrl: 'app/admin/users/users.html',
   controller: AdminUsersController,

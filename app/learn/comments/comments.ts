@@ -34,7 +34,7 @@ class LearnCommentsController {
   }
 }
 
-export const LearnCommentsComponent = 'learncommentsComponent';
+export const LearnCommentsComponent = 'learnCommentsComponent';
 app.component(LearnCommentsComponent, {
   templateUrl: 'app/learn/comments/comments.html',
   controller: LearnCommentsController,

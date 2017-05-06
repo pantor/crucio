@@ -53,7 +53,7 @@ class LearnExamsController {
   }
 }
 
-export const LearnExamsComponent = 'learnexamsComponent';
+export const LearnExamsComponent = 'learnExamsComponent';
 app.component(LearnExamsComponent, {
   templateUrl: 'app/learn/exams/exams.html',
   controller: LearnExamsController,

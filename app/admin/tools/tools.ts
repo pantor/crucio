@@ -1,11 +1,10 @@
 import { app } from './../../crucio';
 
-import AuthService from './../../services/auth.service';
 import APIService from './../../services/api.service';
 
 class AdminToolsController {
 
-  constructor(Auth: AuthService, private readonly API: APIService) {
+  constructor(private readonly API: APIService) {
 
   }
 
@@ -23,7 +22,7 @@ class AdminToolsController {
   }
 }
 
-export const AdminToolsComponent = 'admintoolsComponent';
+export const AdminToolsComponent = 'adminToolsComponent';
 app.component(AdminToolsComponent, {
   templateUrl: 'app/admin/tools/tools.html',
   controller: AdminToolsController,

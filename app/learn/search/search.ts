@@ -61,7 +61,7 @@ class LearnSearchController {
   }
 }
 
-export const LearnSearchComponent = 'learnsearchComponent';
+export const LearnSearchComponent = 'learnSearchComponent';
 app.component(LearnSearchComponent, {
   templateUrl: 'app/learn/search/search.html',
   controller: LearnSearchController,

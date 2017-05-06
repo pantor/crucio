@@ -14,7 +14,7 @@ class AuthorSubjectsController {
   }
 }
 
-export const AuthorSubjectsComponent = 'authorsubjectsComponent';
+export const AuthorSubjectsComponent = 'authorSubjectsComponent';
 app.component(AuthorSubjectsComponent, {
   templateUrl: 'app/author/subjects/subjects.html',
   controller: AuthorSubjectsController,

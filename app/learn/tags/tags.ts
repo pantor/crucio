@@ -50,7 +50,7 @@ class LearnTagsController {
   }
 }
 
-export const LearnTagsComponent = 'learntagsComponent';
+export const LearnTagsComponent = 'learnTagsComponent';
 app.component(LearnTagsComponent, {
   templateUrl: 'app/learn/tags/tags.html',
   controller: LearnTagsController,

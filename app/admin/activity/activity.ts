@@ -32,21 +32,13 @@ class AdminActivityController {
   }
 
   loadActivity(): void {
-    const showActivityBoolean = {
-      result: this.showActivity.result | 0,
-      login: this.showActivity.login | 0,
-      register: this.showActivity.register | 0,
-      comment: this.showActivity.comment | 0,
-      examNew: this.showActivity.examNew | 0,
-      examUpdate: this.showActivity.examUpdate | 0,
-    };
-    this.API.get('stats/activities', showActivityBoolean).then(result => {
+    this.API.get('stats/activities', this.showActivity).then(result => {
       this.activities = result.data.activities;
     });
   }
 }
 
-export const AdminActivityComponent = 'adminactivityComponent';
+export const AdminActivityComponent = 'adminActivityComponent';
 app.component(AdminActivityComponent, {
   templateUrl: 'app/admin/activity/activity.html',
   controller: AdminActivityController,
