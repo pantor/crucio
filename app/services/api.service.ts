@@ -1,4 +1,6 @@
-class APIService {
+import { app } from './../crucio';
+
+export default class APIService {
   private readonly base: string;
 
   constructor(private readonly $http: angular.IHttpService) {
@@ -27,4 +29,4 @@ class APIService {
   }
 }
 
-angular.module('crucioApp').service('API', APIService);
+app.service('API', APIService);

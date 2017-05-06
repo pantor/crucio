@@ -1,3 +1,7 @@
+import { app } from './../../crucio';
+
+import APIService from './../../services/api.service';
+
 class DeleteOralExamModalController {
   private oralExamId: number;
   private resolve: any;
@@ -20,7 +24,8 @@ class DeleteOralExamModalController {
   }
 }
 
-angular.module('crucioApp').component('deleteOralExamModalComponent', {
+export const DeleteOralExamModalComponent = 'deleteOralExamModalComponent';
+app.component(DeleteOralExamModalComponent, {
   templateUrl: 'app/author/edit-oral-exam/delete-oral-exam-modal.html',
   controller: DeleteOralExamModalController,
   bindings: {

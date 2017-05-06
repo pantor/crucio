@@ -1,3 +1,9 @@
+import { app } from './../../crucio';
+
+import AuthService from './../../services/auth.service';
+import APIService from './../../services/api.service';
+import CollectionService from './../../services/collection.service';
+
 class LearnExamsController {
   private readonly user: Crucio.User;
   private examSearch: any;
@@ -47,7 +53,8 @@ class LearnExamsController {
   }
 }
 
-angular.module('crucioApp').component('learnexamscomponent', {
+export const LearnExamsComponent = 'learnexamsComponent';
+app.component(LearnExamsComponent, {
   templateUrl: 'app/learn/exams/exams.html',
   controller: LearnExamsController,
 });

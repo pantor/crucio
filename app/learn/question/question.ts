@@ -1,3 +1,13 @@
+import { app } from './../../crucio';
+
+import AuthService from './../../services/auth.service';
+import APIService from './../../services/api.service';
+import CollectionService from './../../services/collection.service';
+import PageService from './../../services/page.service';
+
+import { ImageModalComponent } from './../../components/image-modal/image-modal';
+import { ReportModalComponent } from './../../components/report-modal/report-modal';
+
 class QuestionController {
   private readonly user: Crucio.User;
   private readonly questionId: number;
@@ -161,7 +171,7 @@ class QuestionController {
 
   openImageModal(): void {
     this.$uibModal.open({
-      component: 'imageModalComponent',
+      component: ImageModalComponent,
       resolve: {
         data: () => this.question.question_image_url,
       },
@@ -170,7 +180,7 @@ class QuestionController {
 
   openReportModal(): void {
     this.$uibModal.open({
-      component: 'reportModalComponent',
+      component: ReportModalComponent,
       resolve: {
         question: () => this.question,
         questionId: () => this.questionId,
@@ -179,7 +189,8 @@ class QuestionController {
   }
 }
 
-angular.module('crucioApp').component('questioncomponent', {
+export const QuestionComponent = 'questionComponent';
+app.component(QuestionComponent, {
   templateUrl: 'app/learn/question/question.html',
   controller: QuestionController,
 });

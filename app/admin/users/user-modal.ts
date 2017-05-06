@@ -1,3 +1,7 @@
+import { app } from './../../crucio';
+
+import APIService from './../../services/api.service';
+
 class UserModalController {
   private user: Crucio.User;
   private newGroupID: number;
@@ -35,7 +39,8 @@ class UserModalController {
   }
 }
 
-angular.module('crucioApp').component('userModalComponent', {
+export const UserModalComponent = 'userModalComponent';
+app.component(UserModalComponent, {
   templateUrl: 'app/admin/users/user-modal.html',
   controller: UserModalController,
   bindings: {

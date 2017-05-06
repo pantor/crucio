@@ -1,3 +1,8 @@
+import { app } from './../../crucio';
+
+import AuthService from './../../services/auth.service';
+import APIService from './../../services/api.service';
+
 class AuthorCommentsController {
   private readonly user: Crucio.User;
   private distinctAuthors: any;
@@ -48,7 +53,8 @@ class AuthorCommentsController {
   }
 }
 
-angular.module('crucioApp').component('authorcommentscomponent', {
+export const AuthorCommentsComponent = 'authorcommentsComponent';
+app.component(AuthorCommentsComponent, {
   templateUrl: 'app/author/comments/comments.html',
   controller: AuthorCommentsController,
 });

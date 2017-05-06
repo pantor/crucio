@@ -1,3 +1,9 @@
+import { app } from './../../crucio';
+
+import AuthService from './../../services/auth.service';
+import APIService from './../../services/api.service';
+import CollectionService from './../../services/collection.service';
+
 class LearnTagsController {
   private readonly user: Crucio.User;
   private tags: any;
@@ -44,7 +50,8 @@ class LearnTagsController {
   }
 }
 
-angular.module('crucioApp').component('learntagscomponent', {
+export const LearnTagsComponent = 'learntagsComponent';
+app.component(LearnTagsComponent, {
   templateUrl: 'app/learn/tags/tags.html',
   controller: LearnTagsController,
 });

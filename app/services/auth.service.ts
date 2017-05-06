@@ -1,4 +1,7 @@
-class AuthService {
+import * as angular from 'angular';
+import { app } from './../crucio';
+
+export default class AuthService {
   private user: Crucio.User;
 
   constructor(private readonly $cookies, private readonly $window: angular.IWindowService) {
@@ -48,4 +51,4 @@ class AuthService {
   }
 }
 
-angular.module('crucioApp').service('Auth', AuthService);
+app.service('Auth', AuthService);

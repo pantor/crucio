@@ -1,6 +1,5 @@
 {
     "compilerOptions": {
-        "outFile": "crucio.js",
         "removeComments": true,
         "types" : [
             "angular",
@@ -9,13 +8,7 @@
         ]
     },
     "files": [
-        "app/crucio.d.ts",
-        "app/crucio.ts"
-    ],
-    "include": [
-        "app/**/*"
-    ],
-    "filesGlob": [
-        "app/**/*"
+        "app/crucio.ts",
+        "app/crucio.d.ts"
     ]
 }

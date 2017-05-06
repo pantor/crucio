@@ -1,3 +1,7 @@
+import { app } from './../../crucio';
+
+import APIService from './../../services/api.service';
+
 class AuthorSubjectsController {
   private subjectList: Crucio.Subject[];
 
@@ -10,7 +14,8 @@ class AuthorSubjectsController {
   }
 }
 
-angular.module('crucioApp').component('authorsubjectscomponent', {
+export const AuthorSubjectsComponent = 'authorsubjectsComponent';
+app.component(AuthorSubjectsComponent, {
   templateUrl: 'app/author/subjects/subjects.html',
   controller: AuthorSubjectsController,
 });

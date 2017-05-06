@@ -1,4 +1,21 @@
-angular.module('crucioApp', [
+/// <reference path="crucio.d.ts"/>
+
+import 'spin.js';
+import * as angular from 'angular';
+import 'angular-cookies';
+import 'angular-messages';
+import 'ng-tags-input';
+import '@uirouter/angularjs';
+import 'angular-ui-bootstrap';
+import 'angular-file-upload';
+import 'angular-spinner';
+import 'angularjs-slider';
+import 'angular-scroll';
+import 'textangular/dist/textAngular';
+import 'textangular/dist/textAngularSetup';
+
+
+export const app = angular.module('crucioApp', [
   'ngCookies',
   'ngMessages',
   'ngTagsInput',
@@ -9,45 +26,93 @@ angular.module('crucioApp', [
   'textAngular',
   'rzModule',
   'duScroll',
-])
-  .config(function config($stateProvider: angular.ui.IStateProvider, $urlRouterProvider: angular.ui.IUrlRouterProvider, $locationProvider: angular.ILocationProvider, $provide) {
+]);
+
+
+import './services/api.service';
+import './services/auth.service';
+import './services/collection.service';
+import './services/page.service';
+
+import './components/navbar/navbar';
+import './components/timeago';
+
+import AuthService from './services/auth.service';
+
+import { LearnComponent } from './learn/learn';
+import { LearnOverviewComponent } from './learn/overview/overview';
+import { LearnSubjectsComponent } from './learn/subjects/subjects';
+import { LearnExamsComponent } from './learn/exams/exams';
+import { LearnSearchComponent } from './learn/search/search';
+import { LearnTagsComponent } from './learn/tags/tags';
+import { LearnCommentsComponent } from './learn/comments/comments';
+import { LearnOralExamsComponent } from './learn/oral-exams/oral-exams';
+import { QuestionComponent } from './learn/question/question';
+import { ExamComponent } from './learn/exam/exam';
+import { StatisticComponent } from './learn/statistic/statistic';
+import { AnalysisComponent } from './learn/analysis/analysis';
+
+import { AuthorComponent } from './author/author';
+import { AuthorExamsComponent } from './author/exams/exams';
+import { AuthorCommentsComponent } from './author/comments/comments';
+import { AuthorSubjectsComponent } from './author/subjects/subjects';
+import { AuthorOralExamsComponent } from './author/oral-exams/oral-exams';
+import { AuthorAdvicesComponent } from './author/advices/advices';
+import { EditExamComponent } from './author/edit-exam/edit-exam';
+import { EditOralExamComponent } from './author/edit-oral-exam/edit-oral-exam';
+
+import { AdminComponent } from './admin/admin';
+import { AdminUsersComponent } from './admin/users/users';
+import { AdminWhitelistComponent } from './admin/whitelist/whitelist';
+import { AdminToolsComponent } from './admin/tools/tools';
+import { AdminStatsComponent } from './admin/stats/stats';
+import { AdminActivityComponent } from './admin/activity/activity';
+
+import { UserComponent } from './user/user';
+
+import { Error403Component, Error404Component, Error500Component } from './error/error';
+import { HelpComponent } from './help/help';
+
+
+
+app.config(function config($stateProvider: angular.ui.IStateProvider, $urlRouterProvider: angular.ui.IUrlRouterProvider, $locationProvider: angular.ILocationProvider, $provide) {
 
     const states: angular.ui.IState[] = [
-      { name: 'learn', url: '/learn', component: 'learncomponent' },
-      { name: 'learn.overview', url: '/overview', component: 'learnoverviewcomponent' },
-      { name: 'learn.subjects', url: '/subjects', component: 'learnsubjectscomponent' },
-      { name: 'learn.exams', url: '/exams', component: 'learnexamscomponent' },
-      { name: 'learn.search', url: '/search', component: 'learnsearchcomponent' },
-      { name: 'learn.tags', url: '/tags', component: 'learntagscomponent' },
-      { name: 'learn.comments', url: '/comments', component: 'learncommentscomponent' },
-      { name: 'learn.oral-exams', url: '/oral-exams', component: 'learnoralexamscomponent' },
-      { name: 'question', url: '/question?questionId&resetSession', component: 'questioncomponent' },
-      { name: 'exam', url: '/exam', component: 'examcomponent' },
-      { name: 'statistic', url: '/statistic', component: 'statisticcomponent' },
-      { name: 'analysis', url: '/analysis', component: 'analysiscomponent' },
+      { name: 'learn', url: '/learn', component: LearnComponent },
+      { name: 'learn.overview', url: '/overview', component: LearnOverviewComponent },
+      { name: 'learn.subjects', url: '/subjects', component: LearnSubjectsComponent },
+      { name: 'learn.exams', url: '/exams', component: LearnExamsComponent },
+      { name: 'learn.search', url: '/search', component: LearnSearchComponent },
+      { name: 'learn.tags', url: '/tags', component: LearnTagsComponent },
+      { name: 'learn.comments', url: '/comments', component: LearnCommentsComponent },
+      { name: 'learn.oral-exams', url: '/oral-exams', component: LearnOralExamsComponent },
+      { name: 'question', url: '/question?questionId&resetSession', component: QuestionComponent },
+      { name: 'exam', url: '/exam', component: ExamComponent },
+      { name: 'statistic', url: '/statistic', component: StatisticComponent },
+      { name: 'analysis', url: '/analysis', component: AnalysisComponent },
 
-      { name: 'author', url: '/author', component: 'authorcomponent' },
-      { name: 'author.exams', url: '/exams', component: 'authorexamscomponent' },
-      { name: 'author.comments', url: '/comments', component: 'authorcommentscomponent' },
-      { name: 'author.subjects', url: '/subjects', component: 'authorsubjectscomponent' },
-      { name: 'author.oral-exams', url: '/oral-exams', component: 'authororalexamscomponent' },
-      { name: 'author.advices', url: '/advices', component: 'authoradvicescomponent' },
-      { name: 'edit-exam', url: '/edit-exam?examId&questionId', component: 'editexamcomponent' },
-      { name: 'edit-oral-exam', url: '/edit-oral-exam?oralExamId', component: 'editoralexamcomponent' },
+      { name: 'author', url: '/author', component: AuthorComponent },
+      { name: 'author.exams', url: '/exams', component: AuthorExamsComponent },
+      { name: 'author.comments', url: '/comments', component: AuthorCommentsComponent },
+      { name: 'author.subjects', url: '/subjects', component: AuthorSubjectsComponent },
+      { name: 'author.oral-exams', url: '/oral-exams', component: AuthorOralExamsComponent },
+      { name: 'author.advices', url: '/advices', component: AuthorAdvicesComponent },
+      { name: 'edit-exam', url: '/edit-exam?examId&questionId', component: EditExamComponent },
+      { name: 'edit-oral-exam', url: '/edit-oral-exam?oralExamId', component: EditOralExamComponent },
 
-      { name: 'admin', url: '/admin', component: 'admincomponent' },
-      { name: 'admin.users', url: '/users', component: 'adminuserscomponent' },
-      { name: 'admin.whitelist', url: '/whitelist', component: 'adminwhitelistcomponent' },
-      { name: 'admin.tools', url: '/tools', component: 'admintoolscomponent' },
-      { name: 'admin.stats', url: '/stats', component: 'adminstatscomponent' },
-      { name: 'admin.activity', url: '/activity', component: 'adminactivitycomponent' },
+      { name: 'admin', url: '/admin', component: AdminComponent },
+      { name: 'admin.users', url: '/users', component: AdminUsersComponent },
+      { name: 'admin.whitelist', url: '/whitelist', component: AdminWhitelistComponent },
+      { name: 'admin.tools', url: '/tools', component: AdminToolsComponent },
+      { name: 'admin.stats', url: '/stats', component: AdminStatsComponent },
+      { name: 'admin.activity', url: '/activity', component: AdminActivityComponent },
 
-      { name: 'user', url: '/user', component: 'usercomponent' },
+      { name: 'user', url: '/user', component: UserComponent },
 
-      { name: '403', url: '/403', component: 'error403component' },
-      { name: '404', url: '/404', component: 'error404component' },
-      { name: '500', url: '/500', component: 'error500component' },
-      { name: 'help', url: '/help', component: 'helpcomponent' },
+      { name: '403', url: '/403', component: Error403Component },
+      { name: '404', url: '/404', component: Error404Component },
+      { name: '500', url: '/500', component: Error500Component },
+      { name: 'help', url: '/help', component: HelpComponent },
     ];
 
     $urlRouterProvider.otherwise('/404');

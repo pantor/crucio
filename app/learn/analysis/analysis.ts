@@ -1,3 +1,10 @@
+import { app } from './../../crucio';
+
+import AuthService from './../../services/auth.service';
+import APIService from './../../services/api.service';
+import CollectionService from './../../services/collection.service';
+import PageService from './../../services/page.service';
+
 class AnalysisController {
   private readonly user: Crucio.User;
   private workedCombination: Crucio.CombinationElement[];
@@ -50,7 +57,8 @@ class AnalysisController {
   }
 }
 
-angular.module('crucioApp').component('analysiscomponent', {
+export const AnalysisComponent = 'analysisComponent';
+app.component(AnalysisComponent, {
   templateUrl: 'app/learn/analysis/analysis.html',
   controller: AnalysisController,
 });

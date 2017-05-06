@@ -1,19 +1,18 @@
-var gulp = require('gulp'),
+const gulp = require('gulp'),
   autoprefixer = require('gulp-autoprefixer'),
   concat = require('gulp-concat'),
   copy = require('gulp-copy'),
   inlineCss = require('gulp-inline-css'),
-  ngAnnotate = require('gulp-ng-annotate'),
   phplint = require('gulp-phplint'),
   sass = require('gulp-sass'),
-  ts = require('gulp-typescript'),
   uglify = require('gulp-uglify'),
-  streamqueue = require('streamqueue');
+  streamqueue = require('streamqueue'),
+  shell = require('gulp-shell');
 
 
-var api = 'api/';
-var app = 'app/';
-var node = 'node_modules/';
+const api = 'api/';
+const app = 'app/';
+const node = 'node_modules/';
 
 gulp.task('sass', function () {
   return streamqueue({ objectMode: true },
@@ -32,38 +31,11 @@ gulp.task('sass', function () {
     .pipe(gulp.dest('public/css'));
 });
 
-gulp.task('tsc', function () {
-  var tsProject = ts.createProject('tsconfig.json');
-  tsProject.src()
-    .pipe(tsProject())
-    .pipe(ngAnnotate())
-    .pipe(uglify())
-    .pipe(gulp.dest('public/js'));
-});
+gulp.task('webpack', shell.task([
+  'webpack'
+]));
 
 gulp.task('js-vendor', function () {
-  gulp.src([
-    node + 'spin.js/spin.min.js',
-    node + 'angular/angular.min.js',
-    node + 'textangular/dist/textAngular-rangy.min.js',
-    node + 'textangular/dist/textAngular-sanitize.min.js',
-    node + 'textangular/dist/textAngular.js',
-    node + 'textangular/dist/textAngularSetup.js',
-    node + 'angular-cookies/angular-cookies.min.js',
-    node + 'angular-file-upload/dist/angular-file-upload.min.js',
-    node + 'angular-messages/angular-messages.min.js',
-    node + '@uirouter/angularjs/release/angular-ui-router.min.js',
-    node + 'angular-scroll/angular-scroll.min.js',
-    node + 'angular-spinner/dist/angular-spinner.min.js',
-    node + 'angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
-    node + 'angularjs-slider/dist/rzslider.min.js',
-    node + 'ng-tags-input/build/ng-tags-input.min.js',
-  ])
-    .pipe(concat('vendor.js'))
-    .pipe(ngAnnotate())
-    .pipe(uglify())
-    .pipe(gulp.dest('public/js/'));
-
   gulp.src([
     node + 'jquery/dist/jquery.min.js',
     node + 'jquery-validation/dist/jquery.validate.js',
@@ -71,7 +43,6 @@ gulp.task('js-vendor', function () {
     node + 'bootstrap/dist/js/bootstrap.min.js',
   ])
     .pipe(concat('outer.js'))
-    .pipe(ngAnnotate())
     .pipe(uglify())
     .pipe(gulp.dest('public/js/'));
 });
@@ -97,9 +68,9 @@ gulp.task('fonts', function () {
 gulp.task('watch', function () {
   gulp.watch(api + '**/*.php', ['php']);
   gulp.watch(app + '**/*.scss', ['sass']);
-  gulp.watch(app + '**/*.ts', ['tsc']);
+  gulp.watch(app + '**/*.ts', ['webpack']);
   gulp.watch(app + 'mail-templates/**/*.html', ['mail']);
 });
 
 gulp.task('default', ['watch']);
-gulp.task('build', ['tsc', 'js-vendor', 'sass', 'mail', 'fonts']);
+gulp.task('build', ['webpack', 'js-vendor', 'sass', 'mail', 'fonts']);

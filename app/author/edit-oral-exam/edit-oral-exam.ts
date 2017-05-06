@@ -1,3 +1,11 @@
+import { app } from './../../crucio';
+
+import AuthService from './../../services/auth.service';
+import APIService from './../../services/api.service';
+import PageService from './../../services/page.service';
+
+import { DeleteOralExamModalComponent } from './delete-oral-exam-modal';
+
 class EditOralExamController {
   private readonly user: Crucio.User;
   private readonly oralExamId: number;
@@ -70,7 +78,7 @@ class EditOralExamController {
 
   deleteOralExamModal(): void {
     this.$uibModal.open({
-      component: 'deleteOralExamModalComponent',
+      component: DeleteOralExamModalComponent,
       resolve: {
         oralExamId: () => this.oralExamId,
       },
@@ -78,7 +86,8 @@ class EditOralExamController {
   }
 }
 
-angular.module('crucioApp').component('editoralexamcomponent', {
+export const EditOralExamComponent = 'editOralExamComponent';
+app.component(EditOralExamComponent, {
   templateUrl: 'app/author/edit-oral-exam/edit-oral-exam.html',
   controller: EditOralExamController,
 });

@@ -1,3 +1,9 @@
+import { app } from './../../crucio';
+
+import AuthService from './../../services/auth.service';
+import APIService from './../../services/api.service';
+import CollectionService from './../../services/collection.service';
+
 class LearnSubjectsController {
   private readonly user: Crucio.User;
   private selection: any;
@@ -57,7 +63,8 @@ class LearnSubjectsController {
   }
 }
 
-angular.module('crucioApp').component('learnsubjectscomponent', {
+export const LearnSubjectsComponent = 'learnsubjectsComponent';
+app.component(LearnSubjectsComponent, {
   templateUrl: 'app/learn/subjects/subjects.html',
   controller: LearnSubjectsController,
 });

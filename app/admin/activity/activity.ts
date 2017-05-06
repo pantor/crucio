@@ -1,3 +1,9 @@
+import { app } from './../../crucio';
+
+import AuthService from './../../services/auth.service';
+import APIService from './../../services/api.service';
+import PageService from './../../services/page.service';
+
 class AdminActivityController {
   private updateActivity: boolean;
   private showActivity: any;
@@ -40,7 +46,8 @@ class AdminActivityController {
   }
 }
 
-angular.module('crucioApp').component('adminactivitycomponent', {
+export const AdminActivityComponent = 'adminactivityComponent';
+app.component(AdminActivityComponent, {
   templateUrl: 'app/admin/activity/activity.html',
   controller: AdminActivityController,
 });

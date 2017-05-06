@@ -1,3 +1,8 @@
+import { app } from './../../crucio';
+
+import AuthService from './../../services/auth.service';
+import APIService from './../../services/api.service';
+
 class AdminWhitelistController {
   private whitelist: any;
   private newWhitelistEmail: string;
@@ -27,7 +32,8 @@ class AdminWhitelistController {
   }
 }
 
-angular.module('crucioApp').component('adminwhitelistcomponent', {
+export const AdminWhitelistComponent = 'adminwhitelistComponent';
+app.component(AdminWhitelistComponent, {
   templateUrl: 'app/admin/whitelist/whitelist.html',
   controller: AdminWhitelistController,
 });

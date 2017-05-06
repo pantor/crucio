@@ -1,3 +1,11 @@
+import { app } from './../../crucio';
+
+import AuthService from './../../services/auth.service';
+import APIService from './../../services/api.service';
+
+import { DeleteUserModalComponent } from './delete-user-modal';
+import { UserModalComponent } from './user-modal';
+
 class AdminUsersController {
   private readonly user: Crucio.User;
   private userSearch: any;
@@ -64,7 +72,7 @@ class AdminUsersController {
 
   userModal(index: number): void {
     this.$uibModal.open({
-      component: 'userModalComponent',
+      component: UserModalComponent,
       resolve: {
         user: () => this.users[index],
       },
@@ -73,7 +81,7 @@ class AdminUsersController {
 
   deleteUserModal(index: number): void {
     const modal = this.$uibModal.open({
-      component: 'deleteUserModalComponent',
+      component: DeleteUserModalComponent,
       resolve: {
         user: () => this.users[index],
       },
@@ -88,7 +96,8 @@ class AdminUsersController {
   }
 }
 
-angular.module('crucioApp').component('adminuserscomponent', {
+export const AdminUsersComponent = 'adminusersComponent';
+app.component(AdminUsersComponent, {
   templateUrl: 'app/admin/users/users.html',
   controller: AdminUsersController,
 });

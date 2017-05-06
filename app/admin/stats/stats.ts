@@ -1,3 +1,8 @@
+import { app } from './../../crucio';
+
+import AuthService from './../../services/auth.service';
+import APIService from './../../services/api.service';
+
 class AdminStatsController {
   private stats: any;
   private resultGraph: any;
@@ -9,7 +14,8 @@ class AdminStatsController {
   }
 }
 
-angular.module('crucioApp').component('adminstatscomponent', {
+export const AdminStatsComponent = 'adminstatsComponent';
+app.component(AdminStatsComponent, {
   templateUrl: 'app/admin/stats/stats.html',
   controller: AdminStatsController,
 });

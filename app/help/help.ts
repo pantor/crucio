@@ -1,3 +1,9 @@
+import { app } from './../crucio';
+
+import AuthService from './../services/auth.service';
+import APIService from './../services/api.service';
+import PageService from './../services/page.service';
+
 class HelpController {
   private readonly user: Crucio.User;
   private isWorking: boolean;
@@ -29,7 +35,8 @@ class HelpController {
   }
 }
 
-angular.module('crucioApp').component('helpcomponent', {
+export const HelpComponent = 'helpComponent';
+app.component(HelpComponent, {
   templateUrl: 'app/help/help.html',
   controller: HelpController,
 });

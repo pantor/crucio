@@ -1,3 +1,7 @@
+import { app } from './../../crucio';
+
+import APIService from './../../services/api.service';
+
 class DeleteUserModalController {
   private user: Crucio.User;
   private resolve: any;
@@ -18,7 +22,8 @@ class DeleteUserModalController {
   }
 }
 
-angular.module('crucioApp').component('deleteUserModalComponent', {
+export const DeleteUserModalComponent = 'deleteUserModalComponent';
+app.component(DeleteUserModalComponent, {
   templateUrl: 'app/admin/users/delete-user-modal.html',
   controller: DeleteUserModalController,
   bindings: {

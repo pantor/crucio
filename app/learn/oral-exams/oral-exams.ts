@@ -1,3 +1,8 @@
+import { app } from './../../crucio';
+
+import AuthService from './../../services/auth.service';
+import APIService from './../../services/api.service';
+
 class LearnOralExamsController {
   private readonly user: Crucio.User;
   private oralExamSearch: any;
@@ -37,7 +42,8 @@ class LearnOralExamsController {
   }
 }
 
-angular.module('crucioApp').component('learnoralexamscomponent', {
+export const LearnOralExamsComponent = 'learnOralExamsComponent';
+app.component(LearnOralExamsComponent, {
   templateUrl: 'app/learn/oral-exams/oral-exams.html',
   controller: LearnOralExamsController,
 });

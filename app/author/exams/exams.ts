@@ -1,3 +1,8 @@
+import { app } from './../../crucio';
+
+import AuthService from './../../services/auth.service';
+import APIService from './../../services/api.service';
+
 class AuthorExamsController {
   private readonly user: Crucio.User;
   private examSearch: any;
@@ -52,7 +57,8 @@ class AuthorExamsController {
   }
 }
 
-angular.module('crucioApp').component('authorexamscomponent', {
+export const AuthorExamsComponent = 'authorexamsComponent';
+app.component(AuthorExamsComponent, {
   templateUrl: 'app/author/exams/exams.html',
   controller: AuthorExamsController,
 });

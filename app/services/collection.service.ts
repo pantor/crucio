@@ -1,4 +1,10 @@
-class CollectionService {
+import * as angular from 'angular';
+import { app } from './../crucio';
+import APIService from './api.service';
+import AuthService from './auth.service';
+
+
+export default class CollectionService {
   private collection: Crucio.Collection;
   private readonly user: Crucio.User;
 
@@ -246,4 +252,4 @@ class CollectionService {
   }
 }
 
-angular.module('crucioApp').service('Collection', CollectionService);
+app.service('Collection', CollectionService);

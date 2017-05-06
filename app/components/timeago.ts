@@ -1,3 +1,5 @@
+import { app } from './../crucio';
+
 class TimeagoController {
   result: string;
   datetime: number;
@@ -66,7 +68,8 @@ class TimeagoController {
   }
 }
 
-angular.module('crucioApp').component('timeago', {
+export const TimeagoComponent = 'timeago';
+app.component(TimeagoComponent, {
   template: '<span>{{ $ctrl.result }}</span>',
   controller: TimeagoController,
   bindings: {

@@ -1,3 +1,11 @@
+import { app } from './../../crucio';
+
+import AuthService from './../../services/auth.service';
+import APIService from './../../services/api.service';
+import PageService from './../../services/page.service';
+
+import { DeleteExamModalComponent } from './delete-exam-modal';
+
 class EditExamController {
   private readonly user: Crucio.User;
   private readonly examId: number;
@@ -171,7 +179,7 @@ class EditExamController {
 
   deleteExamModal(): void {
     this.$uibModal.open({
-      component: 'deleteExamModalComponent',
+      component: DeleteExamModalComponent,
       resolve: {
         examId: () => this.examId,
       },
@@ -179,7 +187,8 @@ class EditExamController {
   }
 }
 
-angular.module('crucioApp').component('editexamcomponent', {
+export const EditExamComponent = 'editExamComponent';
+app.component(EditExamComponent, {
   templateUrl: 'app/author/edit-exam/edit-exam.html',
   controller: EditExamController,
 });

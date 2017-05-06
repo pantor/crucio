@@ -1,3 +1,8 @@
+import { app } from './../../crucio';
+
+import AuthService from './../../services/auth.service';
+import APIService from './../../services/api.service';
+
 class LearnCommentsController {
   private readonly user: Crucio.User;
   private commentSearch: any;
@@ -29,7 +34,8 @@ class LearnCommentsController {
   }
 }
 
-angular.module('crucioApp').component('learncommentscomponent', {
+export const LearnCommentsComponent = 'learncommentsComponent';
+app.component(LearnCommentsComponent, {
   templateUrl: 'app/learn/comments/comments.html',
   controller: LearnCommentsController,
 });
