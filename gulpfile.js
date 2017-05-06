@@ -47,7 +47,7 @@ gulp.task('js-vendor', function () {
     node + 'angular/angular.min.js',
     node + 'textangular/dist/textAngular-rangy.min.js',
     node + 'textangular/dist/textAngular-sanitize.min.js',
-    node + 'textangular/dist/textAngular.min.js',
+    node + 'textangular/dist/textAngular.js',
     node + 'textangular/dist/textAngularSetup.js',
     node + 'angular-cookies/angular-cookies.min.js',
     node + 'angular-file-upload/dist/angular-file-upload.min.js',

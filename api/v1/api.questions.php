@@ -294,61 +294,6 @@ $app->group('/questions', function() {
 		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
-
-	$this->post('', function($request, $response, $args) {
-    	$mysql = init();
-		$body = $request->getParsedBody();
-
-		$stmt = $mysql->prepare(
-    		"INSERT INTO questions (question, answers, correct_answer, exam_id, date_added,
-    		    user_id_added, explanation, question_image_url, type, category_id)
-		    VALUES (:question, :answers, :correct_answer, :exam_id, :date, :user_id_added,
-		        :explanation, :question_image_url, :type, :category_id)"
-        );
-        $stmt->bindValue(':question', $body['question']);
-        $stmt->bindValue(':answers', serialize($body['answers']));
-        $stmt->bindValue(':correct_answer', $body['correct_answer']);
-        $stmt->bindValue(':exam_id', $body['exam_id'], PDO::PARAM_INT);
-        $stmt->bindValue(':date', time());
-        $stmt->bindValue(':user_id_added', $body['user_id_added'], PDO::PARAM_INT);
-        $stmt->bindValue(':explanation', $body['explanation']);
-        $stmt->bindValue(':question_image_url', $body['question_image_url']);
-        $stmt->bindValue(':type', $body['type']);
-        $stmt->bindValue(':category_id', $body['category_id']);
-
-        $data['status'] = $stmt->execute();
-        $data['question_id'] = $mysql->lastInsertId();
-		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
-	});
-
-
-	$this->put('/{question_id}', function($request, $response, $args) {
-    	$mysql = init();
-		$body = $request->getParsedBody();
-
-		$stmt = $mysql->prepare(
-    		"UPDATE questions
-    		SET question = :question, answers = :answers, correct_answer = :correct_answer,
-    		    exam_id = :exam_id, explanation = :explanation,
-    		    question_image_url = :question_image_url, type = :type, category_id = :category_id
-            WHERE question_id = :question_id"
-        );
-        $stmt->bindValue(':question', $body['question']);
-        $stmt->bindValue(':answers', serialize($body['answers']));
-        $stmt->bindValue(':correct_answer', $body['correct_answer']);
-        $stmt->bindValue(':exam_id', $body['exam_id'], PDO::PARAM_INT);
-        $stmt->bindValue(':explanation', $body['explanation']);
-        $stmt->bindValue(':question_image_url', $body['question_image_url']);
-        $stmt->bindValue(':type', $body['type']);
-        $stmt->bindValue(':category_id', $body['category_id'], PDO::PARAM_INT);
-        $stmt->bindValue(':question_id', $args['question_id'], PDO::PARAM_INT);
-
-        $data['a'] = $body['answers'];
-        $data['status'] = $stmt->execute();
-		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
-	});
-
-
 	$this->delete('/{question_id}', function($request, $response, $args) {
 		$mysql = init();
 

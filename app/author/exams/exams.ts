@@ -7,7 +7,7 @@ class AuthorExamsController {
   private subjectList: Crucio.Subject[];
   private exams: Crucio.Exam[];
 
-  constructor(Auth: AuthService, private readonly API: APIService, private readonly $location: angular.ILocationService) {
+  constructor(Auth: AuthService, private readonly API: APIService, private readonly $state: angular.ui.IStateService) {
     this.user = Auth.getUser();
 
     this.examSearch = { author: this.user };
@@ -47,7 +47,7 @@ class AuthorExamsController {
     };
 
     this.API.post('exams', data).then(result => {
-      this.$location.path('/edit-exam').search('examId', result.data.exam_id);
+      this.$state.go('edit-exam', {examId: result.data.exam_id});
     });
   }
 }

@@ -203,6 +203,9 @@ $app->group('/exams', function() {
 	$this->put('/{exam_id}', function($request, $response, $args) {
 		$mysql = init();
 		$body = $request->getParsedBody();
+        $exam = $body['exam'];
+        $questions = $body['questions'];
+        $user_id = $body['user_id'];
 
 		$stmt = $mysql->prepare(
 		    "UPDATE exams
@@ -211,19 +214,75 @@ $app->group('/exams', function() {
                 visibility = :visibility, date_updated = :date_updated
             WHERE exam_id = :exam_id"
 		);
-		$stmt->bindValue(':subject_id', $body['subject_id']);
-		$stmt->bindValue(':professor', $body['professor']);
-		$stmt->bindValue(':semester', $body['semester']);
-		$stmt->bindValue(':date', $body['date']);
-		$stmt->bindValue(':sort', $body['sort']);
-		$stmt->bindValue(':duration', $body['duration']);
-		$stmt->bindValue(':notes', $body['notes']);
-		$stmt->bindValue(':file_name', $body['file_name']);
-		$stmt->bindValue(':visibility', $body['visibility']);
+		$stmt->bindValue(':subject_id', $exam['subject_id']);
+		$stmt->bindValue(':professor', $exam['professor']);
+		$stmt->bindValue(':semester', $exam['semester']);
+		$stmt->bindValue(':date', $exam['date']);
+		$stmt->bindValue(':sort', $exam['sort']);
+		$stmt->bindValue(':duration', $exam['duration']);
+		$stmt->bindValue(':notes', $exam['notes']);
+		$stmt->bindValue(':file_name', $exam['file_name']);
+		$stmt->bindValue(':visibility', $exam['visibility']);
 		$stmt->bindValue(':date_updated', time());
-		$stmt->bindValue(':exam_id', $args['exam_id']);
+		$stmt->bindValue(':exam_id', $exam['exam_id']);
+        $exam_status = $stmt->execute();
 
-		$data['status'] = $stmt->execute();
+        $question_status = [];
+        $question_id_list = [];
+        foreach ($questions as $question) {
+            if ($question['question_id']) {
+                $stmt = $mysql->prepare(
+                    "UPDATE questions
+                    SET question = :question, answers = :answers, correct_answer = :correct_answer,
+                        exam_id = :exam_id, explanation = :explanation,
+                        question_image_url = :question_image_url, type = :type, category_id = :category_id
+                    WHERE question_id = :question_id"
+                );
+                $stmt->bindValue(':question', $question['question']);
+                $stmt->bindValue(':answers', serialize($question['answers']));
+                $stmt->bindValue(':correct_answer', $question['correct_answer']);
+                $stmt->bindValue(':exam_id', $exam['exam_id'], PDO::PARAM_INT);
+                $stmt->bindValue(':explanation', $question['explanation']);
+                $stmt->bindValue(':question_image_url', $question['question_image_url']);
+                $stmt->bindValue(':type', $question['type']);
+                $stmt->bindValue(':category_id', $question['category_id'], PDO::PARAM_INT);
+                $stmt->bindValue(':question_id', $question['question_id'], PDO::PARAM_INT);
+
+                $question_status[] = $stmt->execute();
+                $question_id_list[] = $question['question_id'];
+            } else {
+                if ($question['question']) { // Save only questions with question
+                    $explanation = strlen($question['explanation']) > 0 ? $question['explanation'] : '';
+                    $question_image_url = strlen($question['question_image_url']) > 0 ? $question['question_image_url'] : '';
+
+                    $stmt = $mysql->prepare(
+                		"INSERT INTO questions (question, answers, correct_answer, exam_id, date_added,
+                		    user_id_added, explanation, question_image_url, type, category_id)
+            		    VALUES (:question, :answers, :correct_answer, :exam_id, :date, :user_id_added,
+            		        :explanation, :question_image_url, :type, :category_id)"
+                    );
+                    $stmt->bindValue(':question', $question['question']);
+                    $stmt->bindValue(':answers', serialize($question['answers']));
+                    $stmt->bindValue(':correct_answer', $question['correct_answer']);
+                    $stmt->bindValue(':exam_id', $exam['exam_id'], PDO::PARAM_INT);
+                    $stmt->bindValue(':date', time());
+                    $stmt->bindValue(':user_id_added', $user_id, PDO::PARAM_INT);
+                    $stmt->bindValue(':explanation', $explanation);
+                    $stmt->bindValue(':question_image_url', $question_image_url);
+                    $stmt->bindValue(':type', $question['type']);
+                    $stmt->bindValue(':category_id', $question['category_id']);
+
+                    $question_status[] = $stmt->execute();
+                    $question_id_list[] = $mysql->lastInsertId();
+                } else {
+                    $question_status[] = true;
+                    $question_id_list[] = 0;
+                }
+            }
+        }
+
+        $data['status'] = $exam_status && !in_array(false, $question_status, true); // Logical and
+        $data['question_id_list'] = $question_id_list;
 		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 

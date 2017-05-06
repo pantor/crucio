@@ -12,7 +12,7 @@ class EditExamController {
   private questions: Crucio.Question[];
   private ready: boolean;
   private isSaving: boolean;
-  private exam_types: string[];
+  private examTypes: string[];
   private subjectListPerId: any;
   private categoryListPerId: any;
 
@@ -31,7 +31,7 @@ class EditExamController {
     };
     this.uploaderArray = [];
 
-    this.exam_types = [
+    this.examTypes = [
       'Erstklausur',
       'Wiederholungsklausur',
       'Leistungskontrolle',
@@ -100,7 +100,7 @@ class EditExamController {
     for (let i = 0; i < this.questions.length; i++) {
       const uploader = new this.FileUploader({ url: '/api/v1/file/upload', formData: i });
       uploader.onSuccessItem = (fileItem, response) => {
-        const index = fileItem.formData;
+        const index: number = fileItem.formData;
         this.questions[index].question_image_url = response.upload_name;
       };
       this.uploaderArray.push(uploader);
@@ -149,40 +149,17 @@ class EditExamController {
 
     if (validate) {
       this.isSaving = true;
-      this.API.put(`exams/${this.examId}`, this.exam).then(result => {
+      const data = { exam: this.exam, questions: this.questions, user_id: this.user.user_id };
+      this.API.put(`exams/${this.examId}`, data).then(result => {
         if (!result.data.status) {
           alert('Fehler beim Speichern der Klausur.');
-        }
-      });
 
-      for (const q of this.questions) {
-        const validateQuestion = q.question || q.question_id;
-
-        if (validateQuestion) {
-          q.explanation = q.explanation || '';
-          q.question_image_url = q.question_image_url || '';
-
-          const data = {
-            exam_id: this.exam.exam_id,
-            user_id_added: this.user.user_id,
-            category_id: q.category_id,
-            question: q.question,
-            type: q.type,
-            answers: q.answers,
-            correct_answer: q.correct_answer,
-            explanation: q.explanation,
-            question_image_url: q.question_image_url,
-          };
-          if (!q.question_id) { // New question
-            this.API.post('questions', data).then(result => {
-              q.question_id = result.data.question_id;
-            });
-          } else {
-
-            this.API.put(`questions/${q.question_id}`, data);
+        } else {
+          for (let i = 0; i < result.data.question_id_list.length; i++) {
+            this.questions[i].question_id = result.data.question_id_list[i];
           }
         }
-      }
+      });
 
       this.hasChanged = false;
       this.numberChanged = 0;
