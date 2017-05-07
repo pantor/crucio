@@ -24,8 +24,8 @@ class AuthorOralExamsController {
 
   loadOralExams(): void {
     const data = {
-      semester: this.oralExamSearch.semester,
-      year: this.oralExamSearch.year,
+      semester: this.oralExamSearch.semester && this.oralExamSearch.semester.semester,
+      year: this.oralExamSearch.year && this.oralExamSearch.year.year,
       query: this.oralExamSearch.query,
       limit: 200,
     };

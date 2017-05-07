@@ -3,20 +3,7 @@
 <div class="row mmtop">
     <div class="col-md-6 col-sm-6">
         <div class="btn-toolbar" role="toolbar">
-            <div class="btn-group mtop" uib-dropdown>
-                <button class="btn btn-default" type="button" uib-dropdown-toggle>
-                    <span ng-show="$ctrl.commentSearch.author">{{ $ctrl.commentSearch.author.username }}</span>
-                    <span ng-show="!$ctrl.commentSearch.author">Alle Autoren</span>
-                    <i class="fa fa-caret-down"></i>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li ng-repeat="da in $ctrl.distinctAuthors">
-                        <a href ng-click="$ctrl.commentSearch.author = da; $ctrl.loadComments()">{{ da.username }}</a>
-                    </li>
-                    <li class="divider"></li>
-                    <li><a href ng-click="$ctrl.commentSearch.author = null; $ctrl.loadComments()">Alle Autoren</a></li>
-                </ul>
-            </div>
+            <dropdown class="btn-group" data="$ctrl.distinctAuthors" selected="$ctrl.commentSearch.author" placeholder="Alle Autoren" show-key="username" on-update="$ctrl.loadComments()"></dropdown>
         </div>
     </div>
 

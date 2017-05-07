@@ -17,7 +17,7 @@ class LearnSearchController {
   constructor(Auth: AuthService, private readonly API: APIService, private readonly Collection: CollectionService) {
     this.user = Auth.getUser();
 
-    this.questionSearch = { semester: this.user.semester };
+    this.questionSearch = { semester: { semester: this.user.semester } };
 
     this.API.get('exams/distinct', {visibility: 1}).then(result => {
       this.distinctSemesters = result.data.semesters;
@@ -28,7 +28,6 @@ class LearnSearchController {
   }
 
   searchQuestion(): void {
-    this.searchResults = []; // Reset search results on empty query
     this.hasSearched = false;
 
     if (this.questionSearch.query) {
@@ -37,16 +36,18 @@ class LearnSearchController {
       const data = {
         query: this.questionSearch.query,
         subject_id: this.questionSearch.subject && this.questionSearch.subject.subject_id,
-        semester: this.questionSearch.semester,
+        semester: this.questionSearch.semester && this.questionSearch.semester.semester,
         visibility: 1,
         limit: this.limit,
       };
       this.API.get('questions', data).then(result => {
         this.searchResults = result.data.result;
-
         this.showSpinner = false;
         this.hasSearched = true;
       });
+
+    } else {
+      this.searchResults = []; // Reset search results on empty query
     }
   }
 
@@ -54,7 +55,7 @@ class LearnSearchController {
     this.Collection.learn('query', method, {
       query: this.questionSearch.query,
       subject_id: this.questionSearch.subject && this.questionSearch.subject.subject_id,
-      semester: this.questionSearch.semester,
+      semester: this.questionSearch.semester && this.questionSearch.semester.semester,
       limit: this.limit,
       user_id: this.user.user_id,
     });

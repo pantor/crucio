@@ -11,7 +11,6 @@ class AdminUsersController {
   private userSearch: any;
   private distinctGroups: any;
   private distinctSemesters: any;
-  private distinctGroupsPerId: any;
   private users: Crucio.User[];
 
   constructor(Auth: AuthService, private readonly API: APIService, private readonly $uibModal: angular.ui.bootstrap.IModalService) {
@@ -22,10 +21,6 @@ class AdminUsersController {
     this.API.get('users/distinct').then(result => {
       this.distinctGroups = result.data.groups;
       this.distinctSemesters = result.data.semesters;
-      this.distinctGroupsPerId = {};
-      for (let e of this.distinctGroups) {
-        this.distinctGroupsPerId[e.group_id] = e.name;
-      }
     });
 
     this.loadUsers();
@@ -33,8 +28,8 @@ class AdminUsersController {
 
   loadUsers(): void {
     const data = {
-      semester: this.userSearch.semester,
-      group_id: this.userSearch.group,
+      semester: this.userSearch.semester && this.userSearch.semester.semester,
+      group_id: this.userSearch.group && this.userSearch.group.group_id,
       query: this.userSearch.query,
       limit: 100,
     };

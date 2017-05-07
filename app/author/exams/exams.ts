@@ -34,7 +34,7 @@ class AuthorExamsController {
     const data = {
       subject_id: this.examSearch.subject && this.examSearch.subject.subject_id,
       author_id: this.examSearch.author && this.examSearch.author.user_id,
-      semester: this.examSearch.semester,
+      semester: this.examSearch.semester && this.examSearch.semester.semester,
       query: this.examSearch.query,
       limit: 200,
       showEmpty: true,

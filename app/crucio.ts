@@ -1,6 +1,5 @@
 /// <reference path="crucio.d.ts"/>
 
-import 'spin.js';
 import * as angular from 'angular';
 import 'angular-cookies';
 import 'angular-messages';
@@ -8,10 +7,13 @@ import 'ng-tags-input';
 import '@uirouter/angularjs';
 import 'angular-ui-bootstrap';
 import 'angular-file-upload';
+import 'spin.js';
 import 'angular-spinner';
 import 'angularjs-slider';
 import 'angular-scroll';
-import 'textangular/dist/textAngular';
+import 'textangular/dist/textAngular-rangy.min';
+import 'textangular/dist/textAngular-sanitize.min';
+import 'textangular/dist/textAngular.umd';
 import 'textangular/dist/textAngularSetup';
 
 
@@ -36,6 +38,7 @@ import './services/page.service';
 
 import './components/navbar/navbar';
 import './components/timeago';
+import './components/dropdown/dropdown';
 
 import AuthService from './services/auth.service';
 

@@ -14,7 +14,9 @@ class LearnOralExamsController {
   constructor(Auth: AuthService, private readonly API: APIService, $scope: angular.IScope, $location: angular.ILocationService, $timeout: angular.ITimeoutService) {
     this.user = Auth.getUser();
 
-    this.oralExamSearch = { semester: this.user.semester <= 4 ? 0 : 1 };
+    this.oralExamSearch = {
+      semester: (this.user.semester <= 4 ? { semester: 0, name: 'Physikum' } : { semester: 1, name: 'Staatsexamen' })
+    };
 
     this.API.get('oral_exams/distinct', {visibility: 1}).then(result => {
       this.distinctOralSemesters = result.data.semesters;
@@ -28,8 +30,8 @@ class LearnOralExamsController {
 
     if (this.oralExamSearch.query) {
       const data = {
-        semester: this.oralExamSearch.semester,
-        year: this.oralExamSearch.year,
+        semester: this.oralExamSearch.semester && this.oralExamSearch.semester.semester,
+        year: this.oralExamSearch.year && this.oralExamSearch.year.year,
         query: this.oralExamSearch.query,
         limit: 200,
       };

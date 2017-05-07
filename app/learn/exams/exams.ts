@@ -14,7 +14,7 @@ class LearnExamsController {
   constructor(Auth: AuthService, private readonly API: APIService, private readonly Collection: CollectionService, $scope: angular.IScope, $timeout: angular.ITimeoutService) {
     this.user = Auth.getUser();
 
-    this.examSearch = { semester: this.user.semester };
+    this.examSearch = { semester: { semester: this.user.semester } };
 
 
     this.API.get('exams/distinct', {visibility: 1}).then(result => {
@@ -32,7 +32,7 @@ class LearnExamsController {
   loadExams(): void {
     const data = {
       user_id: this.user.user_id,
-      semester: this.examSearch.semester,
+      semester: this.examSearch.semester && this.examSearch.semester.semester,
       subject_id: this.examSearch.subject && this.examSearch.subject.subject_id,
       query: this.examSearch.query,
       visibility: 1,

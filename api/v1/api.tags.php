@@ -31,6 +31,28 @@ $app->group('/tags', function() {
 		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
+    $this->get('/distinct', function($request, $response, $args) {
+		$mysql = init();
+
+		$stmt_tags = $mysql->prepare(
+		    "SELECT DISTINCT t.tags
+		    FROM tags t
+            WHERE t.tags != '' AND t.user_id = IFNULL(:user_id, t.user_id)"
+		);
+        $stmt_tags->bindValue(':user_id', $request->getQueryParam('user_id'), PDO::PARAM_INT);
+
+        $distinct_tags = getAll($stmt_tags);
+        $tags = [];
+        foreach ($distinct_tags as $a) {
+            foreach (explode(",", $a['tags']) as $splitted) {
+                $tags[] = array('tag' => $splitted);
+            }
+        }
+
+		$data['tags'] = array_unique($tags, SORT_REGULAR);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
+	});
+
     $this->get('/prepare', function($request, $response, $args) {
 		$mysql = init();
 
