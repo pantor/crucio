@@ -1,16 +1,12 @@
 <h4>Alle Klausuren</h4>
 
-<div class="row">
-    <div class="col-sm-6">
-        <div class="btn-toolbar" role="toolbar">
-            <dropdown class="btn-group" data="$ctrl.distinctSemesters" selected="$ctrl.examSearch.semester" placeholder="Alle Semester" suffix=". Semester" show-key="semester" on-update="$ctrl.loadExams()"></dropdown>
+<div class="flex-container">
+    <dropdown data="$ctrl.distinctSemesters" selected="$ctrl.examSearch.semester" placeholder="Alle Semester" suffix=". Semester" show-key="semester" on-update="$ctrl.loadExams()"></dropdown>
 
-            <dropdown class="btn-group" data="$ctrl.distinctSubjects" selected="$ctrl.examSearch.subject" placeholder="Alle F&auml;cher" show-key="name" on-update="$ctrl.loadExams()"></dropdown>
-        </div>
-    </div>
+    <dropdown data="$ctrl.distinctSubjects" selected="$ctrl.examSearch.subject" placeholder="Alle F&auml;cher" show-key="name" on-update="$ctrl.loadExams()"></dropdown>
 
-    <div class="col-sm-6">
-        <div class="input-group mtop">
+    <div style="flex: 1; min-width: 200px; margin-top: 2px;">
+        <div class="input-group">
             <input class="form-control" type="text" ng-model="$ctrl.examSearch.query" ng-change="$ctrl.loadExams()">
             <span class="input-group-btn">
                 <button class="btn btn-default" type="button" ng-click="$ctrl.loadExams()"><i class="fa fa-search"></i></button>

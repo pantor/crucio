@@ -29,6 +29,10 @@ body, html {
     padding-top: 73px;
 }
 
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+}
 
 .wrap {
     min-height: 100%;
@@ -654,7 +658,10 @@ input[id^="textAngular"] {
 .stats-box {
     text-align: center;
     padding: 10px;
-    margin: 12px 0px;
+    margin: 12px 10px;
+
+    flex: 1;
+    flex-basis: 30%;
 
     background-color: $light-grey;
     border-radius: 8px;

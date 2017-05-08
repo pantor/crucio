@@ -11,35 +11,33 @@
             </div>
 
             <div class="panel-body">
-                <div class="row mmtop">
-                    <div class="col-sm-12">
-                        <div class="btn-toolbar" role="toolbar">
-                            <dropdown class="btn-group" data="$ctrl.distinctSemesters" selected="$ctrl.questionSearch.semester" placeholder="Alle Semester" suffix=". Semester" show-key="semester" on-update="$ctrl.searchQuestion()"></dropdown>
+                <div class="flex-container">
+                    <dropdown class="btn-group" data="$ctrl.distinctSemesters" selected="$ctrl.questionSearch.semester" placeholder="Alle Semester" suffix=". Semester" show-key="semester" on-update="$ctrl.searchQuestion()"></dropdown>
 
-                            <dropdown class="btn-group" data="$ctrl.distinctSubjects" selected="$ctrl.questionSearch.subject" placeholder="Alle F&auml;cher" show-key="name" on-update="$ctrl.searchQuestion()"></dropdown>
+                    <dropdown class="btn-group" data="$ctrl.distinctSubjects" selected="$ctrl.questionSearch.subject" placeholder="Alle F&auml;cher" show-key="name" on-update="$ctrl.searchQuestion()"></dropdown>
 
-                            <div class="btn-group mtop pull-right" uib-dropdown>
-                                <button type="button" ng-disabled="!($ctrl.searchResults.length > 0)" class="btn btn-success" ng-click="$ctrl.learnQuery('question')"><i class="fa fa-fw fa-graduation-cap"></i> Lernen</button>
-                                <button type="button" ng-disabled="!($ctrl.searchResults.length > 0)" class="btn btn-success" uib-dropdown-toggle>
-                                    <span class="caret"></span>
+                    <div style="flex: 1; min-width: 200px; margin-top: 2px; margin-right: 5px;">
+                        <form class="input-group" submit="$ctrl.searchQuestion()">
+                            <input class="form-control" type="text" ng-model="$ctrl.questionSearch.query" placeholder="...">
+
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" ng-click="$ctrl.searchQuestion()">
+                                    <i class="fa fa-search"></i>
                                 </button>
-                                <ul class="dropdown-menu" uib-dropdown-menu role="menu">
-                                    <li role="menuitem"><a href ng-click="$ctrl.learnQuery('exam')">Klausuransicht</a></li>
-                                    <li role="menuitem"><a href ng-click="$ctrl.learnQuery('pdf')">PDF Fragen</a></li>
-                                    <li role="menuitem"><a href ng-click="$ctrl.learnQuery('pdf-solution')">PDF L&ouml;sungen</a></li>
-                                </ul>
-                            </div>
+                            </span>
+                        </form>
+                    </div>
 
-                            <form class="input-group mtop pull-right" style="width: 400px;" submit="$ctrl.searchQuestion()">
-                                <input class="form-control" type="text" ng-model="$ctrl.questionSearch.query" placeholder="...">
-
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" ng-click="$ctrl.searchQuestion()">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </span>
-                            </form>
-                        </div>
+                    <div class="btn-group" style="margin-top: 2px;" uib-dropdown>
+                        <button type="button" ng-disabled="!($ctrl.searchResults.length > 0)" class="btn btn-success" ng-click="$ctrl.learnQuery('question')"><i class="fa fa-fw fa-graduation-cap"></i> Lernen</button>
+                        <button type="button" ng-disabled="!($ctrl.searchResults.length > 0)" class="btn btn-success" uib-dropdown-toggle>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" uib-dropdown-menu role="menu">
+                            <li role="menuitem"><a href ng-click="$ctrl.learnQuery('exam')">Klausuransicht</a></li>
+                            <li role="menuitem"><a href ng-click="$ctrl.learnQuery('pdf')">PDF Fragen</a></li>
+                            <li role="menuitem"><a href ng-click="$ctrl.learnQuery('pdf-solution')">PDF L&ouml;sungen</a></li>
+                        </ul>
                     </div>
                 </div>
             </div>

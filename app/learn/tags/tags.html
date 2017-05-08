@@ -10,24 +10,20 @@
 </div>
 
 <div ng-if="$ctrl.tags.length">
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="btn-toolbar" role="toolbar">
-                <dropdown class="btn-group" data="$ctrl.distinctTags" selected="$ctrl.selectedTag" placeholder="Alle Markierungen" show-key="tag"></dropdown>
+    <div class="flex-container" style="justify-content: space-between;">
+        <dropdown class="btn-group" data="$ctrl.distinctTags" selected="$ctrl.selectedTag" placeholder="Alle Markierungen" show-key="tag"></dropdown>
 
-                <div class="btn-group mtop pull-right">
-                    <div class="btn-group" uib-dropdown>
-                        <button type="button" ng-disabled="$ctrl.selectedQuestionNumber == 0" class="btn btn-success" ng-click="$ctrl.learnTags('question')"><i class="fa fa-fw fa-graduation-cap"></i> Lernen</button>
-                        <button type="button" ng-disabled="$ctrl.selectedQuestionNumber == 0" class="btn btn-success" uib-dropdown-toggle>
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" uib-dropdown-menu role="menu">
-                            <li role="menuitem"><a href ng-click="$ctrl.learnTags('exam')">Klausuransicht</a></li>
-                            <li role="menuitem"><a href ng-click="$ctrl.learnTags('pdf')">PDF Fragen</a></li>
-                            <li role="menuitem"><a href ng-click="$ctrl.learnTags('pdf-solution')">PDF L&ouml;sungen</a></li>
-                        </ul>
-                    </div>
-                </div>
+        <div style="margin-top: 2px;">
+            <div class="btn-group" uib-dropdown>
+                <button type="button" ng-disabled="$ctrl.selectedQuestionNumber == 0" class="btn btn-success" ng-click="$ctrl.learnTags('question')"><i class="fa fa-fw fa-graduation-cap"></i> Lernen</button>
+                <button type="button" ng-disabled="$ctrl.selectedQuestionNumber == 0" class="btn btn-success" uib-dropdown-toggle>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" uib-dropdown-menu role="menu">
+                    <li role="menuitem"><a href ng-click="$ctrl.learnTags('exam')">Klausuransicht</a></li>
+                    <li role="menuitem"><a href ng-click="$ctrl.learnTags('pdf')">PDF Fragen</a></li>
+                    <li role="menuitem"><a href ng-click="$ctrl.learnTags('pdf-solution')">PDF L&ouml;sungen</a></li>
+                </ul>
             </div>
         </div>
     </div>

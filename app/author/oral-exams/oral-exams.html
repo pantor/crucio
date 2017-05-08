@@ -1,20 +1,16 @@
 <h4>Alle hochgeladenen m&uuml;ndlichen Pr&uuml;fungen</h4>
 
-<div class="row">
-    <div class="col-md-8 col-sm-8">
-        <div class="btn-toolbar" role="toolbar">
-            <div class="btn-group mtop">
-                <a class="btn btn-success" ng-click="$ctrl.newOralExam()">Neue Pr&uuml;fung</a>
-            </div>
-
-            <dropdown class="btn-group" data="[{semester: 0, name: 'Physikum'}, {semester: 1, name: 'Staatsexamen'}]" selected="$ctrl.oralExamSearch.semester" placeholder="Alle Semester" show-key="name" on-update="$ctrl.loadOralExams()"></dropdown>
-
-            <dropdown class="btn-group" data="$ctrl.distinctOralYears" selected="$ctrl.oralExamSearch.year" placeholder="Alle Jahre" show-key="year" on-update="$ctrl.loadOralExams()"></dropdown>
-        </div>
+<div class="flex-container">
+    <div class="btn-group" style="margin-top: 2px; margin-right: 5px;">
+        <a class="btn btn-success" ng-click="$ctrl.newOralExam()">Neue Pr&uuml;fung</a>
     </div>
 
-    <div class="col-md-4 col-sm-4">
-        <div class="input-group mtop">
+    <dropdown class="btn-group" data="[{semester: 0, name: 'Physikum'}, {semester: 1, name: 'Staatsexamen'}]" selected="$ctrl.oralExamSearch.semester" placeholder="Alle Semester" show-key="name" on-update="$ctrl.loadOralExams()"></dropdown>
+
+    <dropdown class="btn-group" data="$ctrl.distinctOralYears" selected="$ctrl.oralExamSearch.year" placeholder="Alle Jahre" show-key="year" on-update="$ctrl.loadOralExams()"></dropdown>
+
+    <div style="flex: 1; min-width: 250px; margin-top: 2px;">
+        <div class="input-group">
             <input type="text" class="form-control" ng-model="$ctrl.oralExamSearch.query" ng-change="$ctrl.loadOralExams()">
             <span class="input-group-btn">
                 <button class="btn btn-default" type="button" ng-click="$ctrl.loadOralExams()"><i class="fa fa-search"></i></button>

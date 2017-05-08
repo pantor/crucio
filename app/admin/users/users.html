@@ -1,14 +1,12 @@
-<div class="row">
-    <div class="col-md-8 col-sm-8">
-        <div class="btn-toolbar" role="toolbar">
-            <dropdown class="btn-group" data="$ctrl.distinctSemesters" selected="$ctrl.userSearch.semester" placeholder="Alle Semester" suffix=". Semester" show-key="semester" on-update="$ctrl.loadUsers()"></dropdown>
+<div class="flex-container">
+    <dropdown class="btn-group" data="$ctrl.distinctSemesters" selected="$ctrl.userSearch.semester" placeholder="Alle Semester" suffix=". Semester" show-key="semester" on-update="$ctrl.loadUsers()"></dropdown>
 
-            <dropdown class="btn-group" data="$ctrl.distinctGroups" selected="$ctrl.userSearch.group" placeholder="Alle Gruppen" show-key="name" on-update="$ctrl.loadUsers()"></dropdown>
-        </div>
-    </div>
+    <dropdown class="btn-group" data="$ctrl.distinctGroups" selected="$ctrl.userSearch.group" placeholder="Alle Gruppen" show-key="name" on-update="$ctrl.loadUsers()"></dropdown>
 
-    <div class="col-md-4 col-sm-4">
-        <div class="input-group mtop">
+    <div style="flex: 1"></div>
+
+    <div style="flex: 1; min-width: 250px; max-width: 400px; margin-top: 2px;">
+        <div class="input-group">
             <input class="form-control" type="text" ng-model="$ctrl.userSearch.query" ng-change="$ctrl.loadUsers()">
             <span class="input-group-btn">
                 <button class="btn btn-default" ng-click="$ctrl.loadUsers()"><i class="fa fa-search"></i></button>
