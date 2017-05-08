@@ -29,10 +29,10 @@
     "streamqueue": "^1.1.1",
     "ts-loader": "^2.0.3",
     "typescript": "^2.3.2",
-    "webpack": "^2.5.0"
+    "webpack": "^2.5.1"
   },
   "dependencies": {
-    "@uirouter/angularjs": "^1.0.1",
+    "@uirouter/angularjs": "^1.0.3",
     "angular": "^1.6.4",
     "angular-cookies": "^1.6.4",
     "angular-file-upload": "^2.5.0",

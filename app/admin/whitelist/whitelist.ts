@@ -13,20 +13,18 @@ class AdminWhitelistController {
   }
 
   addMail(): void {
-    const email = this.newWhitelistEmail;
-    if (email) {
-      this.whitelist.push({ mail_address: email, username: '' });
-
-      const data = { email };
-      this.API.post('whitelist', data);
+    const mail_address = this.newWhitelistEmail;
+    if (mail_address) {
+      this.whitelist.push({ mail_address, username: '' });
+      this.API.post('whitelist', { mail_address });
     }
   }
 
   removeMail(index: number): void {
-    const email = this.whitelist[index].mail_address;
-    if (email) {
+    const mail_address = this.whitelist[index].mail_address;
+    if (mail_address) {
       this.whitelist.splice(index, 1);
-      this.API.delete(`whitelist/${email}`);
+      this.API.delete(`whitelist/${mail_address}`);
     }
   }
 }

@@ -31,7 +31,7 @@ $app->group('/whitelist', function() {
 		    INTO whitelist ( mail_address )
 		    VALUES (:mail_address)"
 		);
-		$stmt->bindValue(':mail_address', str_replace('(@)', '@', sanitize($body['email'])));
+		$stmt->bindValue(':mail_address', $body['mail_address']);
 
 		$data['status'] = $stmt->execute();
 		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
