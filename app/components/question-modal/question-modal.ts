@@ -84,7 +84,7 @@ class QuestionModalController {
     this.markAnswer(this.givenAnswer);
   }
 
-  saveAnswer(givenAnswer: number): void {
+  setAnswer(givenAnswer: number): void {
     this.givenAnswer = givenAnswer;
   }
 

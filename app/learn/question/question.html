@@ -18,12 +18,12 @@
                 <div class="form-group showhim" ng-repeat="answer in $ctrl.question.answers track by $index" ng-show="$ctrl.question.type > 1 && answer">
                     <div class="col-sm-offset-1 col-sm-10">
                         <div class="btn-group btn-group-strike hidden-xs">
-                            <button type="button" class="btn btn-default btn-xs showme" ng-model="$ctrl.questionData.strike[$index + 1]" ng-change="$ctrl.saveStrike($ctrl.questionData.strike)" uib-btn-checkbox>
+                            <button type="button" class="btn btn-default btn-xs showme" ng-model="$ctrl.questionData.strike[$index + 1]" ng-change="$ctrl.setStrike($ctrl.questionData.strike)" uib-btn-checkbox>
                                 <i class="fa fa-fw fa-strikethrough"></i>
                             </button>
                         </div>
 
-                        <div class="radio" ng-click="$ctrl.saveAnswer($index + 1)">
+                        <div class="radio" ng-click="$ctrl.setAnswer($index + 1)">
                             <label>
                                 <input type="radio" name="answers" ng-checked="$ctrl.checkedAnswer == $index + 1" ng-value="$index + 1" />
                                 <p class="answer" ng-class="{ 'text-success strong bg-success': $ctrl.correctAnswer == $index + 1, 'text-danger strong bg-danger': $ctrl.wrongAnswer == $index + 1, 'text-danger strike': ($ctrl.questionData.strike[$index + 1] == 1 && $ctrl.correctAnswer != $index + 1) }" ng-bind-html="answer"></p>
@@ -61,7 +61,7 @@
                         </li>
 
                         <li class="list-group-item" ng-if="$ctrl.index != -1">
-                            <button type="button" class="btn btn-default" ng-click="$ctrl.Collection.save()">
+                            <button type="button" class="btn btn-default" ng-click="$ctrl.Collection.saveRemote()">
                                 Speichern
                             </button>
 

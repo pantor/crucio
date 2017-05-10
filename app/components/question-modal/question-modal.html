@@ -27,7 +27,7 @@
 
     <div class="form-group showhim" ng-repeat="answer in $ctrl.question.answers track by $index" ng-show="$ctrl.question.type > 1 && answer">
         <div class="col-sm-offset-1 col-sm-10">
-            <div class="radio" ng-click="$ctrl.saveAnswer($index + 1)">
+            <div class="radio" ng-click="$ctrl.setAnswer($index + 1)">
                 <label>
                     <input type="radio" name="answers" ng-checked="$ctrl.checkedAnswer == $index + 1" ng-value="$index + 1" />
                     <p class="answer" ng-class="{ 'text-success strong bg-success': $ctrl.correctAnswer == $index + 1, 'text-danger strong bg-danger': $ctrl.wrongAnswer == $index + 1 }" ng-bind-html="answer"></p>

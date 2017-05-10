@@ -34,7 +34,7 @@ class AnalysisController {
   showCorrectAnswerClicked(index: number): void {
     this.workedCollectionList[index].mark_answer = 1;
     const questionId = this.workedCollectionList[index].question_id;
-    this.Collection.saveMarkAnswer(this.Collection.getIndexOfQuestion(questionId));
+    this.Collection.setMarkAnswer(this.Collection.getIndexOfQuestion(questionId));
   }
 }
 

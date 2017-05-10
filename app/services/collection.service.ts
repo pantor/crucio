@@ -14,7 +14,6 @@ export class Collection {
   questionSearch?: any; // Query, Subject, Semester
 }
 
-
 export default class CollectionService {
   private collection: Collection;
   private readonly user: Crucio.User;
@@ -23,42 +22,58 @@ export default class CollectionService {
       this.user = Auth.getUser();
   }
 
-  private get(): Collection {
+  private loadLocal(): void {
     if (angular.isUndefined(this.collection)
       && angular.isDefined(sessionStorage.crucioCollection)
     ) {
-      this.set(angular.fromJson(sessionStorage.crucioCollection));
+      this.collection = angular.fromJson(sessionStorage.crucioCollection);
     }
-
-    return this.collection;
   }
 
-  private set(collection: Collection): void {
+  private saveLocal(collection: Collection): void {
     this.collection = collection;
     sessionStorage.crucioCollection = angular.toJson(collection);
   }
 
-  remove(): void {
+  deleteLocal(): void {
     delete this.collection;
     sessionStorage.removeItem('crucioCollection');
   }
 
+  saveRemote(): void {
+    if (this.collection.collection_id > -1) {
+      const data = { collection: this.collection };
+      this.API.put(`collections/${this.collection.collection_id}`, data).then(result => {
+
+      });
+    } else {
+      const data = { user_id: this.user.user_id, collection: this.collection };
+      this.API.post('collections', data).then(result => {
+        this.collection.collection_id = result.data.collection_id;
+        this.saveLocal(this.collection);
+      });
+    }
+  }
+
+  deleteRemote(collection_id: number): void {
+    this.API.delete(`collections/${collection_id}`);
+  }
+
   learn(type: Crucio.Type, method: Crucio.Method, params: any): void {
-    const url_type = {
+    const url = {
       tags: 'tags/prepare',
       exam: `exams/action/prepare/${params.examId}`,
       subjects: 'questions/prepare-subjects',
       query: 'questions/prepare-query',
     }
-    const url = url_type[type];
 
-    this.API.get(url, params).then(result => {
+    this.API.get(url[type], params).then(result => {
       this.learnCollection(method, result.data.collection);
     });
   }
 
   learnCollection(method: Crucio.Method, collection: Collection): void {
-    this.set(collection);
+    this.saveLocal(collection);
 
     switch (method) {
       case 'question':
@@ -94,64 +109,39 @@ export default class CollectionService {
   }
 
   getType(): Crucio.Type {
-    this.get();
+    this.loadLocal();
     return this.collection.type;
   }
 
   getExamId(): number {
-    this.get();
+    this.loadLocal();
     return this.collection.exam_id;
   }
 
   getLength(): number {
-    this.get();
+    this.loadLocal();
     return this.collection.list.length;
   }
 
+  getList(): Crucio.CollectionListItem[] {
+    this.loadLocal();
+    return this.collection.list;
+  }
+
+  getWorkedList(): Crucio.CollectionListItem[] {
+    return this.getList().filter(e => e.given_result > -2); // Seen...
+  }
+
   getQuestion(index: number): Crucio.Question {
-    this.get();
+    this.loadLocal();
     if (this.collection.questions) {
       return this.collection.questions[index];
     }
     return undefined;
   }
 
-  getList(): Crucio.CollectionListItem[] {
-    this.get();
-    return this.collection.list;
-  }
-
-  getWorkedList(): Crucio.CollectionListItem[] {
-    return this.getList().filter(e => e.given_result);
-  }
-
-  loadQuestions(): any {
-    this.get();
-    const listQuestionIds = this.getQuestionIds(this.collection.list);
-    return this.getQuestions(listQuestionIds).then(result => {
-      this.collection.questions = result;
-      this.set(this.collection);
-      return this.collection.questions;
-    });
-  }
-
-  loadCombinedListAndQuestions(list: Crucio.CollectionListItem[]): any {
-    this.get();
-    const listQuestionIds = this.getQuestionIds(list);
-    return this.getQuestions(listQuestionIds).then(questions => {
-      this.collection.questions = questions;
-      this.set(this.collection);
-
-      let result: Crucio.CombinationElement[] = [];
-      for (let i = 0; i < list.length; i++) {
-        result.push({ data: list[i], question: questions[i] });
-      }
-      return result;
-    });
-  }
-
   getIndexOfQuestion(questionId: number): number {
-    this.get();
+    this.loadLocal();
     // this.index = this.collection.list.findIndex(e => e.question_id === this.questionId);
     for (let i = 0; i < this.collection.list.length; i++) {
       if (this.collection.list[i].question_id === questionId) {
@@ -162,29 +152,54 @@ export default class CollectionService {
   }
 
   getQuestionData(index: number): Crucio.CollectionListItem {
-    this.get();
+    this.loadLocal();
     return this.collection.list[index];
   }
 
-  saveMarkAnswer(index: number): void {
-    if (this.collection && Object.keys(this.collection).length) {
-      this.collection.list[index].mark_answer = 1;
-      this.set(this.collection);
-    }
-  }
-
-  saveAnswer(index: number, answer: number): void {
+  setAnswer(index: number, answer: number): void {
     if (this.collection && Object.keys(this.collection).length) {
       this.collection.list[index].given_result = answer;
-      this.set(this.collection);
+      this.saveLocal(this.collection);
     }
   }
 
-  saveStrike(index: number, strike: boolean[]): void {
+  setMarkAnswer(index: number): void {
+    if (this.collection && Object.keys(this.collection).length) {
+      this.collection.list[index].mark_answer = 1;
+      this.saveLocal(this.collection);
+    }
+  }
+
+  setStrike(index: number, strike: boolean[]): void {
     if (this.collection && Object.keys(this.collection).length) {
       this.collection.list[index].strike = strike;
-      this.set(this.collection);
+      this.saveLocal(this.collection);
     }
+  }
+
+  loadQuestions(): angular.IPromise<Crucio.Question[]> {
+    this.loadLocal();
+    const listQuestionIds = this.getQuestionIds(this.collection.list);
+    return this.getQuestions(listQuestionIds).then(result => {
+      this.collection.questions = result;
+      this.saveLocal(this.collection);
+      return this.collection.questions;
+    });
+  }
+
+  loadCombinedListAndQuestions(list: Crucio.CollectionListItem[]): angular.IPromise<Crucio.CombinationElement[]> {
+    this.loadLocal();
+    const listQuestionIds = this.getQuestionIds(list);
+    return this.getQuestions(listQuestionIds).then(questions => {
+      this.collection.questions = questions;
+      this.saveLocal(this.collection);
+
+      let result: Crucio.CombinationElement[] = [];
+      for (let i = 0; i < list.length; i++) {
+        result.push({ data: list[i], question: questions[i] });
+      }
+      return result;
+    });
   }
 
   analyseCombination(combination: Crucio.CombinationElement[]): Crucio.AnalyseCount {
@@ -195,7 +210,7 @@ export default class CollectionService {
       solved: 0,
       free: 0,
       no_answer: 0,
-      all: this.collection.list.length,
+      all: this.getLength(),
       worked: combination.length,
     };
 
@@ -228,31 +243,12 @@ export default class CollectionService {
     return result;
   }
 
-  save(): void {
-    if (this.collection.collection_id > -1) {
-      const data = { collection: this.collection };
-      this.API.put(`collections/${this.collection.collection_id}`, data).then(result => {
-
-      });
-    } else {
-      const data = { user_id: this.user.user_id, collection: this.collection };
-      this.API.post('collections', data).then(result => {
-        this.collection.collection_id = result.data.collection_id;
-        this.set(this.collection);
-      });
-    }
-  }
-
-  delete(collection_id: number): void {
-    this.API.delete(`collections/${collection_id}`);
-  }
-
   saveResults(combination: Crucio.CombinationElement[]): void {
     // TODO from older git
   }
 
 
-  private getQuestions(listOfQuestionIds: number[]): any {
+  private getQuestions(listOfQuestionIds: number[]): angular.IPromise<Crucio.Question[]> {
     return this.API.get('questions/list', {list: JSON.stringify(listOfQuestionIds)}).then(result => {
       return result.data.list as Crucio.Question[];
     });

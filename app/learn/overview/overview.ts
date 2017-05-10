@@ -28,7 +28,7 @@ class LearnOverviewController {
   }
 
   removeCollection(index: number): void {
-    this.Collection.delete(this.collections[index].collection_id);
+    this.Collection.deleteRemote(this.collections[index].collection_id);
     this.collections.splice(index, 1);
   }
 
