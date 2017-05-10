@@ -26,7 +26,7 @@
         </thead>
 
         <tbody>
-            <tr ng-repeat="user in $ctrl.users" ng-click="$ctrl.userModal($index)" style="cursor">
+            <tr ng-repeat="user in $ctrl.users" ng-click="$ctrl.userModal($index)" style="cursor: pointer;">
                 <td>
                     <span class="label" ng-class="{ 'label-danger': user.group_id == 2, 'label-info': user.group_id == 3, 'label-default': user.group_id == 1 }">{{ user.group_name }}</span>
                 </td>
