@@ -53,7 +53,7 @@ export default class CollectionService {
       case 'question':
         let goToQuestionId = this.collection.list[0].question_id;
         for (const listElement of this.collection.list) { // Go to first question which is not answered yet
-          if (listElement.given_result === undefined) {
+          if (listElement.given_result === undefined && listElement.mark_answer !== 1) {
             goToQuestionId = listElement.question_id;
             break;
           }
@@ -234,6 +234,10 @@ export default class CollectionService {
 
   delete(collection_id: number): void {
     this.API.delete(`collections/${collection_id}`);
+  }
+
+  saveResults(combination: Crucio.CombinationElement[]): void {
+    // TODO from older git
   }
 
 

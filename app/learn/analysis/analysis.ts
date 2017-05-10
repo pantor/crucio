@@ -21,26 +21,7 @@ class AnalysisController {
     this.Collection.loadCombinedListAndQuestions(this.workedCollectionList).then(result => {
       this.workedCombination = result;
       this.count = this.Collection.analyseCombination(this.workedCombination);
-
-      for (let c of this.workedCombination) {
-        if (!c.data.mark_answer && c.question.type > 1) {
-          let correct = (c.question.correct_answer === c.data.given_result) ? 1 : 0;
-          if (c.question.correct_answer === 0) {
-            correct = -1;
-          }
-          if (correct === 1) { // Mark correct answers
-            this.Collection.saveMarkAnswer(this.Collection.getIndexOfQuestion(c.question.question_id));
-          }
-
-          const data = {
-            correct,
-            given_result: c.data.given_result,
-            question_id: c.question.question_id,
-            user_id: this.user.user_id,
-          };
-          this.API.post('results', data);
-        }
-      }
+      this.Collection.saveResults(this.workedCombination);
     });
 
     if (this.Collection.getType() === 'exam') {

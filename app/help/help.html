@@ -11,28 +11,26 @@
 	</div>
 </div>
 
-<div class="container">
-    <div class="container container-register">
-		<form class="form-horizontal" name="form">
-			<div class="form-group">
-				<label class="col-sm-2">Nachricht</label>
-				<div class="col-sm-6">
-					<textarea ng-model="$ctrl.text" name="text" class="form-control" rows="4" required></textarea>
-				</div>
-				<div ng-messages="form.text.$error" ng-show="form.text.$touched" role="alert">
-                    <span class="label validation-error label-danger" ng-message="required">Keine Nachricht</span>
-                </div>
-			</div>
+<div class="container container-register">
+    <form class="form-horizontal" name="form">
+        <div class="form-group">
+            <label class="col-sm-2">Nachricht</label>
+            <div class="col-sm-6">
+                <textarea ng-model="$ctrl.text" name="text" class="form-control" rows="4" required></textarea>
+            </div>
+            <div ng-messages="form.text.$error" ng-show="form.text.$touched" role="alert">
+                <span class="label validation-error label-danger" ng-message="required">Keine Nachricht</span>
+            </div>
+        </div>
 
-			<div class="form-group">
-				<div class="col-sm-offset-2 col-sm-10">
-					<button class="btn btn-primary" ng-click="$ctrl.sendMail()" ng-disabled="$ctrl.emailSend">
-						<i ng-show="ctrl.isWorking" class="fa fa-circle-o-notch fa-spin"></i>
-						<span ng-show="!$ctrl.emailSend">Senden</span>
-                        <span ng-show="$ctrl.emailSend">Gesendet</span>
-					</button>
-				</div>
-			</div>
-		</form>
-	</div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button class="btn btn-primary" ng-click="$ctrl.sendMail()" ng-disabled="$ctrl.emailSend">
+                    <i ng-show="ctrl.isWorking" class="fa fa-circle-o-notch fa-spin"></i>
+                    <span ng-show="!$ctrl.emailSend">Senden</span>
+                    <span ng-show="$ctrl.emailSend">Gesendet</span>
+                </button>
+            </div>
+        </div>
+    </form>
 </div>

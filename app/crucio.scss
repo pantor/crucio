@@ -683,20 +683,6 @@ input[id^="textAngular"] {
     }
 }
 
-.exam-progress-comment {
-    margin-bottom: 4px;
-    margin-top: -14px;
-
-    letter-spacing: 0.05em;
-    font-size: 12px;
-    text-transform: uppercase;
-    text-align: center;
-
-    font-weight: 400;
-    font-family: 'Lato', sans-serif;
-}
-
-
 
 // Admin
 
@@ -822,26 +808,6 @@ sub {
     margin-top: -5px;
     border-radius: 4px;
 }
-
-
-// Loading bar
-
-#loading-bar {
-    .bar {
-        background: $orange;
-    }
-
-    // Fancy blur effect
-    .peg {
-        box-shadow: $orange 1px 0 6px 1px;
-    }
-}
-
-#loading-bar-spinner .spinner-icon {
-    border-top-color:  $orange;
-    border-left-color: $orange;
-}
-
 
 
 // Slider
