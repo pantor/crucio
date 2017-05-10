@@ -3,10 +3,11 @@ import { app } from './../../crucio';
 import AuthService from './../../services/auth.service';
 import APIService from './../../services/api.service';
 import CollectionService from './../../services/collection.service';
+import { Collection } from './../../services/collection.service';
 
 class LearnOverviewController {
   private readonly user: Crucio.User;
-  private collections: Crucio.Collection[];
+  private collections: Collection[];
   private ready: number;
 
   constructor(Auth: AuthService, private readonly API: APIService, private readonly Collection: CollectionService) {

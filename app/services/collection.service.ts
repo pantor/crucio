@@ -3,16 +3,27 @@ import { app } from './../crucio';
 import APIService from './api.service';
 import AuthService from './auth.service';
 
+export class Collection {
+  collection_id?: number;
+  list: Crucio.CollectionListItem[];
+  questions: Crucio.Question[];
+  type: Crucio.Type;
+  exam_id?: number; // Exam
+  selection?: any; // Subjects, Categories
+  tag?: string; // Tag
+  questionSearch?: any; // Query, Subject, Semester
+}
+
 
 export default class CollectionService {
-  private collection: Crucio.Collection;
+  private collection: Collection;
   private readonly user: Crucio.User;
 
   constructor(Auth: AuthService, private readonly API: APIService, private readonly $state: angular.ui.IStateService, private readonly $window: angular.IWindowService) {
       this.user = Auth.getUser();
   }
 
-  private get(): Crucio.Collection {
+  private get(): Collection {
     if (angular.isUndefined(this.collection)
       && angular.isDefined(sessionStorage.crucioCollection)
     ) {
@@ -22,7 +33,7 @@ export default class CollectionService {
     return this.collection;
   }
 
-  private set(collection: Crucio.Collection): void {
+  private set(collection: Collection): void {
     this.collection = collection;
     sessionStorage.crucioCollection = angular.toJson(collection);
   }
@@ -46,7 +57,7 @@ export default class CollectionService {
     });
   }
 
-  learnCollection(method: Crucio.Method, collection: Crucio.Collection): void {
+  learnCollection(method: Crucio.Method, collection: Collection): void {
     this.set(collection);
 
     switch (method) {

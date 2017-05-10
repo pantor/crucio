@@ -112,17 +112,6 @@ declare namespace Crucio {
   type Method = 'question' | 'exam' | 'pdf' | 'pdf-solution';
   type Type = 'exam' | 'subjects' | 'query' | 'tags';
 
-  interface Collection {
-    collection_id?: number;
-    list: CollectionListItem[];
-    questions: Question[];
-    type: Type;
-    exam_id?: number; // Exam
-    selection?: any; // Subjects, Categories
-    tag?: string; // Tag
-    questionSearch?: any; // Query, Subject, Semester
-  }
-
   interface CombinationElement {
     data: CollectionListItem;
     question: Question;
