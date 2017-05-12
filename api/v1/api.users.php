@@ -6,6 +6,7 @@ $app->group('/users', function() {
         $mysql = init();
 
         $limit = intval($request->getQueryParam('limit', 10000));
+        $offset = intval($request->getQueryParam('offset', 0));
         $query = strlen($request->getQueryParam('query')) > 0 ? '%'.$request->getQueryParam('query').'%' : null;
 
         $stmt = $mysql->prepare(
@@ -17,12 +18,13 @@ $app->group('/users', function() {
 		        AND ( u.username LIKE IFNULL(:query, u.username)
 		            OR u.email LIKE IFNULL(:query, u.email) )
 		    ORDER BY g.name ASC, u.user_id DESC
-		    LIMIT :limit"
+		    LIMIT :offset, :limit"
 		);
 		$stmt->bindValue(':group_id', $request->getQueryParam('group_id'));
 		$stmt->bindValue(':semester', $request->getQueryParam('semester'));
 		$stmt->bindValue(':query', $query);
 		$stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 
         $data['users'] = getAll($stmt);
 		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
@@ -133,7 +135,7 @@ $app->group('/users', function() {
             return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
         }
 
-        if (getCount($mysql, "users WHERE username_clean = ?", [sanitize($clean_username)])) {
+        if (getCount($mysql, "users WHERE username_clean = ?", [$clean_username])) {
             $data['error'] = 'error_username_taken';
             return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
         }

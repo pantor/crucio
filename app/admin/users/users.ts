@@ -3,7 +3,6 @@ import { app } from './../../crucio';
 import AuthService from './../../services/auth.service';
 import APIService from './../../services/api.service';
 
-// import { DeleteUserModalComponent } from './delete-user-modal';
 import { UserModalComponent } from './user-modal';
 
 class AdminUsersController {
@@ -79,21 +78,6 @@ class AdminUsersController {
       }
     });
   }
-
-  /* deleteUserModal(index: number): void {
-    const modal = this.$uibModal.open({
-      component: DeleteUserModalComponent,
-      resolve: {
-        user: () => this.users[index],
-      },
-    });
-
-    modal.result.then(response => {
-      if (response == 'delete') {
-        this.users.splice(index, 1);
-      }
-    });
-  } */
 }
 
 export const AdminUsersComponent = 'adminUsersComponent';
