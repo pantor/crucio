@@ -9,7 +9,7 @@ composer.lock
 gulpfile.js
 LICENSE
 package.json
-README
+README.md
 
 tsconfig.json
 Vagrantfile
