@@ -8,8 +8,8 @@ logs
 ### Website ###
 google*.html
 api/config.php
+api/mail-templates
 files
 public/css
 public/fonts
 public/js
-api/mail-templates
