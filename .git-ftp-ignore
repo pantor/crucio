@@ -1,5 +1,6 @@
 .editorconfig
 .git-ftp-ignore
+.git-ftp-include
 .gitignore
 
 composer.json
