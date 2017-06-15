@@ -1,5 +1,5 @@
-api/mail-templates
-public/css
-public/fonts
-public/js
-vendor
+!api/mail-templates/
+!public/css/
+!public/fonts/
+!public/js/
+vendor/:composer.lock
