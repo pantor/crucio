@@ -1,18 +1,14 @@
 ### Dependency directories ###
 node_modules
-jspm_packages
 vendor
 .vagrant
 logs
-typings
 
 
 ### Website ###
-robots.txt
 google*.html
 api/config.php
 files
-ftp.json
 public/css
 public/fonts
 public/js
