@@ -93,7 +93,6 @@ $app->group('/pdf', function() {
             if ($info['questionSearch']['semester']) {
                 $pdf->cSubtitle = $info['questionSearch']['semester'].'. Semester';
             }
-            // TODO Subjects
 
             $filename = 'crucio-'.$view_name.'-'.$info['questionSearch']['query'].'.pdf';
         } else {

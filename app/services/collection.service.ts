@@ -1,4 +1,3 @@
-import * as angular from 'angular';
 import { app } from './../crucio';
 import APIService from './api.service';
 import AuthService from './auth.service';
@@ -23,16 +22,14 @@ export default class CollectionService {
   }
 
   private loadLocal(): void {
-    if (angular.isUndefined(this.collection)
-      && angular.isDefined(sessionStorage.crucioCollection)
-    ) {
-      this.collection = angular.fromJson(sessionStorage.crucioCollection);
+    if (this.collection == null && sessionStorage.crucioCollection != null) {
+      this.collection = JSON.parse(sessionStorage.crucioCollection);
     }
   }
 
   private saveLocal(collection: Collection): void {
     this.collection = collection;
-    sessionStorage.crucioCollection = angular.toJson(collection);
+    sessionStorage.crucioCollection = JSON.stringify(collection);
   }
 
   deleteLocal(): void {
@@ -94,7 +91,7 @@ export default class CollectionService {
       case 'pdf':
       case 'pdf-solution':
         const listString = this.getQuestionIds(this.collection.list).join(',');
-        const info = encodeURIComponent(angular.toJson({
+        const info = encodeURIComponent(JSON.stringify({
           type: this.collection.type,
           examId: this.collection.exam_id,
           selection: this.collection.selection,
@@ -244,7 +241,26 @@ export default class CollectionService {
   }
 
   saveResults(combination: Crucio.CombinationElement[]): void {
-    // TODO from older git
+    for (let c of combination) {
+      if (!c.data.mark_answer && c.question.type > 1) {
+        let correct = (c.question.correct_answer === c.data.given_result) ? 1 : 0;
+        if (c.question.correct_answer === 0) {
+          correct = -1;
+        }
+
+        if (correct === 1) { // Mark correct answers
+          this.setMarkAnswer(this.getIndexOfQuestion(c.question.question_id));
+        }
+
+        const data = {
+          correct,
+          given_result: c.data.given_result,
+          question_id: c.question.question_id,
+          user_id: this.user.user_id,
+        };
+        this.API.post('results', data);
+      }
+    }
   }
 
 

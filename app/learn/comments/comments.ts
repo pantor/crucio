@@ -5,21 +5,17 @@ import APIService from './../../services/api.service';
 
 class LearnCommentsController {
   private readonly user: Crucio.User;
-  private commentSearch: any;
   private comments: Crucio.Comment[];
   private questionsByComment: any;
 
   constructor(Auth: AuthService, private readonly API: APIService) {
     this.user = Auth.getUser();
 
-    this.commentSearch = {};
-
     this.loadComments();
   }
 
   loadComments(): void {
     const data = {
-      query: this.commentSearch.query,
       user_id: this.user.user_id,
     };
     this.API.get('comments', data).then(result => {

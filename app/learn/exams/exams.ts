@@ -16,17 +16,12 @@ class LearnExamsController {
 
     this.examSearch = { semester: { semester: this.user.semester } };
 
-
     this.API.get('exams/distinct', {visibility: 1}).then(result => {
       this.distinctSemesters = result.data.semesters;
       this.distinctSubjects = result.data.subjects;
     });
 
     this.loadExams();
-
-    // fresh login
-    // var body = document.getElementsByTagName('body')[0];
-    // body.className = body.className + ' body-animated';
   }
 
   loadExams(): void {

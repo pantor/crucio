@@ -1,4 +1,3 @@
-import * as angular from 'angular';
 import { app } from './../crucio';
 
 export default class AuthService {
@@ -17,9 +16,7 @@ export default class AuthService {
 
   tryGetUser(): Crucio.User {
     // Check if user is in already in user object and check if cookies
-    if (
-      angular.isUndefined(this.user) && angular.isDefined(this.$cookies.getObject('CrucioUser'))
-    ) {
+    if (this.user == null && this.$cookies.getObject('CrucioUser') != null) {
       this.setUser(this.$cookies.getObject('CrucioUser'));
     }
     return this.user;
@@ -39,7 +36,7 @@ export default class AuthService {
   setUser(newUser: Crucio.User, saveNewCookie: boolean = false): void {
     this.user = newUser;
 
-    if (saveNewCookie || angular.isDefined(this.$cookies.getObject('CrucioUser'))) {
+    if (saveNewCookie || this.$cookies.getObject('CrucioUser') != null) {
       const expires = new Date();
       expires.setDate(expires.getDate() + 21); // [Days]
       this.$cookies.putObject('CrucioUser', this.user, { expires });

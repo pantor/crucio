@@ -11,9 +11,9 @@ import { ImageModalComponent } from './../../components/image-modal/image-modal'
 class ExamController {
   private readonly user: Crucio.User;
   private combination: Crucio.CombinationElement[];
+  private questions: Crucio.Question[];
   private currentIndex: number;
   private length: number;
-  private questions: Crucio.Question[];
 
   constructor(Page: PageService, Auth: AuthService, private readonly API: APIService, private readonly Collection: CollectionService,
     private readonly $state: angular.ui.IStateService, private readonly $uibModal: angular.ui.bootstrap.IModalService, $stateParams, $timeout: angular.ITimeoutService, private readonly $document: angular.IDocumentService, $window: angular.IWindowService) {

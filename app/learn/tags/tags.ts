@@ -8,8 +8,8 @@ class LearnTagsController {
   private readonly user: Crucio.User;
   private tags: any;
   private distinctTags: {tag: string}[];
-  private questionsByTag: any;
   private selectedTag: {tag: string};
+  private questionsByTag: any;
 
   constructor(Auth: AuthService, private readonly API: APIService, private readonly Collection: CollectionService) {
     this.user = Auth.getUser();
