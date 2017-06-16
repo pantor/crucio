@@ -6,9 +6,9 @@ import PageService from './../services/page.service';
 
 class HelpController {
   private readonly user: Crucio.User;
-  private isWorking: boolean;
   private text: string;
   private emailSend: boolean;
+  private isWorking: boolean;
 
   constructor(Auth: AuthService, Page: PageService, private readonly API: APIService) {
     Page.setTitleAndNav('Hilfe | Crucio', '');

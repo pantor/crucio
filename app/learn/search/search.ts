@@ -9,7 +9,7 @@ class LearnSearchController {
   private questionSearch: any;
   private distinctSemesters: any;
   private distinctSubjects: any;
-  private searchResults: any;
+  private searchResults: any[];
   private hasSearched: boolean;
   private showSpinner: boolean;
   private limit: number;

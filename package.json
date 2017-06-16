@@ -12,12 +12,12 @@
     "deploy-master": "git ftp push -s master"
   },
   "devDependencies": {
-    "@types/angular": "^1.6.17",
-    "@types/angular-cookies": "^1.4.3",
+    "@types/angular": "^1.6.19",
+    "@types/angular-cookies": "^1.4.4",
     "@types/angular-file-upload": "^4.2.29",
-    "@types/angular-spinner": "^0.5.31",
-    "@types/angular-ui-bootstrap": "^0.13.42",
-    "@types/angular-ui-router": "^1.1.36",
+    "@types/angular-spinner": "^0.5.32",
+    "@types/angular-ui-bootstrap": "^0.13.43",
+    "@types/angular-ui-router": "^1.1.37",
     "bootstrap-sass": "^3.3.7",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.1",
@@ -31,12 +31,12 @@
     "merge-stream": "^1.0.1",
     "phplint": "^1.7.4",
     "streamqueue": "^1.1.1",
-    "ts-loader": "^2.0.3",
+    "ts-loader": "^2.1.0",
     "typescript": "^2.3.2",
-    "webpack": "^2.5.1"
+    "webpack": "^2.6.1"
   },
   "dependencies": {
-    "@uirouter/angularjs": "^1.0.3",
+    "@uirouter/angularjs": "^1.0.4",
     "angular": "^1.6.4",
     "angular-cookies": "^1.6.4",
     "angular-file-upload": "^2.5.0",
@@ -44,7 +44,7 @@
     "angular-scroll": "^1.0.2",
     "angular-spinner": "^1.0.1",
     "angular-ui-bootstrap": "^2.5.0",
-    "angularjs-slider": "^6.1.2",
+    "angularjs-slider": "^6.2.2",
     "bootstrap": "^3.3.7",
     "font-awesome": "^4.7.0",
     "jquery": "^3.2.1",

@@ -5,9 +5,9 @@ import APIService from './../../services/api.service';
 
 class AuthorCommentsController {
   private readonly user: Crucio.User;
+  private comments: Crucio.Comment[];
   private distinctAuthors: any;
   private commentSearch: any;
-  private comments: Crucio.Comment[];
   private questionsByComment: any;
 
   constructor(Auth: AuthService, private readonly API: APIService) {

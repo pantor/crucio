@@ -7,10 +7,10 @@ import { UserModalComponent } from './user-modal';
 
 class AdminUsersController {
   private readonly user: Crucio.User;
+  private users: Crucio.User[];
   private userSearch: any;
   private distinctGroups: any;
   private distinctSemesters: any;
-  private users: Crucio.User[];
 
   constructor(Auth: AuthService, private readonly API: APIService, private readonly $uibModal: angular.ui.bootstrap.IModalService) {
     this.user = Auth.getUser();

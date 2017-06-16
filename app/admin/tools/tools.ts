@@ -4,9 +4,7 @@ import APIService from './../../services/api.service';
 
 class AdminToolsController {
 
-  constructor(private readonly API: APIService) {
-
-  }
+  constructor(private readonly API: APIService) { }
 
   changeSemester(difference: number): void {
     const data = { difference };

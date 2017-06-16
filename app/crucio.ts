@@ -123,9 +123,9 @@ app.config(function config($stateProvider: angular.ui.IStateProvider, $urlRouter
     $locationProvider.html5Mode(true); // use the HTML5 History API
     // $compileProvider.debugInfoEnabled(false);
 
-    states.forEach(function(state) {
+    for (const state of states) {
       $stateProvider.state(state);
-    });
+    }
 
     // textAngular
     $provide.decorator('taOptions', ['taRegisterTool', '$delegate', function(taRegisterTool, taOptions) {
