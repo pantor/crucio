@@ -1,0 +1,15 @@
+<div style="margin-right: 5px; margin-top: 2px; margin-bottom: 3px;" class="btn-group" uib-dropdown>
+    <button class="btn btn-default" type="button" uib-dropdown-toggle>
+        <span ng-show="$ctrl.selected">{{ $ctrl.selected[$ctrl.showKey] }}{{ $ctrl.suffix }}</span>
+        <span ng-show="!$ctrl.selected">{{ $ctrl.placeholder }}</span>
+        <i class="fa fa-caret-down"></i>
+    </button>
+
+    <ul class="dropdown-menu" role="menu">
+        <li ng-repeat="ele in $ctrl.data">
+            <a href ng-click="$ctrl.select(ele)">{{ ele[$ctrl.showKey] }}{{ $ctrl.suffix }}</a>
+        </li>
+        <li class="divider"></li>
+        <li><a href ng-click="$ctrl.select(null)">{{ $ctrl.placeholder }}</a></li>
+    </ul>
+</div>

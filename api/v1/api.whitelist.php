@@ -19,7 +19,7 @@ $app->group('/whitelist', function() {
 		$stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 
         $data['whitelist'] = getAll($stmt);
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->post('', function($request, $response, $args) {
@@ -31,10 +31,10 @@ $app->group('/whitelist', function() {
 		    INTO whitelist ( mail_address )
 		    VALUES (:mail_address)"
 		);
-		$stmt->bindValue(':mail_address', str_replace('(@)', '@', sanitize($body['email'])));
+		$stmt->bindValue(':mail_address', $body['mail_address']);
 
 		$data['status'] = $stmt->execute();
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->delete('/{mail_address}', function($request, $response, $args) {
@@ -48,7 +48,7 @@ $app->group('/whitelist', function() {
 		$stmt->bindValue(':mail_address', $args['mail_address']);
 
         $data['status'] = $stmt->execute();
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 });
 

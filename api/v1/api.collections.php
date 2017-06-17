@@ -60,7 +60,7 @@ $app->group('/collections', function() {
         }
 
 		$data['collections'] = $collections;
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
     $this->post('', function($request, $response, $args) {
@@ -79,7 +79,7 @@ $app->group('/collections', function() {
 
         $data['status'] = $stmt->execute();
         $data['collection_id'] = $mysql->lastInsertId();
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
     $this->put('/{collection_id}', function($request, $response, $args) {
@@ -98,7 +98,7 @@ $app->group('/collections', function() {
         $stmt->bindValue(':collection_id', $args['collection_id'], PDO::PARAM_INT);
 
         $data['status'] = $stmt->execute();
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
     $this->delete('/{collection_id}', function($request, $response, $args) {
@@ -111,7 +111,7 @@ $app->group('/collections', function() {
 		$stmt->bindValue(':collection_id', $args['collection_id'], PDO::PARAM_INT);
 
 		$data['status'] = $stmt->execute();
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 });
 

@@ -27,27 +27,7 @@ $app->group('/stats', function() {
 
 
 		$data['stats'] = $stats;
-		return createResponse($response, $data);
-	});
-
-	$this->get('/result_graph', function($request, $response, $args) {
-		$mysql = init();
-
-		$time = time();
-		$resultGraph['time'] = $time;
-
-		$resolution = 1.5 * 60;
-		$days = 2;
-		$result_dep_time_today = [];
-		for ($i = $days * round(24*60/$resolution); $i >= 0; $i--) {
-			$result_dep_time_today_label[] = (($time % (24*60*60) - ($time % (60*60)))/(60*60) - ($resolution/60)*$i + $days*24 + 1) % 24;
-			$result_dep_time_today[] = round( 60 * getCount($mysql, 'results WHERE date > ? AND date < ?', [$time - ($i+1)*$resolution*60, $time - ($i)*$resolution*60]) / ($resolution) );
-		}
-		$resultGraph['labels'] = $result_dep_time_today_label;
-		$resultGraph['data'] = $result_dep_time_today;
-
-		$data['resultGraph'] = $resultGraph;
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->get('/activities', function($request, $response, $args) {
@@ -55,7 +35,7 @@ $app->group('/stats', function() {
 
 		$activities = [];
 
-		if ($request->getQueryParam('result')) {
+		if (filter_var($request->getQueryParam('result'), FILTER_VALIDATE_BOOLEAN)) {
     		$stmt = $mysql->prepare(
         		"SELECT 'result' activity, r.*, q.*, u.username
         		FROM results r
@@ -67,7 +47,7 @@ $app->group('/stats', function() {
 			$activities = array_merge( $activities, getAll($stmt) );
 		}
 
-		if ($request->getQueryParam('register')) {
+		if (filter_var($request->getQueryParam('register'), FILTER_VALIDATE_BOOLEAN)) {
     		$stmt = $mysql->prepare(
         		"SELECT 'register' activity, u.*, u.sign_up_date as date
         		FROM users u
@@ -77,7 +57,7 @@ $app->group('/stats', function() {
 			$activities = array_merge( $activities, getAll($stmt) );
 		}
 
-		if ($request->getQueryParam('login')) {
+		if (filter_var($request->getQueryParam('login'), FILTER_VALIDATE_BOOLEAN)) {
     		$stmt = $mysql->prepare(
         		"SELECT 'login' activity, u.*, u.last_sign_in as date
         		FROM users u
@@ -87,7 +67,7 @@ $app->group('/stats', function() {
 			$activities = array_merge( $activities, getAll($stmt) );
 		}
 
-		if ($request->getQueryParam('comment')) {
+		if (filter_var($request->getQueryParam('comment'), FILTER_VALIDATE_BOOLEAN)) {
     		$stmt = $mysql->prepare(
         		"SELECT 'comment' activity, c.*, u.username
         		FROM comments c
@@ -98,7 +78,7 @@ $app->group('/stats', function() {
 			$activities = array_merge( $activities, getAll($stmt) );
 		}
 
-		if ($request->getQueryParam('examNew')) {
+		if (filter_var($request->getQueryParam('examNew'), FILTER_VALIDATE_BOOLEAN)) {
     		$stmt = $mysql->prepare(
         		"SELECT 'exam_new' activity, e.*, e.date as year, e.date_added as date, u.username
         		FROM exams e
@@ -109,7 +89,7 @@ $app->group('/stats', function() {
 			$activities = array_merge( $activities, getAll($stmt) );
 		}
 
-		if ($request->getQueryParam('examUpdate')) {
+		if (filter_var($request->getQueryParam('examUpdate'), FILTER_VALIDATE_BOOLEAN)) {
     		$stmt = $mysql->prepare(
         		"SELECT 'exam_update' activity, e.*, e.date as year, e.date_updated as date, u.username
         		FROM exams e
@@ -125,7 +105,7 @@ $app->group('/stats', function() {
 		});
 
 		$data['activities'] = array_slice($activities, 0, 101);
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 });
 

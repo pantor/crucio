@@ -1,3 +1,7 @@
+import { app } from './../crucio';
+
+import APIService from './../services/api.service';
+
 class DeleteTagsModalController {
   userId: number;
   resolve: any;
@@ -5,7 +9,7 @@ class DeleteTagsModalController {
   dismiss: any;
 
   constructor(private readonly API: APIService) {
-    
+
   }
 
   $onInit() {
@@ -18,7 +22,8 @@ class DeleteTagsModalController {
   }
 }
 
-angular.module('crucioApp').component('deleteTagsModalComponent', {
+export const DeleteTagsModalComponent = 'deleteTagsModalComponent';
+app.component(DeleteTagsModalComponent, {
   templateUrl: 'app/user/delete-tags-modal.html',
   controller: DeleteTagsModalController,
   bindings: {

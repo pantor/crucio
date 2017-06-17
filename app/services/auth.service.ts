@@ -1,7 +1,9 @@
-class AuthService {
+import { app } from './../crucio';
+
+export default class AuthService {
   private user: Crucio.User;
 
-  constructor(private readonly $cookies, private readonly $window: angular.IWindowService) {
+  constructor(private readonly $cookies: angular.cookies.ICookiesService, private readonly $window: angular.IWindowService) {
   }
 
   getUser(): Crucio.User {
@@ -14,9 +16,7 @@ class AuthService {
 
   tryGetUser(): Crucio.User {
     // Check if user is in already in user object and check if cookies
-    if (
-      angular.isUndefined(this.user) && angular.isDefined(this.$cookies.getObject('CrucioUser'))
-    ) {
+    if (this.user == null && this.$cookies.getObject('CrucioUser') != null) {
       this.setUser(this.$cookies.getObject('CrucioUser'));
     }
     return this.user;
@@ -36,7 +36,7 @@ class AuthService {
   setUser(newUser: Crucio.User, saveNewCookie: boolean = false): void {
     this.user = newUser;
 
-    if (saveNewCookie || angular.isDefined(this.$cookies.getObject('CrucioUser'))) {
+    if (saveNewCookie || this.$cookies.getObject('CrucioUser') != null) {
       const expires = new Date();
       expires.setDate(expires.getDate() + 21); // [Days]
       this.$cookies.putObject('CrucioUser', this.user, { expires });
@@ -48,4 +48,4 @@ class AuthService {
   }
 }
 
-angular.module('crucioApp').service('Auth', AuthService);
+app.service('Auth', AuthService);

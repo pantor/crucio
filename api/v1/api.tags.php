@@ -28,7 +28,30 @@ $app->group('/tags', function() {
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 
 		$data['tags'] = getAll($stmt);
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
+	});
+
+    $this->get('/distinct', function($request, $response, $args) {
+		$mysql = init();
+
+		$stmt_tags = $mysql->prepare(
+		    "SELECT DISTINCT t.tags
+		    FROM tags t
+            WHERE t.tags != '' AND t.user_id = IFNULL(:user_id, t.user_id)"
+		);
+        $stmt_tags->bindValue(':user_id', $request->getQueryParam('user_id'), PDO::PARAM_INT);
+
+        $distinct_tags = getAll($stmt_tags);
+        $tags = [];
+        foreach ($distinct_tags as $a) {
+            foreach (explode(",", $a['tags']) as $splitted) {
+                $tags[] = array('tag' => $splitted);
+            }
+        }
+
+        // Array unique for remove duplicates, array values for reset the keys
+		$data['tags'] = array_values( array_unique($tags, SORT_REGULAR) );
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
     $this->get('/prepare', function($request, $response, $args) {
@@ -58,7 +81,7 @@ $app->group('/tags', function() {
         $collection['tag'] = $tag;
 
         $data['collection'] = $collection;
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->post('', function($request, $response, $args) {
@@ -87,7 +110,7 @@ $app->group('/tags', function() {
         }
 
         $data['status'] = $stmt->execute();
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
     $this->delete('/{user_id}', function($request, $response, $args) {
@@ -101,7 +124,7 @@ $app->group('/tags', function() {
 		$stmt->bindValue(':user_id', $args['user_id'], PDO::PARAM_INT);
 
 		$data['status'] = $stmt->execute();
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 });
 

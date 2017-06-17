@@ -1,3 +1,12 @@
+import { app } from './../crucio';
+
+import AuthService from './../services/auth.service';
+import APIService from './../services/api.service';
+import PageService from './../services/page.service';
+
+import { DeleteResultsModalComponent } from './delete-results-modal';
+import { DeleteTagsModalComponent } from './delete-tags-modal';
+
 class UserController {
   user: Crucio.User;
   isWorking: boolean;
@@ -67,7 +76,7 @@ class UserController {
 
   deleteAllResultsModal(): void {
     this.$uibModal.open({
-      component: 'deleteResultsModalComponent',
+      component: DeleteResultsModalComponent,
       resolve: {
         userId: () => this.user.user_id,
       },
@@ -76,7 +85,7 @@ class UserController {
 
   deleteAllTagsModal(): void {
     this.$uibModal.open({
-      component: 'deleteTagsModalComponent',
+      component: DeleteTagsModalComponent,
       resolve: {
         userId: () => this.user.user_id,
       },
@@ -84,7 +93,8 @@ class UserController {
   }
 }
 
-angular.module('crucioApp').component('usercomponent', {
+export const UserComponent = 'userComponent';
+app.component(UserComponent, {
   templateUrl: 'app/user/user.html',
   controller: UserController,
 });

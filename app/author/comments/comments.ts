@@ -1,8 +1,13 @@
+import { app } from './../../crucio';
+
+import AuthService from './../../services/auth.service';
+import APIService from './../../services/api.service';
+
 class AuthorCommentsController {
   private readonly user: Crucio.User;
+  private comments: Crucio.Comment[];
   private distinctAuthors: any;
   private commentSearch: any;
-  private comments: Crucio.Comment[];
   private questionsByComment: any;
 
   constructor(Auth: AuthService, private readonly API: APIService) {
@@ -10,9 +15,7 @@ class AuthorCommentsController {
 
     this.commentSearch = { author: this.user };
 
-    this.API.get('exams/distinct').then(result => {
-      this.distinctAuthors = result.data.authors;
-    });
+    this.distinctAuthors = [this.user];
 
     this.loadComments();
   }
@@ -31,13 +34,13 @@ class AuthorCommentsController {
         // found = this.questionsByComment.findIndex(e => { e[0].question == c.question });
         let found = -1;
         for (let i = 0; i < this.questionsByComment.length; i++) {
-          if (this.questionsByComment[i][0].question === c.question) {
+          if (this.questionsByComment[i][0].question_id === c.question_id) {
             found = i;
             break;
           }
         }
 
-        if (found > 0) {
+        if (found >= 0) {
           this.questionsByComment[found].push(c);
         } else {
           this.questionsByComment.push([c]);
@@ -48,7 +51,8 @@ class AuthorCommentsController {
   }
 }
 
-angular.module('crucioApp').component('authorcommentscomponent', {
+export const AuthorCommentsComponent = 'authorCommentsComponent';
+app.component(AuthorCommentsComponent, {
   templateUrl: 'app/author/comments/comments.html',
   controller: AuthorCommentsController,
 });

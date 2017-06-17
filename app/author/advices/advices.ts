@@ -1,8 +1,11 @@
+import { app } from './../../crucio';
+
 class AuthorAdivcesController {
   constructor() { }
 }
 
-angular.module('crucioApp').component('authoradvicescomponent', {
+export const AuthorAdvicesComponent = 'authorAdvicesComponent';
+app.component(AuthorAdvicesComponent, {
   templateUrl: 'app/author/advices/advices.html',
   controller: AuthorAdivcesController,
 });

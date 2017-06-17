@@ -1,7 +1,15 @@
+import { app } from './../../crucio';
+
+import AuthService from './../../services/auth.service';
+import APIService from './../../services/api.service';
+import PageService from './../../services/page.service';
+
+import { DeleteExamModalComponent } from './delete-exam-modal';
+
 class EditExamController {
   private readonly user: Crucio.User;
   private readonly examId: number;
-  private openQuestionId: number;
+  private readonly openQuestionId: number;
   private openQuestionIndex: number;
   private numberChanged: number;
   private uploader: any;
@@ -12,11 +20,11 @@ class EditExamController {
   private questions: Crucio.Question[];
   private ready: boolean;
   private isSaving: boolean;
-  private exam_types: string[];
+  private examTypes: string[];
   private subjectListPerId: any;
   private categoryListPerId: any;
 
-  constructor(Page: PageService, Auth: AuthService, private readonly API: APIService, private readonly Cut: CutService, private readonly FileUploader, $scope: angular.IScope, private readonly $location: angular.ILocationService, $stateParams, private readonly $uibModal: angular.ui.bootstrap.IModalService) {
+  constructor(Page: PageService, Auth: AuthService, private readonly API: APIService, private readonly FileUploader, $scope: angular.IScope, private readonly $location: angular.ILocationService, private readonly $uibModal: angular.ui.bootstrap.IModalService, $stateParams: angular.ui.IStateParamsService, $transitions) {
     Page.setTitleAndNav('Klausur | Crucio', 'Author');
 
     this.user = Auth.getUser();
@@ -31,7 +39,7 @@ class EditExamController {
     };
     this.uploaderArray = [];
 
-    this.exam_types = [
+    this.examTypes = [
       'Erstklausur',
       'Wiederholungsklausur',
       'Leistungskontrolle',
@@ -51,7 +59,7 @@ class EditExamController {
       this.numberChanged += 1;
     }, true);
 
-    $scope.$on('$locationChangeStart', event => {
+    $transitions.onStart( { from: 'edit-exam' }, () => {
       if (this.hasChanged) {
         const confirmClose = confirm(
           'Die Änderungen an der Klausur bleiben dann ungespeichert. Wirklich verlassen?'
@@ -66,6 +74,7 @@ class EditExamController {
       this.subjectList = result.data.subjects;
       this.subjectListPerId = {};
       this.categoryListPerId = {};
+
       for (const subject of this.subjectList) {
         this.subjectListPerId[subject.subject_id] = subject.subject;
         this.categoryListPerId[subject.subject_id] = subject.categories;
@@ -73,10 +82,6 @@ class EditExamController {
       }
     });
 
-    this.loadExam();
-  }
-
-  loadExam(): void {
     this.API.get(`exams/${this.examId}`).then(result => {
       this.exam = result.data.exam;
       this.questions = result.data.questions;
@@ -103,7 +108,7 @@ class EditExamController {
     for (let i = 0; i < this.questions.length; i++) {
       const uploader = new this.FileUploader({ url: '/api/v1/file/upload', formData: i });
       uploader.onSuccessItem = (fileItem, response) => {
-        const index = fileItem.formData;
+        const index: number = fileItem.formData;
         this.questions[index].question_image_url = response.upload_name;
       };
       this.uploaderArray.push(uploader);
@@ -152,40 +157,17 @@ class EditExamController {
 
     if (validate) {
       this.isSaving = true;
-      this.API.put(`exams/${this.examId}`, this.exam).then(result => {
+      const data = { exam: this.exam, questions: this.questions, user_id: this.user.user_id };
+      this.API.put(`exams/${this.examId}`, data).then(result => {
         if (!result.data.status) {
           alert('Fehler beim Speichern der Klausur.');
-        }
-      });
 
-      for (const q of this.questions) {
-        const validateQuestion = q.question || q.question_id;
-
-        if (validateQuestion) {
-          q.explanation = q.explanation || '';
-          q.question_image_url = q.question_image_url || '';
-
-          const data = {
-            exam_id: this.exam.exam_id,
-            user_id_added: this.user.user_id,
-            category_id: q.category_id,
-            question: q.question,
-            type: q.type,
-            answers: q.answers,
-            correct_answer: q.correct_answer,
-            explanation: q.explanation,
-            question_image_url: q.question_image_url,
-          };
-          if (!q.question_id) { // New question
-            this.API.post('questions', data).then(result => {
-              q.question_id = result.data.question_id;
-            });
-          } else {
-
-            this.API.put(`questions/${q.question_id}`, data);
+        } else {
+          for (let i = 0; i < result.data.question_id_list.length; i++) {
+            this.questions[i].question_id = result.data.question_id_list[i];
           }
         }
-      }
+      });
 
       this.hasChanged = false;
       this.numberChanged = 0;
@@ -197,7 +179,7 @@ class EditExamController {
 
   deleteExamModal(): void {
     this.$uibModal.open({
-      component: 'deleteExamModalComponent',
+      component: DeleteExamModalComponent,
       resolve: {
         examId: () => this.examId,
       },
@@ -205,7 +187,8 @@ class EditExamController {
   }
 }
 
-angular.module('crucioApp').component('editexamcomponent', {
+export const EditExamComponent = 'editExamComponent';
+app.component(EditExamComponent, {
   templateUrl: 'app/author/edit-exam/edit-exam.html',
   controller: EditExamController,
 });

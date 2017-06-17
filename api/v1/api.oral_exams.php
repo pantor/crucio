@@ -29,7 +29,7 @@ $app->group('/oral_exams', function() {
 		$stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 
 		$data['oral_exams'] = getAll($stmt);
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
     });
 
     $this->get('/distinct', function($request, $response, $args) {
@@ -42,7 +42,7 @@ $app->group('/oral_exams', function() {
 		);
 
         $data['years'] = getAll($stmt_years);
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
     $this->get('/{oral_exam_id}', function($request, $response, $args) {
@@ -56,7 +56,7 @@ $app->group('/oral_exams', function() {
 		$stmt->bindValue(':oral_exam_id', $args['oral_exam_id'], PDO::PARAM_INT);
 
 		$data['oral_exam'] = getFetch($stmt);
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
     $this->post('', function($request, $response, $args) {
@@ -73,7 +73,7 @@ $app->group('/oral_exams', function() {
 
 		$data['status'] = $stmt->execute();
         $data['oral_exam_id'] = $mysql->lastInsertId();
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->put('/{oral_exam_id}', function($request, $response, $args) {
@@ -96,7 +96,7 @@ $app->group('/oral_exams', function() {
 		$stmt->bindValue(':oral_exam_id', $args['oral_exam_id']);
 
 		$data['status'] = $stmt->execute();
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->delete('/{oral_exam_id}', function($request, $response, $args) {
@@ -110,7 +110,7 @@ $app->group('/oral_exams', function() {
 		$stmt->bindValue(':oral_exam_id', $args['oral_exam_id'], PDO::PARAM_INT);
 
 		$data['status'] = $stmt->execute();
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 });
 

@@ -1,3 +1,8 @@
+import { app } from './../../crucio';
+
+import AuthService from './../../services/auth.service';
+import APIService from './../../services/api.service';
+
 class AuthorExamsController {
   private readonly user: Crucio.User;
   private examSearch: any;
@@ -7,14 +12,15 @@ class AuthorExamsController {
   private subjectList: Crucio.Subject[];
   private exams: Crucio.Exam[];
 
-  constructor(Auth: AuthService, private readonly API: APIService, private readonly $location: angular.ILocationService) {
+  constructor(Auth: AuthService, private readonly API: APIService, private readonly $state: angular.ui.IStateService) {
     this.user = Auth.getUser();
 
     this.examSearch = { author: this.user };
 
+    this.distinctAuthors = [this.user];
+
     this.API.get('exams/distinct').then(result => {
       this.distinctSemesters = result.data.semesters;
-      this.distinctAuthors = result.data.authors;
       this.distinctSubjects = result.data.subjects;
     });
 
@@ -29,7 +35,7 @@ class AuthorExamsController {
     const data = {
       subject_id: this.examSearch.subject && this.examSearch.subject.subject_id,
       author_id: this.examSearch.author && this.examSearch.author.user_id,
-      semester: this.examSearch.semester,
+      semester: this.examSearch.semester && this.examSearch.semester.semester,
       query: this.examSearch.query,
       limit: 200,
       showEmpty: true,
@@ -47,12 +53,13 @@ class AuthorExamsController {
     };
 
     this.API.post('exams', data).then(result => {
-      this.$location.path('/edit-exam').search('examId', result.data.exam_id);
+      this.$state.go('edit-exam', {examId: result.data.exam_id});
     });
   }
 }
 
-angular.module('crucioApp').component('authorexamscomponent', {
+export const AuthorExamsComponent = 'authorexamsComponent';
+app.component(AuthorExamsComponent, {
   templateUrl: 'app/author/exams/exams.html',
   controller: AuthorExamsController,
 });

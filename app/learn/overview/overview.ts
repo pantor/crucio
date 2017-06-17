@@ -1,6 +1,13 @@
+import { app } from './../../crucio';
+
+import AuthService from './../../services/auth.service';
+import APIService from './../../services/api.service';
+import CollectionService from './../../services/collection.service';
+import { Collection } from './../../services/collection.service';
+
 class LearnOverviewController {
   private readonly user: Crucio.User;
-  private collections: Crucio.Collection[];
+  private collections: Collection[];
   private ready: number;
 
   constructor(Auth: AuthService, private readonly API: APIService, private readonly Collection: CollectionService) {
@@ -21,7 +28,7 @@ class LearnOverviewController {
   }
 
   removeCollection(index: number): void {
-    this.Collection.delete(this.collections[index].collection_id);
+    this.Collection.deleteRemote(this.collections[index].collection_id);
     this.collections.splice(index, 1);
   }
 
@@ -30,7 +37,8 @@ class LearnOverviewController {
   }
 }
 
-angular.module('crucioApp').component('learnoverviewcomponent', {
+export const LearnOverviewComponent = 'learnOverviewComponent';
+app.component(LearnOverviewComponent, {
   templateUrl: 'app/learn/overview/overview.html',
   controller: LearnOverviewController,
 });

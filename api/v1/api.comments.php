@@ -28,7 +28,7 @@ $app->group('/comments', function() {
 		$stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 
 		$data['comments'] = getAll($stmt);
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
     });
 
     $this->get('/author', function($request, $response, $args) {
@@ -63,7 +63,7 @@ $app->group('/comments', function() {
 		$stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 
 		$data['comments'] = getAll($stmt);
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
     });
 
     $this->get('/distinct/users', function($request, $response, $args) {
@@ -77,7 +77,7 @@ $app->group('/comments', function() {
 		);
 
 		$data['authors'] = getAll($stmt);
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
     $this->get('/distinct/authors', function($request, $response, $args) {
@@ -93,7 +93,7 @@ $app->group('/comments', function() {
 		);
 
 		$data['authors'] = getAll($stmt);
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
     $this->post('/{user_id}', function($request, $response, $args) {
@@ -112,7 +112,7 @@ $app->group('/comments', function() {
 
 		$data['status'] = $stmt->execute();
 		$data['comment_id'] = $mysql->lastInsertId();
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->post('/{comment_id}/user/{user_id}', function($request, $response, $args) {
@@ -129,7 +129,7 @@ $app->group('/comments', function() {
 		$stmt->bindValue(':user_voting', $body['user_voting']);
 
 		$data['status'] = $stmt->execute();
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->delete('/{comment_id}', function($request, $response, $args) {
@@ -143,7 +143,7 @@ $app->group('/comments', function() {
 		$stmt->bindValue(':comment_id', $args['comment_id'], PDO::PARAM_INT);
 
 		$data['status'] = $stmt->execute();
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 });
 

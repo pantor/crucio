@@ -1,43 +1,12 @@
-<div class="row">
-    <div class="col-md-8 col-sm-8">
-        <div class="btn-toolbar" role="toolbar">
-            <div class="btn-group mtop" uib-dropdown>
-                <button class="btn btn-default" type="button" uib-dropdown-toggle>
-                    <span ng-show="$ctrl.userSearch.semester">{{ $ctrl.userSearch.semester }}. Semester</span>
-                    <span ng-show="!$ctrl.userSearch.semester">Alle Semester</span>
-                    <i class="fa fa-caret-down"></i>
-                </button>
+<div class="flex-container">
+    <dropdown class="btn-group" data="$ctrl.distinctSemesters" selected="$ctrl.userSearch.semester" placeholder="Alle Semester" suffix=". Semester" show-key="semester" on-update="$ctrl.loadUsers()"></dropdown>
 
-                <ul class="dropdown-menu" role="menu">
-                    <li ng-repeat="ds in $ctrl.distinctSemesters">
-                        <a href ng-click="$ctrl.userSearch.semester = ds.semester; $ctrl.loadUsers()">{{ ds.semester }}. Semester</a>
-                    </li>
+    <dropdown class="btn-group" data="$ctrl.distinctGroups" selected="$ctrl.userSearch.group" placeholder="Alle Gruppen" show-key="name" on-update="$ctrl.loadUsers()"></dropdown>
 
-                    <li class="divider"></li>
-                    <li><a href ng-click="$ctrl.userSearch.semester = null; $ctrl.loadUsers()">Alle Semester</a></li>
-                </ul>
-            </div>
+    <div style="flex: 1"></div>
 
-            <div class="btn-group mtop" uib-dropdown>
-                <button class="btn btn-default" type="button" uib-dropdown-toggle>
-                    <span ng-show="$ctrl.userSearch.group">{{ $ctrl.distinctGroupsPerId[$ctrl.userSearch.group] }} </span>
-                    <span ng-show="!$ctrl.userSearch.group">Alle Gruppen</span>
-                    <i class="fa fa-caret-down"></i>
-                </button>
-
-                <ul class="dropdown-menu" role="menu">
-                    <li ng-repeat="g in $ctrl.distinctGroups">
-                        <a href ng-click="$ctrl.userSearch.group = g.group_id; $ctrl.loadUsers()">{{ g.name }}</a>
-                    </li>
-                    <li class="divider"></li>
-                    <li><a href ng-click="$ctrl.userSearch.group = null; $ctrl.loadUsers()">Alle Gruppen</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-4 col-sm-4">
-        <div class="input-group mtop">
+    <div style="flex: 1; min-width: 250px; max-width: 400px; margin-top: 2px;">
+        <div class="input-group">
             <input class="form-control" type="text" ng-model="$ctrl.userSearch.query" ng-change="$ctrl.loadUsers()">
             <span class="input-group-btn">
                 <button class="btn btn-default" ng-click="$ctrl.loadUsers()"><i class="fa fa-search"></i></button>
@@ -54,15 +23,12 @@
             <th>Semester</th>
             <th>Letzte Anmeldung</th>
             <th>Registrierung</th>
-            <th></th>
         </thead>
 
         <tbody>
-            <tr ng-repeat="user in $ctrl.users">
+            <tr ng-repeat="user in $ctrl.users" ng-click="$ctrl.userModal($index)" style="cursor: pointer;">
                 <td>
-                    <button class="btn btn-xs btn-admin-group" ng-click="$ctrl.changeGroup($index)" ng-class="{ 'btn-danger': user.group_id == 2, 'btn-info': user.group_id == 3, 'btn-default': user.group_id == 1 }">
-                        {{ user.group_name }}
-                    </button>
+                    <span class="label" ng-class="{ 'label-danger': user.group_id == 2, 'label-info': user.group_id == 3, 'label-default': user.group_id == 1 }">{{ user.group_name }}</span>
                 </td>
                 <td>{{ ::user.username }}</td>
                 <td>{{ user.semester }}</td>
@@ -83,12 +49,6 @@
                     <span ng-if="user.last_sign_in == 0 && user.active == 1" class="label label-warning">Nie Angemeldet</span>
                 </td>
                 <td>{{ ::user.sign_up_date * 1000 | date: 'dd.MM.yyyy' }}</td>
-                <td>
-                    <a href="mailto:{{ ::user.email }}" uib-tooltip="{{ ::user.email }}">
-                        <i class="fa fa-envelope"></i>
-                    </a>
-                    <a ng-click="$ctrl.deleteUserModal($index)" href><i class="fa fa-trash"></i><a>
-                </td>
             </tr>
 
             <tr class="search-sf" ng-show="$ctrl.users.length >= 100"><td class="text-muted" colspan="6">...</td></tr>

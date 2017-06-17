@@ -1,3 +1,9 @@
+import { app } from './../../crucio';
+
+import AuthService from './../../services/auth.service';
+import APIService from './../../services/api.service';
+
+
 class ReportModalController {
   private readonly user: Crucio.User;
   private questionId: number;
@@ -39,7 +45,8 @@ class ReportModalController {
   }
 }
 
-angular.module('crucioApp').component('reportModalComponent', {
+export const ReportModalComponent = 'reportModalComponent';
+app.component(ReportModalComponent, {
   templateUrl: 'app/components/report-modal/report-modal.html',
   controller: ReportModalController,
   bindings: {

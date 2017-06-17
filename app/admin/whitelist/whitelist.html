@@ -1,14 +1,20 @@
 <h4>F&uuml;r fremde E-Mail-Adressen<small> die nicht ______@studserv.uni-leipzig.de entsprechen</small></h4>
 
 <div class="well">
-    <center>
-        <form class="input-group col-xs-10 col-sm-8" ng-submit="$ctrl.addMail()">
-            <input class="form-control" ng-model="$ctrl.newWhitelistEmail" type="email" placeholder="E-Mail-Adresse...">
-            <span class="input-group-btn">
-                <button class="btn btn-default"><i class="fa fa-plus"></i></button>
-            </span>
-        </form>
-    </center>
+    <div class="flex-container" style="justify-content: space-around;">
+        <div style="flex: 1;"></div>
+
+        <div style="flex: 4; min-width: 250px;">
+            <form class="input-group" ng-submit="$ctrl.addMail()" >
+                <input class="form-control" ng-model="$ctrl.newWhitelistEmail" type="email" placeholder="E-Mail-Adresse...">
+                <span class="input-group-btn">
+                    <button class="btn btn-default"><i class="fa fa-plus"></i></button>
+                </span>
+            </form>
+        </div>
+
+        <div style="flex: 1;"></div>
+    </div>
 </div>
 
 <table class="table table-hover">

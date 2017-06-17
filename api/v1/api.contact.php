@@ -19,7 +19,7 @@ $app->group('/contact', function () {
         ];
 
         $data['status'] = sendTemplateMail('contact', $destination, 'Allgemeine Anfrage', $hooks, $sender_name);
-        return createResponse($response, $data);
+        return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
     });
 
 	$this->post('/send-mail-question', function($request, $response, $args) {
@@ -54,7 +54,7 @@ $app->group('/contact', function () {
         ];
 
 		$data['status'] = sendTemplateMail('contact-question', $destination, $subject, $hooks, $sender_name);
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 });
 

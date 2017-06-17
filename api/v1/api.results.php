@@ -15,7 +15,7 @@ $app->group('/results', function() {
 		$stmt->bindValue(':question_id', $request->getQueryParam('question_id'), PDO::PARAM_INT);
 
 		$data['results'] = getAll($stmt);
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->post('', function($request, $response, $args) {
@@ -37,7 +37,7 @@ $app->group('/results', function() {
 		$stmt->bindValue(':date', time());
 
 		$data['status'] = $stmt->execute();
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->delete('/{user_id}', function($request, $response, $args) {
@@ -51,7 +51,7 @@ $app->group('/results', function() {
 		$stmt->bindValue(':user_id', $args['user_id'], PDO::PARAM_INT);
 
 		$data['status'] = $stmt->execute();
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->delete('/{user_id}/{exam_id}', function($request, $response, $args) {
@@ -68,7 +68,7 @@ $app->group('/results', function() {
 		$stmt->bindValue(':user_id', $args['user_id'], PDO::PARAM_INT);
 
 		$data['status'] = $stmt->execute();
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 });
 

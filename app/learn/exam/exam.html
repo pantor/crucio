@@ -30,7 +30,7 @@
 
                     <div class="form-group" ng-repeat="answer in c.question.answers track by $index" ng-show="c.question.type > 1 && answer">
                         <div class="col-sm-offset-1 col-sm-10">
-                            <div class="radio" ng-click="$ctrl.Collection.saveAnswer($parent.$index, $index + 1)">
+                            <div class="radio" ng-click="$ctrl.Collection.setAnswer($parent.$index, $index + 1)">
                                 <label>
                                     <input type="radio" name="answers{{ $parent.$index }}" ng-checked="c.data.given_result == $index + 1" ng-value="$index + 1" />
                                     <p ng-bind-html="answer"></p>
@@ -63,7 +63,7 @@
                     </li>
 
                     <li class="list-group-item" ng-if="$ctrl.index != -1">
-                        <button type="button" class="btn btn-default" ng-click="$ctrl.Collection.save()">
+                        <button type="button" class="btn btn-default" ng-click="$ctrl.Collection.saveRemote()">
                             Speichern
                         </button>
 
@@ -79,7 +79,7 @@
             <i class="fa fa-fw fa-arrow-circle-o-up"></i> Nach Oben
         </button>
 
-        <button type="button" class="btn btn-default" ng-click="$ctrl.Collection.save()">
+        <button type="button" class="btn btn-default" ng-click="$ctrl.Collection.saveRemote()">
             Speichern
         </button>
 

@@ -1,3 +1,13 @@
+import { app } from './../../crucio';
+
+import AuthService from './../../services/auth.service';
+import APIService from './../../services/api.service';
+import CollectionService from './../../services/collection.service';
+import PageService from './../../services/page.service';
+
+import { ImageModalComponent } from './../../components/image-modal/image-modal';
+import { ReportModalComponent } from './../../components/report-modal/report-modal';
+
 class QuestionController {
   private readonly user: Crucio.User;
   private readonly questionId: number;
@@ -40,7 +50,7 @@ class QuestionController {
     this.showExplanation = false;
 
     if (this.resetSession) {
-      this.Collection.remove();
+      this.Collection.deleteLocal();
       this.index = -1;
       this.questionData = { question_id: this.questionId, given_result: undefined, mark_answer: undefined, strike: undefined };
     } else {
@@ -100,13 +110,13 @@ class QuestionController {
     };
     this.API.post('results', data);
 
-    this.Collection.saveMarkAnswer(this.index);
+    this.Collection.setMarkAnswer(this.index);
     this.markAnswer(this.questionData.given_result);
   }
 
-  saveAnswer(givenAnswer: number): void {
+  setAnswer(givenAnswer: number): void {
     this.questionData.given_result = givenAnswer;
-    this.Collection.saveAnswer(this.index, givenAnswer);
+    this.Collection.setAnswer(this.index, givenAnswer);
   }
 
   // Colors the given answers and shows the correct solution
@@ -125,8 +135,8 @@ class QuestionController {
     }
   }
 
-  saveStrike(strike: boolean[]): void {
-    this.Collection.saveStrike(this.index, strike);
+  setStrike(strike: boolean[]): void {
+    this.Collection.setStrike(this.index, strike);
   }
 
   addComment(): void {
@@ -161,7 +171,7 @@ class QuestionController {
 
   openImageModal(): void {
     this.$uibModal.open({
-      component: 'imageModalComponent',
+      component: ImageModalComponent,
       resolve: {
         data: () => this.question.question_image_url,
       },
@@ -170,7 +180,7 @@ class QuestionController {
 
   openReportModal(): void {
     this.$uibModal.open({
-      component: 'reportModalComponent',
+      component: ReportModalComponent,
       resolve: {
         question: () => this.question,
         questionId: () => this.questionId,
@@ -179,7 +189,8 @@ class QuestionController {
   }
 }
 
-angular.module('crucioApp').component('questioncomponent', {
+export const QuestionComponent = 'questionComponent';
+app.component(QuestionComponent, {
   templateUrl: 'app/learn/question/question.html',
   controller: QuestionController,
 });

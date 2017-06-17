@@ -1,9 +1,19 @@
+import * as angular from 'angular';
+import { app } from './../../crucio';
+
+import AuthService from './../../services/auth.service';
+import APIService from './../../services/api.service';
+import CollectionService from './../../services/collection.service';
+import PageService from './../../services/page.service';
+
+import { ImageModalComponent } from './../../components/image-modal/image-modal';
+
 class ExamController {
   private readonly user: Crucio.User;
   private combination: Crucio.CombinationElement[];
+  private questions: Crucio.Question[];
   private currentIndex: number;
   private length: number;
-  private questions: Crucio.Question[];
 
   constructor(Page: PageService, Auth: AuthService, private readonly API: APIService, private readonly Collection: CollectionService,
     private readonly $state: angular.ui.IStateService, private readonly $uibModal: angular.ui.bootstrap.IModalService, $stateParams, $timeout: angular.ITimeoutService, private readonly $document: angular.IDocumentService, $window: angular.IWindowService) {
@@ -50,7 +60,7 @@ class ExamController {
 
   openImageModal(fileName: string): void {
     this.$uibModal.open({
-      component: 'imageModalComponent',
+      component: ImageModalComponent,
       resolve: {
         data: () => fileName,
       },
@@ -58,7 +68,8 @@ class ExamController {
   }
 }
 
-angular.module('crucioApp').component('examcomponent', {
+export const ExamComponent = 'examComponent';
+app.component(ExamComponent, {
   templateUrl: 'app/learn/exam/exam.html',
   controller: ExamController,
 });

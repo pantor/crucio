@@ -1,3 +1,11 @@
+import { app } from './../../crucio';
+
+import AuthService from './../../services/auth.service';
+import APIService from './../../services/api.service';
+import PageService from './../../services/page.service';
+
+import { DeleteOralExamModalComponent } from './delete-oral-exam-modal';
+
 class EditOralExamController {
   private readonly user: Crucio.User;
   private readonly oralExamId: number;
@@ -8,7 +16,7 @@ class EditOralExamController {
   private ready: boolean;
   private isSaving: boolean;
 
-  constructor(Page: PageService, Auth: AuthService, private readonly API: APIService, private readonly FileUploader, $scope: angular.IScope, private readonly $location: angular.ILocationService, $stateParams, private readonly $uibModal: angular.ui.bootstrap.IModalService) {
+  constructor(Page: PageService, Auth: AuthService, private readonly API: APIService, private readonly FileUploader, $scope: angular.IScope, private readonly $location: angular.ILocationService, $stateParams: angular.ui.IStateParamsService, private readonly $uibModal: angular.ui.bootstrap.IModalService) {
     Page.setTitleAndNav('Mündliche Prüfung | Crucio', 'Author');
 
     this.user = Auth.getUser();
@@ -70,7 +78,7 @@ class EditOralExamController {
 
   deleteOralExamModal(): void {
     this.$uibModal.open({
-      component: 'deleteOralExamModalComponent',
+      component: DeleteOralExamModalComponent,
       resolve: {
         oralExamId: () => this.oralExamId,
       },
@@ -78,7 +86,8 @@ class EditOralExamController {
   }
 }
 
-angular.module('crucioApp').component('editoralexamcomponent', {
+export const EditOralExamComponent = 'editOralExamComponent';
+app.component(EditOralExamComponent, {
   templateUrl: 'app/author/edit-oral-exam/edit-oral-exam.html',
   controller: EditOralExamController,
 });

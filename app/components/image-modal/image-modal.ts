@@ -1,3 +1,8 @@
+import { app } from './../../crucio';
+
+import APIService from './../../services/api.service';
+
+
 class ImageModalController {
   private readonly user: Crucio.User;
   private data: any;
@@ -14,7 +19,8 @@ class ImageModalController {
   }
 }
 
-angular.module('crucioApp').component('imageModalComponent', {
+export const ImageModalComponent = 'imageModalComponent';
+app.component(ImageModalComponent, {
   templateUrl: 'app/components/image-modal/image-modal.html',
   controller: ImageModalController,
   bindings: {

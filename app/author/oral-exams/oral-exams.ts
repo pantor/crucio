@@ -1,3 +1,8 @@
+import { app } from './../../crucio';
+
+import AuthService from './../../services/auth.service';
+import APIService from './../../services/api.service';
+
 class AuthorOralExamsController {
   private readonly user: Crucio.User;
   private oralExamSearch: any;
@@ -5,7 +10,7 @@ class AuthorOralExamsController {
   private distinctOralYears: any;
   private oralExams: Crucio.OralExam[];
 
-  constructor(Auth: AuthService, private readonly API: APIService, private readonly $location: angular.ILocationService) {
+  constructor(Auth: AuthService, private readonly API: APIService, private readonly $state: angular.ui.IStateService) {
     this.user = Auth.getUser();
 
     this.oralExamSearch = {};
@@ -19,8 +24,8 @@ class AuthorOralExamsController {
 
   loadOralExams(): void {
     const data = {
-      semester: this.oralExamSearch.semester,
-      year: this.oralExamSearch.year,
+      semester: this.oralExamSearch.semester && this.oralExamSearch.semester.semester,
+      year: this.oralExamSearch.year && this.oralExamSearch.year.year,
       query: this.oralExamSearch.query,
       limit: 200,
     };
@@ -37,12 +42,13 @@ class AuthorOralExamsController {
     };
 
     this.API.post('oral_exams', data).then(result => {
-      this.$location.path('/edit-oral-exam').search('oralExamId', result.data.oral_exam_id);
+      this.$state.go('edit-oral-exam', {oralExamId: result.data.oral_exam_id});
     });
   }
 }
 
-angular.module('crucioApp').component('authororalexamscomponent', {
+export const AuthorOralExamsComponent = 'authorOralExamsComponent';
+app.component(AuthorOralExamsComponent, {
   templateUrl: 'app/author/oral-exams/oral-exams.html',
   controller: AuthorOralExamsController,
 });

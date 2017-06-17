@@ -1,4 +1,6 @@
-class PageService {
+import { app } from './../crucio';
+
+export default class PageService {
   public title: string;
   public nav: string;
 
@@ -22,4 +24,4 @@ class PageService {
   }
 }
 
-angular.module('crucioApp').service('Page', PageService);
+app.service('Page', PageService);

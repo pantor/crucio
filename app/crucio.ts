@@ -1,4 +1,23 @@
-angular.module('crucioApp', [
+/// <reference path="crucio.d.ts"/>
+
+import * as angular from 'angular';
+import 'angular-cookies';
+import 'angular-messages';
+import 'ng-tags-input';
+import '@uirouter/angularjs';
+import 'angular-ui-bootstrap';
+import 'angular-file-upload';
+import 'spin.js';
+import 'angular-spinner';
+import 'angularjs-slider';
+import 'angular-scroll';
+import 'textangular/dist/textAngular-rangy.min';
+import 'textangular/dist/textAngular-sanitize.min';
+import 'textangular/dist/textAngular.umd';
+import 'textangular/dist/textAngularSetup';
+
+
+export const app = angular.module('crucioApp', [
   'ngCookies',
   'ngMessages',
   'ngTagsInput',
@@ -9,50 +28,94 @@ angular.module('crucioApp', [
   'textAngular',
   'rzModule',
   'duScroll',
-])
-  .config(function config($stateProvider: angular.ui.IStateProvider, $urlRouterProvider: angular.ui.IUrlRouterProvider, $locationProvider: angular.ILocationProvider, $provide) {
+]);
 
-    function comp(name: string): string {
-      return '<' + name + 'Component></' + name + 'Component>';
-    }
 
-    // Use components directly in ui-router@1.0
+import './services/api.service';
+import './services/auth.service';
+import './services/collection.service';
+import './services/page.service';
+
+import './components/navbar/navbar';
+import './components/timeago';
+import './components/dropdown/dropdown';
+
+import AuthService from './services/auth.service';
+
+import { LearnComponent } from './learn/learn';
+import { LearnOverviewComponent } from './learn/overview/overview';
+import { LearnSubjectsComponent } from './learn/subjects/subjects';
+import { LearnExamsComponent } from './learn/exams/exams';
+import { LearnSearchComponent } from './learn/search/search';
+import { LearnTagsComponent } from './learn/tags/tags';
+import { LearnCommentsComponent } from './learn/comments/comments';
+import { LearnOralExamsComponent } from './learn/oral-exams/oral-exams';
+import { QuestionComponent } from './learn/question/question';
+import { ExamComponent } from './learn/exam/exam';
+import { StatisticComponent } from './learn/statistic/statistic';
+import { AnalysisComponent } from './learn/analysis/analysis';
+
+import { AuthorComponent } from './author/author';
+import { AuthorExamsComponent } from './author/exams/exams';
+import { AuthorCommentsComponent } from './author/comments/comments';
+import { AuthorSubjectsComponent } from './author/subjects/subjects';
+import { AuthorOralExamsComponent } from './author/oral-exams/oral-exams';
+import { AuthorAdvicesComponent } from './author/advices/advices';
+import { EditExamComponent } from './author/edit-exam/edit-exam';
+import { EditOralExamComponent } from './author/edit-oral-exam/edit-oral-exam';
+
+import { AdminComponent } from './admin/admin';
+import { AdminUsersComponent } from './admin/users/users';
+import { AdminWhitelistComponent } from './admin/whitelist/whitelist';
+import { AdminToolsComponent } from './admin/tools/tools';
+import { AdminStatsComponent } from './admin/stats/stats';
+import { AdminActivityComponent } from './admin/activity/activity';
+
+import { UserComponent } from './user/user';
+
+import { Error403Component, Error404Component, Error500Component } from './error/error';
+import { HelpComponent } from './help/help';
+
+
+
+app.config(function config($stateProvider: angular.ui.IStateProvider, $urlRouterProvider: angular.ui.IUrlRouterProvider, $locationProvider: angular.ILocationProvider, $provide) {
+
     const states: angular.ui.IState[] = [
-      { name: 'learn', url: '/learn', template: comp('learn') },
-      { name: 'learn.overview', url: '/overview', template: comp('learnoverview') },
-      { name: 'learn.subjects', url: '/subjects', template: comp('learnsubjects') },
-      { name: 'learn.exams', url: '/exams', template: comp('learnexams') },
-      { name: 'learn.search', url: '/search', template: comp('learnsearch') },
-      { name: 'learn.tags', url: '/tags', template: comp('learntags') },
-      { name: 'learn.comments', url: '/comments', template: comp('learncomments') },
-      { name: 'learn.oral-exams', url: '/oral-exams', template: comp('learnoralexams') },
-      { name: 'question', url: '/question?questionId&resetSession', template: comp('question') },
-      { name: 'exam', url: '/exam', template: comp('exam') },
-      { name: 'statistic', url: '/statistic', template: comp('statistic') },
-      { name: 'analysis', url: '/analysis', template: comp('analysis') },
+      { name: 'learn', url: '/learn', component: LearnComponent },
+      { name: 'learn.overview', url: '/overview', component: LearnOverviewComponent },
+      { name: 'learn.subjects', url: '/subjects', component: LearnSubjectsComponent },
+      { name: 'learn.exams', url: '/exams', component: LearnExamsComponent },
+      { name: 'learn.search', url: '/search', component: LearnSearchComponent },
+      { name: 'learn.tags', url: '/tags', component: LearnTagsComponent },
+      { name: 'learn.comments', url: '/comments', component: LearnCommentsComponent },
+      { name: 'learn.oral-exams', url: '/oral-exams', component: LearnOralExamsComponent },
+      { name: 'question', url: '/question?questionId&resetSession', component: QuestionComponent },
+      { name: 'exam', url: '/exam', component: ExamComponent },
+      { name: 'statistic', url: '/statistic', component: StatisticComponent },
+      { name: 'analysis', url: '/analysis', component: AnalysisComponent },
 
-      { name: 'author', url: '/author', template: comp('author') },
-      { name: 'author.exams', url: '/exams', template: comp('authorexams') },
-      { name: 'author.comments', url: '/comments', template: comp('authorcomments') },
-      { name: 'author.subjects', url: '/subjects', template: comp('authorsubjects') },
-      { name: 'author.oral-exams', url: '/oral-exams', template: comp('authororalexams') },
-      { name: 'author.advices', url: '/advices', template: comp('authoradvices') },
-      { name: 'edit-exam', url: '/edit-exam?examId&questionId', template: comp('editExam') },
-      { name: 'edit-oral-exam', url: '/edit-oral-exam?oralExamId', template: comp('editOralExam') },
+      { name: 'author', url: '/author', component: AuthorComponent },
+      { name: 'author.exams', url: '/exams', component: AuthorExamsComponent },
+      { name: 'author.comments', url: '/comments', component: AuthorCommentsComponent },
+      { name: 'author.subjects', url: '/subjects', component: AuthorSubjectsComponent },
+      { name: 'author.oral-exams', url: '/oral-exams', component: AuthorOralExamsComponent },
+      { name: 'author.advices', url: '/advices', component: AuthorAdvicesComponent },
+      { name: 'edit-exam', url: '/edit-exam?examId&questionId', component: EditExamComponent },
+      { name: 'edit-oral-exam', url: '/edit-oral-exam?oralExamId', component: EditOralExamComponent },
 
-      { name: 'admin', url: '/admin', template: comp('admin') },
-      { name: 'admin.users', url: '/users', template: comp('adminusers') },
-      { name: 'admin.whitelist', url: '/whitelist', template: comp('adminwhitelist') },
-      { name: 'admin.tools', url: '/tools', template: comp('admintools') },
-      { name: 'admin.stats', url: '/stats', template: comp('adminstats') },
-      { name: 'admin.activity', url: '/activity', template: comp('adminactivity') },
+      { name: 'admin', url: '/admin', component: AdminComponent },
+      { name: 'admin.users', url: '/users', component: AdminUsersComponent },
+      { name: 'admin.whitelist', url: '/whitelist', component: AdminWhitelistComponent },
+      { name: 'admin.tools', url: '/tools', component: AdminToolsComponent },
+      { name: 'admin.stats', url: '/stats', component: AdminStatsComponent },
+      { name: 'admin.activity', url: '/activity', component: AdminActivityComponent },
 
-      { name: 'user', url: '/user', template: comp('user') },
+      { name: 'user', url: '/user', component: UserComponent },
 
-      { name: '403', url: '/403', template: comp('error403') },
-      { name: '404', url: '/404', template: comp('error404') },
-      { name: '500', url: '/500', template: comp('error500') },
-      { name: 'help', url: '/help', template: comp('help') },
+      { name: '403', url: '/403', component: Error403Component },
+      { name: '404', url: '/404', component: Error404Component },
+      { name: '500', url: '/500', component: Error500Component },
+      { name: 'help', url: '/help', component: HelpComponent },
     ];
 
     $urlRouterProvider.otherwise('/404');
@@ -60,9 +123,9 @@ angular.module('crucioApp', [
     $locationProvider.html5Mode(true); // use the HTML5 History API
     // $compileProvider.debugInfoEnabled(false);
 
-    states.forEach(function(state) {
+    for (const state of states) {
       $stateProvider.state(state);
-    });
+    }
 
     // textAngular
     $provide.decorator('taOptions', ['taRegisterTool', '$delegate', function(taRegisterTool, taOptions) {
@@ -216,15 +279,15 @@ angular.module('crucioApp', [
 
   .run(function run(Auth: AuthService, $location: angular.ILocationService, $window: angular.IWindowService) {
     // Enumerate paths that don't need authentication
-    const pathsThatLogin: string[] = ['/', '/register', '/forgot-password'];
-    const pathsForAuthor: string[] = ['/author', '/edit-exam', '/edit-oral-exam'];
-    const pathsForAdmin: string[] = ['/admin']; // + Author paths
+    const pathsThatLogin = ['/', '/register', '/forgot-password'];
+    const pathsForAuthor = ['/author', '/edit-exam', '/edit-oral-exam'];
+    const pathsForAdmin = ['/admin']; // + Author paths
 
-    const user: Crucio.User = Auth.tryGetUser();
+    const user = Auth.tryGetUser();
 
-    let isLoggedIn: boolean = false;
-    let isAdmin: boolean = false;
-    let isAuthor: boolean = false;
+    let isLoggedIn = false;
+    let isAdmin = false;
+    let isAuthor = false;
     if (user) {
       isLoggedIn = Boolean(user.group_id);
       isAdmin = Boolean(user.group_id === 2);

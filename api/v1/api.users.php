@@ -6,6 +6,7 @@ $app->group('/users', function() {
         $mysql = init();
 
         $limit = intval($request->getQueryParam('limit', 10000));
+        $offset = intval($request->getQueryParam('offset', 0));
         $query = strlen($request->getQueryParam('query')) > 0 ? '%'.$request->getQueryParam('query').'%' : null;
 
         $stmt = $mysql->prepare(
@@ -17,15 +18,16 @@ $app->group('/users', function() {
 		        AND ( u.username LIKE IFNULL(:query, u.username)
 		            OR u.email LIKE IFNULL(:query, u.email) )
 		    ORDER BY g.name ASC, u.user_id DESC
-		    LIMIT :limit"
+		    LIMIT :offset, :limit"
 		);
 		$stmt->bindValue(':group_id', $request->getQueryParam('group_id'));
 		$stmt->bindValue(':semester', $request->getQueryParam('semester'));
 		$stmt->bindValue(':query', $query);
 		$stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 
         $data['users'] = getAll($stmt);
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
     $this->get('/distinct', function($request, $response, $args) {
@@ -45,7 +47,7 @@ $app->group('/users', function() {
 
         $data['groups'] = getAll($stmt_groups);
 		$data['semesters'] = getAll($stmt_semesters);
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->get('/login', function($request, $response, $args) {
@@ -57,30 +59,30 @@ $app->group('/users', function() {
 
 		if (!$email) {
 		    $data['error'] = 'error_no_email';
-		    return createResponse($response, $data);
+		    return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
         }
 
         if (!$password) {
             $data['error'] = 'error_no_password';
-            return createResponse($response, $data);
+            return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
         }
 
 		if (!getCount($mysql, "users WHERE email = ?", [$email])) {
 	    	$data['error'] = 'error_incorrect_password';
-	    	return createResponse($response, $data);
+	    	return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	    }
 
     	$user = fetchUserDetailsByMail($mysql, $email);
 
     	if ($user['active'] == 0) {
     		$data['error'] = 'error_account_not_activated';
-    		return createResponse($response, $data);
+    		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
     	}
 
 		$entered_pass = generateHash($password, $user['password']);
 		if ($entered_pass != $user['password']) {
 			$data['error'] = 'error_incorrect_password';
-			return createResponse($response, $data);
+			return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 		}
 
         $user['display_username'] = $user['username'];
@@ -98,7 +100,7 @@ $app->group('/users', function() {
 
 		$data['status'] = $stmt->execute();
 		$data['logged_in_user'] = $user;
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->get('/{user_id}', function($request, $response, $args) {
@@ -113,7 +115,7 @@ $app->group('/users', function() {
 		$stmt->bindValue(':user_id', $args['user_id'], PDO::PARAM_INT);
 
 		$data['users'] = getAll($stmt);
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
     $this->post('', function($request, $response, $args) {
@@ -130,24 +132,24 @@ $app->group('/users', function() {
 
         if (!$username) {
             $data['error'] = 'error';
-            return createResponse($response, $data);
+            return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
         }
 
-        if (getCount($mysql, "users WHERE username_clean = ?", [sanitize($clean_username)])) {
+        if (getCount($mysql, "users WHERE username_clean = ?", [$clean_username])) {
             $data['error'] = 'error_username_taken';
-            return createResponse($response, $data);
+            return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
         }
 
         if (getCount($mysql, "users WHERE email = ?", [sanitize($email)])) {
             $data['error'] = 'error_email_taken';
-            return createResponse($response, $data);
+            return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
         }
 
         $pattern = '/[\wäüöÄÜÖ]*@studserv\.uni-leipzig\.de$/';
         if (!preg_match($pattern, $email)) {
             if (!validateEMail($mysql, $email)) { // Check whitelist
                 $data['error'] = 'error_email_forbidden';
-                return createResponse($response, $data);
+                return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
             }
         }
 
@@ -178,13 +180,13 @@ $app->group('/users', function() {
 		$stmt->bindValue(9, $semester, PDO::PARAM_INT);
 
 		$data['status'] = $stmt->execute();
-        return createResponse($response, $data);
+        return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->put('/activate', function($request, $response, $args) {
         $body = $request->getParsedBody();
         $data = activate($body['token']);
-	    return createResponse($response, $data);
+	    return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->put('/change-semester', function($request, $response, $args) {
@@ -198,7 +200,7 @@ $app->group('/users', function() {
         $stmt->bindValue(':add', $body['difference'], PDO::PARAM_INT);
 
         $data['status'] = $stmt->execute();
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->put('/{user_id}/account', function($request, $response, $args) {
@@ -218,7 +220,7 @@ $app->group('/users', function() {
 
         if (!$body['password']) {
             $data['status'] = $stmt->execute();
-    	    return createResponse($response, $data);
+    	    return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
         }
 
 
@@ -237,12 +239,12 @@ $app->group('/users', function() {
 
         if ($entered_pass != $old_hash_pw) {
 	        $data['error'] = 'error_incorrect_password';
-	        return createResponse($response, $data);
+	        return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	    }
 
 	    if ($entered_pass_new == $old_hash_pw) {
 	        $data['error'] = 'error_same_passwords';
-	        return createResponse($response, $data);
+	        return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	    }
 
     	$secure_pass = generateHash($body['password']);
@@ -256,7 +258,7 @@ $app->group('/users', function() {
 		$stmt_password->bindValue(':user_id', $user_id, PDO::PARAM_INT);
 
         $data['status'] = $stmt->execute() && $stmt_password->execute();
-	    return createResponse($response, $data);
+	    return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->put('/{user_id}/password', function($request, $response, $args) {
@@ -280,12 +282,12 @@ $app->group('/users', function() {
 
 	    if ($entered_pass != $old_hash_pw) {
 	        $data['error'] = 'error_incorrect_password';
-	        return createResponse($response, $data);
+	        return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	    }
 
 	    if ($entered_pass_new == $old_hash_pw) {
 	        $data['error'] = 'error_same_passwords';
-	        return createResponse($response, $data);
+	        return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	    }
 
     	$secure_pass = generateHash($body['password']);
@@ -299,7 +301,7 @@ $app->group('/users', function() {
 		$stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
 
 		$data['status'] = $stmt->execute();
-	    return createResponse($response, $data);
+	    return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->put('/{user_id}/settings', function($request, $response, $args) {
@@ -319,7 +321,7 @@ $app->group('/users', function() {
 		$stmt->bindValue(6, $args['user_id']);
 
         $data['status'] = $stmt->execute();
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->put('/{user_id}/group', function($request, $response, $args) {
@@ -335,7 +337,7 @@ $app->group('/users', function() {
 		$stmt->bindValue(':user_id', $args['user_id']);
 
         $data['status'] = $stmt->execute();
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->group('/password', function() {
@@ -346,7 +348,7 @@ $app->group('/users', function() {
 
 			if (!validateActivationToken($mysql, $body['token'])) {
 				$data['error'] = 'error_token';
-				return createResponse($response, $data);
+				return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 			}
 
 			$rand_pass = $body['password'];
@@ -366,7 +368,7 @@ $app->group('/users', function() {
 
     		$data['status'] = $stmt->execute();
 			$data['status_flag'] = flagLostpasswordRequest($mysql, $user['username_clean'], 0);
-			return createResponse($response, $data);
+			return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 		});
 
 		$this->post('/reset', function($request, $response, $args) {
@@ -377,14 +379,14 @@ $app->group('/users', function() {
 
 			if (!getCount($mysql, "users WHERE email = ?", [sanitize($email)])) {
 				$data['error'] = 'error_email';
-				return createResponse($response, $data);
+				return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
             }
 
 		    $user = fetchUserDetailsByMail($mysql, $email);
 
 		    if ($user['LostpasswordRequest'] == 1) {
 		        $data['error'] = 'error_already_requested';
-		        return createResponse($response, $data);
+		        return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 		    }
 
 	        $website_url = getURL();
@@ -397,7 +399,7 @@ $app->group('/users', function() {
 	        sendTemplateMail('lost-password-request', $email, 'Passwort vergessen...', $hooks);
 
 	        $data['status'] = flagLostpasswordRequest($mysql, $user['username_clean'], 1);
-			return createResponse($response, $data);
+			return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 		});
 	});
 
@@ -411,7 +413,7 @@ $app->group('/users', function() {
 		);
 
         $data['status'] = $stmt->execute();
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
     $this->delete('/{user_id}', function($request, $response, $args) {
@@ -425,7 +427,7 @@ $app->group('/users', function() {
 		$stmt->bindValue(':user_id', $args['user_id'], PDO::PARAM_INT);
 
 		$data['status'] = $stmt->execute();
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 });
 

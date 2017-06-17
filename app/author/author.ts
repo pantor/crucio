@@ -1,3 +1,7 @@
+import { app } from './../crucio';
+
+import PageService from './../services/page.service';
+
 class AuthorController {
 
   constructor(Page: PageService) {
@@ -5,7 +9,8 @@ class AuthorController {
   }
 }
 
-angular.module('crucioApp').component('authorcomponent', {
+export const AuthorComponent = 'authorComponent';
+app.component(AuthorComponent, {
   templateUrl: 'app/author/author.html',
   controller: AuthorController,
 });

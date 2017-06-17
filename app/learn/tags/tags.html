@@ -10,51 +10,33 @@
 </div>
 
 <div ng-if="$ctrl.tags.length">
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="btn-toolbar" role="toolbar">
-                <div class="btn-group mtop" uib-dropdown>
-                    <button class="btn btn-default" type="button" uib-dropdown-toggle>
-                        <span ng-show="$ctrl.selectedTag">{{ $ctrl.selectedTag }}</span>
-                        <span ng-show="!$ctrl.selectedTag">Alle Markierungen</span>
-                        <i class="fa fa-caret-down"></i>
-                    </button>
+    <div class="flex-container" style="justify-content: space-between;">
+        <dropdown class="btn-group" data="$ctrl.distinctTags" selected="$ctrl.selectedTag" placeholder="Alle Markierungen" show-key="tag"></dropdown>
 
-                    <ul class="dropdown-menu" role="menu">
-                        <li ng-repeat="(t, tag_array) in $ctrl.questionsByTag">
-                            <a href ng-click="$ctrl.selectedTag = t">{{ t }}</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href ng-click="$ctrl.selectedTag = null">Alle Markierungen</a></li>
-                    </ul>
-                </div>
-
-                <div class="btn-group mtop pull-right">
-                    <div class="btn-group" uib-dropdown>
-                        <button type="button" ng-disabled="$ctrl.selectedQuestionNumber == 0" class="btn btn-success" ng-click="$ctrl.learnTags('question')"><i class="fa fa-fw fa-graduation-cap"></i> Lernen</button>
-                        <button type="button" ng-disabled="$ctrl.selectedQuestionNumber == 0" class="btn btn-success" uib-dropdown-toggle>
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" uib-dropdown-menu role="menu">
-                            <li role="menuitem"><a href ng-click="$ctrl.learnTags('exam')">Klausuransicht</a></li>
-                            <li role="menuitem"><a href ng-click="$ctrl.learnTags('pdf')">PDF Fragen</a></li>
-                            <li role="menuitem"><a href ng-click="$ctrl.learnTags('pdf-solution')">PDF L&ouml;sungen</a></li>
-                        </ul>
-                    </div>
-                </div>
+        <div style="margin-top: 2px;">
+            <div class="btn-group" uib-dropdown>
+                <button type="button" ng-disabled="$ctrl.selectedQuestionNumber == 0" class="btn btn-success" ng-click="$ctrl.learnTags('question')"><i class="fa fa-fw fa-graduation-cap"></i> Lernen</button>
+                <button type="button" ng-disabled="$ctrl.selectedQuestionNumber == 0" class="btn btn-success" uib-dropdown-toggle>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" uib-dropdown-menu role="menu">
+                    <li role="menuitem"><a href ng-click="$ctrl.learnTags('exam')">Klausuransicht</a></li>
+                    <li role="menuitem"><a href ng-click="$ctrl.learnTags('pdf')">PDF Fragen</a></li>
+                    <li role="menuitem"><a href ng-click="$ctrl.learnTags('pdf-solution')">PDF L&ouml;sungen</a></li>
+                </ul>
             </div>
         </div>
     </div>
 
     <table class="table table-hover">
         <thead>
-            <th style="min-width:120px;"><i class="fa fa-fw fa-tag"></i> Markierung</th>
+            <th><i class="fa fa-fw fa-tag"></i> Markierung</th>
             <th><i class="fa fa-fw fa-flask"></i> Fach</th>
             <th>Frage</th>
             <th></th>
         </thead>
 
-        <tbody ng-repeat="(tag, tag_array) in $ctrl.questionsByTag" ng-show="tag == $ctrl.selectedTag || $ctrl.selectedTag == undefined">
+        <tbody ng-repeat="(tag, tag_array) in $ctrl.questionsByTag" ng-show="tag == $ctrl.selectedTag.tag || $ctrl.selectedTag == undefined">
             <tr ng-repeat="q in tag_array">
                 <td rowspan="{{ tag_array.length }}" style="min-width:140px;" ng-if="$first">
                     <span class="tags tag-item pull-left">

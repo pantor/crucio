@@ -86,7 +86,7 @@ $app->group('/questions', function() {
         }
 
         $data['result'] = $list;
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->get('/count', function($request, $response, $args) {
@@ -117,7 +117,7 @@ $app->group('/questions', function() {
 		);
 
 		$data['count'] = getFetch($stmt, $sql_params)['c'];
-	    return createResponse($response, $data);
+	    return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->get('/prepare-subjects', function($request, $response, $args) {
@@ -157,13 +157,13 @@ $app->group('/questions', function() {
         }
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 
-		$collection['list'] = getAll($stmt);;
+		$collection['list'] = getAll($stmt);
         // $collection['questions'] = [];
         $collection['type'] = 'subjects';
         $collection['selection'] = $selection;
 
         $data['collection'] = $collection;
-	    return createResponse($response, $data);
+	    return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
     });
 
     $this->get('/prepare-query', function($request, $response, $args) {
@@ -196,7 +196,7 @@ $app->group('/questions', function() {
         }
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 
-        $collection['list'] = getAll($stmt);;
+        $collection['list'] = getAll($stmt);
         // $collection['questions'] = [];
         $collection['type'] = 'query';
         $questionSearch['query'] = $request->getQueryParam('query');
@@ -205,7 +205,7 @@ $app->group('/questions', function() {
         $collection['questionSearch'] = $questionSearch;
 
         $data['collection'] = $collection;
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
     $this->get('/list', function($request, $response, $args) {
@@ -214,7 +214,7 @@ $app->group('/questions', function() {
         $list = json_decode($request->getQueryParam('list'));
 
         $data['list'] = getQuestionsFromList($mysql, $list);
-        return createResponse($response, $data);
+        return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
     });
 
 	$this->get('/{question_id}', function($request, $response, $args) {
@@ -244,7 +244,7 @@ $app->group('/questions', function() {
 
 		$data['question'] = $question;
 		$data['comments'] = $comments;
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
 	$this->get('/{question_id}/user/{user_id}', function($request, $response, $args) {
@@ -291,63 +291,8 @@ $app->group('/questions', function() {
 		$data['question'] = $question;
 		$data['tags'] = $tags['tags'];
 		$data['comments'] = $comments;
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
-
-
-	$this->post('', function($request, $response, $args) {
-    	$mysql = init();
-		$body = $request->getParsedBody();
-
-		$stmt = $mysql->prepare(
-    		"INSERT INTO questions (question, answers, correct_answer, exam_id, date_added,
-    		    user_id_added, explanation, question_image_url, type, category_id)
-		    VALUES (:question, :answers, :correct_answer, :exam_id, :date, :user_id_added,
-		        :explanation, :question_image_url, :type, :category_id)"
-        );
-        $stmt->bindValue(':question', $body['question']);
-        $stmt->bindValue(':answers', serialize($body['answers']));
-        $stmt->bindValue(':correct_answer', $body['correct_answer']);
-        $stmt->bindValue(':exam_id', $body['exam_id'], PDO::PARAM_INT);
-        $stmt->bindValue(':date', time());
-        $stmt->bindValue(':user_id_added', $body['user_id_added'], PDO::PARAM_INT);
-        $stmt->bindValue(':explanation', $body['explanation']);
-        $stmt->bindValue(':question_image_url', $body['question_image_url']);
-        $stmt->bindValue(':type', $body['type']);
-        $stmt->bindValue(':category_id', $body['category_id']);
-
-        $data['status'] = $stmt->execute();
-        $data['question_id'] = $mysql->lastInsertId();
-		return createResponse($response, $data);
-	});
-
-
-	$this->put('/{question_id}', function($request, $response, $args) {
-    	$mysql = init();
-		$body = $request->getParsedBody();
-
-		$stmt = $mysql->prepare(
-    		"UPDATE questions
-    		SET question = :question, answers = :answers, correct_answer = :correct_answer,
-    		    exam_id = :exam_id, explanation = :explanation,
-    		    question_image_url = :question_image_url, type = :type, category_id = :category_id
-            WHERE question_id = :question_id"
-        );
-        $stmt->bindValue(':question', $body['question']);
-        $stmt->bindValue(':answers', serialize($body['answers']));
-        $stmt->bindValue(':correct_answer', $body['correct_answer']);
-        $stmt->bindValue(':exam_id', $body['exam_id'], PDO::PARAM_INT);
-        $stmt->bindValue(':explanation', $body['explanation']);
-        $stmt->bindValue(':question_image_url', $body['question_image_url']);
-        $stmt->bindValue(':type', $body['type']);
-        $stmt->bindValue(':category_id', $body['category_id'], PDO::PARAM_INT);
-        $stmt->bindValue(':question_id', $args['question_id'], PDO::PARAM_INT);
-
-        $data['a'] = $body['answers'];
-        $data['status'] = $stmt->execute();
-		return createResponse($response, $data);
-	});
-
 
 	$this->delete('/{question_id}', function($request, $response, $args) {
 		$mysql = init();
@@ -360,7 +305,7 @@ $app->group('/questions', function() {
         $stmt->bindValue(':question_id', $args['question_id'], PDO::PARAM_INT);
 
         $data['status'] = $stmt->execute();
-		return createResponse($response, $data);
+		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 });
 

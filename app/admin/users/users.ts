@@ -1,10 +1,16 @@
+import { app } from './../../crucio';
+
+import AuthService from './../../services/auth.service';
+import APIService from './../../services/api.service';
+
+import { UserModalComponent } from './user-modal';
+
 class AdminUsersController {
   private readonly user: Crucio.User;
+  private users: Crucio.User[];
   private userSearch: any;
   private distinctGroups: any;
   private distinctSemesters: any;
-  private distinctGroupsPerId: any;
-  private users: Crucio.User[];
 
   constructor(Auth: AuthService, private readonly API: APIService, private readonly $uibModal: angular.ui.bootstrap.IModalService) {
     this.user = Auth.getUser();
@@ -14,10 +20,6 @@ class AdminUsersController {
     this.API.get('users/distinct').then(result => {
       this.distinctGroups = result.data.groups;
       this.distinctSemesters = result.data.semesters;
-      this.distinctGroupsPerId = {};
-      for (let e of this.distinctGroups) {
-        this.distinctGroupsPerId[e.group_id] = e.name;
-      }
     });
 
     this.loadUsers();
@@ -25,8 +27,8 @@ class AdminUsersController {
 
   loadUsers(): void {
     const data = {
-      semester: this.userSearch.semester,
-      group_id: this.userSearch.group,
+      semester: this.userSearch.semester && this.userSearch.semester.semester,
+      group_id: this.userSearch.group && this.userSearch.group.group_id,
       query: this.userSearch.query,
       limit: 100,
     };
@@ -55,16 +57,16 @@ class AdminUsersController {
 
   isToday(dateString: any, hourDiff: number = 0): boolean {
     const today: any = new Date();
-    const diff: number = today - 1000 * 60 * 60 * hourDiff;
+    const diff = today - 1000 * 60 * 60 * hourDiff;
     const compareDate = new Date(diff);
 
     const date = new Date(dateString * 1000);
     return (compareDate.toDateString() === date.toDateString());
   }
 
-  deleteUserModal(index: number): void {
+  userModal(index: number): void {
     const modal = this.$uibModal.open({
-      component: 'deleteUserModalComponent',
+      component: UserModalComponent,
       resolve: {
         user: () => this.users[index],
       },
@@ -78,7 +80,8 @@ class AdminUsersController {
   }
 }
 
-angular.module('crucioApp').component('adminuserscomponent', {
+export const AdminUsersComponent = 'adminUsersComponent';
+app.component(AdminUsersComponent, {
   templateUrl: 'app/admin/users/users.html',
   controller: AdminUsersController,
 });

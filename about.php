@@ -32,7 +32,7 @@
                     <dt>Version</dt>
                     <dd>
                         <address>
-                            Crucio ist in der <strong><span class="text-danger">0.9-Beta</span></strong>-Version. Falls ihr Fehler entdeckt, k&ouml;nnt ihr sie bei <a href="https://github.com/crucioproject/Crucio/issues">Github</a> eintragen. Oder euch einfach bei uns melden...
+                            Crucio ist in der <strong>1.0</strong>-Version. Falls ihr Fehler entdeckt, k&ouml;nnt ihr sie bei <a href="https://github.com/crucioproject/Crucio/issues">Github</a> eintragen. Oder euch einfach bei uns melden...
                         </address>
                     </dd>
 

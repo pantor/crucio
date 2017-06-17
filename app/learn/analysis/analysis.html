@@ -1,7 +1,7 @@
 <div class="container">
     <div class="page-header">
         <div class="pull-right">
-            <button type="button" class="btn btn-default" ng-click="$ctrl.Collection.save()">
+            <button type="button" class="btn btn-default" ng-click="$ctrl.Collection.saveRemote()">
                 Speichern
             </button>
 
@@ -60,7 +60,7 @@
                                     <strong class="text-warning">eine Frage ohne gespeicherte Antwort</strong>
                                 </span>
 
-                                dabei, insgesamt hast du so {{ $ctrl.count.solved }} Frage{{ $ctrl.count.solved > 1 ? 'n':'' }} gel&ouml;st.
+                                dabei, insgesamt hast du {{ $ctrl.count.solved }} Frage{{ $ctrl.count.solved > 1 ? 'n':'' }} gel&ouml;st.
                             </span>
 
                             <span ng-if="$ctrl.count.correct == $ctrl.count.solved">
