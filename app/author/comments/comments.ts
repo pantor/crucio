@@ -34,13 +34,13 @@ class AuthorCommentsController {
         // found = this.questionsByComment.findIndex(e => { e[0].question == c.question });
         let found = -1;
         for (let i = 0; i < this.questionsByComment.length; i++) {
-          if (this.questionsByComment[i][0].question === c.question) {
+          if (this.questionsByComment[i][0].question_id === c.question_id) {
             found = i;
             break;
           }
         }
 
-        if (found > 0) {
+        if (found >= 0) {
           this.questionsByComment[found].push(c);
         } else {
           this.questionsByComment.push([c]);
