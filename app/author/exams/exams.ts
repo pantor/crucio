@@ -17,9 +17,10 @@ class AuthorExamsController {
 
     this.examSearch = { author: this.user };
 
+    this.distinctAuthors = [this.user];
+
     this.API.get('exams/distinct').then(result => {
       this.distinctSemesters = result.data.semesters;
-      this.distinctAuthors = result.data.authors;
       this.distinctSubjects = result.data.subjects;
     });
 

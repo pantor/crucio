@@ -15,9 +15,7 @@ class AuthorCommentsController {
 
     this.commentSearch = { author: this.user };
 
-    this.API.get('exams/distinct').then(result => {
-      this.distinctAuthors = result.data.authors;
-    });
+    this.distinctAuthors = [this.user];
 
     this.loadComments();
   }
