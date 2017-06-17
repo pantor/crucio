@@ -24,7 +24,7 @@ class EditExamController {
   private subjectListPerId: any;
   private categoryListPerId: any;
 
-  constructor(Page: PageService, Auth: AuthService, private readonly API: APIService, private readonly FileUploader, $scope: angular.IScope, private readonly $location: angular.ILocationService, $stateParams: angular.ui.IStateParamsService, private readonly $uibModal: angular.ui.bootstrap.IModalService) {
+  constructor(Page: PageService, Auth: AuthService, private readonly API: APIService, private readonly FileUploader, $scope: angular.IScope, private readonly $location: angular.ILocationService, private readonly $uibModal: angular.ui.bootstrap.IModalService, $stateParams: angular.ui.IStateParamsService, $transitions) {
     Page.setTitleAndNav('Klausur | Crucio', 'Author');
 
     this.user = Auth.getUser();
@@ -59,7 +59,7 @@ class EditExamController {
       this.numberChanged += 1;
     }, true);
 
-    $scope.$on('$locationChangeStart', event => {
+    $transitions.onStart( { from: 'edit-exam' }, () => {
       if (this.hasChanged) {
         const confirmClose = confirm(
           'Die Änderungen an der Klausur bleiben dann ungespeichert. Wirklich verlassen?'
