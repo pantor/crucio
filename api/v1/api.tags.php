@@ -49,7 +49,8 @@ $app->group('/tags', function() {
             }
         }
 
-		$data['tags'] = array_unique($tags, SORT_REGULAR);
+        // Array unique for remove duplicates, array values for reset the keys
+		$data['tags'] = array_values( array_unique($tags, SORT_REGULAR) );
 		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});
 
