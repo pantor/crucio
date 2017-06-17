@@ -28,7 +28,7 @@
                 <span ng-bind-html="c.question"></span>
             </td>
             <td>{{ c.username }}</td>
-            <td>{{ c.comment }}</td>
+            <td style="max-width: 350px; overflow: scroll;">{{ c.comment }}</td>
             <td><timeago datetime="c.date * 1000"></timeago></td>
             <td><a ui-sref="question({ questionId: c.question_id, resetSession: 1 })"><i class="fa fa-chevron-right"></i></a></td>
         </tr>
