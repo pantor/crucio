@@ -1,6 +1,6 @@
 <h4>Deine Markierungen</h4>
 
-<div ng-if="!$ctrl.tags.length" class="container-center-align-sm mbottom-2x">
+<div ng-if="!$ctrl.tags" class="container-center-align-sm mbottom-2x">
     <i class="fa fa-tags"></i>
 
     <hr>
@@ -9,7 +9,7 @@
         Gebe dort die Markierung ein und dr&uuml;cke Enter.</h5>
 </div>
 
-<div ng-if="$ctrl.tags.length">
+<div ng-if="$ctrl.tags">
     <div class="flex-container" style="justify-content: space-between;">
         <dropdown class="btn-group" data="$ctrl.distinctTags" selected="$ctrl.selectedTag" placeholder="Alle Markierungen" show-key="tag"></dropdown>
 
