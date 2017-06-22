@@ -1,5 +1,6 @@
 /// <reference path="crucio.d.ts"/>
 
+import 'es6-shim';
 import * as angular from 'angular';
 import 'angular-cookies';
 import 'angular-messages';
