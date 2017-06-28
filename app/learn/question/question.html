@@ -1,7 +1,39 @@
 <div class="container">
     <form class="form-horizontal mtop-navbar-row">
         <div class="row">
-            <div class="col-md-9">
+            <div class="col-sm-12 col-md-3 col-md-push-9 mbottom">
+                <div class="panel panel-default" ng-show="$ctrl.question.exam_id">
+                    <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-fw fa-flask"></i> {{ $ctrl.question.subject }}</h3></div>
+                    <ul class="list-group">
+                        <li class="list-group-item">{{ $ctrl.question.semester }}. Semester<span ng-show="question.sort">, {{ $ctrl.question.sort }}</span></li>
+                        <li class="list-group-item"><i class="fa fa-fw fa-calendar"></i> {{ $ctrl.question.date }}</li>
+                        <li class="list-group-item" ng-if="$ctrl.question.professor"><i class="fa fa-fw fa-user-md"></i> {{ $ctrl.question.professor }}</li>
+                        <li class="list-group-item" ng-if="$ctrl.question.topic && $ctrl.question.topic != 'Sonstiges' && $ctrl.question.topic != ''">
+                            <i class="fa fa-fw fa-angle-right"></i> {{ $ctrl.question.topic }}
+                        </li>
+
+                        <li class="list-group-item" ng-if="$ctrl.index != -1">
+                            <p><strong>Frage {{ $ctrl.index + 1 }} von {{ $ctrl.length }}</strong></p>
+
+                            <uib-progressbar value="($ctrl.index + 1) / $ctrl.length * 100" type="success"></uib-progressbar>
+                        </li>
+
+                        <li class="list-group-item" ng-if="$ctrl.index != -1">
+                            <button type="button" class="btn btn-default" ng-click="$ctrl.Collection.saveRemote()">
+                                Speichern
+                            </button>
+
+                            <button type="button" class="btn btn-danger pull-right" ui-sref="analysis">Klausur beenden</button>
+                        </li>
+                    </ul>
+                </div>
+
+                <hr>
+
+                <tags-input placeholder="Markierung hinzuf&uuml;gen" ng-model="$ctrl.tags" on-tag-added="$ctrl.updateTags($tag)" on-tag-removed="$ctrl.updateTags($tag)"></tags-input>
+            </div>
+
+            <div class="col-sm-12 col-md-9 col-md-pull-3">
                 <blockquote>
                     <p>
                         <a href data-toggle="modal" data-target="#myModal" ng-show="$ctrl.question.question_image_url" ng-click="$ctrl.openImageModal()">
@@ -43,37 +75,7 @@
                 </div>
             </div>
 
-            <div class="col-md-3 hidden-sm hidden-xs">
-                <div class="panel panel-default" ng-show="$ctrl.question.exam_id">
-                    <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-fw fa-flask"></i> {{ $ctrl.question.subject }}</h3></div>
-                    <ul class="list-group">
-                        <li class="list-group-item">{{ $ctrl.question.semester }}. Semester<span ng-show="question.sort">, {{ $ctrl.question.sort }}</span></li>
-                        <li class="list-group-item"><i class="fa fa-fw fa-calendar"></i> {{ $ctrl.question.date }}</li>
-                        <li class="list-group-item" ng-if="$ctrl.question.professor"><i class="fa fa-fw fa-user-md"></i> {{ $ctrl.question.professor }}</li>
-                        <li class="list-group-item" ng-if="$ctrl.question.topic && $ctrl.question.topic != 'Sonstiges' && $ctrl.question.topic != ''">
-                            <i class="fa fa-fw fa-angle-right"></i> {{ $ctrl.question.topic }}
-                        </li>
 
-                        <li class="list-group-item" ng-if="$ctrl.index != -1">
-                            <p><strong>Frage {{ $ctrl.index + 1 }} von {{ $ctrl.length }}</strong></p>
-
-                            <uib-progressbar value="($ctrl.index + 1) / $ctrl.length * 100" type="success"></uib-progressbar>
-                        </li>
-
-                        <li class="list-group-item" ng-if="$ctrl.index != -1">
-                            <button type="button" class="btn btn-default" ng-click="$ctrl.Collection.saveRemote()">
-                                Speichern
-                            </button>
-
-                            <button type="button" class="btn btn-danger pull-right" ui-sref="analysis">Klausur beenden</button>
-                        </li>
-                    </ul>
-                </div>
-
-                <hr>
-
-                <tags-input placeholder="Markierung hinzuf&uuml;gen" ng-model="$ctrl.tags" on-tag-added="$ctrl.updateTags($tag)" on-tag-removed="$ctrl.updateTags($tag)"></tags-input>
-            </div>
         </div>
 
         <hr>
