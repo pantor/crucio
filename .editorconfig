@@ -1,16 +1,13 @@
-# top-most EditorConfig file
+# Editor configuration, see http://editorconfig.org
 root = true
 
-# 4 space indentation
 [*]
-indent_style = space
-indent_size = 4
-
-# JS 2 space indentation
-[*.js]
+charset = utf-8
 indent_style = space
 indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
 
-[*.ts]
-indent_style = space
-indent_size = 2
+[*.md]
+max_line_length = off
+trim_trailing_whitespace = false

@@ -1,14 +1,20 @@
 {
-    "compilerOptions": {
-        "removeComments": true,
-        "types" : [
-            "angular",
-            "angular-ui-bootstrap",
-            "angular-ui-router"
-        ]
-    },
-    "files": [
-        "app/crucio.ts",
-        "app/crucio.d.ts"
+  "compileOnSave": false,
+  "compilerOptions": {
+    "outDir": "./dist/out-tsc",
+    "baseUrl": "src",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es5",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2016",
+      "dom"
     ]
+  }
 }
