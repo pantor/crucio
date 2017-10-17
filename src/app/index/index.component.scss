@@ -1,0 +1,60 @@
+$light-blue: #6d9bb5;
+$dark-grey: #444;
+
+
+.btn-outline-white {
+  color: #fff;
+  border-color: #fff;
+
+  &:hover {
+    color: green;
+    background-color: #fff;
+  }
+}
+
+.text-light {
+  font-weight: lighter;
+  -webkit-font-smoothing: subpixel-antialiased;
+}
+
+.form-label {
+  margin-bottom: 0;
+
+  font-size: 14px;
+}
+
+.info-block-crucio {
+  h2 {
+    margin: 15px 0;
+
+    color: $dark-grey;
+  }
+
+  p {
+    padding: 0 10px;
+  }
+
+  i {
+    width: 142px;
+    height: 142px;
+    margin: 10px auto;
+    padding-top: 40px;
+
+    background-color: $light-blue;
+    border: 1px solid $light-blue;
+    border-radius: 85px;
+    transition: all .2s;
+
+    font-size: 56px;
+    color: #fff;
+
+    &:hover {
+      background: #fff;
+      color: $light-blue;
+    }
+  }
+}
+
+p.width-center {
+  max-width: 600px;
+}

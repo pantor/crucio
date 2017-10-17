@@ -1,0 +1,31 @@
+<div class="modal-header">
+  <h4 class="modal-title">
+    <i class="fa fa-fw fa-bullhorn"></i> Frage Melden
+  </h4>
+</div>
+<div class="modal-body">
+  <div class="form-group row">
+    <label class="col-sm-3">Frage</label>
+    <div class="col-sm-9">
+      <span [innerHtml]="question.question"></span>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-sm-3">Klausur</label>
+    <div class="col-sm-9">
+      {{ question.subject }}, {{ question.date }}
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-sm-3 col-form-label">Nachricht</label>
+    <div class="col-sm-9">
+      <textarea [(ngModel)]="message" class="form-control" rows="4" placeholder="Bitte eine kleine Beschreibung... Danke!"></textarea>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss()">Abbrechen</button>
+  <button type="button" class="btn btn-primary" [disabled]="!message" (click)="reportQuestion()">Melden</button>
+</div>

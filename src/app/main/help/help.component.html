@@ -1,0 +1,25 @@
+<app-toast></app-toast>
+
+<h4>Hilfe & Kontakt</h4>
+
+<hr>
+
+<form (ngSubmit)="sendMail()" [formGroup]="f" novalidate>
+  <div class="form-group row">
+    <label class="col-sm-3 col-form-label">Nachricht</label>
+    <div class="col-sm-7">
+      <textarea class="form-control" [class.is-invalid]="f.get('message').invalid && f.get('message').touched" rows="4" formControlName="message"></textarea>
+
+      <div class="invalid-feedback" *ngIf="f.get('message').hasError('required') && f.get('message').touched">
+        Bitte Nachricht angeben
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-5">
+      <button class="btn btn-success" type="submit" [disabled]="f.invalid || emailSend">Senden</button>
+    </div>
+  </div>
+</form>

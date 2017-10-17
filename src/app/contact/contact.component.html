@@ -1,0 +1,96 @@
+<div class="wrap">
+  <div class="container">
+    <div class="d-flex justify-content-between">
+      <a class="brand d-flex flex-column justify-content-center align-items-center" routerLink="">
+        <h1><i class="fa fa-check-square-o"></i> Crucio</h1>
+      </a>
+
+      <a class="btn btn-outline-success mt-3 mb-3" routerLink="">
+        <i class="fa fa-sign-in fa-fw hidden-xs"></i> Anmelden
+      </a>
+    </div>
+  </div>
+
+  <div class="container-fluid bg-image">
+    <div class="container text-white">
+      <div class="text-center pt-5 pb-5">
+        <h1 class="display-3"><i class="fa fa-bullhorn"></i></h1>
+        <h4>Kontakt</h4>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid bg-light">
+    <div class="container text-center pt-5 pb-5">
+      <p>Bei Angelegenheiten wie z.B. Problemen bei der Registrierung, einer anderen E-Mail-Adresse oder weiteren Klausuren könnt ihr euch hier an uns wenden.</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="col-md-1"></div>
+    <form class="mt-5 mb-5" (ngSubmit)="sendMessage()" [formGroup]="f" novalidate>
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Name</label>
+        <div class="col-sm-9 col-md-5">
+          <input class="form-control" [class.is-invalid]="f.get('name').invalid && f.get('name').touched" type="text" formControlName="name" autofocus />
+
+          <div class="invalid-feedback" *ngIf="f.get('name').hasError('required') && f.get('name').touched">
+            Bitte Namen angeben
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">E-Mail-Adresse</label>
+        <div class="col-sm-9 col-md-5">
+          <input class="form-control" [class.is-invalid]="f.get('mail').invalid && f.get('mail').touched" type="email" formControlName="mail" />
+
+          <div class="invalid-feedback" *ngIf="f.get('mail').hasError('required') && f.get('mail').touched">
+            Bitte E-Mail-Adresse angeben
+          </div>
+
+          <div class="invalid-feedback" *ngIf="f.get('mail').hasError('pattern') && f.get('mail').touched">
+            Bitte gültige E-Mail-Adresse angeben
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Nachricht</label>
+        <div class="col-sm-9 col-md-5">
+          <textarea class="form-control" [class.is-invalid]="f.get('message').invalid && f.get('message').touched" rows="4" formControlName="message"></textarea>
+
+          <div class="invalid-feedback" *ngIf="f.get('message').hasError('required') && f.get('message').touched">
+            Bitte Nachricht angeben
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-5">
+          <button class="btn btn-success" type="submit" [disabled]="f.invalid">Senden</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<footer class="navbar navbar-expand-sm navbar-dark bg-dark">
+  <div class="container">
+    <div class="navbar-collapse collapse justify-content-around justify-content-sm-between">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link" href="https://sturamed-leipzig.de">Sturamed</a>
+      </div>
+
+      <div class="navbar-nav">
+        <a class="nav-item nav-link" routerLink="/app"><i class="fa fa-check-square-o"></i></a>
+      </div>
+
+      <div class="navbar-nav">
+        <a class="nav-item nav-link" routerLink="/contact">Kontakt</a>
+        <a class="nav-item nav-link" routerLink="/about">Impressum</a>
+      </div>
+    </div>
+  </div>
+</footer>

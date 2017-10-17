@@ -1,0 +1,87 @@
+<h4>Aktivität</h4>
+
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col">
+      <label class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" [(ngModel)]="updateActivity">
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description text-danger"><i class="fa fa-fw fa-refresh"></i> LIVE </span>
+      </label>
+    </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-4">
+        <label class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" [(ngModel)]="showActivity.result" [disabled]="!updateActivity">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description">Antworten</span>
+        </label>
+
+        <label class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" [(ngModel)]="showActivity.register" [disabled]="!updateActivity">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description">Registrierungen</span>
+        </label>
+      </div>
+      <div class="col-sm-12 col-md-4">
+        <label class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" [(ngModel)]="showActivity.login" [disabled]="!updateActivity">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description">Anmeldungen</span>
+        </label>
+
+        <label class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" [(ngModel)]="showActivity.comment" [disabled]="!updateActivity">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description">Kommentare</span>
+        </label>
+      </div>
+      <div class="col-sm-12 col-md-4">
+        <label class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" [(ngModel)]="showActivity.examNew" [disabled]="!updateActivity">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description">Neue Klausuren</span>
+        </label>
+
+        <label class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" [(ngModel)]="showActivity.examUpdate" [disabled]="!updateActivity">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description">Bearbeitete Klausuren</span>
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<table class="table mt-2">
+  <tbody>
+    <tr *ngFor="let a of activities">
+      <td>
+        <span class="text-muted"><i class="fa fa-clock-o fa-fw"></i> <app-timeago [datetime]="a.date * 1000"></app-timeago></span>
+      </td>
+      <td *ngIf="a.activity == 'result'">
+        <strong>{{ a.username }}</strong> hat Frage #{{ a.question_id }}
+        <strong class="text-danger" [hidden]="a.correct != 0">falsch</strong>
+        <strong class="text-success" [hidden]="a.correct != 1">richtig</strong>
+        beantwortet
+      </td>
+      <td *ngIf="a.activity == 'register'">
+        <strong>{{ a.username }}</strong> hat sich registriert
+      </td>
+      <td *ngIf="a.activity == 'login'">
+        <strong>{{ a.username }}</strong> hat sich angemeldet
+      </td>
+      <td *ngIf="a.activity == 'comment'">
+        <strong>{{ a.username }}</strong> hat einen Kommentar zur Frage #{{ a.question_id }} geschrieben
+      </td>
+      <td *ngIf="a.activity == 'exam_new'">
+        <strong>{{ a.username }}</strong> hat Klausur #{{ a.exam_id }} hinzugefügt
+      </td>
+      <td *ngIf="a.activity == 'exam_update'">
+        <strong>{{ a.username }}</strong> hat Klausur #{{ a.exam_id }} verändert
+      </td>
+    </tr>
+  </tbody>
+</table>

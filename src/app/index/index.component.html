@@ -1,0 +1,137 @@
+<div class="container">
+  <form class="d-flex flex-sm-row flex-column" (ngSubmit)="login()">
+    <a class="brand mr-auto d-flex flex-column justify-content-center align-items-center" routerLink="">
+      <h1><i class="fa fa-check-square-o"></i> Crucio</h1>
+    </a>
+
+    <div class="mt-2 mb-2 mr-2">
+      <input class="form-control form-control-danger" [class.is-invalid]="failedLogin" [(ngModel)]="mail" name="email" type="email" placeholder="E-Mail-Adresse" autofocus tabindex=1 required>
+      <label class="custom-control custom-checkbox form-label">
+        <input type="checkbox" class="custom-control-input" [(ngModel)]="rememberMe" name="remember_me">
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description">Angemeldet bleiben</span>
+      </label>
+    </div>
+
+    <div class="mt-2 mb-2 mr-2">
+      <input class="form-control form-control-danger" [class.is-invalid]="failedLogin" [(ngModel)]="password" name="password" type="password" placeholder="Passwort" tabindex=2 required>
+      <label class="form-label">
+        <a routerLink="forgot-password">Passwort vergessen?</a>
+      </label>
+    </div>
+
+    <button class="btn btn-outline-success align-self-start mt-2 mb-3" type="submit">
+      <i class="fa fa-sign-in fa-fw hidden-xs"></i> Anmelden
+    </button>
+  </form>
+</div>
+
+<div class="container-fluid bg-image">
+  <div class="container text-white">
+    <div class="text-center pt-5">
+      <h1 class="display-3"><i class="fa fa-check-square-o"></i> Crucio</h1>
+
+      <div class="row justify-content-center mt-4 mb-4">
+        <p class="col-sm-7">... hilft dir bei der Vorbereitung für Medizinklausuren an der Universität Leipzig. Hier werden Übungsfragen aus dem Studium gesammelt, gekreuzt und erklärt.</p>
+      </div>
+
+      <a class="btn btn-outline-white btn-lg" routerLink="/register">Registrieren</a>
+      <a class="btn btn-outline-white btn-lg" href="#features">Mehr Infos</a>
+    </div>
+  </div>
+
+  <img src="assets/images/med_notepad.png" class="img-fluid mx-auto d-block" alt="Klausuren lernen">
+</div>
+
+<div class="container-fluid bg-light">
+  <div class="d-flex justify-content-center">
+    <div class="sturamed mt-4 mb-4 text-center">
+      <p>Crucio - Ein Projekt eures</p>
+      <a href="https://sturamed-leipzig.de">
+        <img src="assets/images/sturamed.svg" width="245px" alt="Sturamed">
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="container" id="features">
+  <div class="row mt-5 mb-5">
+    <div class="col-sm-4 info-block-crucio text-center">
+      <i class="fa fa-book fa-5x"></i>
+      <h2>Lernen</h2>
+      <p class="text-light text-muted">Mit Crucio kannst du Fragen & Übungsklausuren anschauen, lernen, wiederholen und erklären lassen. Hier sind alle Fragen, die bisher an der Universität Leipzig gesammelt wurden, vereint. Damit sind die Fragen mit dem Studium in Leipzig abgestimmt, sodass du perfekt für die nächsten Klausuren vorbereitet bist.</p>
+    </div>
+
+    <div class="col-sm-4 info-block-crucio text-center">
+      <i class="fa fa-inbox fa-5x"></i>
+      <h2>Übersicht</h2>
+      <p class="text-light text-muted">Crucio ist ein zentraler Ort für Fragen und Übungsklausuren an & von der Universität Leipzig. Die Übungsklausuren sind automatisch nach deinem Semester sortiert, du kannst aber natürlich nach Fachbereich oder einzelnen Fragen suchen. So kannst du dir deine Zeit und Nerven für Inhalte aufheben.</p>
+    </div>
+
+    <div class="col-sm-4 info-block-crucio text-center">
+      <i class="fa fa-bar-chart-o fa-5x"></i>
+      <h2>Statistik</h2>
+      <p class="text-light text-muted">Mit Crucio kannst du genau analysieren, welche Fragen aus welchem Fachbereich du richtig oder falsch gelöst hast. Oder wo deine Schwachpunkte bei einer bestimmten Klausur sind, damit es beim nächsten Mal umso besser klappt. <br><small>Noch nicht verfügbar.</small></p>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid bg-light">
+  <div class="d-flex justify-content-center">
+    <div class="cite mt-5 mb-5">
+      <h3>Heureka, Papier ist [...] sowas von gestern!</h3>
+      <i class="fa fa-quote-left pull-left text-primary"> <a href="http://de.wikipedia.org/wiki/Epikur">Epikuros von Samos</a></i>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row mt-5 mb-5">
+    <div class="col-sm-4 info-block-crucio text-center">
+      <i class="fa fa-comments-o fa-5x"></i>
+      <h2>Austauschen</h2>
+      <p class="text-light text-muted">Wenn du Schwierigkeiten hast und eine Frage nicht verstehst, kannst du einfach die Kommentarfunktion auf Crucio nutzen. Die Autoren oder freundliche Kommilitonen können dann sicher weiterhelfen...</p>
+    </div>
+
+    <div class="col-sm-4 info-block-crucio text-center">
+      <i class="fa fa-car fa-5x"></i>
+      <h2>Überall</h2>
+      <p class="text-light text-muted">Du kannst Klausuren und deren Lösungszettel seperat ausdrucken. Außerdem ist Crucio für Smartphones und Tablets angepasst. So kannst du überall entfallende Antworten nachschauen oder unterwegs weiterlernen. Füge doch Crucio zu deinem Startbildschirm hinzu!</p>
+    </div>
+
+    <div class="col-sm-4 info-block-crucio text-center">
+      <i class="fa fa-pencil fa-5x"></i>
+      <h2>Mitmachen</h2>
+      <p class="text-light text-muted">Crucio lebt von deiner Anteilnahme! Wenn du dich engagieren willst, kannst du Fragen & Klausuren eintragen, Fehler korrigieren oder Erklärungen schreiben. Melde dich einfach digital unter 'Kontakt' oder bei uns in der Fachschaft Medizin.</p>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid bg-orange">
+  <div class="d-flex justify-content-center text-white">
+    <div class="text-center text-white text-light mt-5 mb-5">
+      <i class="fa fa-magic fa-5x"></i>
+      <h4 class="mt-4 mb-3">Noch nicht registriert?</h4>
+      <p class="width-center">Auf gehts! Wenn du aber gar nicht an der Universität Leipzig studierst, dann kannst du uns gerne mal anschreiben, vielleicht können wir dir helfen...</p>
+    </div>
+  </div>
+</div>
+
+<footer class="navbar navbar-expand-sm navbar-dark bg-dark">
+  <div class="container">
+    <div class="navbar-collapse collapse justify-content-around justify-content-sm-between">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link" href="https://sturamed-leipzig.de">Sturamed</a>
+      </div>
+
+      <div class="navbar-nav">
+        <a class="nav-item nav-link" routerLink="/app"><i class="fa fa-check-square-o"></i></a>
+      </div>
+
+      <div class="navbar-nav">
+        <a class="nav-item nav-link" routerLink="/contact">Kontakt</a>
+        <a class="nav-item nav-link" routerLink="/about">Impressum</a>
+      </div>
+    </div>
+  </div>
+</footer>

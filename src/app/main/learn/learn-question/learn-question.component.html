@@ -1,0 +1,159 @@
+<app-toast></app-toast>
+
+<div class="container">
+  <div class="row mb-4">
+    <div class="col-lg-8">
+      <blockquote class="blockquote">
+        <p class="mb-0">
+          <a *ngIf="question?.question_image_url" (click)="openImageModal(question.question_image_url)">
+            <img class="img-thumbnail pull-right" width="250px" src="/files/{{ question?.question_image_url }}">
+          </a>
+
+          <span [innerHtml]="question?.question"></span>
+
+          <span class="badge badge-info" *ngIf="question?.type == 1"> Freie Frage</span>
+          <span class="badge badge-danger" *ngIf="question?.type > 1 && !question?.correct_answer"> Keine Antwort</span>
+        </p>
+      </blockquote>
+
+
+      <div class="custom-controls-stacked" *ngIf="question?.type > 1">
+        <div class="showhim" *ngFor="let a of question.answers; let j = index" [hidden]="j >= question?.type">
+          <button type="button" class="btn btn-outline-secondary btn-sm btn-strike showme" (click)="setStrike(j)" [class.active]="questionData.strike && questionData.strike[j]">
+            <i class="fa fa-fw fa-strikethrough"></i>
+          </button>
+
+          <label class="custom-control custom-radio mt-2 ml-5" (click)="setAnswer(j + 1)">
+            <input type="radio" class="custom-control-input" [(ngModel)]="checkedAnswer" [value]="j + 1" />
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description" [ngClass]="{ 'answer-success': (correctAnswer == j + 1), 'answer-danger': (wrongAnswer == j + 1), 'text-danger text-strike': (questionData.strike && questionData.strike[j]) }" [innerHtml]="a"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 flex-lg-last flex-first mb-2">
+      <div class="card card-exam-info mb-4">
+        <div class="card-body">
+          <h4 class="card-title"><i class="fa fa-fw fa-flask"></i> {{ question?.subject }}</h4>
+          <p class="card-text">
+            {{ question?.semester }}. Semester <i class="fa fa-fw fa-calendar"></i> {{ question?.date }}
+          </p>
+        </div>
+
+        <div class="card-body" *ngIf="index >= 0">
+          <span>Frage {{ index + 1 }} von {{ length }}</span>
+          <ngb-progressbar type="success" [value]="(index + 1) / length * 100"></ngb-progressbar>
+        </div>
+
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item" *ngIf="question?.professor">
+            <i class="fa fa-fw fa-user-md"></i> {{ question?.professor }}
+          </li>
+          <li class="list-group-item" *ngIf="question?.notes">
+            <i class="fa fa-fw fa-pencil-square-o"></i> {{ question?.notes }}
+          </li>
+          <li class="list-group-item" *ngIf="index != -1">
+            <button class="btn btn-outline-secondary" (click)="save()">Speichern</button>
+            <button class="btn btn-danger ml-auto" routerLink="/app/analysis">Beenden</button>
+          </li>
+        </ul>
+      </div>
+
+      <hr>
+
+      <tag-input [(ngModel)]="tags" (onAdd)="updateTags($event)" (onRemove)="updateTags($event)" theme="bootstrap" placeholder="+ Markierung" secondaryPlaceholder="Markierung hinzufügen" ripple="false"></tag-input>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="d-flex flex-column flex-sm-row">
+    <div class="btn-group mr-auto">
+      <button class="btn btn-outline-secondary" *ngIf="index != -1" [disabled]="preQuestionId == questionId" (click)="goToQuestion(preQuestionId)">
+          <i class="fa fa-backward"></i>
+      </button>
+
+      <button class="btn" [ngClass]="{ 'btn-outline-primary': !isAnswerGiven, 'btn-success': isAnswerRight, 'btn-danger': isAnswerWrong }" [disabled]="isAnswerGiven || (question?.type == 1 && question?.answers[0].length == 0) || (question?.type > 1 && question?.correct_answer == 0)" (click)="showSolution()">
+          Lösung <span class="hidden-xs-down">anzeigen</span>
+      </button>
+
+      <button class="btn btn-outline-secondary" [disabled]="!question?.explanation" (click)="showExplanation = !showExplanation">
+          Erklärung
+      </button>
+
+      <button class="btn btn-outline-secondary" *ngIf="index != -1" [disabled]="postQuestionId == questionId" (click)="goToQuestion(postQuestionId)">
+          <i class="fa fa-forward"></i>
+      </button>
+    </div>
+
+    <a *ngIf="user.group_id == 2 || user.group_id == 3" class="btn btn-default hidden-xs-down" routerLink="/app/edit-exam" [queryParams]="{ examId: question?.exam_id, questionId: questionId }">
+        Bearbeiten
+    </a>
+
+    <button class="btn btn-outline-secondary" (click)="openReportModal()">Melden</button>
+  </div>
+
+  <div class="card" *ngIf="showExplanation">
+    <div class="card-body">
+      <span [innerHtml]="question?.explanation"></span>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="card mt-2 mb-4">
+    <h4 class="card-header">
+      <i class="fa fa-comments fa-fw"></i>Kommentare
+      <span class="badge badge-secondary">{{ comments.length }}</span>
+
+
+      <button type="button" class="btn btn-outline-info btn-sm" (click)="commentsCollapsed = !commentsCollapsed" *ngIf="!commentsCollapsed" style="float: right;">
+        Einblenden
+      </button>
+    </h4>
+
+    <div class="card-body" *ngIf="commentsCollapsed">
+      <form class="row">
+        <div class="col-lg-10 col-md-9 col-sm-8">
+          <textarea class="form-control" name="commentText" rows="3" [(ngModel)]="commentText"></textarea>
+        </div>
+
+        <div class="col-lg-2 col-md-3 col-sm-4">
+          <button class="btn btn-primary btn-block" (click)="addComment()" [disabled]="!commentText">Kommentieren</button>
+        </div>
+      </form>
+
+    </div>
+
+    <ul class="list-group list-group-flush" *ngIf="commentsCollapsed">
+      <li class="list-group-item align-items-start pr-3 pl-3 d-flex" *ngFor="let c of comments; let i = index">
+        <div class="comment-voting">
+          <div class="comment-voting-up" (click)="changeUserVoting(c, 1)">
+            <i class="fa fa-chevron-up text-muted" [ngClass]="{ 'text-success': c.user_voting == 1 }"></i>
+          </div>
+
+          <div class="comment-voting-number text-center">
+            <small class="text-muted">{{ c.voting + c.user_voting }}</small>
+          </div>
+
+          <div class="comment-voting-down" (click)="changeUserVoting(c, -1)">
+            <i class="fa fa-chevron-down text-muted" [ngClass]="{ 'text-danger': c.user_voting == -1 }"></i>
+          </div>
+        </div>
+
+        <div>
+          <strong class="primary-font">{{ c.username }}</strong><br>
+          <small class="text-muted">
+            <i class="fa fa-clock-o"></i>
+            <app-timeago [datetime]="c.date * 1000"></app-timeago>
+          </small>
+        </div>
+
+        <p class="col">{{ c.comment }}</p>
+
+        <button class="close" (click)="deleteComment(i)" *ngIf="user.group_id == 2 || user.user_id == c.user_id">&times;</button>
+      </li>
+    </ul>
+  </div>
+</div>

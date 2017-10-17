@@ -1,0 +1,48 @@
+<div class="card">
+  <div class="card-header">
+    <i class="fa fa-search"></i> Suche nach mündlichen Prüfungen
+  </div>
+  <div class="card-body">
+    <div class="btn-toolbar no-gutters">
+      <app-dropdown-button class="mr-2" [data]="distinctSemesters" [selected]="oralExamSearch.semester" showKey="name" placeholder="Alle Semester" (onUpdate)="oralExamSearch.semester = $event; searchOralExams()"></app-dropdown-button>
+
+      <app-dropdown-button class="mr-2" [data]="distinctYears" [selected]="oralExamSearch.year" showKey="year" placeholder="Alle Jahre" (onUpdate)="oralExamSearch.year = $event; searchOralExams()"></app-dropdown-button>
+
+      <form class="input-group mr-2 col" (ngSubmit)="searchOralExams()">
+        <input class="form-control" type="text" name="query" [(ngModel)]="oralExamSearch.query" placeholder="...">
+
+        <span class="input-group-btn">
+          <button class="btn btn-outline-secondary" (click)="searchOralExams()">
+            <i class="fa fa-search"></i>
+          </button>
+        </span>
+      </form>
+    </div>
+  </div>
+</div>
+
+<table class="table table-hover mt-2" *ngIf="oralExams && oralExams.length">
+  <thead>
+    <th></th>
+    <th><i class="fa fa-fw fa-calendar"></i> Jahr</th>
+    <th>Prüfer</th>
+    <th></th>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let e of oralExams">
+      <td>
+        <span *ngIf="e.semester == 0" class="badge badge-primary">Physikum</span>
+        <span *ngIf="e.semester == 1" class="badge badge-primary">Staatsexamen</span>
+      </td>
+      <td>{{ e.year }}</td>
+      <td>
+        {{ e.examiner_1 }}<br>
+        {{ e.examiner_2 }}<br>
+        {{ e.examiner_3 }}<br>
+        <span *ngIf="e.examiner_count == 4">{{ e.examiner_4 }}</span>
+      </td>
+      <td><a href="/files/{{ e.filename }}" target="_blank" *ngIf="e.filename"><i class="fa fa-external-link"></i></a></td>
+    </tr>
+  </tbody>
+</table>

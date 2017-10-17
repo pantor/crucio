@@ -1,0 +1,223 @@
+<!--div class="row no-gutters">
+  <div class="col-sm-6 col-md-4">
+    <div class="card text-center m-2">
+      <div class="card-body">
+        <h2 class="card-title">{{ stats?.user_count }}</h2>
+
+        <small class="text-muted">
+          <i class="fa fa-users fa-fw"></i> Nutzer
+        </small>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-md-4">
+    <div class="card text-center m-2">
+      <div class="card-body">
+        <h2 class="card-title">{{ stats?.question_count }}</h2>
+
+        <small class="text-muted">
+          <i class="fa fa-question-circle fa-fw"></i> Fragen | {{ stats?.visible_question_count }} sichtbar
+        </small>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-md-4">
+    <div class="card text-center m-2">
+      <div class="card-body">
+        <h2 class="card-title">{{ stats?.exam_count }}</h2>
+
+        <small class="text-muted">
+          <i class="fa fa-list fa-fw"></i> Klausuren | {{ stats?.visible_exam_count }} sichtbar
+        </small>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-md-4">
+    <div class="card text-center m-2">
+      <div class="card-body">
+        <h2 class="card-title">{{ stats?.oral_exam_count }}</h2>
+
+        <small class="text-muted">
+          <i class="fa fa-users fa-fw"></i> Mündliche Prüfungen
+        </small>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-md-4">
+    <div class="card text-center m-2">
+      <div class="card-body">
+        <h2 class="card-title">{{ stats?.result_count }}</h2>
+
+        <small class="text-muted">
+          <i class="fa fa-exclamation-triangle fa-fw"></i> Antworten | {{ stats?.result_count / stats?.user_count | number: 0  }} / Nutzer
+        </small>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-md-4">
+    <div class="card text-center m-2">
+      <div class="card-body">
+        <h2 class="card-title">{{ stats?.result_count_today }}</h2>
+
+        <small class="text-muted">
+          <i class="fa fa-exclamation-triangle fa-fw"></i> Antworten | 24 Stunden
+        </small>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-md-4">
+    <div class="card text-center m-2">
+      <div class="card-body">
+        <h2 class="card-title">{{ stats?.result_per_minute }}</h2>
+
+        <small class="text-muted">
+          <i class="fa fa-exclamation-triangle fa-fw"></i> Antworten pro Minute
+        </small>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-md-4">
+    <div class="card text-center m-2">
+      <div class="card-body">
+        <h2 class="card-title">{{ stats?.collection_count }}</h2>
+
+        <small class="text-muted">
+          <i class="fa fa-inbox fa-fw"></i> Sammlungen
+        </small>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-md-4">
+    <div class="card text-center m-2">
+      <div class="card-body">
+        <h2 class="card-title">{{ stats?.comment_count }}</h2>
+
+        <small class="text-muted">
+          <i class="fa fa-comments fa-fw"></i> Kommentare
+        </small>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-md-4">
+    <div class="card text-center m-2">
+      <div class="card-body">
+        <h2 class="card-title">{{ stats?.tag_count }}</h2>
+
+        <small class="text-muted">
+          <i class="fa fa-tags fa-fw"></i> Markierungen
+        </small>
+      </div>
+    </div>
+  </div>
+</div-->
+
+<div class="card-columns">
+  <div class="card text-center">
+    <div class="card-body">
+      <h2 class="card-title">{{ stats?.user_count }}</h2>
+
+      <small class="text-muted">
+        <i class="fa fa-users fa-fw"></i> Nutzer
+      </small>
+    </div>
+  </div>
+
+  <div class="card text-center">
+    <div class="card-body">
+      <h2 class="card-title">{{ stats?.question_count }}</h2>
+
+      <small class="text-muted">
+        <i class="fa fa-question-circle fa-fw"></i> Fragen | {{ stats?.visible_question_count }} sichtbar
+      </small>
+    </div>
+  </div>
+
+  <div class="card text-center">
+    <div class="card-body">
+      <h2 class="card-title">{{ stats?.exam_count }}</h2>
+
+      <small class="text-muted">
+        <i class="fa fa-list fa-fw"></i> Klausuren | {{ stats?.visible_exam_count }} sichtbar
+      </small>
+    </div>
+  </div>
+
+  <div class="card text-center">
+    <div class="card-body">
+      <h2 class="card-title">{{ stats?.oral_exam_count }}</h2>
+
+      <small class="text-muted">
+        <i class="fa fa-users fa-fw"></i> Mündliche Prüfungen
+      </small>
+    </div>
+  </div>
+
+  <div class="card text-center">
+    <div class="card-body">
+      <h2 class="card-title">{{ stats?.result_count }}</h2>
+
+      <small class="text-muted">
+        <i class="fa fa-exclamation-triangle fa-fw"></i> Antworten | {{ stats?.result_count / stats?.user_count | number:'1.1-1'  }} / Nutzer
+      </small>
+    </div>
+  </div>
+
+  <div class="card text-center">
+    <div class="card-body">
+      <h2 class="card-title">{{ stats?.result_count_today }}</h2>
+
+      <small class="text-muted">
+        <i class="fa fa-exclamation-triangle fa-fw"></i> Antworten | 24 Stunden
+      </small>
+    </div>
+  </div>
+
+  <div class="card text-center">
+    <div class="card-body">
+      <h2 class="card-title">{{ stats?.result_per_minute | number:'1.1-2' }}</h2>
+
+      <small class="text-muted">
+        <i class="fa fa-exclamation-triangle fa-fw"></i> Antworten pro Minute
+      </small>
+    </div>
+  </div>
+
+  <div class="card text-center">
+    <div class="card-body">
+      <h2 class="card-title">{{ stats?.collection_count }}</h2>
+
+      <small class="text-muted">
+        <i class="fa fa-inbox fa-fw"></i> Sammlungen
+      </small>
+    </div>
+  </div>
+
+  <div class="card text-center">
+    <div class="card-body">
+      <h2 class="card-title">{{ stats?.comment_count }}</h2>
+
+      <small class="text-muted">
+        <i class="fa fa-comments fa-fw"></i> Kommentare
+      </small>
+    </div>
+  </div>
+
+  <div class="card text-center">
+    <div class="card-body">
+      <h2 class="card-title">{{ stats?.tag_count }}</h2>
+
+      <small class="text-muted">
+        <i class="fa fa-tags fa-fw"></i> Markierungen
+      </small>
+    </div>
+  </div>
+</div>

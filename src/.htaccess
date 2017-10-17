@@ -1,0 +1,17 @@
+#RewriteEngine On
+#RewriteCond %{SERVER_PORT} 80
+#RewriteCond %{HTTP_HOST} ^www\.crucio-leipzig\.de.*$ [OR]
+#RewriteCond %{HTTP_HOST} ^crucio-leipzig\.de.*$
+#RewriteRule ^(.*)$ https://www.crucio-leipzig.de/$1 [R=301,L]
+
+#RewriteEngine On
+#RewriteCond %{REQUEST_FILENAME}.php -f
+#RewriteCond %{REQUEST_URI} !/$
+#RewriteRule ^(.*)$ $1\.php
+
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} -s [OR]
+RewriteCond %{REQUEST_FILENAME} -l [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^(.+)$ - [S=1]
+RewriteRule ^(.+)$ /index.html

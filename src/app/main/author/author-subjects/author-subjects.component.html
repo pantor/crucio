@@ -1,0 +1,14 @@
+<h4>Fächer & Kategorien</h4>
+
+<p>Ihr könnt folgende Fächer schon eintragen, den Fragen könnt ihr dabei eine Kategorie zuordnen. Falls welche fehlen, meldet euch...</p>
+
+<dl>
+  <ng-container *ngFor="let s of subjects">
+    <dt>{{ s.subject }}</dt>
+    <dd>
+      <ul>
+        <li *ngFor="let c of s.categories">{{ c.category }}</li>
+      </ul>
+     </dd>
+  </ng-container>
+</dl>
