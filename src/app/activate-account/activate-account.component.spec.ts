@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpModule } from '@angular/http';
 
 import { ActivateAccountComponent } from './activate-account.component';
+import { ApiService } from '../services/api.service';
+import { AuthService } from '../services/auth.service';
 
 describe('ActivateAccountComponent', () => {
   let component: ActivateAccountComponent;
@@ -8,7 +11,9 @@ describe('ActivateAccountComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ActivateAccountComponent ]
+      declarations: [ ActivateAccountComponent ],
+      imports: [HttpModule],
+      providers: [ApiService, AuthService]
     })
     .compileComponents();
   }));

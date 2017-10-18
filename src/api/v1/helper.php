@@ -1,9 +1,13 @@
 <?php
 
+function isTestServer() {
+  return ($_SERVER['SERVER_ADDR'] == '192.168.33.10'); // Vagrant Address
+}
+
 function init() {
   error_reporting(0);
   try {
-    if ($_SERVER['SERVER_ADDR'] == '192.168.33.10') { // Vagrant Address
+    if (isTestServer()) {
       $config = include(dirname(__FILE__).'/../config.vagrant.php');
     } else {
       $config = include(dirname(__FILE__).'/../config.php');
@@ -132,7 +136,16 @@ function sendTemplateMail($templateName, $destination, $subject, $additionalHook
 
 function sendMail($destination, $subject, $message, $senderName, $senderMail) {
   $mail = new PHPMailer;
-  $mail->isSendmail();
+
+  if (isTestServer()) {
+    $mail->isSMTP();
+    $mail->Host = "127.0.0.1";
+    $mail->SMTPAuth = false;
+    $mail->Port = 1025;
+  } else {
+    $mail->isSendmail();
+  }
+
   $mail->CharSet = 'UTF-8';
   $mail->setFrom($senderMail, $senderName);
   // $mail->addReplyTo('replyto@example.com', 'First Last');
@@ -140,6 +153,7 @@ function sendMail($destination, $subject, $message, $senderName, $senderMail) {
   {
     $mail->addAddress(trim($address));
   }
+
   $mail->Subject = $subject;
   $mail->msgHTML($message);
   // $mail->AltBody = 'This is a plain-text message body';

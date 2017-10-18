@@ -7,13 +7,13 @@
 <div class="form-group row">
   <label class="col-sm-3">Allgemein</label>
   <div class="col-sm-9">
-    <div class="form-check">
+    <!--div class="form-check">
       <label class="custom-control custom-checkbox">
         <input type="checkbox" class="custom-control-input" [(ngModel)]="user.highlightExams">
         <span class="custom-control-indicator"></span>
         <span class="custom-control-description">Empfohlene Fragen und Klausuren hervorheben</span>
       </label>
-    </div>
+    </div-->
 
     <div class="form-check">
       <label class="custom-control custom-checkbox">
@@ -24,7 +24,7 @@
     </div>
   </div>
 
-  <label class="col-sm-3 col-form-label">Datenschutz</label>
+  <!--label class="col-sm-3 col-form-label">Datenschutz</label>
   <div class="col-sm-9">
     <div class="form-check">
       <label class="custom-control custom-checkbox">
@@ -41,7 +41,7 @@
         <span class="custom-control-description">Meine Markierungen verwenden, um Fragen zu katalogisieren</span>
       </label>
     </div>
-  </div>
+  </div-->
 </div>
 
 <div class="form-group row">
@@ -55,14 +55,14 @@
 <div class="form-group row">
   <label class="col-sm-3 col-form-label">Studienfach</label>
   <div class="col-sm-5">
-    <button type="button" class="btn btn-outline-secondary" [class.active]="user.course_id == 1">Humanmedizin</button>
+    <button type="button" class="btn btn-outline-secondary" [class.active]="user.course_id == 1" disabled>Humanmedizin</button>
   </div>
 </div>
 
 <div class="form-group row">
   <label class="col-sm-3 col-form-label">Fachsemester</label>
   <div class="col-sm-5">
-    <input class="form-control" type="number" [(ngModel)]="user.semester">
+    <input class="form-control" type="number" [(ngModel)]="user.semester" required>
     <small class="form-text text-muted">Das Semester aktualisiert sich automatisch.</small>
   </div>
 </div>

@@ -64,16 +64,20 @@
       </div-->
     </div>
   </div>
+</div>
 
-  <div class="d-flex justify-content-between hidden-lg-up mt-4 mb-4">
-    <a class="btn btn-outline-secondary mr-2" href="/app/exam#top">
-      <i class="fa fa-fw fa-arrow-circle-o-up"></i> Nach Oben
-    </a>
+<div class="row">
+  <div class="col">
+    <div class="d-md-flex d-lg-none mb-4">
+      <a class="btn btn-outline-secondary mr-2" href="/app/exam#top">
+        <i class="fa fa-fw fa-arrow-circle-o-up"></i> Nach Oben
+      </a>
 
-    <button type="button" class="btn btn-outline-secondary mr-2" (click)="collection.saveRemote()">
-      Speichern
-    </button>
+      <button type="button" class="btn btn-outline-secondary mr-2" (click)="save()">
+        Speichern
+      </button>
 
-    <a type="button" class="btn btn-danger" routerLink="/app/analysis">Klausur beenden</a>
+      <button type="button" class="btn btn-danger" routerLink="/app/analysis">Klausur beenden</button>
+    </div>
   </div>
 </div>

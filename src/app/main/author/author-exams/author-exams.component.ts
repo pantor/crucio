@@ -44,6 +44,7 @@ export class AuthorExamsComponent implements OnInit {
     };
     this.api.get('exams', data).subscribe(result => {
       this.exams = result.exams;
+      console.log(this.exams);
     });
   }
 
@@ -55,7 +56,7 @@ export class AuthorExamsComponent implements OnInit {
     };
 
     this.api.post('exams', data).subscribe(result => {
-      this.router.navigate(['/edit-exam'], { queryParams: { examId: result.exam_id } });
+      this.router.navigate(['/app/edit-exam'], { queryParams: { examId: result.exam_id } });
     });
   }
 }

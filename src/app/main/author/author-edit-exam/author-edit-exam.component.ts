@@ -31,7 +31,12 @@ export class AuthorEditExamComponent implements OnInit {
     ];
   questionEditor: Quill.Quill;
   explanationEditor: Quill.Quill;
-  answerEditors: Quill.Quill[];
+  answerEditor0: Quill.Quill;
+  answerEditor1: Quill.Quill;
+  answerEditor2: Quill.Quill;
+  answerEditor3: Quill.Quill;
+  answerEditor4: Quill.Quill;
+  answerEditor5: Quill.Quill;
   subjectListPerId: any;
   categoryListPerId: any;
   currentSelectedAnswer = 0;
@@ -83,6 +88,24 @@ export class AuthorEditExamComponent implements OnInit {
       list.push(i);
     }
     return list;
+  }
+
+  setAnswerEditor(instance: Quill.Quill, index: number) {
+    if (index == 0) this.answerEditor0 = instance;
+    else if (index == 1) this.answerEditor1 = instance;
+    else if (index == 2) this.answerEditor2 = instance;
+    else if (index == 3) this.answerEditor3 = instance;
+    else if (index == 4) this.answerEditor4 = instance;
+    else if (index == 5) this.answerEditor5 = instance;
+  }
+
+  getAnswerEditor(index: number) {
+    if (index == 0) return this.answerEditor0;
+    else if (index == 1) return this.answerEditor1;
+    else if (index == 2) return this.answerEditor2;
+    else if (index == 3) return this.answerEditor3;
+    else if (index == 4) return this.answerEditor4;
+    else if (index == 5) return this.answerEditor5;
   }
 
   addCharacter(editor: Quill.Quill, char: string): void {

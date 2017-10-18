@@ -26,7 +26,7 @@
   <tbody>
     <tr *ngFor="let user of users; let i = index" (click)="userModal(i)">
       <td>
-        <span class="badge" [ngClass]="{ 'badge-default': user.group_id == 1, 'badge-danger': user.group_id == 2, 'badge-info': user.group_id == 3 }">{{ user.group_name }}</span>
+        <span class="badge" [ngClass]="{ 'badge-secondary': user.group_id == 1, 'badge-danger': user.group_id == 2, 'badge-info': user.group_id == 3 }">{{ user.group_name }}</span>
       </td>
       <td>{{ user.username }}</td>
       <td>{{ user.semester }}</td>

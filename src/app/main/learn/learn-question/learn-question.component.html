@@ -2,7 +2,7 @@
 
 <div class="container">
   <div class="row mb-4">
-    <div class="col-lg-8">
+    <div class="col-lg-8 order-lg-1 order-2">
       <blockquote class="blockquote">
         <p class="mb-0">
           <a *ngIf="question?.question_image_url" (click)="openImageModal(question.question_image_url)">
@@ -32,7 +32,7 @@
       </div>
     </div>
 
-    <div class="col-lg-4 flex-lg-last flex-first mb-2">
+    <div class="col-lg-4 order-lg-2 order-1 mb-2">
       <div class="card card-exam-info mb-4">
         <div class="card-body">
           <h4 class="card-title"><i class="fa fa-fw fa-flask"></i> {{ question?.subject }}</h4>
@@ -68,14 +68,14 @@
 
   <hr>
 
-  <div class="d-flex flex-column flex-sm-row">
+  <div class="d-flex">
     <div class="btn-group mr-auto">
       <button class="btn btn-outline-secondary" *ngIf="index != -1" [disabled]="preQuestionId == questionId" (click)="goToQuestion(preQuestionId)">
           <i class="fa fa-backward"></i>
       </button>
 
       <button class="btn" [ngClass]="{ 'btn-outline-primary': !isAnswerGiven, 'btn-success': isAnswerRight, 'btn-danger': isAnswerWrong }" [disabled]="isAnswerGiven || (question?.type == 1 && question?.answers[0].length == 0) || (question?.type > 1 && question?.correct_answer == 0)" (click)="showSolution()">
-          Lösung <span class="hidden-xs-down">anzeigen</span>
+          Lösung <span class="d-none d-sm-inline-block">anzeigen</span>
       </button>
 
       <button class="btn btn-outline-secondary" [disabled]="!question?.explanation" (click)="showExplanation = !showExplanation">
@@ -87,9 +87,9 @@
       </button>
     </div>
 
-    <a *ngIf="user.group_id == 2 || user.group_id == 3" class="btn btn-default hidden-xs-down" routerLink="/app/edit-exam" [queryParams]="{ examId: question?.exam_id, questionId: questionId }">
+    <button *ngIf="user.group_id == 2 || user.group_id == 3" class="btn btn-outline-secondary d-none d-md-block mr-2" routerLink="/app/edit-exam" [queryParams]="{ examId: question?.exam_id, questionId: questionId }">
         Bearbeiten
-    </a>
+    </button>
 
     <button class="btn btn-outline-secondary" (click)="openReportModal()">Melden</button>
   </div>
@@ -130,7 +130,7 @@
       <li class="list-group-item align-items-start pr-3 pl-3 d-flex" *ngFor="let c of comments; let i = index">
         <div class="comment-voting">
           <div class="comment-voting-up" (click)="changeUserVoting(c, 1)">
-            <i class="fa fa-chevron-up text-muted" [ngClass]="{ 'text-success': c.user_voting == 1 }"></i>
+            <i class="fa fa-chevron-up" [ngClass]="{ 'text-success': c.user_voting == 1, 'text-muted': c.user_voting != 1 }"></i>
           </div>
 
           <div class="comment-voting-number text-center">
@@ -138,7 +138,7 @@
           </div>
 
           <div class="comment-voting-down" (click)="changeUserVoting(c, -1)">
-            <i class="fa fa-chevron-down text-muted" [ngClass]="{ 'text-danger': c.user_voting == -1 }"></i>
+            <i class="fa fa-chevron-down" [ngClass]="{ 'text-danger': c.user_voting == -1, 'text-muted': c.user_voting != -1 }"></i>
           </div>
         </div>
 

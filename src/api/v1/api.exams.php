@@ -25,7 +25,7 @@ $app->group('/exams', function() {
 		}
 
 		$stmt = $mysql->prepare(
-			"SELECT e.*, u.username AS 'author', s.name AS 'subject', COUNT(*) AS 'question_count' $answered_questions_sql_select
+			"SELECT e.*, u.username AS 'author', s.name AS 'subject', COUNT(q.question_id) AS 'question_count' $answered_questions_sql_select
 			FROM exams e
 			$answered_questions_sql_join
 			INNER JOIN users u ON u.user_id = e.user_id_added
@@ -38,7 +38,7 @@ $app->group('/exams', function() {
 			AND ( e.date LIKE IFNULL(:query, e.date)
 			OR s.name LIKE IFNULL(:query, s.name)
 			OR u.username LIKE IFNULL(:query, u.username) )
-			GROUP BY q.exam_id
+			GROUP BY e.exam_id
 			ORDER BY e.semester ASC, s.name ASC, e.date DESC
 			LIMIT :limit"
 		);
@@ -49,7 +49,6 @@ $app->group('/exams', function() {
 		$stmt->bindValue(':subject_id', $request->getQueryParam('subject_id'), PDO::PARAM_INT);
 		$stmt->bindValue(':query', $query);
 		$stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
-
 		$data['exams'] = getAll($stmt);
 		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
 	});

@@ -14,7 +14,7 @@
 
         <hr>
 
-        <ul class="list-group">
+        <ul class="list-group mb-2">
           <div class="list-group-item list-group-item-action flex-column align-items-start" [class.active]="openQuestionIndex == -1" (click)="openQuestionIndex = -1">
             <div class="d-flex w-100 justify-content-between">
               <h5 class="mb-1">Allgemeine Infos</h5>
@@ -273,23 +273,23 @@
                 </span>
 
                 <span class="ql-formats">
-                  <button (click)="addCharacter(answerEditors[i], '&sdot;')">&sdot;</button>
-                  <button (click)="addCharacter(answerEditors[i], '&times;')">&times;</button>
-                  <button (click)="addCharacter(answerEditors[i], '&asymp;')">&asymp;</button>
-                  <button (click)="addCharacter(answerEditors[i], '&radic;')">&radic;</button>
+                  <button (click)="addCharacter(getAnswerEditor(i), '&sdot;')">&sdot;</button>
+                  <button (click)="addCharacter(getAnswerEditor(i), '&times;')">&times;</button>
+                  <button (click)="addCharacter(getAnswerEditor(i), '&asymp;')">&asymp;</button>
+                  <button (click)="addCharacter(getAnswerEditor(i), '&radic;')">&radic;</button>
                 </span>
 
                 <span class="ql-formats">
-                  <button (click)="addCharacter(answerEditors[i], '&alpha;')">&alpha;</button>
-                  <button (click)="addCharacter(answerEditors[i], '&beta;')">&beta;</button>
-                  <button (click)="addCharacter(answerEditors[i], '&gamma;')">&gamma;</button>
-                  <button (click)="addCharacter(answerEditors[i], '&delta;')">&delta;</button>
-                  <button (click)="addCharacter(answerEditors[i], '&lambda;')">&lambda;</button>
-                  <button (click)="addCharacter(answerEditors[i], '&mu;')">&mu;</button>
-                  <button (click)="addCharacter(answerEditors[i], '&pi;')">&pi;</button>
-                  <button (click)="addCharacter(answerEditors[i], '&rho;')">&rho;</button>
-                  <button (click)="addCharacter(answerEditors[i], '&omega;')">&omega;</button>
-                  <button (click)="addCharacter(answerEditors[i], '&Omega;')">&Omega;</button>
+                  <button (click)="addCharacter(getAnswerEditor(i), '&alpha;')">&alpha;</button>
+                  <button (click)="addCharacter(getAnswerEditor(i), '&beta;')">&beta;</button>
+                  <button (click)="addCharacter(getAnswerEditor(i), '&gamma;')">&gamma;</button>
+                  <button (click)="addCharacter(getAnswerEditor(i), '&delta;')">&delta;</button>
+                  <button (click)="addCharacter(getAnswerEditor(i), '&lambda;')">&lambda;</button>
+                  <button (click)="addCharacter(getAnswerEditor(i), '&mu;')">&mu;</button>
+                  <button (click)="addCharacter(getAnswerEditor(i), '&pi;')">&pi;</button>
+                  <button (click)="addCharacter(getAnswerEditor(i), '&rho;')">&rho;</button>
+                  <button (click)="addCharacter(getAnswerEditor(i), '&omega;')">&omega;</button>
+                  <button (click)="addCharacter(getAnswerEditor(i), '&Omega;')">&Omega;</button>
                 </span>
               </div>
             </div>
@@ -301,7 +301,7 @@
               <span *ngIf="q.type == 1">Antwort</span>
             </label>
             <div class="col-sm-9">
-              <quill-editor [(ngModel)]="q.answers[i]" [modules]="{ toolbar: '#answerToolbar' + i }" (click)="currentSelectedAnswer = i" (onSelectionChanged)="currentSelectedAnswer = i" placeholder="" (onEditorCreated)="answerEditors[0] = $event"></quill-editor>
+              <quill-editor [(ngModel)]="q.answers[i]" [modules]="{ toolbar: '#answerToolbar' + i }" (click)="currentSelectedAnswer = i" (onSelectionChanged)="currentSelectedAnswer = i" placeholder="" (onEditorCreated)="setAnswerEditor($event, i)"></quill-editor>
             </div>
           </div>
 
