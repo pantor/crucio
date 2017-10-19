@@ -217,69 +217,16 @@ $app->group('/users', function() {
     return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
   });
 
-  $this->put('/{user_id}/account', function($request, $response, $args) {
-    $mysql = init();
-    $body = $request->getParsedBody();
-
-    $user_id = $args['user_id'];
-
-    $stmt = $mysql->prepare(
-      "UPDATE users
-      SET semester = ?, course_id = ?
-      WHERE user_id = ?"
-    );
-    $stmt->bindValue(1, $body['semester']);
-    $stmt->bindValue(2, $body['course_id']);
-    $stmt->bindValue(3, $user_id, PDO::PARAM_INT);
-
-    if (!$body['password']) {
-      $data['status'] = $stmt->execute();
-      return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
-    }
-
-
-    $stmt_user = $mysql->prepare(
-      "SELECT u.*
-      FROM users u
-      WHERE u.user_id = :user_id
-      LIMIT 1"
-    );
-    $stmt_user->bindValue(':user_id', $user_id, PDO::PARAM_INT);
-    $user = getFetch($stmt_user);
-
-    $old_hash_pw = $user['password'];
-    $entered_pass = generateHash($body['current_password'], $old_hash_pw);
-    $entered_pass_new = generateHash($body['password'], $old_hash_pw);
-
-    if ($entered_pass != $old_hash_pw) {
-      $data['error'] = 'error_incorrect_password';
-      return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
-    }
-
-    if ($entered_pass_new == $old_hash_pw) {
-      $data['error'] = 'error_same_passwords';
-      return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
-    }
-
-    $secure_pass = generateHash($body['password']);
-
-    $stmt_password = $mysql->prepare(
-      "UPDATE users
-      SET password = :password
-      WHERE user_id = :user_id"
-    );
-    $stmt_password->bindValue(':password', $secure_pass);
-    $stmt_password->bindValue(':user_id', $user_id, PDO::PARAM_INT);
-
-    $data['status'] = $stmt->execute() && $stmt_password->execute();
-    return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
-  });
-
   $this->put('/{user_id}/password', function($request, $response, $args) {
     $mysql = init();
     $body = $request->getParsedBody();
 
     $user_id = $args['user_id'];
+
+    if (!$body['password']) {
+      $data['error'] = 'error_no_password';
+      return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
+    }
 
     $stmt_user = $mysql->prepare(
       "SELECT u.*
@@ -318,13 +265,13 @@ $app->group('/users', function() {
     return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
   });
 
-  $this->put('/{user_id}/settings', function($request, $response, $args) {
+  $this->put('/{user_id}/account', function($request, $response, $args) {
     $mysql = init();
     $body = $request->getParsedBody();
 
     $stmt = $mysql->prepare(
       "UPDATE users
-      SET highlightExams = ?, showComments = ?, repetitionValue = ?, useAnswers = ?, useTags = ?
+      SET highlightExams = ?, showComments = ?, repetitionValue = ?, useAnswers = ?, useTags = ?, semester = ?, course_id = ?
       WHERE user_id = ?"
     );
     $stmt->bindValue(1, $body['highlightExams']);
@@ -332,7 +279,9 @@ $app->group('/users', function() {
     $stmt->bindValue(3, $body['repetitionValue']);
     $stmt->bindValue(4, $body['useAnswers']);
     $stmt->bindValue(5, $body['useTags']);
-    $stmt->bindValue(6, $args['user_id']);
+    $stmt->bindValue(6, $body['semester']);
+    $stmt->bindValue(7, $body['course_id']);
+    $stmt->bindValue(8, $args['user_id']);
 
     $data['status'] = $stmt->execute();
     return $response->withJson($data, 200, JSON_NUMERIC_CHECK);

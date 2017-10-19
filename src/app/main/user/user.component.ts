@@ -41,7 +41,7 @@ export class UserComponent implements OnInit {
       course_id: this.user.course_id,
       semester: this.user.semester
     };
-    this.api.put(`users/${this.user.user_id}/settings`, data).subscribe(result => {
+    this.api.put(`users/${this.user.user_id}/account`, data).subscribe(result => {
       if (result.status) {
         this.auth.setUser(this.user);
         this.toast.new('Gespeichert');
@@ -57,7 +57,7 @@ export class UserComponent implements OnInit {
       current_password: this.f.value.oldPassword,
       password: this.f.value.newPassword,
     };
-    this.api.put(`users/${this.user.user_id}/account`, data).subscribe(result => {
+    this.api.put(`users/${this.user.user_id}/password`, data).subscribe(result => {
       if (result.status) {
         this.auth.setUser(this.user);
         this.toast.new('Gespeichert');

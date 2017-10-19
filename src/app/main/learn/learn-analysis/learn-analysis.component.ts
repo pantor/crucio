@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
 import { AuthService } from '../../../services/auth.service';
+import { ToastService } from '../../services/toast.service';
 import { Collection, CollectionService } from '../../services/collection.service';
 
 @Component({
   selector: 'app-learn-analysis',
   templateUrl: './learn-analysis.component.html',
   styleUrls: ['./learn-analysis.component.scss'],
-  providers: [CollectionService]
+  providers: [CollectionService, ToastService]
 })
 export class LearnAnalysisComponent implements OnInit {
   workedCombination: Crucio.CombinationElement[];
@@ -16,7 +17,7 @@ export class LearnAnalysisComponent implements OnInit {
   count: Crucio.AnalyseCount;
   exam: Crucio.Exam;
 
-  constructor(private api: ApiService, private auth: AuthService, public collection: CollectionService) {
+  constructor(private api: ApiService, private auth: AuthService, public collection: CollectionService, private toast: ToastService) {
     this.user = this.auth.getUser();
 
     this.workedCollectionList = this.collection.getWorkedList();
@@ -39,5 +40,15 @@ export class LearnAnalysisComponent implements OnInit {
     this.workedCollectionList[index].mark_answer = 1;
     const questionId = this.workedCollectionList[index].question_id;
     this.collection.setMarkAnswer(this.collection.getIndexOfQuestion(questionId));
+  }
+
+  save(): void {
+    this.collection.saveRemote().subscribe(result => {
+      if (result.status) {
+        this.toast.new('Gespeichert');
+      } else {
+        this.toast.new('Fehler');
+      }
+    });
   }
 }
