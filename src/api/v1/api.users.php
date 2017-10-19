@@ -187,9 +187,9 @@ $app->group('/users', function() {
     $mysql = init();
     $body = $request->getParsedBody();
 
-    if ((getCount($mysql, "users WHERE activationtoken = ?", [$token]) != 1)) {
+    if ((getCount($mysql, "users WHERE activationtoken = ?", [$body['token']]) != 1)) {
         $data['error'] = 'error_unknown';
-        return $data;
+        return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
     }
     $stmt = $mysql->prepare(
         "UPDATE users

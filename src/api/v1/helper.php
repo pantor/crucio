@@ -137,6 +137,11 @@ function sendTemplateMail($templateName, $destination, $subject, $additionalHook
 function sendMail($destination, $subject, $message, $senderName, $senderMail) {
   $mail = new PHPMailer;
 
+  $mail->isSMTP();
+  $mail->Host = "127.0.0.1";
+  $mail->SMTPAuth = false;
+  $mail->Port = 1025;
+
   if (isTestServer()) {
     $mail->isSMTP();
     $mail->Host = "127.0.0.1";
@@ -154,9 +159,14 @@ function sendMail($destination, $subject, $message, $senderName, $senderMail) {
     $mail->addAddress(trim($address));
   }
 
+  if (isTestServer()) {
+    $mail->msgHTML("Test Mail");
+  } else {
+    $mail->msgHTML($message);
+  }
+
   $mail->Subject = $subject;
-  $mail->msgHTML($message);
-  // $mail->AltBody = 'This is a plain-text message body';
+  $mail->AltBody = $message;
 
   $data['status'] = $mail->send();
   return $data;
