@@ -44,7 +44,6 @@ export class AuthorExamsComponent implements OnInit {
     };
     this.api.get('exams', data).subscribe(result => {
       this.exams = result.exams;
-      console.log(this.exams);
     });
   }
 

@@ -184,8 +184,22 @@ $app->group('/users', function() {
   });
 
   $this->put('/activate', function($request, $response, $args) {
+    $mysql = init();
     $body = $request->getParsedBody();
-    $data = activate($body['token']);
+
+    if ((getCount($mysql, "users WHERE activationtoken = ?", [$token]) != 1)) {
+        $data['error'] = 'error_unknown';
+        return $data;
+    }
+    $stmt = $mysql->prepare(
+        "UPDATE users
+        SET active = 1
+        WHERE activationtoken = :token
+        LIMIT 1"
+    );
+    $stmt->bindValue(':token', $body['token']);
+
+    $data['status'] = $stmt->execute();
     return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
   });
 

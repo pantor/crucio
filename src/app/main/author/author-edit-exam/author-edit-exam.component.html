@@ -266,42 +266,42 @@
           <div class="form-group row">
             <div class="col-sm-3"></div>
             <div class="col-sm-9">
-              <div id="answerToolbar{{ i }}" *ngFor="let i of [0, 1, 2, 3, 4, 5]" [hidden]="i != currentSelectedAnswer">
+              <div class="ql-toolbar ql-snow" id="answerToolbar{{ i }}{{ j }}" *ngFor="let j of [0, 1, 2, 3, 4, 5]" [hidden]="j != currentSelectedAnswer">
                 <span class="ql-formats">
                   <button class="ql-script" value="sub"></button>
                   <button class="ql-script" value="super"></button>
                 </span>
 
                 <span class="ql-formats">
-                  <button (click)="addCharacter(getAnswerEditor(i), '&sdot;')">&sdot;</button>
-                  <button (click)="addCharacter(getAnswerEditor(i), '&times;')">&times;</button>
-                  <button (click)="addCharacter(getAnswerEditor(i), '&asymp;')">&asymp;</button>
-                  <button (click)="addCharacter(getAnswerEditor(i), '&radic;')">&radic;</button>
+                  <button (click)="addCharacter(getAnswerEditor(j), '&sdot;')">&sdot;</button>
+                  <button (click)="addCharacter(getAnswerEditor(j), '&times;')">&times;</button>
+                  <button (click)="addCharacter(getAnswerEditor(j), '&asymp;')">&asymp;</button>
+                  <button (click)="addCharacter(getAnswerEditor(j), '&radic;')">&radic;</button>
                 </span>
 
                 <span class="ql-formats">
-                  <button (click)="addCharacter(getAnswerEditor(i), '&alpha;')">&alpha;</button>
-                  <button (click)="addCharacter(getAnswerEditor(i), '&beta;')">&beta;</button>
-                  <button (click)="addCharacter(getAnswerEditor(i), '&gamma;')">&gamma;</button>
-                  <button (click)="addCharacter(getAnswerEditor(i), '&delta;')">&delta;</button>
-                  <button (click)="addCharacter(getAnswerEditor(i), '&lambda;')">&lambda;</button>
-                  <button (click)="addCharacter(getAnswerEditor(i), '&mu;')">&mu;</button>
-                  <button (click)="addCharacter(getAnswerEditor(i), '&pi;')">&pi;</button>
-                  <button (click)="addCharacter(getAnswerEditor(i), '&rho;')">&rho;</button>
-                  <button (click)="addCharacter(getAnswerEditor(i), '&omega;')">&omega;</button>
-                  <button (click)="addCharacter(getAnswerEditor(i), '&Omega;')">&Omega;</button>
+                  <button (click)="addCharacter(getAnswerEditor(j), '&alpha;')">&alpha;</button>
+                  <button (click)="addCharacter(getAnswerEditor(j), '&beta;')">&beta;</button>
+                  <button (click)="addCharacter(getAnswerEditor(j), '&gamma;')">&gamma;</button>
+                  <button (click)="addCharacter(getAnswerEditor(j), '&delta;')">&delta;</button>
+                  <button (click)="addCharacter(getAnswerEditor(j), '&lambda;')">&lambda;</button>
+                  <button (click)="addCharacter(getAnswerEditor(j), '&mu;')">&mu;</button>
+                  <button (click)="addCharacter(getAnswerEditor(j), '&pi;')">&pi;</button>
+                  <button (click)="addCharacter(getAnswerEditor(j), '&rho;')">&rho;</button>
+                  <button (click)="addCharacter(getAnswerEditor(j), '&omega;')">&omega;</button>
+                  <button (click)="addCharacter(getAnswerEditor(j), '&Omega;')">&Omega;</button>
                 </span>
               </div>
             </div>
           </div>
 
-          <div class="form-group row" *ngFor="let i of [0, 1, 2, 3, 4, 5]" [hidden]="i >= q.type">
+          <div class="form-group row" *ngFor="let j of [0, 1, 2, 3, 4, 5]" [hidden]="j >= q.type">
             <label class="col-sm-3 col-form-label">
-              <span *ngIf="q.type > 1" [class.text-success]="q.correct_answer == i + 1">Antwort {{ i + 1 }}</span>
+              <span *ngIf="q.type > 1" [class.text-success]="q.correct_answer == j + 1">Antwort {{ j + 1 }}</span>
               <span *ngIf="q.type == 1">Antwort</span>
             </label>
             <div class="col-sm-9">
-              <quill-editor [(ngModel)]="q.answers[i]" [modules]="{ toolbar: '#answerToolbar' + i }" (click)="currentSelectedAnswer = i" (onSelectionChanged)="currentSelectedAnswer = i" placeholder="" (onEditorCreated)="setAnswerEditor($event, i)"></quill-editor>
+              <quill-editor [(ngModel)]="q.answers[j]" [modules]="{ toolbar: '#answerToolbar' + i + j }" (click)="currentSelectedAnswer = j" (onSelectionChanged)="currentSelectedAnswer = j" placeholder="" (onEditorCreated)="setAnswerEditor($event, j)"></quill-editor>
             </div>
           </div>
 

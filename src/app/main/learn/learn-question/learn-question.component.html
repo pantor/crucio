@@ -87,7 +87,7 @@
       </button>
     </div>
 
-    <button *ngIf="user.group_id == 2 || user.group_id == 3" class="btn btn-outline-secondary d-none d-md-block mr-2" routerLink="/app/edit-exam" [queryParams]="{ examId: question?.exam_id, questionId: questionId }">
+    <button *ngIf="user.group_id == 2 || user.group_id == 3" class="btn btn-outline-secondary d-none d-md-block mr-2" routerLink="/app/edit-exam" [queryParams]="{ examId: question?.exam_id, openQuestionId: questionId }">
         Bearbeiten
     </button>
 
