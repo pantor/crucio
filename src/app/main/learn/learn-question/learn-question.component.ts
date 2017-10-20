@@ -183,6 +183,7 @@ export class LearnQuestionComponent implements OnInit {
       question_id: this.questionId,
       reply_to: 0,
       username: this.user.username,
+      user_id: this.user.user_id,
       date: now,
     };
     this.api.post(`comments/${this.user.user_id}`, data).subscribe(result => {

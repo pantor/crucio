@@ -5,7 +5,7 @@ $app->group('/file', function() {
   $this->post('/upload', function($request, $response, $args) {
     $name = basename($_FILES['file']['name']);
     $tmp_dir = $_FILES['file']['tmp_name'];
-    $upload_base = '../../src/files/';
+    $upload_base = '../../files/';
     $upload_name = ''.(microtime(true) * 10000).'';
 
     $file_type = '';

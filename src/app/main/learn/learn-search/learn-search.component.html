@@ -22,7 +22,7 @@
       </form>
 
       <div ngbDropdown class="btn-group" placement="bottom-right">
-        <button type="button" class="btn btn-success" [disabled]="!(searchResults && searchResults.length > 0)"><i class="fa fa-fw fa-graduation-cap"></i> Lernen</button>
+        <button type="button" class="btn btn-success" [disabled]="!(searchResults && searchResults.length > 0)" (click)="learnQuery('question')"><i class="fa fa-fw fa-graduation-cap"></i> Lernen</button>
         <button class="btn btn-success" ngbDropdownToggle [disabled]="!(searchResults && searchResults.length > 0)"></button>
 
         <div ngbDropdownMenu>

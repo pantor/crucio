@@ -59,6 +59,11 @@ export class AuthorEditOralExamComponent implements OnInit {
     if (fileList.length > 0) {
       this.api.upload( fileList[0] ).subscribe(result => {
         this.oralExam.filename = result.filename;
+        if (result.status) {
+          this.toast.new('Hochgeladen, bitte noch speichern.');
+        } else {
+          this.toast.new('Fehler');
+        }
       });
     }
   }
