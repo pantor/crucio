@@ -108,7 +108,6 @@ import { ToastComponent } from './directives/toast/toast.component';
     AuthorDeleteOralExamModalComponent,
     ToastComponent
   ],
-  providers: [],
   bootstrap: [MainComponent],
   entryComponents: [
     AdminUserModalComponent,

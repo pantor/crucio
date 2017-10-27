@@ -1,9 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpModule } from '@angular/http';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
 
-import { ActivateAccountComponent } from './activate-account.component';
 import { ApiService } from '../services/api.service';
-import { AuthService } from '../services/auth.service';
+import { ActivateAccountComponent } from './activate-account.component';
+
+class ApiStubService {
+  put(url, data) {
+    return Observable.of({ error: '' });
+  }
+}
+
+const RouteParams = {
+  queryParams: Observable.of({token: 'asdfb'})
+};
 
 describe('ActivateAccountComponent', () => {
   let component: ActivateAccountComponent;
@@ -12,8 +22,10 @@ describe('ActivateAccountComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ActivateAccountComponent ],
-      imports: [HttpModule],
-      providers: [ApiService, AuthService]
+      providers: [
+        { provide: ApiService, useClass: ApiStubService },
+        { provide: ActivatedRoute, useValue: RouteParams }
+      ]
     })
     .compileComponents();
   }));

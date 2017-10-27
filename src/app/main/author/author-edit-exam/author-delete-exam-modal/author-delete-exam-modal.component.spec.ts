@@ -1,6 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { RouterTestingModule } from '@angular/router/testing';
 
+import { ApiService } from '../../../../services/api.service';
 import { AuthorDeleteExamModalComponent } from './author-delete-exam-modal.component';
+
+class ApiStubService {
+
+}
 
 describe('AuthorDeleteExamModalComponent', () => {
   let component: AuthorDeleteExamModalComponent;
@@ -8,7 +15,12 @@ describe('AuthorDeleteExamModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AuthorDeleteExamModalComponent ]
+      declarations: [ AuthorDeleteExamModalComponent ],
+      imports: [ RouterTestingModule ],
+      providers: [
+        { provide: ApiService, useClass: ApiStubService},
+        NgbActiveModal,
+      ]
     })
     .compileComponents();
   }));

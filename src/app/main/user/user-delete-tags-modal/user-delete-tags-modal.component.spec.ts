@@ -1,6 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
+import { ApiService } from '../../../services/api.service';
 import { UserDeleteTagsModalComponent } from './user-delete-tags-modal.component';
+
+class ApiStubService {
+
+}
 
 describe('UserDeleteTagsModalComponent', () => {
   let component: UserDeleteTagsModalComponent;
@@ -8,7 +14,11 @@ describe('UserDeleteTagsModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UserDeleteTagsModalComponent ]
+      declarations: [ UserDeleteTagsModalComponent ],
+      providers: [
+        { provide: ApiService, useClass: ApiStubService},
+        NgbActiveModal
+      ]
     })
     .compileComponents();
   }));

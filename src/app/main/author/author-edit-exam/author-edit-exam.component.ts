@@ -83,29 +83,43 @@ export class AuthorEditExamComponent implements OnInit {
   ngOnInit() { }
 
   getRange(start: number, end: number) {
-    var list = [];
-    for (var i = start; i <= end; i++) {
+    const list = [];
+    for (let i = start; i <= end; i++) {
       list.push(i);
     }
     return list;
   }
 
   setAnswerEditor(instance: Quill.Quill, index: number) {
-    if (index == 0) this.answerEditor0 = instance;
-    else if (index == 1) this.answerEditor1 = instance;
-    else if (index == 2) this.answerEditor2 = instance;
-    else if (index == 3) this.answerEditor3 = instance;
-    else if (index == 4) this.answerEditor4 = instance;
-    else if (index == 5) this.answerEditor5 = instance;
+    if (index === 0) {
+      this.answerEditor0 = instance;
+    } else if (index === 1) {
+      this.answerEditor1 = instance;
+    } else if (index === 2) {
+      this.answerEditor2 = instance;
+    } else if (index === 3) {
+      this.answerEditor3 = instance;
+    } else if (index === 4) {
+      this.answerEditor4 = instance;
+    } else if (index === 5) {
+      this.answerEditor5 = instance;
+    }
   }
 
   getAnswerEditor(index: number) {
-    if (index == 0) return this.answerEditor0;
-    else if (index == 1) return this.answerEditor1;
-    else if (index == 2) return this.answerEditor2;
-    else if (index == 3) return this.answerEditor3;
-    else if (index == 4) return this.answerEditor4;
-    else if (index == 5) return this.answerEditor5;
+    if (index === 0) {
+      return this.answerEditor0;
+    } else if (index === 1) {
+      return this.answerEditor1;
+    } else if (index === 2) {
+      return this.answerEditor2;
+    } else if (index === 3) {
+      return this.answerEditor3;
+    } else if (index === 4) {
+      return this.answerEditor4;
+    } else if (index === 5) {
+      return this.answerEditor5;
+    }
   }
 
   addCharacter(editor: Quill.Quill, char: string): void {

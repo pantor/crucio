@@ -1,6 +1,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Observable } from 'rxjs/Observable';
 
+import { ApiService } from '../../../services/api.service';
 import { AuthorSubjectsComponent } from './author-subjects.component';
+
+class ApiStubService {
+  get(url, data) {
+    return Observable.of({
+      subjects: []
+    })
+  }
+}
 
 describe('AuthorSubjectsComponent', () => {
   let component: AuthorSubjectsComponent;
@@ -8,7 +18,10 @@ describe('AuthorSubjectsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AuthorSubjectsComponent ]
+      declarations: [ AuthorSubjectsComponent ],
+      providers: [
+        { provide: ApiService, useClass: ApiStubService },
+      ]
     })
     .compileComponents();
   }));

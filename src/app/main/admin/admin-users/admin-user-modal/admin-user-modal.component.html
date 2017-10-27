@@ -29,7 +29,7 @@
   <div class="form-group row">
     <label class="col-4 col-form-label">Gruppe</label>
     <div class="col-8">
-      <div class="btn-group" [(ngModel)]="newGroupID" ngbRadioGroup>
+      <div class="btn-group" ngbRadioGroup [(ngModel)]="newGroupID">
         <label class="btn-outline-secondary" *ngFor="let g of distinctGroups" ngbButtonLabel>
           <input ngbButton type="radio" [value]="g.group_id"> {{ g.name }}
         </label>

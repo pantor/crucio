@@ -28,7 +28,7 @@ export class LearnAnalysisComponent implements OnInit {
     });
 
     if (this.collection.getType() === 'exam') {
-      this.api.get(`exams/${collection.getExamId()}`).subscribe(result => {
+      this.api.get(`exams/${this.collection.getExamId()}`).subscribe(result => {
         this.exam = result.exam;
       });
     }

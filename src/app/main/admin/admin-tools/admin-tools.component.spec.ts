@@ -1,6 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Observable } from 'rxjs/Observable';
 
+import { ApiService } from '../../../services/api.service';
 import { AdminToolsComponent } from './admin-tools.component';
+
+class ApiStubService {
+
+}
 
 describe('AdminToolsComponent', () => {
   let component: AdminToolsComponent;
@@ -8,7 +14,10 @@ describe('AdminToolsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdminToolsComponent ]
+      declarations: [ AdminToolsComponent ],
+      providers: [
+        { provide: ApiService, useClass: ApiStubService },
+      ]
     })
     .compileComponents();
   }));

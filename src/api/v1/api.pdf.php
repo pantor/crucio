@@ -5,7 +5,8 @@ $app->group('/pdf', function() {
   $this->get('/collection/{view}', function($request, $response, $args) {
     $mysql = init();
 
-    if ($args['view'] != 'exam' && $args['view'] != 'solution') {
+    $methods = array('pdf-exam', 'pdf-solution', 'pdf-both');
+    if (!in_array($args['view'], $methods)) {
       $response = $response->withStatus(404);
       return $response->write('Not found. Neither exam or solution.');
     }
@@ -44,7 +45,14 @@ $app->group('/pdf', function() {
     $questions = getQuestionsFromList($mysql, $list);
 
     $filename = '';
-    $view_name = $arg['exam'] ? 'klausur' : 'loesungen';
+    $view_name = '';
+    if ($args['view'] == 'pdf-exam') {
+      $view_name = 'klausur';
+    } else if ($args['view'] == 'pdf-solution') {
+      $view_name = 'loesungen';
+    } else if ($args['view'] == 'pdf-both') {
+      $view_name = 'klausur-loesungen';
+    }
 
     $pdf = new crucioPDF('P', PDF_UNIT, 'A4', true, 'UTF-8', false, true);
     $pdf->SetCreator(PDF_CREATOR);
@@ -103,7 +111,7 @@ $app->group('/pdf', function() {
 
     $pdf->AddPage('P', 'A4');
 
-    if ($args['view'] == 'exam') {
+    if ($args['view'] == 'pdf-exam' || $args['view'] == 'pdf-both') {
       for ($i = 0; $i < count($questions); $i++) {
         $question = $questions[$i]['question'];
         $answers = $questions[$i]['answers'];
@@ -144,7 +152,13 @@ $app->group('/pdf', function() {
 
         $pdf->Ln(8);
       }
-    } else if ($args['view'] == 'solution') {
+    }
+
+    if ($args['view'] == 'pdf-both') {
+      $pdf->AddPage('P', 'A4');
+    }
+
+    if ($args['view'] == 'pdf-solution' || $args['view'] == 'pdf-both') {
       $pdf->SetFont($pdf->font, '', 11);
       $pdf->Cell(18, 0, 'Frage', 0, 0, 'C');
       $pdf->SetFont($pdf->font, 'B', 11);

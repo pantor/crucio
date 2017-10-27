@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ContactSuccessModalComponent } from './contact-success-modal.component';
 
@@ -8,7 +9,8 @@ describe('ContactSuccessModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ContactSuccessModalComponent ]
+      declarations: [ ContactSuccessModalComponent ],
+      providers: [ NgbActiveModal ]
     })
     .compileComponents();
   }));

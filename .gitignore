@@ -44,6 +44,5 @@ testem.log
 .DS_Store
 Thumbs.db
 
-#
-OWN_README.md
+# Config Files
 /src/api/config.php

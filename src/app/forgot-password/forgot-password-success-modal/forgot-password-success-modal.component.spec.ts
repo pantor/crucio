@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ForgotPasswordSuccessModalComponent } from './forgot-password-success-modal.component';
 
@@ -8,7 +9,8 @@ describe('ForgotPasswordSuccessModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ForgotPasswordSuccessModalComponent ]
+      declarations: [ ForgotPasswordSuccessModalComponent ],
+      providers: [ NgbActiveModal ]
     })
     .compileComponents();
   }));

@@ -1,6 +1,17 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { Observable } from 'rxjs/Observable';
 
+import { ApiService } from '../../../services/api.service';
 import { AdminWhitelistComponent } from './admin-whitelist.component';
+
+class ApiStubService {
+  get(url, data) {
+    return Observable.of({
+      stats: {}
+    })
+  }
+}
 
 describe('AdminWhitelistComponent', () => {
   let component: AdminWhitelistComponent;
@@ -8,7 +19,11 @@ describe('AdminWhitelistComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdminWhitelistComponent ]
+      declarations: [ AdminWhitelistComponent ],
+      imports: [ FormsModule ],
+      providers: [
+        { provide: ApiService, useClass: ApiStubService },
+      ]
     })
     .compileComponents();
   }));

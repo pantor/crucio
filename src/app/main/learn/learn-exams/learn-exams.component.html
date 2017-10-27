@@ -40,7 +40,7 @@
 
           <div ngbDropdownMenu>
             <button class="dropdown-item" (click)="learnExam('exam', e.exam_id)">Klausuransicht</button>
-            <button class="dropdown-item" (click)="learnExam('pdf', e.exam_id)">PDF Fragen</button>
+            <button class="dropdown-item" (click)="learnExam('pdf-exam', e.exam_id)">PDF Fragen</button>
             <button class="dropdown-item" (click)="learnExam('pdf-solution', e.exam_id)">PDF Lösungen</button>
             <a class="dropdown-item" href="/files/{{ e.file_name }}" *ngIf="e.file_name">Originaldokument</a>
             <hr>

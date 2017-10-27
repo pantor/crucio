@@ -1,6 +1,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Observable } from 'rxjs/Observable';
 
+import { ApiService } from '../../../services/api.service';
 import { AdminStatsComponent } from './admin-stats.component';
+
+class ApiStubService {
+  get(url, data) {
+    return Observable.of({
+      stats: {}
+    })
+  }
+}
 
 describe('AdminStatsComponent', () => {
   let component: AdminStatsComponent;
@@ -8,7 +18,10 @@ describe('AdminStatsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdminStatsComponent ]
+      declarations: [ AdminStatsComponent ],
+      providers: [
+        { provide: ApiService, useClass: ApiStubService },
+      ]
     })
     .compileComponents();
   }));

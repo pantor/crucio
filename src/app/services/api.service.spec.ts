@@ -1,11 +1,22 @@
 import { TestBed, inject } from '@angular/core/testing';
+import { Http } from '@angular/http';
 
 import { ApiService } from './api.service';
+
+class HttpStubService {
+  get() {}
+  put() {}
+  post() {}
+  delete() {}
+}
 
 describe('ApiService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ApiService]
+      providers: [
+        ApiService,
+        { provide: Http, useClass: HttpStubService }
+      ]
     });
   });
 

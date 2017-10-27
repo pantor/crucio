@@ -111,7 +111,7 @@ declare namespace Crucio {
     strike: boolean[];
   }
 
-  type Method = 'question' | 'exam' | 'pdf' | 'pdf-solution';
+  type Method = 'question' | 'exam' | 'pdf-exam' | 'pdf-solution' | 'pdf-both';
   type Type = 'exam' | 'subjects' | 'query' | 'tags';
 
   interface CombinationElement {

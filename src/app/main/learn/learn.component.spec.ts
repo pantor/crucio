@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { LearnComponent } from './learn.component';
 
@@ -8,7 +9,8 @@ describe('LearnComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LearnComponent ]
+      declarations: [ LearnComponent ],
+      imports: [ RouterTestingModule ]
     })
     .compileComponents();
   }));

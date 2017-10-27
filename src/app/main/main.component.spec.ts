@@ -1,7 +1,14 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
+import { AuthService } from '../services/auth.service';
+import { NavbarComponent } from './navbar/navbar.component';
 import { MainComponent } from './main.component';
+
+class AuthServiceStub {
+  getUser(): any { return {}; }
+  logout(): void { }
+}
 
 describe('MainComponent', () => {
   beforeEach(async(() => {
@@ -10,8 +17,11 @@ describe('MainComponent', () => {
         RouterTestingModule
       ],
       declarations: [
-        MainComponent
+        MainComponent, NavbarComponent
       ],
+      providers: [
+        { provide: AuthService, useClass: AuthServiceStub }
+      ]
     }).compileComponents();
   }));
 

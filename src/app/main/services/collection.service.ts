@@ -90,8 +90,9 @@ export class CollectionService {
         this.router.navigate(['/app/exam']);
         break;
 
-      case 'pdf':
+      case 'pdf-exam':
       case 'pdf-solution':
+      case 'pdf-both':
         const listString = this.getQuestionIds(this.collection.list).join(',');
         const info = encodeURIComponent(JSON.stringify({
           type: this.collection.type,
@@ -101,8 +102,7 @@ export class CollectionService {
           questionSearch: this.collection.questionSearch,
         }));
 
-        const view = (method === 'pdf') ? 'exam' : 'solution';
-        window.location.assign(`${this.api.base}pdf/collection/${view}?list=${listString}&info=${info}`);
+        window.location.assign(`${this.api.base}pdf/collection/${method}?list=${listString}&info=${info}`);
         break;
     }
   }
