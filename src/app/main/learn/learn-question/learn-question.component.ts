@@ -55,8 +55,6 @@ export class LearnQuestionComponent implements OnInit {
     window.document.title = 'Frage | Crucio';
     this.user = this.auth.getUser();
 
-    this.commentsCollapsed = !Boolean(this.user.showComments);
-
     // Component is not refreshed if only queryParams change...
     this.route.queryParams.subscribe(params => {
       this.questionId = +params['questionId'] || -1;
@@ -65,6 +63,8 @@ export class LearnQuestionComponent implements OnInit {
       if (this.questionId === -1) {
         this.router.navigate(['/app/learn/overview']);
       }
+
+      this.commentsCollapsed = !Boolean(this.user.showComments);
 
       this.api.get(`questions/${this.questionId}/user/${this.user.user_id}`).subscribe(result => {
         this.reset();

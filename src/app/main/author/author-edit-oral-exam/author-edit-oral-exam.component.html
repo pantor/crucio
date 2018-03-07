@@ -27,7 +27,7 @@
       <div class="form-group row">
         <label class="col-sm-3 col-form-label">Semester</label>
         <div class="col-sm-4">
-          <div class="btn-group" [(ngModel)]="oralExam.semester" ngbRadioGroup>
+          <div class="btn-group btn-group-toggle" [(ngModel)]="oralExam.semester" ngbRadioGroup>
             <label class="btn-outline-secondary" ngbButtonLabel>
               <input ngbButton type="radio" [value]="0"> Physikum
             </label>
@@ -43,7 +43,7 @@
       <div class="form-group row">
         <label class="col-sm-3 col-form-label">Anzahl Prüfer</label>
         <div class="col-sm-4">
-          <div class="btn-group" [(ngModel)]="oralExam.examiner_count" ngbRadioGroup>
+          <div class="btn-group btn-group-toggle" [(ngModel)]="oralExam.examiner_count" ngbRadioGroup>
             <label class="btn-outline-secondary" ngbButtonLabel>
               <input ngbButton type="radio" [value]="3"> 3 (M1)
             </label>

@@ -6,7 +6,7 @@
   <form class="input-group col" (ngSubmit)="loadComments()">
     <input class="form-control" type="text" name="query" [(ngModel)]="commentSearch.query" placeholder="...">
 
-    <span class="input-group-btn">
+    <span class="input-group-append">
       <button class="btn btn-outline-secondary" (click)="loadComments()">
         <i class="fa fa-search"></i>
       </button>
@@ -18,7 +18,7 @@
   <thead>
     <th>Frage</th>
     <th><i class="fa fa-fw fa-user"></i> Nutzer</th>
-    <th style="max-width: 300px;"><i class="fa fa-fw fa-comment-o"></i> Kommentar</th>
+    <th><i class="fa fa-fw fa-comment-o"></i> Kommentar</th>
     <th><i class="fa fa-fw fa-clock-o"></i>Datum</th>
     <th></th>
   </thead>

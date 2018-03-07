@@ -7,7 +7,7 @@
   <p>Wenn du eine Klausur oder eine andere Sammlung an Fragen lernst, kannst du sie speichern und dann später weiterlernen. Alle gespeicherten Sammlungen werden hier angezeigt.</p>
 </div>
 
-<div class="card-columns" *ngIf="collections && collections.length" style="overflow: hidden;">
+<div class="card-columns" *ngIf="collections && collections.length">
   <div class="card" *ngFor="let c of collections; let i = index">
     <div class="card-body">
       <h5 class="card-title">

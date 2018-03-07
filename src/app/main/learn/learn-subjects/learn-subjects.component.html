@@ -10,23 +10,23 @@
       <tbody>
         <tr *ngFor="let s of subjects">
           <td>
-            <label class="custom-control custom-checkbox" style="margin-bottom: 0;">
-              <input type="checkbox" class="custom-control-input" (click)="toggleSubject(s.subject_id)">
-              <span class="custom-control-indicator"></span>
-              <span class="custom-control-description">{{ s.subject }}</span>
-            </label>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="s{{ s.subject_id }}" (click)="toggleSubject(s.subject_id)">
+                <label class="custom-control-label" for="s{{ s.subject_id }}">{{ s.subject }}</label>
+              </div>
 
-            <button class="btn btn-outline-info btn-sm" style="float: right;" *ngIf="s.categories.length" (click)="s.show_categories = !s.show_categories">
-              {{ s.categories.length }} Kategorien anzeigen
-            </button>
+              <button class="btn btn-outline-info btn-sm" *ngIf="s.categories.length" (click)="s.show_categories = !s.show_categories">
+                {{ s.categories.length }} Kategorien anzeigen
+              </button>
+            </div>
 
             <div class="col-sm-1"></div>
             <div class="custom-controls-stacked text-muted m-2" *ngIf="s.show_categories">
-              <label class="custom-control custom-checkbox" style="margin-buttom: 0;" *ngFor="let c of s.categories">
-                <input type="checkbox" class="custom-control-input" (click)="toggleCategory(s.subject_id, c.category_id)">
-                <span class="custom-control-indicator"></span>
-                <span class="custom-control-description">{{ c.category }}</span>
-              </label>
+              <div class="custom-control custom-checkbox" *ngFor="let c of s.categories">
+                <input type="checkbox" class="custom-control-input" id="s{{ s.subject_id }}c{{ c.category_id }}" (click)="toggleCategory(s.subject_id, c.category_id)">
+                <label class="custom-control-label" for="s{{ s.subject_id }}c{{ c.category_id }}">{{ c.category }}</label>
+              </div>
             </div>
           </td>
         </tr>

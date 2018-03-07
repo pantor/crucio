@@ -12,7 +12,7 @@
   <form class="input-group col" (ngSubmit)="loadExams()">
     <input class="form-control" type="text" name="query" [(ngModel)]="examSearch.query" placeholder="...">
 
-    <span class="input-group-btn">
+    <span class="input-group-append">
       <button class="btn btn-outline-secondary" (click)="loadExams()"><i class="fa fa-search"></i></button>
     </span>
   </form>

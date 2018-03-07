@@ -22,7 +22,7 @@
 
 .btn-strike {
   position: absolute;
-  margin-top: 6px;
+  margin-top: -4px;
 }
 
 .showme {
@@ -30,5 +30,5 @@
 }
 
 .showhim:hover .showme {
-  display : block;
+  display: block;
 }

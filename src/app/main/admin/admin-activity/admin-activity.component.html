@@ -4,52 +4,45 @@
   <div class="card-body">
     <div class="row">
       <div class="col">
-      <label class="custom-control custom-checkbox">
-        <input type="checkbox" class="custom-control-input" [(ngModel)]="updateActivity">
-        <span class="custom-control-indicator"></span>
-        <span class="custom-control-description text-danger"><i class="fa fa-fw fa-refresh"></i> LIVE </span>
-      </label>
-    </div>
+        <div class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" id="updateActivity" [(ngModel)]="updateActivity">
+          <label class="custom-control-label text-danger" for="updateActivity"><i class="fa fa-fw fa-refresh"></i> LIVE</label>
+        </div>
+      </div>
     </div>
     <div class="row">
       <div class="col-sm-12 col-md-4">
-        <label class="custom-control custom-checkbox">
-          <input type="checkbox" class="custom-control-input" [(ngModel)]="showActivity.result" [disabled]="!updateActivity">
-          <span class="custom-control-indicator"></span>
-          <span class="custom-control-description">Antworten</span>
-        </label>
+        <div class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" id="showActivityResult" [(ngModel)]="showActivity.result" [disabled]="!updateActivity">
+          <label class="custom-control-label" for="showActivityResult">Antworten</label>
+        </div>
 
-        <label class="custom-control custom-checkbox">
-          <input type="checkbox" class="custom-control-input" [(ngModel)]="showActivity.register" [disabled]="!updateActivity">
-          <span class="custom-control-indicator"></span>
-          <span class="custom-control-description">Registrierungen</span>
-        </label>
+        <div class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" id="showActivityRegister" [(ngModel)]="showActivity.register" [disabled]="!updateActivity">
+          <label class="custom-control-label" for="showActivityRegister">Registrierungen</label>
+        </div>
       </div>
       <div class="col-sm-12 col-md-4">
-        <label class="custom-control custom-checkbox">
-          <input type="checkbox" class="custom-control-input" [(ngModel)]="showActivity.login" [disabled]="!updateActivity">
-          <span class="custom-control-indicator"></span>
-          <span class="custom-control-description">Anmeldungen</span>
-        </label>
+        <div class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" id="showActivityLogin" [(ngModel)]="showActivity.login" [disabled]="!updateActivity">
+          <label class="custom-control-label" for="showActivityLogin">Anmeldungen</label>
+        </div>
 
-        <label class="custom-control custom-checkbox">
-          <input type="checkbox" class="custom-control-input" [(ngModel)]="showActivity.comment" [disabled]="!updateActivity">
-          <span class="custom-control-indicator"></span>
-          <span class="custom-control-description">Kommentare</span>
-        </label>
+        <div class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" id="showActivityComment" [(ngModel)]="showActivity.comment" [disabled]="!updateActivity">
+          <label class="custom-control-label" for="showActivityComment">Kommentare</label>
+        </div>
       </div>
       <div class="col-sm-12 col-md-4">
-        <label class="custom-control custom-checkbox">
-          <input type="checkbox" class="custom-control-input" [(ngModel)]="showActivity.examNew" [disabled]="!updateActivity">
-          <span class="custom-control-indicator"></span>
-          <span class="custom-control-description">Neue Klausuren</span>
-        </label>
+        <div class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" id="showActivityExamNew" [(ngModel)]="showActivity.examNew" [disabled]="!updateActivity">
+          <label class="custom-control-label" for="showActivityExamNew">Neue Klausuren</label>
+        </div>
 
-        <label class="custom-control custom-checkbox">
-          <input type="checkbox" class="custom-control-input" [(ngModel)]="showActivity.examUpdate" [disabled]="!updateActivity">
-          <span class="custom-control-indicator"></span>
-          <span class="custom-control-description">Bearbeitete Klausuren</span>
-        </label>
+        <div class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" id="showActivityExamUpdate" [(ngModel)]="showActivity.examUpdate" [disabled]="!updateActivity">
+          <label class="custom-control-label" for="showActivityExamUpdate">Bearbeitete Klausuren</label>
+        </div>
       </div>
     </div>
   </div>

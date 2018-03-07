@@ -6,7 +6,7 @@
   <form class="input-group mr-2 col" (ngSubmit)="loadUsers()">
     <input class="form-control" type="text" name="query" [(ngModel)]="userSearch.query" placeholder="...">
 
-    <span class="input-group-btn">
+    <span class="input-group-append">
       <button class="btn btn-outline-secondary" (click)="loadUsers()">
         <i class="fa fa-search"></i>
       </button>

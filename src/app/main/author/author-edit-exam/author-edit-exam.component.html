@@ -124,10 +124,10 @@
           <div class="form-group row">
             <label class="col-sm-3">Sichtbar</label>
             <div class="col-sm-9">
-              <label class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" [(ngModel)]="exam.visibility">
-                <span class="custom-control-indicator"></span>
-              </label>
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="examVisibility" [(ngModel)]="exam.visibility">
+                <label class="custom-control-label" for="examVisibility"></label>
+              </div>
             </div>
           </div>
 
@@ -240,7 +240,7 @@
           <div class="form-group row">
             <label class="col-sm-3 col-form-label">Typ</label>
             <div class="col-sm-7">
-              <div class="btn-group" [(ngModel)]="q.type" ngbRadioGroup>
+              <div class="btn-group btn-group-toggle" [(ngModel)]="q.type" ngbRadioGroup>
                 <label class="btn-outline-secondary" ngbButtonLabel>
                   <input ngbButton type="radio" [value]="1">Freie Frage
                 </label>
@@ -308,7 +308,7 @@
           <div class="form-group row" *ngIf="q.type > 1">
             <label class="col-sm-3 col-form-label">Lösung</label>
             <div class="col-sm-9">
-              <div class="btn-group" [(ngModel)]="q.correct_answer" ngbRadioGroup>
+              <div class="btn-group btn-group-toggle" [(ngModel)]="q.correct_answer" ngbRadioGroup>
                 <label class="btn-outline-secondary" ngbButtonLabel>
                   <input ngbButton type="radio" [value]="0">Unbekannt
                 </label>

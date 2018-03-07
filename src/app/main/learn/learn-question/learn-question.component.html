@@ -23,11 +23,10 @@
             <i class="fa fa-fw fa-strikethrough"></i>
           </button>
 
-          <label class="custom-control custom-radio mt-2 ml-5" (click)="setAnswer(j + 1)">
-            <input type="radio" class="custom-control-input" [(ngModel)]="checkedAnswer" [value]="j + 1" />
-            <span class="custom-control-indicator"></span>
-            <span class="custom-control-description" [ngClass]="{ 'answer-success': (correctAnswer == j + 1), 'answer-danger': (wrongAnswer == j + 1), 'text-danger text-strike': (questionData.strike && questionData.strike[j]) }" [innerHtml]="a"></span>
-          </label>
+          <div class="custom-control custom-radio mt-2 ml-5" (click)="setAnswer(j + 1)">
+            <input type="radio" class="custom-control-input" id="radio-stacked{{j}}" [(ngModel)]="checkedAnswer" [value]="j + 1" />
+            <label class="custom-control-label" for="radio-stacked{{j}}" [ngClass]="{ 'answer-success': (correctAnswer == j + 1), 'answer-danger': (wrongAnswer == j + 1), 'text-danger text-strike': (questionData.strike && questionData.strike[j]) }" [innerHtml]="a"></label>
+          </div>
         </div>
       </div>
     </div>
@@ -107,8 +106,7 @@
       <i class="fa fa-comments fa-fw"></i>Kommentare
       <span class="badge badge-secondary">{{ comments.length }}</span>
 
-
-      <button type="button" class="btn btn-outline-info btn-sm" (click)="commentsCollapsed = !commentsCollapsed" *ngIf="!commentsCollapsed" style="float: right;">
+      <button type="button" class="btn btn-outline-info btn-sm float-right" (click)="commentsCollapsed = !commentsCollapsed" *ngIf="!commentsCollapsed">
         Einblenden
       </button>
     </h4>
