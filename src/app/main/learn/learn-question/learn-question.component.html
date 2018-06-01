@@ -16,7 +16,6 @@
         </p>
       </blockquote>
 
-
       <div class="custom-controls-stacked" *ngIf="question?.type > 1">
         <div class="showhim" *ngFor="let a of question.answers; let j = index" [hidden]="j >= question?.type">
           <button type="button" class="btn btn-outline-secondary btn-sm btn-strike showme" (click)="setStrike(j)" [class.active]="questionData.strike && questionData.strike[j]">
@@ -93,7 +92,7 @@
     <button class="btn btn-outline-secondary" (click)="openReportModal()">Melden</button>
   </div>
 
-  <div class="card" *ngIf="showExplanation">
+  <div class="card mt-2" *ngIf="showExplanation">
     <div class="card-body">
       <span [innerHtml]="question?.explanation"></span>
     </div>
