@@ -13,6 +13,7 @@ export class IndexComponent implements OnInit {
   password: string;
   rememberMe = true;
   failedLogin = false;
+  isLoading = false;
 
   constructor(private api: ApiService, private auth: AuthService, private router: Router) {
     window.document.title = 'Crucio | Fachschaft Medizin Leipzig';
@@ -27,6 +28,7 @@ export class IndexComponent implements OnInit {
   ngOnInit() { }
 
   login() {
+    this.isLoading = true;
     const data = { email: this.mail, password: this.password, remember_me: this.rememberMe };
     this.api.get('users/login', data).subscribe(result => {
       if (result.status) {
@@ -34,6 +36,7 @@ export class IndexComponent implements OnInit {
         this.router.navigate(['/app']);
       } else {
         this.failedLogin = true;
+        this.isLoading = false;
       }
     });
   }

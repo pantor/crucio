@@ -24,6 +24,7 @@ export class RegisterComponent implements OnInit {
       semester: new FormControl('1', [Validators.required, Validators.min(1), Validators.max(50)]),
       password: new FormControl('', [Validators.required]),
       passwordC: new FormControl('', [Validators.required]),
+      legal: new FormControl('', [Validators.required]),
     }, { validator: matchingPasswords('password', 'passwordC') });
   }
 

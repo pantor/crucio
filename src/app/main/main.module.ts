@@ -45,6 +45,7 @@ import { DropdownButtonComponent } from './directives/dropdown-button/dropdown-b
 import { AdminUserModalComponent } from './admin/admin-users/admin-user-modal/admin-user-modal.component';
 import { UserDeleteTagsModalComponent } from './user/user-delete-tags-modal/user-delete-tags-modal.component';
 import { UserDeleteResultsModalComponent } from './user/user-delete-results-modal/user-delete-results-modal.component';
+import { UserDeleteUserModalComponent } from './user/user-delete-user-modal/user-delete-user-modal.component';
 import { LearnImageModalComponent } from './learn/learn-image-modal/learn-image-modal.component';
 import { LearnReportModalComponent } from './learn/learn-report-modal/learn-report-modal.component';
 import { AdminDeleteUserModalComponent } from './admin/admin-users/admin-delete-user-modal/admin-delete-user-modal.component';
@@ -101,6 +102,7 @@ import { ToastComponent } from './directives/toast/toast.component';
     AdminUserModalComponent,
     UserDeleteTagsModalComponent,
     UserDeleteResultsModalComponent,
+    UserDeleteUserModalComponent,
     LearnImageModalComponent,
     LearnReportModalComponent,
     AdminDeleteUserModalComponent,
@@ -113,6 +115,7 @@ import { ToastComponent } from './directives/toast/toast.component';
     AdminUserModalComponent,
     UserDeleteTagsModalComponent,
     UserDeleteResultsModalComponent,
+    UserDeleteUserModalComponent,
     LearnImageModalComponent,
     LearnReportModalComponent,
     AdminDeleteUserModalComponent,

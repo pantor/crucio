@@ -4,8 +4,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../services/toast.service';
-import { UserDeleteResultsModalComponent } from './user-delete-results-modal/user-delete-results-modal.component';
 import { UserDeleteTagsModalComponent } from './user-delete-tags-modal/user-delete-tags-modal.component';
+import { UserDeleteResultsModalComponent } from './user-delete-results-modal/user-delete-results-modal.component';
+import { UserDeleteUserModalComponent } from './user-delete-user-modal/user-delete-user-modal.component';
+
 import { matchingPasswords } from '../../services/validators';
 
 @Component({
@@ -76,6 +78,11 @@ export class UserComponent implements OnInit {
 
   deleteAllTagsModal(): void {
     const modalRef = this.modal.open(UserDeleteTagsModalComponent);
+    modalRef.componentInstance.user = this.user;
+  }
+
+  deleteUser(): void {
+    const modalRef = this.modal.open(UserDeleteUserModalComponent);
     modalRef.componentInstance.user = this.user;
   }
 }

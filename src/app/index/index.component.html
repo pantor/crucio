@@ -22,7 +22,9 @@
     </div>
 
     <button class="btn btn-outline-success align-self-start mt-2 mb-3" type="submit">
-      <i class="fa fa-sign-in fa-fw"></i> Anmelden
+      <i class="fa fa-sign-in fa-fw" *ngIf="!isLoading"></i>
+      <i class="fa fa-circle-o-notch fa-spin fa-fw" *ngIf="isLoading"></i>
+      Anmelden
     </button>
   </form>
 </div>
