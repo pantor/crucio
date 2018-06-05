@@ -17,8 +17,8 @@
         <li class="list-group-item" *ngIf="currentQuestion()?.professor"><i class="fa fa-fw fa-user-md"></i> {{ currentQuestion()?.professor }}</li>
         <li class="list-group-item" *ngIf="currentQuestion()?.notes"><i class="fa fa-fw fa-pencil-square-o"></i> {{ currentQuestion()?.notes }}</li>
         <li class="list-group-item">
-          <button class="btn btn-outline-secondary mr-auto" (click)="save()">Speichern</button>
-          <button class="btn btn-danger" routerLink="/app/analysis">Beenden</button>
+          <button class="btn btn-outline-secondary" (click)="save()">Speichern</button>
+          <button class="btn btn-danger pull-right" routerLink="/app/analysis">Beenden</button>
         </li>
       </ul>
     </div>
