@@ -1,0 +1,134 @@
+<div class="wrap">
+  <div class="container">
+    <div class="d-flex justify-content-between">
+      <a class="brand d-flex flex-column justify-content-center align-items-center" routerLink="">
+        <h1><i class="fa fa-check-square-o"></i> Crucio</h1>
+      </a>
+
+      <a class="btn btn-outline-success mt-3 mb-3" routerLink="">
+        <i class="fa fa-sign-in fa-fw"></i> Anmelden
+      </a>
+    </div>
+  </div>
+
+  <div class="container-fluid bg-image">
+    <div class="container text-white">
+      <div class="text-center pt-5 pb-5">
+        <h1 class="display-3"><i class="fa fa-check-square-o"></i></h1>
+        <h4>Registrieren</h4>
+      </div>
+    </div>
+  </div>
+
+  <form class="container-fluid p-0" (ngSubmit)="registerUser()" [formGroup]="f" novalidate>
+    <div class="col-md-1"></div>
+    <div class="container mt-5 mb-5">
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Name</label>
+        <div class="col-sm-9 col-md-5">
+          <input class="form-control" [class.is-invalid]="f.get('name').invalid && f.get('name').touched" type="text" placeholder="Vorname Nachname" formControlName="name" autofocus />
+
+          <div class="invalid-feedback" *ngIf="f.get('name').hasError('required') && f.get('name').touched">
+            Bitte Namen angeben
+          </div>
+
+          <div class="invalid-feedback" *ngIf="f.get('name').hasError('taken')">
+            Name wird bereits verwendet
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">E-Mail</label>
+        <div class="col-sm-9 col-md-5">
+          <input class="form-control" [class.is-invalid]="f.get('mail').invalid && f.get('mail').touched" type="email" placeholder="________@studserv.uni-leipzig.de" formControlName="mail" />
+
+          <div class="invalid-feedback" *ngIf="f.get('mail').hasError('required') && f.get('mail').touched">
+            Bitte E-Mail-Adresse angeben
+          </div>
+
+          <div class="invalid-feedback" *ngIf="f.get('mail').hasError('pattern') && f.get('mail').touched">
+            Bitte gültige E-Mail-Adresse angeben
+          </div>
+
+          <div class="invalid-feedback" *ngIf="f.get('mail').hasError('taken')">
+            E-Mail-Adresse wird bereits verwendet
+          </div>
+
+          <div class="invalid-feedback" *ngIf="f.get('mail').hasError('forbidden')">
+            Bitte eine <i>...@studserv.uni-leipzig.de</i> oder freigeschaltete E-Mail-Adresse verwenden
+          </div>
+        </div>
+      </div>
+
+      <hr>
+
+      <!--div class="form-group row">
+        <label class="col-sm-3 col-form-label">Studienfach</label>
+        <div class="col-sm-3">
+          <div class="btn-group" data-toggle="buttons">
+            <label class="btn btn-default active">
+              <input type="radio" name="course" value="1" checked>Humanmedizin
+            </label>
+          </div>
+        </div>
+      </div-->
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Fachsemester</label>
+        <div class="col-sm-9 col-md-5">
+          <input class="form-control" [class.is-invalid]="f.get('semester').invalid && f.get('semester').touched" type="number" min="1" max="50" formControlName="semester" />
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Passwort</label>
+        <div class="col-sm-9 col-md-5">
+          <input class="form-control" [class.is-invalid]="f.get('password').invalid && f.get('password').touched" type="password" formControlName="password" />
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Passwort bestätigen</label>
+        <div class="col-sm-9 col-md-5">
+          <input class="form-control" [class.is-invalid]="f.hasError('mismatchedPasswords') && f.get('passwordC').touched" type="password" formControlName="passwordC" />
+
+          <div class="invalid-feedback" *ngIf="f.hasError('mismatchedPasswords')  && f.get('passwordC').touched">
+            Passwörter verschieden
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid bg-light">
+      <div class="container">
+        <div class="text-center pt-5 pb-5">
+          <h1 class="display-3"><i class="fa fa-legal"></i></h1>
+          <p class="lead">Warte! Was ist mit den AGB? DSGVO?</p>
+          <p>Du kannst <i><a href="/about">hier</a></i> alles Rechtliche durchlesen. Mit der Registrierung stimmst du den AGB zu. Ansonsten einfach nett zueinander sein und nichts böses machen. Ihr seid selbst für Fragen und Klausuren verantwortlich, die ihr hochladet.</p>
+
+          <button class="btn btn-outline-success btn-lg mt-4" type="submit" [disabled]="!f.valid">Registrieren</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<footer class="navbar navbar-dark bg-dark">
+  <div class="container d-flex justify-content-around">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link" href="https://sturamed-leipzig.de">Sturamed</a>
+      </div>
+
+      <div class="navbar-nav">
+        <a class="nav-item nav-link" routerLink="/app"><i class="fa fa-check-square-o"></i></a>
+      </div>
+
+      <div class="navbar-nav d-flex flex-row">
+        <a class="nav-item nav-link" routerLink="/contact">Kontakt</a>
+        <a class="nav-item nav-link ml-3" routerLink="/about">Impressum</a>
+      </div>
+  </div>
+</footer>

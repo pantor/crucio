@@ -1,0 +1,120 @@
+<app-toast></app-toast>
+
+<h4>Account von {{ user.username }}</h4>
+
+<hr>
+
+<div class="form-group row">
+  <label class="col-sm-3">Allgemein</label>
+  <div class="col-sm-9">
+    <!--div class="form-check">
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" [(ngModel)]="user.highlightExams">
+        <label class="custom-control-label">Empfohlene Fragen und Klausuren hervorheben</label>
+      </div>
+    </div-->
+
+    <div class="form-check">
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" [(ngModel)]="user.showComments">
+        <label class="custom-control-label">Kommentare automatisch ausblenden</label>
+      </div>
+    </div>
+  </div>
+
+  <!--label class="col-sm-3 col-form-label">Datenschutz</label>
+  <div class="col-sm-9">
+    <div class="form-check">
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" [(ngModel)]="user.useAnswers">
+        <label class="custom-control-label">Meine Antworten verwenden, um schwere Fragen herauszufinden</label>
+      </div>
+    </div>
+
+    <div class="form-check">
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" [(ngModel)]="user.useTags">
+        <label class="custom-control-label">Meine Markierungen verwenden, um Fragen zu katalogisieren</label>
+      </div>
+    </div>
+  </div-->
+</div>
+
+<div class="form-group row">
+  <label class="col-sm-3 col-form-label">Zurücksetzen</label>
+  <div class="col-sm-9">
+    <button type="button" class="btn btn-outline-secondary mr-2" (click)="deleteAllResultsModal()">Alle Klausuren zurücksetzen</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="deleteAllTagsModal()">Alle Markierungen zurücksetzen</button>
+  </div>
+</div>
+
+<div class="form-group row">
+  <label class="col-sm-3 col-form-label">Studienfach</label>
+  <div class="col-sm-5">
+    <button type="button" class="btn btn-outline-secondary" [class.active]="user.course_id == 1" disabled>Humanmedizin</button>
+  </div>
+</div>
+
+<div class="form-group row">
+  <label class="col-sm-3 col-form-label">Fachsemester</label>
+  <div class="col-sm-5">
+    <input class="form-control" type="number" [(ngModel)]="user.semester" required>
+    <small class="form-text text-muted">Das Semester aktualisiert sich automatisch.</small>
+  </div>
+</div>
+
+<div class="form-group row">
+  <div class="col-sm-3"></div>
+  <div class="col-sm-5">
+    <button class="btn btn-success" (click)="saveUser()">Speichern</button>
+  </div>
+</div>
+
+<hr class="mt-5 mb-5">
+
+<form (ngSubmit)="changePassword()" [formGroup]="f" novalidate>
+  <div class="form-group row">
+    <label class="col-sm-3 col-form-label">Altes Passwort</label>
+    <div class="col-sm-5">
+      <input class="form-control" [class.is-invalid]="f.get('oldPassword').invalid && f.get('oldPassword').touched" type="password" formControlName="oldPassword">
+
+      <div class="invalid-feedback" *ngIf="f.get('oldPassword').hasError('wrong')">
+        Falsches Passwort
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-sm-3 col-form-label">Neues Passwort</label>
+    <div class="col-sm-5">
+      <input class="form-control" [class.is-invalid]="f.get('newPassword').invalid && f.get('newPassword').touched" type="password" formControlName="newPassword">
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-sm-3 col-form-label">Passwort bestätigen</label>
+    <div class="col-sm-5">
+      <input class="form-control" [class.is-invalid]="f.hasError('mismatchedPasswords') && f.get('newPasswordC').touched" type="password" formControlName="newPasswordC">
+
+      <div class="invalid-feedback" *ngIf="f.hasError('mismatchedPasswords')  && f.get('newPasswordC').touched">
+        Passwörter verschieden
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-5">
+      <button class="btn btn-success" type="submit" [disabled]="f.invalid">Passwort ändern</button>
+    </div>
+  </div>
+</form>
+
+<hr class="mt-5 mb-5">
+
+<div class="form-group row mb-5">
+  <label class="col-sm-3 col-form-label"></label>
+  <div class="col-sm-9">
+    <button type="button" class="btn btn-danger" (click)="deleteUser()">Account löschen</button>
+  </div>
+</div>

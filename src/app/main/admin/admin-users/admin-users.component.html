@@ -1,0 +1,63 @@
+<div class="btn-toolbar no-gutters">
+  <app-dropdown-button class="mr-2" [data]="distinctGroups" [selected]="userSearch.group" showKey="name" placeholder="Alle Gruppen" (onUpdate)="userSearch.group = $event; loadUsers()"></app-dropdown-button>
+
+  <app-dropdown-button class="mr-2" [data]="distinctSemesters" [selected]="userSearch.semester" showKey="semester" suffix=". Semester" placeholder="Alle Semester" (onUpdate)="userSearch.semester = $event; loadUsers()"></app-dropdown-button>
+
+  <form class="input-group mr-2 col" (ngSubmit)="loadUsers()">
+    <input class="form-control" type="text" name="query" [(ngModel)]="userSearch.query" placeholder="...">
+
+    <span class="input-group-append">
+      <button class="btn btn-outline-secondary" (click)="loadUsers()">
+        <i class="fa fa-search"></i>
+      </button>
+    </span>
+  </form>
+</div>
+
+<table class="table table-hover mt-2">
+  <thead>
+    <th></th>
+    <th>Name</th>
+    <th>Semester</th>
+    <th>Letzte Anmeldung</th>
+    <th>Registrierung</th>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let user of users; let i = index" (click)="userModal(i)">
+      <td>
+        <span class="badge" [ngClass]="{ 'badge-secondary': user.group_id == 1, 'badge-danger': user.group_id == 2, 'badge-info': user.group_id == 3 }">{{ user.group_name }}</span>
+      </td>
+      <td>{{ user.username }}</td>
+      <td>{{ user.semester }}</td>
+      <td><app-timeago [datetime]="user.last_sign_in * 1000"></app-timeago></td>
+      <td><app-timeago [datetime]="user.sign_up_date * 1000"></app-timeago></td>
+    </tr>
+
+    <tr class="search-sf" *ngIf="users && users.length >= 100"><td class="text-muted" colspan="6">...</td></tr>
+    <tr class="search-sf" *ngIf="!(users && users.length)"><td class="text-muted" colspan="6">Nichts gefunden.</td></tr>
+  </tbody>
+
+  <!--tbody>
+    <tr ng-repeat="user in $ctrl.users" ng-click="$ctrl.userModal($index)" style="cursor: pointer;">
+
+      <td>
+        <span ng-if="user.last_sign_in > 0 && !$ctrl.isToday(user.last_sign_in) && !$ctrl.isToday(user.last_sign_in, 24)">
+          {{ ::user.last_sign_in * 1000 | date: 'dd.MM.yyyy, HH:mm' }}
+        </span>
+
+        <span ng-if="user.last_sign_in > 0 && $ctrl.isToday(user.last_sign_in)" class="label label-success">
+          Heute, {{ ::user.last_sign_in * 1000 | date: 'HH:mm' }}
+        </span>
+
+        <span ng-if="user.last_sign_in > 0 && $ctrl.isToday(user.last_sign_in, 24)">
+          Gestern, {{ ::user.last_sign_in * 1000 | date: 'HH:mm' }}
+        </span>
+
+        <span ng-if="user.last_sign_in == 0 && user.active == 0" class="label label-danger">Nicht Aktiviert</span>
+        <span ng-if="user.last_sign_in == 0 && user.active == 1" class="label label-warning">Nie Angemeldet</span>
+      </td>
+      <td>{{ ::user.sign_up_date * 1000 | date: 'dd.MM.yyyy' }}</td>
+    </tr>
+  </tbody-->
+</table>

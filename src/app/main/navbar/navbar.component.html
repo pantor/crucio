@@ -1,0 +1,13 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand mr-auto" routerLink="learn"><i class="fa fa-check-square-o"></i> Crucio</a>
+
+    <div class="navbar-nav">
+      <a class="nav-item nav-link" routerLink="learn" routerLinkActive="active">Lernen</a>
+      <a class="nav-item nav-link" routerLink="author" routerLinkActive="active" *ngIf="user.group_id == 2 || user.group_id == 3">Autor</a>
+      <a class="nav-item nav-link" routerLink="admin" routerLinkActive="active" *ngIf="user.group_id == 2">Admin</a>
+      <a class="nav-item nav-link" routerLink="user" routerLinkActive="active">{{ user.username }}</a>
+      <a class="nav-item nav-link" routerLink (click)="logout()"><i class="fa fa-sign-out fa-fw"></i></a>
+    </div>
+  </div>
+</nav>

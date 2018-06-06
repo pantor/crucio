@@ -1,0 +1,41 @@
+<h4>Kommentare zu deinen Klausuren</h4>
+
+<div class="btn-toolbar no-gutters">
+  <app-dropdown-button class="mr-2" [data]="distinctAuthors" [selected]="commentSearch.author" showKey="username" placeholder="Alle Autoren" (onUpdate)="commentSearch.author = $event; loadComments()"></app-dropdown-button>
+
+  <form class="input-group col" (ngSubmit)="loadComments()">
+    <input class="form-control" type="text" name="query" [(ngModel)]="commentSearch.query" placeholder="...">
+
+    <span class="input-group-append">
+      <button class="btn btn-outline-secondary" (click)="loadComments()">
+        <i class="fa fa-search"></i>
+      </button>
+    </span>
+  </form>
+</div>
+
+<table class="table table-hover mt-2">
+  <thead>
+    <th>Frage</th>
+    <th><i class="fa fa-fw fa-user"></i> Nutzer</th>
+    <th><i class="fa fa-fw fa-comment-o"></i> Kommentar</th>
+    <th><i class="fa fa-fw fa-clock-o"></i>Datum</th>
+    <th></th>
+  </thead>
+
+  <tbody *ngFor="let cq of commentsByQuestion">
+    <tr *ngFor="let c of cq.list; let i = index">
+      <td *ngIf="i == 0" [attr.rowspan]="cq.list.length"><span [innerHtml]="cq.question"></span></td>
+      <td>{{ c.username }}</td>
+      <td>{{ c.comment }}</td>
+      <td><app-timeago [datetime]="c.date * 1000"></app-timeago></td>
+      <td>
+        <a routerLink="/app/question" [queryParams]="{ questionId: c.question_id, resetSession: 1 }"><i class="fa fa-chevron-right"></i></a>
+      </td>
+    </tr>
+  </tbody>
+
+  <tbody *ngIf="!(commentsByQuestion && commentsByQuestion.length)">
+    <tr class="search-sf"><td class="text-muted" colspan="6">Nichts gefunden.</td></tr>
+  </tbody>
+</table>

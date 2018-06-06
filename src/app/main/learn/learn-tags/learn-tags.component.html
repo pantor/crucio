@@ -1,0 +1,44 @@
+<h4>Deine Markierungen</h4>
+
+<div class="jumbotron text-center" *ngIf="!(questionsByTag && questionsByTag.length)">
+  <h1 class="display-1"><i class="fa fa-tags"></i></h1>
+  <p class="lead">Du hast noch keine Markierungen erstellt.</p>
+  <hr class="my-4">
+  <p>Wenn die eine Frage beantwortest, siehst du rechts unter dem Info-Feld eine Eingabe.<br>
+        Gebe dort die Markierung ein und drücke Enter.</p>
+</div>
+
+<ng-container *ngIf="questionsByTag && questionsByTag.length">
+  <div class="btn-toolbar no-gutters">
+    <app-dropdown-button class="mr-2 mr-auto" [data]="distinctTags" [selected]="tagSearch.tag" showKey="tag" placeholder="Alle Markierungen" (onUpdate)="tagSearch.tag = $event; loadTags()"></app-dropdown-button>
+
+    <div ngbDropdown class="btn-group" placement="bottom-right">
+      <button type="button" class="btn btn-success" [disabled]="!tagSearch.tag" (click)="learnTags('question')"><i class="fa fa-fw fa-graduation-cap"></i> Lernen</button>
+      <button class="btn btn-success" ngbDropdownToggle [disabled]="!tagSearch.tag"></button>
+
+      <div ngbDropdownMenu>
+        <button class="dropdown-item" (click)="learnTags('exam')">Klausuransicht</button>
+        <button class="dropdown-item" (click)="learnTags('pdf-exam')">PDF Fragen</button>
+        <button class="dropdown-item" (click)="learnTags('pdf-both')">PDF Fragen & Lösungen</button>
+      </div>
+    </div>
+  </div>
+
+  <table class="table table-hover mt-2">
+    <thead>
+      <th style="min-width: 9em;"><i class="fa fa-fw fa-tag"></i> Markierung</th>
+      <th><i class="fa fa-fw fa-flask"></i> Fach</th>
+      <th>Frage</th>
+      <th></th>
+    </thead>
+
+    <tbody *ngFor="let t of questionsByTag" [hidden]="tagSearch.tag && tagSearch.tag?.tag != t.tag">
+      <tr *ngFor="let q of t.list; let i = index">
+        <td *ngIf="i == 0" [attr.rowspan]="t.list.length">{{ t.tag }}</td>
+        <td>{{ q.subject }}</td>
+        <td><span [innerHtml]="q.question"></span></td>
+        <td><a routerLink="/app/question" [queryParams]="{ questionId: q.question_id, resetSession: 1 }"><i class="fa fa-chevron-right"></i></a></td>
+      </tr>
+    </tbody>
+  </table>
+</ng-container>

@@ -1,0 +1,71 @@
+<h4>
+  Fächer & Kategorien
+  <small class="text-muted">Hier kannst du dir deine eigene Klausur zusammenstellen.</small>
+</h4>
+
+<div class="form-group row mt-4">
+  <label class="col-sm-3 col-form-label">Fächer</label>
+  <div class="col-sm-9">
+    <table class="table">
+      <tbody>
+        <tr *ngFor="let s of subjects">
+          <td>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="s{{ s.subject_id }}" (click)="toggleSubject(s.subject_id)">
+                <label class="custom-control-label" for="s{{ s.subject_id }}">{{ s.subject }}</label>
+              </div>
+
+              <button class="btn btn-outline-info btn-sm" *ngIf="s.categories.length" (click)="s.show_categories = !s.show_categories">
+                {{ s.categories.length }} Kategorien anzeigen
+              </button>
+            </div>
+
+            <div class="col-sm-1"></div>
+            <div class="custom-controls-stacked text-muted m-2" *ngIf="s.show_categories">
+              <div class="custom-control custom-checkbox" *ngFor="let c of s.categories">
+                <input type="checkbox" class="custom-control-input" id="s{{ s.subject_id }}c{{ c.category_id }}" (click)="toggleCategory(s.subject_id, c.category_id)">
+                <label class="custom-control-label" for="s{{ s.subject_id }}c{{ c.category_id }}">{{ c.category }}</label>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<hr>
+
+<div class="form-group row">
+  <label class="col-sm-3">Anzahl Fragen</label>
+  <div class="col-sm-9">
+    <span *ngIf="numberQuestionsInSelection > 0"><strong>{{ selectedQuestionNumber }}</strong> von {{ sliderConfig.max }}</span>
+    <span *ngIf="numberQuestionsInSelection == 0">Keine Fragen in deiner Auswahl</span>
+
+    <input class="mt-4" type="range" [(ngModel)]="selectedQuestionNumber" [min]="sliderConfig.min" [max]="sliderConfig.max" step="1" [disabled]="numberQuestionsInSelection == 0">
+
+    <div class="d-flex text-muted" *ngIf="sliderConfig.max > 0">
+      <span class="mr-auto">{{ sliderConfig.min }}</span>
+      <span>{{ sliderConfig.max }}</span>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<div class="form-group row">
+  <div class="col-sm-3"></div>
+  <div class="col-sm-9">
+    <div ngbDropdown class="btn-group" placement="top-right">
+      <button type="button" class="btn btn-success" [disabled]="!numberQuestionsInSelection" (click)="learnSubjects('question')"><i class="fa fa-fw fa-graduation-cap"></i> Lernen</button>
+      <button class="btn btn-success" ngbDropdownToggle [disabled]="!numberQuestionsInSelection"></button>
+
+      <div ngbDropdownMenu>
+        <button class="dropdown-item" (click)="learnSubjects('exam')">Klausuransicht</button>
+        <button class="dropdown-item" (click)="learnSubjects('pdf-exam')">PDF Fragen</button>
+        <button class="dropdown-item" (click)="learnSubjects('pdf-both')">PDF Fragen & Lösungen</button>
+      </div>
+    </div>
+  </div>
+</div>

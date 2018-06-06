@@ -1,0 +1,34 @@
+<div class="row">
+  <div class="col-sm-4 col-md-3 col-lg-3 mb-4">
+    <ul class="nav flex-column nav-pills nav-pills-danger">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="overview" routerLinkActive="active"><i class="fa fa-inbox fa-fw"></i> Übersicht</a>
+      </li>
+
+      <hr style="width: 90%;">
+
+      <li class="nav-item">
+        <a class="nav-link" routerLink="subjects" routerLinkActive="active"><i class="fa fa-flask fa-fw"></i> Fächer</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="exams" routerLinkActive="active"><i class="fa fa-list fa-fw"></i> Klausuren</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="oral-exams" routerLinkActive="active"><i class="fa fa-users fa-fw"></i> Mündliche Prüfungen</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="search" routerLinkActive="active"><i class="fa fa-search fa-fw"></i> Suche</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="tags" routerLinkActive="active"><i class="fa fa-tags fa-fw"></i> Markierungen</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="comments" routerLinkActive="active"><i class="fa fa-comments fa-fw"></i> Kommentare</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="col">
+    <router-outlet></router-outlet>
+  </div>
+</div>

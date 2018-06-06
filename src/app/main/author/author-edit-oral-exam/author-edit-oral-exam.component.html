@@ -1,0 +1,112 @@
+<app-toast></app-toast>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="fixed-wrapper fixed-wrapper-sm-4">
+        <div class="d-flex">
+          <button class="btn btn-success mr-auto" (click)="saveOralExam()">
+            <i class="fa fa-fw fa-save"></i> Speichern
+          </button>
+
+          <a class="btn btn-outline-secondary" href="/files/{{ oralExam?.filename }}" target="_blank">
+            <i class="fa fa-fw fa-external-link"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-8">
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Jahr</label>
+        <div class="col-sm-4">
+          <input class="form-control" type="number" [(ngModel)]="oralExam.year">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Semester</label>
+        <div class="col-sm-4">
+          <div class="btn-group btn-group-toggle" [(ngModel)]="oralExam.semester" ngbRadioGroup>
+            <label class="btn-outline-secondary" ngbButtonLabel>
+              <input ngbButton type="radio" [value]="0"> Physikum
+            </label>
+            <label class="btn-outline-secondary" ngbButtonLabel>
+              <input ngbButton type="radio" [value]="1"> Staatsexamen
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Anzahl Prüfer</label>
+        <div class="col-sm-4">
+          <div class="btn-group btn-group-toggle" [(ngModel)]="oralExam.examiner_count" ngbRadioGroup>
+            <label class="btn-outline-secondary" ngbButtonLabel>
+              <input ngbButton type="radio" [value]="3"> 3 (M1)
+            </label>
+            <label class="btn-outline-secondary" ngbButtonLabel>
+              <input ngbButton type="radio" [value]="4"> 4 (M3)
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Prüfer 1</label>
+        <div class="col-sm-8">
+          <input class="form-control" type="text" [(ngModel)]="oralExam.examiner_1">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Prüfer 2</label>
+        <div class="col-sm-8">
+          <input class="form-control" type="text" [(ngModel)]="oralExam.examiner_2">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Prüfer 3</label>
+        <div class="col-sm-8">
+          <input class="form-control" type="text" [(ngModel)]="oralExam.examiner_3">
+        </div>
+      </div>
+
+      <div class="form-group row" *ngIf="oralExam?.examiner_count == 4">
+        <label class="col-sm-3 col-form-label">Prüfer 4</label>
+        <div class="col-sm-8">
+          <input class="form-control" type="text" [(ngModel)]="oralExam.examiner_4">
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label mt-2">Dokument</label>
+        <div class="col-sm-9">
+          <label class="btn btn-outline-secondary mt-2 mr-2">
+            <input type="file" (change)="fileChange($event)" accept="application/pdf"/> Hochladen
+          </label>
+
+          <a class="btn btn-outline-secondary mr-2" href="/files/{{ oralExam?.filename }}" target="_blank" *ngIf="oralExam?.filename">Ansehen</a>
+
+          <button class="btn btn-danger" (click)="deleteDocument()" [disabled]="oralExam?.filename == ''">Löschen</button>
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="form-group row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-4">
+          <button class="btn btn-danger" (click)="deleteOralExamModal()">
+            <i class="fa fa-fw fa-trash-o"></i> Prüfung löschen
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

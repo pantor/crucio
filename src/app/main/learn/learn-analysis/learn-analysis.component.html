@@ -1,0 +1,176 @@
+<app-toast></app-toast>
+
+<div class="container">
+  <div class="d-flex align-items-start mb-4">
+    <h2 class="mr-auto">Analyse</h2>
+
+    <button type="button" class="btn btn-outline-secondary mr-2" (click)="save()">
+      Speichern
+    </button>
+
+    <a class="btn btn-outline-secondary" routerLink="/app/learn/overview">Zur Übersicht</a>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12 col-md-9 order-2 order-md-1">
+      <div class="form-input row mb-4">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-9">
+          <div class="progress">
+            <div class="progress-bar bg-success" role="progressbar" [style.width.%]="count?.correct / count?.all * 100"></div>
+
+            <div class="progress-bar bg-danger" role="progressbar" [style.width.%]="count?.wrong / count?.all * 100"></div>
+
+            <div class="progress-bar bg-warning" role="progressbar" [style.width.%]="count?.no_answer / count?.all * 100"></div>
+
+            <div class="progress-bar bg-info" role="progressbar" [style.width.%]="count?.free / count?.all * 100"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-input row mb-4">
+        <div class="col-sm-3">Zusammenfassung</div>
+        <div class="col-sm-9">
+          Die Klausur umfasste <strong>{{ count?.all }} Frage{{ count?.all > 1 ? 'n':'' }}</strong>, von denen du <strong>{{ count?.all == count?.worked ? 'alle bearbeitet' : count?.worked + ' bearbeitet' }}</strong> hast.
+
+          <span *ngIf="count?.solved == 0">
+            Allerdings hast du <strong class="text-danger">keine Frage gelöst</strong>. Kann man nicht sehen, wohin wir kämen, wenn wir gingen...
+          </span>
+
+          <span *ngIf="count?.solved > 0">
+            <span *ngIf="count?.free > 0 || count?.no_answer > 0">
+              Es
+
+              <span *ngIf="count?.free > 0">
+                <span *ngIf="count?.free > 1">
+                  waren <strong class="text-info">{{ count?.free }} freie Fragen</strong>
+                </span>
+                <span *ngIf="count?.free == 1">
+                  war <strong class="text-info">eine freie Frage</strong>
+                </span>
+              </span>
+
+              <span *ngIf="count?.free > 0 && count?.no_answer > 0">und</span>
+
+              <span *ngIf="count?.free == 0">
+                <span *ngIf="count?.no_answer > 1">
+                    waren
+                </span>
+                <span *ngIf="count?.no_answer == 1">
+                    war
+                </span>
+              </span>
+
+              <span *ngIf="count?.no_answer > 1">
+                <strong class="text-warning">{{ count?.no_answer }} Fragen ohne gespeicherte Antwort</strong>
+              </span>
+              <span *ngIf="count?.no_answer == 1">
+                <strong class="text-warning">eine Frage ohne gespeicherte Antwort</strong>
+              </span>
+
+              dabei, insgesamt hast du {{ count?.solved }} Frage{{ count?.solved > 1 ? 'n':'' }} gelöst.
+            </span>
+
+            <span *ngIf="count?.correct == count?.solved">
+              Du konntest <strong class="text-success">alle Fragen richtig beantworten</strong>.
+            </span>
+
+            <span *ngIf="count?.correct != count?.solved && count?.wrong != count?.solved && count?.no_answer != count?.solved">
+              Du konntest
+              <strong class="text-success">{{ count?.correct }} Frage{{ count?.correct > 1 ? 'n':'' }} richtig beantworten</strong>,
+
+              von
+              <span *ngIf="count?.wrong > 1">den <strong class="text-danger">{{ count?.wrong }} falsch beantworteten Fragen</strong></span>
+              <span *ngIf="count?.wrong == 1">der falsch beantworteten Frage</span>
+              weißt du jetzt immerhin die Antwort.
+
+              Das entspricht einer Quote von <strong>{{ (count?.correct / count?.solved * 100) | number : '1.0-1' }}%</strong>.
+            </span>
+
+            <span *ngIf="count?.wrong == count?.solved">
+              Du konntest <strong class="text-danger">keine Frage richtig beantworten</strong>.
+            </span>
+
+            <span *ngIf="count?.no_answer == count?.solved">
+              Vielleicht kannst du uns mithelfen richtige Antworten herauszufinden?
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group row" *ngIf="count?.solved > 0">
+        <div class="col-sm-3">Details</div>
+        <div class="col-sm-9">
+          <table class="table">
+            <thead>
+              <th></th>
+              <th>Frage</th>
+              <th></th>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let c of workedCombination; let i = index">
+                <td>
+                  <span *ngIf="c.question.correct_answer == 0" class="badge badge-warning">
+                    <i class="fa fa-question"></i>
+                  </span>
+                  <span *ngIf="c.question.correct_answer == c.data.given_result && c.data.given_result > 0 && c.question.correct_answer > 0" class="badge badge-success">
+                    <i class="fa fa-check"></i>
+                  </span>
+                  <span *ngIf="c.question.correct_answer != c.data.given_result && c.data.given_result > 0 && c.question.correct_answer > 0" class="badge badge-danger">
+                    <i class="fa fa-times"></i>
+                  </span>
+                  <span *ngIf="c.question.type == 1" class="badge badge-info">
+                    <i class="fa fa-info"></i>
+                  </span>
+                </td>
+
+                <td>
+                  <div [innerHtml]="c.question.question"></div>
+
+                  <p class="answer-danger" *ngIf="c.question.correct_answer != c.data.given_result && c.data.given_result > 0 && c.question.correct_answer > 0">
+                    <span [innerHtml]="c.question.answers[c.data.given_result - 1]"></span>
+                  </p>
+
+                  <p class="answer-success" *ngIf="c.question.correct_answer > 0 && c.data.mark_answer == 1 || c.question.correct_answer == c.data.given_result">
+                    <span [innerHtml]="c.question.answers[c.question.correct_answer - 1]"></span>
+                  </p>
+
+                  <p *ngIf="c.data.mark_answer != 1 && c.question.correct_answer != c.data.given_result && c.question.correct_answer > 0">
+                    <button class="btn btn-sm btn-outline-success" (click)="showCorrectAnswerClicked(i)">Lösung anzeigen</button>
+                  </p>
+                </td>
+
+                <td>
+                  <a routerLink="/app/question" [queryParams]="{ questionId: c.question.question_id }">
+                    <i class="fa fa-chevron-right"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-md-3 order-1 order-md-2 mb-4" *ngIf="exam">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title"><i class="fa fa-fw fa-flask"></i> {{ exam?.subject }}</h4>
+          <p class="card-text">
+            {{ exam?.semester }}. Semester <i class="fa fa-fw fa-calendar"></i> {{ exam?.date }}
+          </p>
+        </div>
+
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item" *ngIf="exam.professor">
+            <i class="fa fa-fw fa-user-md"></i> {{ exam.professor }}
+          </li>
+          <li class="list-group-item" *ngIf="exam.notes">
+            <i class="fa fa-fw fa-pencil-square-o"></i> {{ exam.notes }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+<div class="row">
+  <div class="col-sm-4 col-md-3 col-lg-3 mb-4">
+    <ul class="nav flex-column nav-pills">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="exams" routerLinkActive="active"><i class="fa fa-list fa-fw"></i> Klausuren</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="comments" routerLinkActive="active"><i class="fa fa-comments fa-fw"></i> Kommentare</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="subjects" routerLinkActive="active"><i class="fa fa-flask fa-fw"></i> Fächer</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="oral-exams" routerLinkActive="active"><i class="fa fa-users fa-fw"></i> Mündliche Prüfungen</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="advices" routerLinkActive="active"><i class="fa fa-rocket fa-fw"></i> Hinweise <span class="badge badge-danger">Aufpassen!</span></a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="col-sm-8 col-md-9 col-lg-9">
+    <router-outlet></router-outlet>
+  </div>
+</div>

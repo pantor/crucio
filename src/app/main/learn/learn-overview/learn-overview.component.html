@@ -1,0 +1,50 @@
+<h4>Übersicht deiner Sammlungen</h4>
+
+<div class="jumbotron text-center" *ngIf="!(collections && collections.length)">
+  <h1 class="display-1"><i class="fa fa-inbox"></i></h1>
+  <p class="lead">Du hast noch keine Sammlungen gespeichert.</p>
+  <hr class="my-4">
+  <p>Wenn du eine Klausur oder eine andere Sammlung an Fragen lernst, kannst du sie speichern und dann später weiterlernen. Alle gespeicherten Sammlungen werden hier angezeigt.</p>
+</div>
+
+<div class="card-columns" *ngIf="collections && collections.length">
+  <div class="card" *ngFor="let c of collections; let i = index">
+    <div class="card-body">
+      <h5 class="card-title">
+        <span *ngIf="c.type == 'exam'"><i class="fa fa-list fa-fw"></i> {{ c.exam.subject }}</span>
+        <span *ngIf="c.type == 'subjects'"><i class="fa fa-flask fa-fw"></i> {{ c.main_subject }}</span>
+        <span *ngIf="c.type == 'query'"><i class="fa fa-search fa-fw"></i> {{ c.questionSearch.query }}</span>
+        <span *ngIf="c.type == 'tags'"><i class="fa fa-tag fa-fw"></i> {{ c.tag }}</span>
+      </h5>
+
+      <p class="card-text">
+        <span *ngIf="c.type == 'exam'">
+          {{ c.exam.semester }}. Semester <i class="fa fa-calendar fa-fw"></i> {{ c.exam.date }}
+        </span>
+        <span *ngIf="c.type == 'query'">
+          <span *ngIf="c.questionSearch.semester">{{ c.questionSearch.semester }}. Semester</span>
+          <span *ngIf="c.questionSearch.subject"><i class="fa fa-flask fa-fw"></i> {{ c.questionSearch.subject }}</span>
+        </span>
+      </p>
+    </div>
+
+    <div class="card-footer clearfix">
+      <small class="text-muted">
+        {{ getWorkedList(c.list).length }} / {{ c.list.length }} Fragen
+      </small>
+
+      <div ngbDropdown class="btn-group float-right" placement="bottom-right">
+        <button type="button" class="btn btn-success btn-sm" (click)="learnCollection('question', i)"><i class="fa fa-fw fa-graduation-cap"></i> Lernen</button>
+        <button class="btn btn-success btn-sm" ngbDropdownToggle></button>
+
+        <div ngbDropdownMenu>
+          <button class="dropdown-item" (click)="learnCollection('exam', i)">Klausuransicht</button>
+          <button class="dropdown-item" (click)="learnCollection('pdf-exam', i)">PDF Fragen</button>
+          <button class="dropdown-item" (click)="learnCollection('pdf-solution', i)">PDF Lösungen</button>
+          <hr>
+          <button class="dropdown-item" (click)="removeCollection(i)">Sammlung löschen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

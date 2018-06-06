@@ -1,0 +1,34 @@
+<div class="row">
+  <div class="col-sm-4 col-md-3 col-lg-3 mb-4">
+    <ul class="nav flex-column nav-pills">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="users" routerLinkActive="active"><i class="fa fa-users fa-fw"></i> Benutzer</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="whitelist" routerLinkActive="active"><i class="fa fa-envelope fa-fw"></i> E-Mail Whitelist</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="tools" routerLinkActive="active"><i class="fa fa-wrench fa-fw"></i> Tools</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="stats" routerLinkActive="active"><i class="fa fa-bar-chart fa-fw"></i> Statistik</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="activity" routerLinkActive="active"><i class="fa fa-bicycle fa-fw"></i> Aktivität</a>
+      </li>
+
+      <hr style="width: 90%;">
+
+      <li class="nav-item">
+        <a class="nav-link" href="https://github.com/pantor/crucio" target="_blank"><i class="fa fa-github fa-fw"></i> Github</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="https://www.strato.de/apps/CustomerService#/skl" target="_blank"><i class="fa fa-external-link fa-fw"></i> Strato</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="col">
+    <router-outlet></router-outlet>
+  </div>
+</div>

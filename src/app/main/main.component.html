@@ -1,0 +1,23 @@
+<div class="wrap">
+  <app-navbar></app-navbar>
+
+  <div class="container mt-4">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+<footer class="navbar navbar-dark bg-dark">
+  <div class="container d-flex justify-content-around">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link" href="https://sturamed-leipzig.de">Sturamed</a>
+      </div>
+
+      <div class="navbar-nav">
+        <a class="nav-item nav-link" routerLink="/app"><i class="fa fa-check-square-o"></i></a>
+      </div>
+
+      <div class="navbar-nav">
+        <a class="nav-item nav-link" routerLink="help" routerLinkActive="active">Hilfe</a>
+      </div>
+  </div>
+</footer>

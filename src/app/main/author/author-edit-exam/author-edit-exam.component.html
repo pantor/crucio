@@ -1,0 +1,389 @@
+<app-toast></app-toast>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="fixed-wrapper fixed-wrapper-sm-4">
+        <div class="d-flex">
+          <button class="btn btn-success mr-auto" (click)="saveExam()">Speichern</button>
+
+          <button class="btn btn-outline-secondary" (click)="addQuestion(true)">
+            <i class="fa fa-plus"></i> Frage
+          </button>
+        </div>
+
+        <hr>
+
+        <ul class="list-group mb-2">
+          <div class="list-group-item list-group-item-action flex-column align-items-start" [class.active]="openQuestionIndex == -1" (click)="openQuestionIndex = -1">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1">Allgemeine Infos</h5>
+              <i class="fa fa-chevron-right"></i>
+            </div>
+
+            <p class="mb-1">
+              <i class="fa fa-fw fa-flask"></i> {{ subjectListPerId && subjectListPerId[exam?.subject_id] }}
+              <i class="fa fa-fw fa-calendar"></i> {{ exam?.date }}
+            </p>
+          </div>
+
+          <div class="list-group-item d-flex flex-nowrap justify-content-between" [class.active]="openQuestionIndex == i" (click)="openQuestionIndex = i" *ngFor="let q of questions; let i = index">
+            <i class="fa fa-circle fa-fw text-info" *ngIf="q.type == 1"></i>
+            <i class="fa fa-circle fa-fw text-danger" *ngIf="q.type > 1 && q.correct_answer == 0"></i>
+
+            <div class="list-question-element">
+              <span *ngIf="q.question.length == 0 || q.question == '<br/>'">
+                Neue Frage...
+              </span>
+
+              <span [innerHtml]="q.question"></span>
+            </div>
+
+            <i class="fa fa-chevron-right pull-right"></i>
+          </div>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-sm-8">
+      <div *ngIf="exam && openQuestionIndex == -1">
+        <div class="form-horizontal">
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Fach</label>
+            <div class="col-sm-5">
+              <select class="custom-select" [(ngModel)]="exam.subject_id">
+                <option *ngFor="let s of subjectList" [value]="s.subject_id">{{ s.subject }}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Semester</label>
+            <div class="col-sm-5">
+              <input class="form-control" type="number" [(ngModel)]="exam.semester">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Termin</label>
+            <div class="col-sm-5">
+              <input class="form-control" type="text" [(ngModel)]="exam.date" placeholder="z.B. WS 2001/02, SS 2009 oder Unbekannt">
+            </div>
+          </div>
+
+          <hr>
+
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Art</label>
+            <div class="col-sm-9">
+              <select class="custom-select" [(ngModel)]="exam.sort">
+                <option *ngFor="let t of examTypes" [value]="t">{{ t }}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Professor</label>
+            <div class="col-sm-5">
+              <input class="form-control" type="text" [(ngModel)]="exam.professor">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Bearbeitungszeit</label>
+            <div class="col-sm-5">
+              <input class="form-control" type="number" [(ngModel)]="exam.duration">
+            </div>
+            <span class="col-form-label">Minuten</span>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Anmerkungen</label>
+            <div class="col-sm-9">
+              <textarea class="form-control" rows="3" [(ngModel)]="exam.notes"></textarea>
+            </div>
+          </div>
+
+          <hr>
+
+          <div class="form-group row">
+            <label class="col-sm-3"></label>
+            <div class="col-sm-9">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="examVisibility" [(ngModel)]="exam.visibility">
+                <label class="custom-control-label" for="examVisibility">Sichtbar</label>
+              </div>
+            </div>
+          </div>
+
+          <hr>
+
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label mt-2">Dokument</label>
+            <div class="col-sm-9">
+              <label class="btn btn-outline-secondary mt-2 mr-2">
+                <input type="file" (change)="fileChangeExam($event)" accept="application/pdf"/> Hochladen
+              </label>
+
+              <a class="btn btn-outline-secondary mr-2" href="/files/{{ exam?.file_name }}" target="_blank" *ngIf="exam?.file_name">Ansehen</a>
+
+              <button class="btn btn-danger" (click)="deleteDocumentExam()" [disabled]="exam?.file_name == ''">Löschen</button>
+            </div>
+          </div>
+
+          <hr>
+
+          <div class="form-group row">
+            <label class="col-sm-3">Anzahl Fragen</label>
+            <div class="col-sm-9">{{ questions?.length }}</div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-3">Autor</label>
+            <div class="col-sm-9">{{ exam?.username }}</div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-3">Eingetragen</label>
+            <div class="col-sm-9">{{ exam?.date_added * 1000 | date:'dd.MM.yyyy' }}</div>
+          </div>
+
+          <div class="form-group row" *ngIf="examId">
+            <label class="col-sm-3">Aktualisiert</label>
+            <div class="col-sm-9">{{ exam?.date_updated * 1000 | date:'dd.MM.yyyy, HH:mm' }}</div>
+          </div>
+
+          <hr>
+
+          <div class="form-group row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-5">
+              <button class="btn btn-danger" (click)="deleteExamModal()">
+                <i class="fa fa-fw fa-trash-o"></i> Klausur löschen
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ng-container *ngFor="let q of questions; let i = index">
+        <div *ngIf="openQuestionIndex == i">
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Kategorie</label>
+            <div class="col-sm-9">
+              <select class="custom-select" [(ngModel)]="q.category_id">
+                <option *ngFor="let c of categoryListPerId[exam?.subject_id]" [value]="c.category_id">{{ c.category }}</option>
+              </select>
+            </div>
+          </div>
+
+          <hr>
+
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label mt-2">Frage</label>
+            <div class="col-sm-9">
+              <quill-editor [(ngModel)]="q.question" (onEditorCreated)="questionEditor = $event" placeholder="Neue Frage...">
+                <div quill-editor-toolbar>
+                  <span class="ql-formats">
+                    <button class="ql-bold"></button>
+                    <button class="ql-italic"></button>
+                    <button class="ql-underline"></button>
+                  </span>
+
+                  <span class="ql-formats">
+                    <button class="ql-script" value="sub"></button>
+                    <button class="ql-script" value="super"></button>
+                  </span>
+
+                  <span class="ql-formats">
+                    <button class="ql-list" value="bullet"></button>
+                    <button class="ql-list" value="ordered"></button>
+                  </span>
+
+                  <span class="ql-formats">
+                    <button (click)="addCharacter(questionEditor, '&larr;')">&larr;</button>
+                    <button (click)="addCharacter(questionEditor, '&rarr;')">&rarr;</button>
+                    <button (click)="addCharacter(questionEditor, '&harr;')">&harr;</button>
+                    <button (click)="addCharacter(questionEditor, '&sdot;')">&sdot;</button>
+                    <button (click)="addCharacter(questionEditor, '&times;')">&times;</button>
+                    <button (click)="addCharacter(questionEditor, '&asymp;')">&asymp;</button>
+                    <button (click)="addCharacter(questionEditor, '&radic;')">&radic;</button>
+                    <button (click)="addCharacter(questionEditor, '&prop;')">&prop;</button>
+                  </span>
+
+                  <span class="ql-formats">
+                    <button (click)="addCharacter(questionEditor, '&alpha;')">&alpha;</button>
+                    <button (click)="addCharacter(questionEditor, '&beta;')">&beta;</button>
+                    <button (click)="addCharacter(questionEditor, '&gamma;')">&gamma;</button>
+                    <button (click)="addCharacter(questionEditor, '&delta;')">&delta;</button>
+                    <button (click)="addCharacter(questionEditor, '&lambda;')">&lambda;</button>
+                    <button (click)="addCharacter(questionEditor, '&mu;')">&mu;</button>
+                    <button (click)="addCharacter(questionEditor, '&pi;')">&pi;</button>
+                    <button (click)="addCharacter(questionEditor, '&rho;')">&rho;</button>
+                    <button (click)="addCharacter(questionEditor, '&omega;')">&omega;</button>
+                    <button (click)="addCharacter(questionEditor, '&Omega;')">&Omega;</button>
+                  </span>
+                </div>
+              </quill-editor>
+
+              <label class="btn btn-outline-secondary mt-2 mr-2">
+                <input type="file" (change)="fileChangeQuestion(i, $event)" accept="image/*"/> Bild hochladen
+              </label>
+
+              <a class="btn btn-outline-secondary mr-2" href="/files/{{ q.question_image_url }}" target="_blank" *ngIf="q.question_image_url">Ansehen</a>
+
+              <button class="btn btn-danger" (click)="deleteDocumentQuestion(i)" [disabled]="q.question_image_url == ''">Löschen</button>
+            </div>
+          </div>
+
+          <hr>
+
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Typ</label>
+            <div class="col-sm-7">
+              <div class="btn-group btn-group-toggle" [(ngModel)]="q.type" ngbRadioGroup>
+                <label class="btn-outline-secondary" ngbButtonLabel>
+                  <input ngbButton type="radio" [value]="1">Freie Frage
+                </label>
+                <label class="btn-outline-secondary" ngbButtonLabel>
+                  <input ngbButton type="radio" [value]="2">2
+                </label>
+                <label class="btn-outline-secondary" ngbButtonLabel>
+                  <input ngbButton type="radio" [value]="3">3
+                </label>
+                <label class="btn-outline-secondary" ngbButtonLabel>
+                  <input ngbButton type="radio" [value]="4">4
+                </label>
+                <label class="btn-outline-secondary" ngbButtonLabel>
+                  <input ngbButton type="radio" [value]="5">5
+                </label>
+                <label class="btn-outline-secondary" ngbButtonLabel>
+                  <input ngbButton type="radio" [value]="6">6 Antworten
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-9">
+              <div class="ql-toolbar ql-snow" id="answerToolbar{{ i }}{{ j }}" *ngFor="let j of [0, 1, 2, 3, 4, 5]" [hidden]="j != currentSelectedAnswer">
+                <span class="ql-formats">
+                  <button class="ql-script" value="sub"></button>
+                  <button class="ql-script" value="super"></button>
+                </span>
+
+                <span class="ql-formats">
+                  <button (click)="addCharacter(getAnswerEditor(j), '&sdot;')">&sdot;</button>
+                  <button (click)="addCharacter(getAnswerEditor(j), '&times;')">&times;</button>
+                  <button (click)="addCharacter(getAnswerEditor(j), '&asymp;')">&asymp;</button>
+                  <button (click)="addCharacter(getAnswerEditor(j), '&radic;')">&radic;</button>
+                </span>
+
+                <span class="ql-formats">
+                  <button (click)="addCharacter(getAnswerEditor(j), '&alpha;')">&alpha;</button>
+                  <button (click)="addCharacter(getAnswerEditor(j), '&beta;')">&beta;</button>
+                  <button (click)="addCharacter(getAnswerEditor(j), '&gamma;')">&gamma;</button>
+                  <button (click)="addCharacter(getAnswerEditor(j), '&delta;')">&delta;</button>
+                  <button (click)="addCharacter(getAnswerEditor(j), '&lambda;')">&lambda;</button>
+                  <button (click)="addCharacter(getAnswerEditor(j), '&mu;')">&mu;</button>
+                  <button (click)="addCharacter(getAnswerEditor(j), '&pi;')">&pi;</button>
+                  <button (click)="addCharacter(getAnswerEditor(j), '&rho;')">&rho;</button>
+                  <button (click)="addCharacter(getAnswerEditor(j), '&omega;')">&omega;</button>
+                  <button (click)="addCharacter(getAnswerEditor(j), '&Omega;')">&Omega;</button>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row" *ngFor="let j of [0, 1, 2, 3, 4, 5]" [hidden]="j >= q.type">
+            <label class="col-sm-3 col-form-label">
+              <span *ngIf="q.type > 1" [class.text-success]="q.correct_answer == j + 1">Antwort {{ j + 1 }}</span>
+              <span *ngIf="q.type == 1">Antwort</span>
+            </label>
+            <div class="col-sm-9">
+              <quill-editor [(ngModel)]="q.answers[j]" [modules]="{ toolbar: '#answerToolbar' + i + j }" (click)="currentSelectedAnswer = j" (onSelectionChanged)="currentSelectedAnswer = j" placeholder="" (onEditorCreated)="setAnswerEditor($event, j)"></quill-editor>
+            </div>
+          </div>
+
+          <div class="form-group row" *ngIf="q.type > 1">
+            <label class="col-sm-3 col-form-label">Lösung</label>
+            <div class="col-sm-9">
+              <div class="btn-group btn-group-toggle" [(ngModel)]="q.correct_answer" ngbRadioGroup>
+                <label class="btn-outline-secondary" ngbButtonLabel>
+                  <input ngbButton type="radio" [value]="0">Unbekannt
+                </label>
+
+                <label class="btn-outline-secondary" *ngFor="let a of getRange(1, q.type); let i = index" ngbButtonLabel>
+                  <input ngbButton type="radio" [value]="a">{{ a }}
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <hr>
+
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Erklärung</label>
+            <div class="col-sm-9">
+              <quill-editor [(ngModel)]="q.explanation" (onEditorCreated)="explanationEditor = $event" placeholder="">
+                <div quill-editor-toolbar>
+                  <span class="ql-formats">
+                    <button class="ql-bold"></button>
+                    <button class="ql-italic"></button>
+                    <button class="ql-underline"></button>
+                  </span>
+
+                  <span class="ql-formats">
+                    <button class="ql-script" value="sub"></button>
+                    <button class="ql-script" value="super"></button>
+                  </span>
+
+                  <span class="ql-formats">
+                    <button class="ql-list" value="bullet"></button>
+                    <button class="ql-list" value="ordered"></button>
+                  </span>
+
+                  <span class="ql-formats">
+                    <button (click)="addCharacter(explanationEditor, '&larr;')">&larr;</button>
+                    <button (click)="addCharacter(explanationEditor, '&rarr;')">&rarr;</button>
+                    <button (click)="addCharacter(explanationEditor, '&harr;')">&harr;</button>
+                    <button (click)="addCharacter(explanationEditor, '&sdot;')">&sdot;</button>
+                    <button (click)="addCharacter(explanationEditor, '&times;')">&times;</button>
+                    <button (click)="addCharacter(explanationEditor, '&asymp;')">&asymp;</button>
+                    <button (click)="addCharacter(explanationEditor, '&radic;')">&radic;</button>
+                    <button (click)="addCharacter(explanationEditor, '&prop;')">&prop;</button>
+                  </span>
+
+                  <span class="ql-formats">
+                    <button (click)="addCharacter(explanationEditor, '&alpha;')">&alpha;</button>
+                    <button (click)="addCharacter(explanationEditor, '&beta;')">&beta;</button>
+                    <button (click)="addCharacter(explanationEditor, '&gamma;')">&gamma;</button>
+                    <button (click)="addCharacter(explanationEditor, '&delta;')">&delta;</button>
+                    <button (click)="addCharacter(explanationEditor, '&lambda;')">&lambda;</button>
+                    <button (click)="addCharacter(explanationEditor, '&mu;')">&mu;</button>
+                    <button (click)="addCharacter(explanationEditor, '&pi;')">&pi;</button>
+                    <button (click)="addCharacter(explanationEditor, '&rho;')">&rho;</button>
+                    <button (click)="addCharacter(explanationEditor, '&omega;')">&omega;</button>
+                    <button (click)="addCharacter(explanationEditor, '&Omega;')">&Omega;</button>
+                  </span>
+                </div>
+              </quill-editor>
+            </div>
+          </div>
+
+          <hr>
+
+          <div class="form-group row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-5">
+              <button class="btn btn-danger" (click)="deleteQuestion(i)">
+                <i class="fa fa-trash-o"></i> Frage löschen
+              </button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

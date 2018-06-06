@@ -1,0 +1,73 @@
+<div class="modal-header">
+  <h4 class="modal-title"><i class="fa fa-user fa-fw"></i>{{ user.username }}</h4>
+
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <div class="form-group row">
+    <label class="col-4">Fachsemester</label>
+    <div class="col-8">{{ user.semester }}</div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-4">E-Mail-Adresse</label>
+    <div class="col-8"><a href="mailto:{{ user.email }}">{{ user.email }}</a></div>
+  </div>
+
+  <hr>
+
+  <div class="form-group row">
+    <label class="col-4 col-form-label">Studienfach</label>
+    <div class="col-8">
+      <button type="button" class="btn btn-outline-secondary" [class.active]="user.course_id == 1">Humanmedizin</button>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-4 col-form-label">Gruppe</label>
+    <div class="col-8">
+      <div class="btn-group btn-group-toggle" ngbRadioGroup [(ngModel)]="newGroupID">
+        <label class="btn-outline-secondary" *ngFor="let g of distinctGroups" ngbButtonLabel>
+          <input ngbButton type="radio" [value]="g.group_id"> {{ g.name }}
+        </label>
+      </div>
+
+      <div class="btn-group">
+        <!--button class="btn btn-outline-secondary" *ngFor="let g in distinctGroups" [(ngModel)]="newGroupID" uib-btn-radio="g.group_id" uncheckable>{{ g.name }}</button-->
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-4">Registriert am</label>
+    <div class="col-8">{{ user.sign_up_date * 1000 | date: 'dd.MM.yyyy' }}</div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-4">Zuletzt Angemeldet</label>
+    <div class="col-8"><app-timeago [datetime]="user.last_sign_in * 1000"></app-timeago></div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-4">Passwort zurückgesetzt</label>
+    <div class="col-8">
+      <i class="fa" [ngClass]="{ 'fa-check': user.LostpasswordRequest, 'fa-remove': !user.LostpasswordRequest}"></i>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-4">Aktiviert</label>
+    <div class="col-8">{{ user.active }}</div>
+  </div>
+</div>
+
+<div class="modal-footer d-flex">
+  <button type="button" class="btn btn-danger mr-auto" (click)="deleteUserModal()">Löschen</button>
+
+  <button type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss({$value: 'cancel'})">Abbrechen</button>
+
+  <button type="button" class="btn btn-success" (click)="save()">Speichern</button>
+</div>

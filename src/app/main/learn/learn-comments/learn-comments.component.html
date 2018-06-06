@@ -1,0 +1,28 @@
+<h4>Deine Kommentare</h4>
+
+<div class="jumbotron text-center" *ngIf="!(commentsByQuestion && commentsByQuestion.length)">
+  <h1 class="display-1"><i class="fa fa-comments"></i></h1>
+  <p class="lead">Du hast noch keine Kommentare geschrieben.</p>
+  <hr class="my-4">
+  <p>Du kannst zu jeder Frage Kommentare schreiben und so von deinen Kommilitonen zusätzliche Informationen bekommen.</p>
+</div>
+
+<table class="table table-hover mt-2" *ngIf="commentsByQuestion && commentsByQuestion.length">
+  <thead>
+    <th>Frage</th>
+    <th style="min-width: 9em;"><i class="fa fa-fw fa-comment-o"></i> Kommentar</th>
+    <th style="min-width: 6em;"><i class="fa fa-fw fa-clock-o"></i>Datum</th>
+    <th></th>
+  </thead>
+
+  <tbody *ngFor="let cq of commentsByQuestion">
+    <tr *ngFor="let c of cq.list; let i = index">
+      <td *ngIf="i == 0" [attr.rowspan]="cq.list.length"><span [innerHtml]="cq.question"></span></td>
+      <td>{{ c.comment }}</td>
+      <td><app-timeago [datetime]="c.date * 1000"></app-timeago></td>
+      <td>
+        <a routerLink="/app/question" [queryParams]="{ questionId: c.question_id, resetSession: 1 }"><i class="fa fa-chevron-right"></i></a>
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,48 @@
+<h4>Von dir eingetragene Klausuren</h4>
+
+<div class="btn-toolbar no-gutters">
+  <button type="button" class="btn btn-success mr-2" (click)="newExam()">Neue Klausur</button>
+
+  <app-dropdown-button class="mr-2" [data]="distinctSemesters" [selected]="examSearch.semester" showKey="semester" suffix=". Semester" placeholder="Alle Semester" (onUpdate)="examSearch.semester = $event; loadExams()"></app-dropdown-button>
+
+  <app-dropdown-button class="mr-2" [data]="distinctSubjects" [selected]="examSearch.subject" showKey="name" placeholder="Alle Fächer" (onUpdate)="examSearch.subject = $event; loadExams()"></app-dropdown-button>
+
+  <app-dropdown-button class="mr-2" [data]="distinctAuthors" [selected]="examSearch.author" showKey="username" placeholder="Alle Autoren" (onUpdate)="examSearch.author = $event; loadExams()"></app-dropdown-button>
+
+  <form class="input-group col" (ngSubmit)="loadExams()">
+    <input class="form-control" type="text" name="query" [(ngModel)]="examSearch.query" placeholder="...">
+
+    <span class="input-group-append">
+      <button class="btn btn-outline-secondary" (click)="loadExams()"><i class="fa fa-search"></i></button>
+    </span>
+  </form>
+</div>
+
+<table class="table table-hover mt-2">
+  <thead>
+    <th></th>
+    <th><i class="fa fa-fw fa-flask"></i> Fach</th>
+    <th><i class="fa fa-fw fa-calendar"></i> Termin</th>
+    <th>Semester</th>
+    <th>Fragen</th>
+    <th>Autor</th>
+    <th></th>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let e of exams">
+      <td>
+        <span *ngIf="e.visibility == 0" class="badge badge-danger"><i class="fa fa-eye-slash"></i></span>
+        <span *ngIf="e.visibility == 1" class="badge badge-success"><i class="fa fa-eye"></i></span>
+      </td>
+      <td>{{ e.subject }}</td>
+      <td>{{ e.date }}</td>
+      <td>{{ e.semester }}</td>
+      <td>{{ e.question_count }}</td>
+      <td>{{ e.author }}</td>
+      <td><a routerLink="/app/edit-exam" [queryParams]="{ examId: e.exam_id }"><i class="fa fa-pencil"></i></a></td>
+    </tr>
+
+    <tr class="search-sf" *ngIf="!(exams && exams.length)"><td class="text-muted" colspan="6">Nichts gefunden.</td></tr>
+  </tbody>
+</table>

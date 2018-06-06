@@ -1,0 +1,60 @@
+<div class="wrap">
+  <div class="container">
+    <div class="d-flex justify-content-between">
+      <a class="brand d-flex flex-column justify-content-center align-items-center" routerLink="">
+        <h1><i class="fa fa-check-square-o"></i> Crucio</h1>
+      </a>
+
+      <a class="btn btn-outline-success mt-3 mb-3" routerLink="">
+        <i class="fa fa-sign-in fa-fw"></i> Anmelden
+      </a>
+    </div>
+  </div>
+
+  <div class="container-fluid bg-image">
+    <div class="container text-white">
+      <div class="text-center pt-5 pb-5">
+        <h1 class="display-3"><i class="fa fa-user"></i></h1>
+        <h4>Account Aktivieren</h4>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mt-5 mb-5">
+    <div class="row">
+      <div class="col-lg-2"></div>
+      <div class="col-lg-8">
+        <div class="alert alert-success" role="alert" *ngIf="success">
+          <strong>Willkommen!</strong> Dein Account ist aktiviert und deine E-Mail-Adresse bestätigt.
+
+          <button class="btn btn-success btn-sm" routerLink="/">Zur Anmeldung</button>
+        </div>
+
+        <div class="alert alert-danger" role="alert" *ngIf="errorNoToken">
+          <strong>Fehler bei der Aktivierung:</strong> Keinen Schlüssel gefunden.
+        </div>
+
+        <div class="alert alert-danger" role="alert" *ngIf="errorUnknown">
+          <strong>Fehler bei der Aktivierung:</strong> Entweder passt der Schlüssel nicht oder dein Account ist bereits aktiviert.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="navbar navbar-dark bg-dark">
+  <div class="container d-flex justify-content-around">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link" href="https://sturamed-leipzig.de">Sturamed</a>
+      </div>
+
+      <div class="navbar-nav">
+        <a class="nav-item nav-link" routerLink="/app"><i class="fa fa-check-square-o"></i></a>
+      </div>
+
+      <div class="navbar-nav d-flex flex-row">
+        <a class="nav-item nav-link" routerLink="/contact">Kontakt</a>
+        <a class="nav-item nav-link ml-3" routerLink="/about">Impressum</a>
+      </div>
+  </div>
+</footer>

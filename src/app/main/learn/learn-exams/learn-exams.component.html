@@ -1,0 +1,55 @@
+<h4>Alle Klausuren</h4>
+
+<div class="btn-toolbar no-gutters">
+  <app-dropdown-button class="mr-2" [data]="distinctSemesters" [selected]="examSearch.semester" showKey="semester" suffix=". Semester" placeholder="Alle Semester" (onUpdate)="examSearch.semester = $event; loadExams()"></app-dropdown-button>
+
+  <app-dropdown-button class="mr-2" [data]="distinctSubjects" [selected]="examSearch.subject" showKey="name" placeholder="Alle Fächer" (onUpdate)="examSearch.subject = $event; loadExams()"></app-dropdown-button>
+
+  <form class="input-group mr-2 col" (ngSubmit)="loadExams()">
+    <input class="form-control" type="text" name="query" [(ngModel)]="examSearch.query" placeholder="...">
+
+    <span class="input-group-append">
+      <button class="btn btn-outline-secondary" (click)="loadExams()">
+        <i class="fa fa-search"></i>
+      </button>
+    </span>
+  </form>
+</div>
+
+<table class="table table-hover mt-2">
+  <thead>
+    <tr>
+      <th>Semester</th>
+      <th><i class="fa fa-fw fa-flask"></i> Fach</th>
+      <th><i class="fa fa-fw fa-calendar"></i>Termin</th>
+      <th>Fragen</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let e of exams">
+      <td>{{ e.semester }}</td>
+      <td>{{ e.subject }}</td>
+      <td>{{ e.date }}</td>
+      <td>{{ e.answered_questions }} / {{ e.question_count }}</td>
+      <td>
+        <div class="btn-group" ngbDropdown placement="bottom-right">
+          <button type="button" class="btn btn-success btn-sm" (click)="learnExam('question', e.exam_id)"><i class="fa fa-fw fa-graduation-cap"></i> Lernen</button>
+          <button class="btn btn-success btn-sm" ngbDropdownToggle></button>
+
+          <div ngbDropdownMenu>
+            <button class="dropdown-item" (click)="learnExam('exam', e.exam_id)">Klausuransicht</button>
+            <button class="dropdown-item" (click)="learnExam('pdf-exam', e.exam_id)">PDF Fragen</button>
+            <button class="dropdown-item" (click)="learnExam('pdf-solution', e.exam_id)">PDF Lösungen</button>
+            <a class="dropdown-item" href="/files/{{ e.file_name }}" *ngIf="e.file_name">Originaldokument</a>
+            <hr>
+            <button class="dropdown-item" (click)="resetExam(e)">Klausur zurücksetzen</button>
+          </div>
+        </div>
+      </td>
+    </tr>
+
+    <tr class="search-sf" *ngIf="!(exams && exams.length)"><td class="text-muted" colspan="6">Nichts gefunden.</td></tr>
+  </tbody>
+</table>

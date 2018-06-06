@@ -1,0 +1,25 @@
+<h4>Für fremde E-Mail-Adressen <small lass="text-muted">(die nicht ______@studserv.uni-leipzig.de entsprechen)</small></h4>
+
+<form class="input-group" (ngSubmit)="addMail()">
+  <input class="form-control" [(ngModel)]="newWhitelistMail" type="email" name="mail" placeholder="E-Mail-Adresse..." />
+
+  <span class="input-group-append">
+    <button class="btn btn-outline-secondary"><i class="fa fa-plus"></i></button>
+  </span>
+</form>
+
+<table class="table table-hover mt-2">
+  <thead>
+    <th>In Verwendung?</th>
+    <th>E-Mail-Adresse</th>
+    <th></th>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let m of whitelist; let i = index">
+      <td><i *ngIf="m.used > 0" class="fa fa-check"></i></td>
+      <td>{{ m.mail_address }}</td>
+      <td><button (click)="removeMail(i)" type="button" class="close">&times;</button></td>
+    </tr>
+  </tbody>
+</table>

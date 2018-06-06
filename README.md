@@ -13,10 +13,10 @@ Please report bugs in the issue tracker (Issues Tab). Thanks! In the same way, y
 If you want to remove bugs, introduce new features or learn about the project, we are happy to welcome you onboard! A few notes about Crucio:
 
 ### Programming
-Crucio is written in PHP, Typescript, [Sass](http://sass-lang.com) and MySQL. Furthermore, it is based on several frameworks and plug-ins. The most important ones are [AngularJS](https://angularjs.org), [Bootstrap](https://getbootstrap.com) and [Slim](http://www.slimframework.com). For Icons [FontAwesome](http://fontawesome.io) is used.
+Crucio is written in PHP, Typescript, [Sass](http://sass-lang.com) and MySQL. Furthermore, it is based on several frameworks and plug-ins. The most important ones are [Angular](https://angular.io), [Bootstrap](https://getbootstrap.com) and [Slim](http://www.slimframework.com). For Icons, [FontAwesome](http://fontawesome.io) is used.
 
 ### Workflow
-For development [Gulp](http://gulpjs.com) is used; mainly for compiling SCSS files and minify- and concat actions. At first, [NodeJS](https://nodejs.org) needs to be installed, afterwards Gulp can be installed via `npm install -g gulp`. The needed dependencies for Crucio (which are listed in `package.json`) can be downloaded via `npm install`. Pull-requests can be send to the `dev`-branch. For deploying, [Git-ftp](https://git-ftp.github.io) is implemented and recommended.
+The Angular CLI [Gulp](https://cli.angular.io) is used for development. At first, [NodeJS](https://nodejs.org) needs to be installed, afterwards all dependencies for Crucio (which are listed in `package.json`) can be downloaded via `npm install`. Pull-requests can be send to the `dev`-branch.
 
 
 ## License

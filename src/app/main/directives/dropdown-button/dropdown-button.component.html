@@ -1,0 +1,12 @@
+<div ngbDropdown class="d-inline-block">
+  <button class="btn btn-outline-secondary" ngbDropdownToggle>
+    <span *ngIf="selected">{{ selected[showKey] }}{{ suffix }}</span>
+    <span *ngIf="!selected">{{ placeholder }}</span>
+  </button>
+
+  <div ngbDropdownMenu>
+    <button class="dropdown-item" *ngFor="let e of data" (click)="select(e)">{{ e[showKey] }}{{ suffix }}</button>
+    <hr>
+    <button class="dropdown-item" (click)="select(undefined)">{{ placeholder }}</button>
+  </div>
+</div>

@@ -1,0 +1,3 @@
+<div class="alert-container" *ngIf="currentToast">
+  <ngb-alert type="custom" (close)="delete()"><i class="fa fa-fw fa-save"></i> {{ currentToast?.text }}</ngb-alert>
+</div>

@@ -1,0 +1,49 @@
+<h4>Alle mündlichen Prüfungen</h4>
+
+<div class="btn-toolbar no-gutters">
+  <button type="button" class="btn btn-success mr-2" (click)="newOralExam()">Neue Prüfung</button>
+
+  <app-dropdown-button class="mr-2" [data]="distinctSemesters" [selected]="oralExamSearch.semester" showKey="name" placeholder="Alle Semester" (onUpdate)="oralExamSearch.semester = $event; loadOralExams()"></app-dropdown-button>
+
+  <app-dropdown-button class="mr-2" [data]="distinctYears" [selected]="oralExamSearch.year" showKey="year" placeholder="Alle Jahre" (onUpdate)="oralExamSearch.year = $event; loadOralExams()"></app-dropdown-button>
+
+  <form class="input-group col" (ngSubmit)="loadOralExams()">
+    <input class="form-control" type="text" name="query" [(ngModel)]="oralExamSearch.query" placeholder="...">
+
+    <span class="input-group-append">
+      <button class="btn btn-outline-secondary" (click)="loadOralExams()">
+        <i class="fa fa-search"></i>
+      </button>
+    </span>
+  </form>
+</div>
+
+<table class="table table-hover mt-2">
+  <thead>
+    <th></th>
+    <th><i class="fa fa-fw fa-calendar"></i> Jahr</th>
+    <th>Prüfer</th>
+    <th></th>
+    <th></th>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let e of oralExams">
+      <td>
+        <span *ngIf="e.semester == 0" class="badge badge-primary">Physikum</span>
+        <span *ngIf="e.semester == 1" class="badge badge-primary">Staatsexamen</span>
+      </td>
+      <td>{{ e.year }}</td>
+      <td>
+        {{ e.examiner_1 }}<br *ngIf="e.examiner_2">
+        {{ e.examiner_2 }}<br *ngIf="e.examiner_3">
+        {{ e.examiner_3 }}<br *ngIf="e.examiner_count == 4">
+        <span *ngIf="e.examiner_count == 4">{{ e.examiner_4 }}</span>
+      </td>
+      <td><a routerLink="/app/edit-oral-exam" [queryParams]="{ oralExamId: e.oral_exam_id }"><i class="fa fa-pencil"></i></a></td>
+      <td><a href="/files/{{ e.filename }}" target="_blank" *ngIf="e.filename"><i class="fa fa-external-link"></i></a></td>
+    </tr>
+
+    <tr class="search-sf" *ngIf="!(oralExams && oralExams.length)"><td class="text-muted" colspan="6">Nichts gefunden.</td></tr>
+  </tbody>
+</table>

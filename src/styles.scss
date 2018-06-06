@@ -1,0 +1,103 @@
+/* You can add global styles to this file, and also import other style files */
+
+$theme-colors: (
+  primary: #d35400,
+  secondary: #ccc,
+  dark: #2c3e50,
+);
+
+$link-color: map-get($theme-colors, dark);
+$component-active-bg: map-get($theme-colors, dark);
+
+$footer-height: 56px;
+
+
+@import "~bootstrap/scss/bootstrap.scss";
+@import "~quill/dist/quill.snow.css";
+
+
+
+html,
+body {
+  height: 100%;
+}
+
+.brand {
+  min-width: 200px;
+  color: map-get($theme-colors, dark);
+  transition: all .2s;
+
+  padding-left: 3px;
+  padding-top: 3px;
+
+  &:hover {
+    text-decoration: none;
+    color: #fff;
+    background-color: map-get($theme-colors, dark);
+  }
+}
+
+.bg-image {
+  background-image: url(./assets/images/background.jpg);
+  background-position: 50% 0;
+}
+
+.bg-orange {
+  background-color: map-get($theme-colors, primary);
+}
+
+.answer-success {
+  padding: 0 5px;
+  font-weight: bold;
+  background-color: lighten($green, 50%); // #dff0d8
+  color: $green;
+}
+
+.answer-danger {
+  padding: 0 5px;
+  font-weight: bold;
+  background-color: lighten($red, 40%); // #f2dede
+  color: $red;
+}
+
+.btn-outline-secondary {
+  color: #000;
+}
+
+.alert-container {
+  position: fixed;
+  top: 12px;
+  right: 10px;
+  width: 220px;
+  z-index: 999;
+}
+
+.alert-custom {
+  position: relative;
+
+  color: #fff;
+  background-color: map-get($theme-colors, dark);
+  border: none;
+  z-index: 999;
+
+  .close:hover {
+    color: #fff;
+  }
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.wrap {
+  min-height: 100%;
+  height: auto;
+  margin: 0 auto (-$footer-height); // Negative indent footer by its height
+  padding: 0 0 $footer-height; // Pad bottom by footer height
+}
+
+
+.ql-container {
+  height: auto;
+  font-size: $font-size-base;
+}
