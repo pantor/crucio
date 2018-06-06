@@ -107,29 +107,31 @@
           <hr>
 
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label mt-2">Dokument</label>
+            <label class="col-sm-3"></label>
             <div class="col-sm-9">
-              <label class="btn btn-outline-secondary mt-2">
-                <input type="file" (change)="fileChangeExam($event)" accept="application/pdf"/> Hochladen
-              </label>
-
-              <a class="btn btn-outline-secondary" href="/files/{{ exam?.file_name }}" target="_blank" *ngIf="exam?.file_name">Ansehen</a>
-
-              <button class="btn btn-danger" (click)="deleteDocumentExam()" [disabled]="exam?.file_name == ''">Löschen</button>
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="examVisibility" [(ngModel)]="exam.visibility">
+                <label class="custom-control-label" for="examVisibility">Sichtbar</label>
+              </div>
             </div>
           </div>
 
           <hr>
 
           <div class="form-group row">
-            <label class="col-sm-3">Sichtbar</label>
+            <label class="col-sm-3 col-form-label mt-2">Dokument</label>
             <div class="col-sm-9">
-              <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="examVisibility" [(ngModel)]="exam.visibility">
-                <label class="custom-control-label" for="examVisibility"></label>
-              </div>
+              <label class="btn btn-outline-secondary mt-2 mr-2">
+                <input type="file" (change)="fileChangeExam($event)" accept="application/pdf"/> Hochladen
+              </label>
+
+              <a class="btn btn-outline-secondary mr-2" href="/files/{{ exam?.file_name }}" target="_blank" *ngIf="exam?.file_name">Ansehen</a>
+
+              <button class="btn btn-danger" (click)="deleteDocumentExam()" [disabled]="exam?.file_name == ''">Löschen</button>
             </div>
           </div>
+
+          <hr>
 
           <div class="form-group row">
             <label class="col-sm-3">Anzahl Fragen</label>
@@ -224,14 +226,13 @@
                 </div>
               </quill-editor>
 
-              <label class="btn btn-outline-secondary mt-2">
+              <label class="btn btn-outline-secondary mt-2 mr-2">
                 <input type="file" (change)="fileChangeQuestion(i, $event)" accept="image/*"/> Bild hochladen
               </label>
 
-              <a class="btn btn-outline-secondary" href="/files/{{ q.question_image_url }}" target="_blank" *ngIf="q.question_image_url">Ansehen</a>
+              <a class="btn btn-outline-secondary mr-2" href="/files/{{ q.question_image_url }}" target="_blank" *ngIf="q.question_image_url">Ansehen</a>
 
               <button class="btn btn-danger" (click)="deleteDocumentQuestion(i)" [disabled]="q.question_image_url == ''">Löschen</button>
-
             </div>
           </div>
 

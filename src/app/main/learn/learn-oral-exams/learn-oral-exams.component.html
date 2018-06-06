@@ -1,6 +1,6 @@
 <div class="card">
   <div class="card-header">
-    <i class="fa fa-search"></i> Suche nach mündlichen Prüfungen
+    <i class="fa fa-search fa-fw"></i>Suche nach mündlichen Prüfungen
   </div>
   <div class="card-body">
     <div class="btn-toolbar no-gutters">
@@ -19,6 +19,11 @@
       </form>
     </div>
   </div>
+</div>
+
+<div class="d-flex justify-content-center">
+  <i class="fa fa-circle-o-notch fa-spin fa-fw text-muted mt-4" *ngIf="showSpinner"></i>
+  <p class="text-muted mt-4" *ngIf="oralExams && oralExams.length == 0 && hasSearched">Nichts gefunden.</p>
 </div>
 
 <table class="table table-hover mt-2" *ngIf="oralExams && oralExams.length">

@@ -13,6 +13,8 @@ export class LearnOralExamsComponent implements OnInit {
   oralExamSearch: any;
   distinctSemesters: {semester: number, name: string}[] = [{semester: 0, name: 'Physikum'}, {semester: 1, name: 'Staatsexamen'}];
   distinctYears: {year: number}[];
+  hasSearched = false;
+  showSpinner = false;
 
   constructor(private api: ApiService, private auth: AuthService) {
     this.user = this.auth.getUser();
@@ -29,9 +31,12 @@ export class LearnOralExamsComponent implements OnInit {
   ngOnInit() { }
 
   searchOralExams() {
+    this.hasSearched = false;
     this.oralExams = null;
 
     if (this.oralExamSearch.query) {
+      this.showSpinner = true;
+
       const data = {
         year: this.oralExamSearch.year && this.oralExamSearch.year.year,
         semester: this.oralExamSearch.semester && this.oralExamSearch.semester.semester,
@@ -40,6 +45,8 @@ export class LearnOralExamsComponent implements OnInit {
       };
       this.api.get('oral_exams', data).subscribe(result => {
         this.oralExams = result.oral_exams;
+        this.showSpinner = false;
+        this.hasSearched = true;
       });
     }
   }

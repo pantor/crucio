@@ -87,11 +87,11 @@
       <div class="form-group row">
         <label class="col-sm-3 col-form-label mt-2">Dokument</label>
         <div class="col-sm-9">
-          <label class="btn btn-outline-secondary mt-2">
+          <label class="btn btn-outline-secondary mt-2 mr-2">
             <input type="file" (change)="fileChange($event)" accept="application/pdf"/> Hochladen
           </label>
 
-          <a class="btn btn-outline-secondary" href="/files/{{ oralExam?.filename }}" target="_blank" *ngIf="oralExam?.filename">Ansehen</a>
+          <a class="btn btn-outline-secondary mr-2" href="/files/{{ oralExam?.filename }}" target="_blank" *ngIf="oralExam?.filename">Ansehen</a>
 
           <button class="btn btn-danger" (click)="deleteDocument()" [disabled]="oralExam?.filename == ''">Löschen</button>
         </div>
