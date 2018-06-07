@@ -111,17 +111,17 @@
             <tbody>
               <tr *ngFor="let c of workedCombination; let i = index">
                 <td>
+                  <span *ngIf="c.question.type == 1" class="badge badge-info">
+                    <i class="fa fa-info fa-fw"></i>
+                  </span>
                   <span *ngIf="c.question.correct_answer == 0" class="badge badge-warning">
-                    <i class="fa fa-question"></i>
+                    <i class="fa fa-question fa-fw"></i>
                   </span>
                   <span *ngIf="c.question.correct_answer == c.data.given_result && c.data.given_result > 0 && c.question.correct_answer > 0" class="badge badge-success">
-                    <i class="fa fa-check"></i>
+                    <i class="fa fa-check fa-fw"></i>
                   </span>
                   <span *ngIf="c.question.correct_answer != c.data.given_result && c.data.given_result > 0 && c.question.correct_answer > 0" class="badge badge-danger">
-                    <i class="fa fa-times"></i>
-                  </span>
-                  <span *ngIf="c.question.type == 1" class="badge badge-info">
-                    <i class="fa fa-info"></i>
+                    <i class="fa fa-times fa-fw"></i>
                   </span>
                 </td>
 

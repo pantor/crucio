@@ -128,7 +128,7 @@ export class CollectionService {
   }
 
   getWorkedList(): Crucio.CollectionListItem[] {
-    return this.getList().filter(e => e.given_result > -2); // Seen...
+    return this.getList().filter(e => e.given_result || e.mark_answer);
   }
 
   getQuestion(index: number): Crucio.Question {

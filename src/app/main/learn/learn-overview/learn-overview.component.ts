@@ -32,6 +32,6 @@ export class LearnOverviewComponent implements OnInit {
   }
 
   getWorkedList(list): any {
-    return list.filter(e => e.given_result);
+    return list.filter(e => e.given_result || e.mark_answer);
   }
 }

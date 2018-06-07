@@ -28,6 +28,10 @@
           </div>
         </div>
       </div>
+
+      <div class *ngIf="question?.type == 1 && isAnswerGiven">
+        <p [innerHtml]="question.answers[0]"></p>
+      </div>
     </div>
 
     <div class="col-lg-4 order-lg-2 order-1 mb-2">
