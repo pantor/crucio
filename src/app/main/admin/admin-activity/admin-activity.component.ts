@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from './../../../services/api.service';
-import { Observable } from 'rxjs/Observable';
+import { timer as observableTimer,  Observable } from 'rxjs';
 
 @Component({
   selector: 'app-admin-activity',
@@ -20,7 +20,7 @@ export class AdminActivityComponent implements OnInit {
   updateActivity = false;
 
   constructor(private api: ApiService) {
-    const timer = Observable.timer(2000, 2500);
+    const timer = observableTimer(2000, 2500);
     timer.subscribe(() => {
       if (this.updateActivity) {
         this.loadActivity();

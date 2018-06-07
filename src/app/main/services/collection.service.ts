@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 export class Collection {
   collection_id?: number;
@@ -46,11 +47,11 @@ export class CollectionService {
       return this.api.put(`collections/${this.collection.collection_id}`, data);
     } else {
       const data = { user_id: this.user.user_id, collection: this.collection };
-      return this.api.post('collections', data).map(result => {
+      return this.api.post('collections', data).pipe(map(result => {
         this.collection.collection_id = result.collection_id;
         this.saveLocal(this.collection);
         return result;
-      });
+      }));
     }
   }
 
@@ -179,17 +180,17 @@ export class CollectionService {
   loadQuestions(): Observable<any> {
     this.loadLocal();
     const listQuestionIds = this.getQuestionIds(this.collection.list);
-    return this.getQuestions(listQuestionIds).map(data => {
+    return this.getQuestions(listQuestionIds).pipe(map(data => {
       this.collection.questions = data;
       this.saveLocal(this.collection);
       return this.collection.questions;
-    });
+    }));
   }
 
   loadCombinedListAndQuestions(list: Crucio.CollectionListItem[]): Observable<any> {
     this.loadLocal();
     const listQuestionIds = this.getQuestionIds(list);
-    return this.getQuestions(listQuestionIds).map(data => {
+    return this.getQuestions(listQuestionIds).pipe(map(data => {
       this.collection.questions = data;
       this.saveLocal(this.collection);
 
@@ -198,7 +199,7 @@ export class CollectionService {
         result.push({ data: list[i], question: this.collection.questions[i] });
       }
       return result;
-    });
+    }));
   }
 
   analyseCombination(combination: Crucio.CombinationElement[]): any {
@@ -267,7 +268,7 @@ export class CollectionService {
 
 
   private getQuestions(listOfQuestionIds: number[]): Observable<any> {
-    return this.api.get('questions/list', {list: JSON.stringify(listOfQuestionIds)}).map(response => response.list);
+    return this.api.get('questions/list', {list: JSON.stringify(listOfQuestionIds)}).pipe(map(response => response.list));
   }
 
   private getQuestionIds(list: Crucio.CollectionListItem[]): number[] {
