@@ -53,7 +53,7 @@ $app->group('/users', function() {
   $this->get('/login', function($request, $response, $args) {
     $mysql = init();
 
-    $email = str_replace('(@)', '@', $request->getQueryParam('email'));
+    $email = $request->getQueryParam('email');
     $password = $request->getQueryParam('password');
     $remember_choice = !empty($request->getQueryParam('remember_me')) ? $request->getQueryParam('remember_me') : 0;
 
@@ -80,7 +80,8 @@ $app->group('/users', function() {
     }
 
     $entered_pass = generateHash($password, $user['password']);
-    if ($entered_pass != $user['password']) {
+    $entered_pass_url = generateHash(urlencode($password), $user['password']);
+    if ($entered_pass != $user['password'] && $entered_pass_url != $user['password']) {
       $data['error'] = 'error_incorrect_password';
       return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
     }
@@ -237,16 +238,16 @@ $app->group('/users', function() {
     $stmt_user->bindValue(':user_id', $user_id, PDO::PARAM_INT);
     $user = getFetch($stmt_user);
 
-    $old_hash_pw = $user['password'];
-    $entered_pass = generateHash($body['current_password'], $old_hash_pw);
-    $entered_pass_new = generateHash($body['password'], $old_hash_pw);
+    $entered_pass = generateHash($body['current_password'], $user['password']);
+    $entered_pass_url = generateHash(urlencode($body['current_password']), $user['password']);
+    $entered_pass_new = generateHash($body['password'], $user['password']);
 
-    if ($entered_pass != $old_hash_pw) {
+    if ($entered_pass != $user['password'] && $entered_pass_url != $user['password']) {
       $data['error'] = 'error_incorrect_password';
       return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
     }
 
-    if ($entered_pass_new == $old_hash_pw) {
+    if ($entered_pass_new == $user['password']) {
       $data['error'] = 'error_same_passwords';
       return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
     }
