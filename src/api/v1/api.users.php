@@ -80,7 +80,7 @@ $app->group('/users', function() {
     }
 
     $entered_pass = generateHash($password, $user['password']);
-    $entered_pass_url = generateHash(urlencode($password), $user['password']);
+    $entered_pass_url = generateHash(encodeURIComponent($password), $user['password']);
     if ($entered_pass != $user['password'] && $entered_pass_url != $user['password']) {
       $data['error'] = 'error_incorrect_password';
       return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
@@ -239,7 +239,7 @@ $app->group('/users', function() {
     $user = getFetch($stmt_user);
 
     $entered_pass = generateHash($body['current_password'], $user['password']);
-    $entered_pass_url = generateHash(urlencode($body['current_password']), $user['password']);
+    $entered_pass_url = generateHash(encodeURIComponent($body['current_password']), $user['password']);
     $entered_pass_new = generateHash($body['password'], $user['password']);
 
     if ($entered_pass != $user['password'] && $entered_pass_url != $user['password']) {
