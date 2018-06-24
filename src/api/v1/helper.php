@@ -79,8 +79,7 @@ function flagLostpasswordRequest($mysql, $username, $value) {
 // --------
 
 function getURL() {
-  $protocol = strtolower(substr($_SERVER['SERVER_PROTOCOL'], 0, 5)) == 'https://' ? 'https://' : 'http://';
-  return $protocol.$_SERVER['HTTP_HOST'].'/';
+  return 'https://'.$_SERVER['HTTP_HOST'].'/';
 }
 
 function sanitize($str) {

@@ -29,7 +29,12 @@ export class IndexComponent implements OnInit {
 
   login() {
     this.isLoading = true;
-    const data = { email: this.mail, password: this.password, remember_me: this.rememberMe };
+    const data = {
+      email: this.mail,
+      password: this.password,
+      password_encoded: encodeURIComponent(this.password),
+      remember_me: this.rememberMe,
+    };
     this.api.get('users/login', data).subscribe(result => {
       if (result.status) {
         this.auth.setUser(result.logged_in_user, true);

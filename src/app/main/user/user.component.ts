@@ -57,6 +57,7 @@ export class UserComponent implements OnInit {
   changePassword(): void {
     const data = {
       current_password: this.f.value.oldPassword,
+      current_password_encoded: encodeURIComponent(this.f.value.oldPassword),
       password: this.f.value.newPassword,
     };
     this.api.put(`users/${this.user.user_id}/password`, data).subscribe(result => {

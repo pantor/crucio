@@ -55,6 +55,7 @@ $app->group('/users', function() {
 
     $email = $request->getQueryParam('email');
     $password = $request->getQueryParam('password');
+    $password_encoded = $request->getQueryParam('password_encoded');
     $remember_choice = !empty($request->getQueryParam('remember_me')) ? $request->getQueryParam('remember_me') : 0;
 
     if (!$email) {
@@ -80,8 +81,8 @@ $app->group('/users', function() {
     }
 
     $entered_pass = generateHash($password, $user['password']);
-    $entered_pass_url = generateHash(encodeURIComponent($password), $user['password']);
-    if ($entered_pass != $user['password'] && $entered_pass_url != $user['password']) {
+    $entered_pass_encoded = generateHash($password_encoded, $user['password']);
+    if ($entered_pass != $user['password'] && $entered_pass_encoded != $user['password']) {
       $data['error'] = 'error_incorrect_password';
       return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
     }
@@ -239,10 +240,10 @@ $app->group('/users', function() {
     $user = getFetch($stmt_user);
 
     $entered_pass = generateHash($body['current_password'], $user['password']);
-    $entered_pass_url = generateHash(encodeURIComponent($body['current_password']), $user['password']);
+    $entered_pass_encoded = generateHash($body['current_password_encoded'], $user['password']);
     $entered_pass_new = generateHash($body['password'], $user['password']);
 
-    if ($entered_pass != $user['password'] && $entered_pass_url != $user['password']) {
+    if ($entered_pass != $user['password'] && $entered_pass_encoded != $user['password']) {
       $data['error'] = 'error_incorrect_password';
       return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
     }

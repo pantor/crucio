@@ -8,8 +8,6 @@ $app->group('/stats', function() {
     $time = time();
     $stats['time'] = $time;
 
-    $stmt = $mysql->prepare("SELECT COUNT(*) AS 'count' FROM users WHERE visibility = 1");
-
     $stats['user_count'] = getCount($mysql, 'users');
     $stats['exam_count'] = getCount($mysql, 'exams');
     $stats['oral_exam_count'] = getCount($mysql, 'oral_exams');
