@@ -55,7 +55,7 @@ $app->group('/users', function() {
 
     $email = $request->getQueryParam('email');
     $password = $request->getQueryParam('password');
-    $password_encoded = $request->getQueryParam('password_encoded');
+    $password_encoded = urldecode($request->getQueryParam('password_encoded'));
     $remember_choice = !empty($request->getQueryParam('remember_me')) ? $request->getQueryParam('remember_me') : 0;
 
     if (!$email) {
@@ -240,7 +240,7 @@ $app->group('/users', function() {
     $user = getFetch($stmt_user);
 
     $entered_pass = generateHash($body['current_password'], $user['password']);
-    $entered_pass_encoded = generateHash($body['current_password_encoded'], $user['password']);
+    $entered_pass_encoded = generateHash(urldecode($body['current_password_encoded']), $user['password']);
     $entered_pass_new = generateHash($body['password'], $user['password']);
 
     if ($entered_pass != $user['password'] && $entered_pass_encoded != $user['password']) {
