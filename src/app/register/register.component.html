@@ -95,7 +95,7 @@
         <div class="col-sm-9 col-md-5">
           <input class="form-control" [class.is-invalid]="f.hasError('mismatchedPasswords') && f.get('passwordC').touched" type="password" formControlName="passwordC" />
 
-          <div class="invalid-feedback" *ngIf="f.hasError('mismatchedPasswords')  && f.get('passwordC').touched">
+          <div class="invalid-feedback" *ngIf="f.hasError('mismatchedPasswords') && f.get('passwordC').touched">
             Passwörter verschieden
           </div>
         </div>
@@ -107,7 +107,7 @@
         <div class="text-center pt-5 pb-5">
           <h1 class="display-3"><i class="fa fa-legal"></i></h1>
           <p class="lead">Warte! Was ist mit den AGB? DSGVO?</p>
-          <p>Du kannst <i><a href="/about">hier</a></i> alles Rechtliche durchlesen. Mit der Registrierung stimmst du den AGB zu. Ansonsten einfach nett zueinander sein und nichts böses machen. Ihr seid selbst für Fragen und Klausuren verantwortlich, die ihr hochladet.</p>
+          <p>Du kannst <i><a href="/about">hier</a></i> alles Rechtliche durchlesen. Mit der Registrierung stimmst Du den AGB zu. Ansonsten nett zueinander sein und nichts böses machen. Ihr seid selbst für Fragen und Klausuren verantwortlich, die Ihr hochladet.</p>
 
           <button class="btn btn-outline-success btn-lg mt-4" type="submit" [disabled]="!f.valid">Registrieren</button>
         </div>
