@@ -12,7 +12,7 @@ import { ContactSuccessModalComponent } from './contact-success-modal/contact-su
 export class ContactComponent implements OnInit {
   f = new FormGroup({
     name: new FormControl('', [Validators.required]),
-    mail: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0–9_.+-]+@[a-zA-Z0–9-]+\.[a-z]{2,4}$/)]),
+    mail: new FormControl('', [Validators.required, Validators.email]),
     message: new FormControl('', [Validators.required])
   });
 

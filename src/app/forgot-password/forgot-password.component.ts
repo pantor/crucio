@@ -11,7 +11,7 @@ import { ForgotPasswordSuccessModalComponent } from './forgot-password-success-m
 })
 export class ForgotPasswordComponent implements OnInit {
   f = new FormGroup({
-    mail: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0–9_.+-]+@[a-zA-Z0–9-]+\.[a-z]{2,4}$/)])
+    mail: new FormControl('', [Validators.required, Validators.email])
   });
 
   constructor(private api: ApiService, private modal: NgbModal) {
