@@ -11,7 +11,6 @@ export class AuthorSubjectsComponent implements OnInit {
 
   constructor(private api: ApiService) {
     this.api.get('subjects').subscribe(result => {
-      console.log(result);
       this.subjects = result.subjects;
     });
   }
