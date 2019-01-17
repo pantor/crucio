@@ -14,14 +14,11 @@ export class AuthorExamsComponent implements OnInit {
   examSearch: any;
   distinctSemesters: any;
   distinctSubjects: any;
-  distinctAuthors: any;
 
   constructor(private api: ApiService, private auth: AuthService, private router: Router) {
     this.user = auth.getUser();
 
-    this.examSearch = { author: this.user };
-
-    this.distinctAuthors = [this.user];
+    this.examSearch = { };
 
     this.api.get('exams/distinct').subscribe(result => {
       this.distinctSemesters = result.semesters;
@@ -36,7 +33,6 @@ export class AuthorExamsComponent implements OnInit {
   loadExams(): void {
     const data = {
       subject_id: this.examSearch.subject && this.examSearch.subject.subject_id,
-      author_id: this.examSearch.author && this.examSearch.author.user_id,
       semester: this.examSearch.semester && this.examSearch.semester.semester,
       query: this.examSearch.query,
       limit: 200,

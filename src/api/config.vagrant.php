@@ -4,7 +4,8 @@ return array(
   'host' => 'localhost',
   'dbname' => 'scotchbox',
   'user' => 'root',
-  'password' => 'root'
+  'password' => 'root',
+  'secret' => 'supersecret'
 );
 
 ?>

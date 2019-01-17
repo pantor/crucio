@@ -70,10 +70,10 @@
         <strong>{{ a.username }}</strong> hat einen Kommentar zur Frage #{{ a.question_id }} geschrieben
       </td>
       <td *ngIf="a.activity == 'exam_new'">
-        <strong>{{ a.username }}</strong> hat Klausur #{{ a.exam_id }} hinzugefügt
+        Klausur #{{ a.exam_id }} wurde hinzugefügt
       </td>
       <td *ngIf="a.activity == 'exam_update'">
-        <strong>{{ a.username }}</strong> hat Klausur #{{ a.exam_id }} verändert
+        Klausur #{{ a.exam_id }} wurde verändert
       </td>
     </tr>
   </tbody>

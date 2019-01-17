@@ -25,19 +25,16 @@ $app->group('/exams', function() {
 		}
 
 		$stmt = $mysql->prepare(
-			"SELECT e.*, u.username AS 'author', s.name AS 'subject', COUNT(q.question_id) AS 'question_count' $answered_questions_sql_select
+			"SELECT e.*, s.name AS 'subject', COUNT(q.question_id) AS 'question_count' $answered_questions_sql_select
 			FROM exams e
 			$answered_questions_sql_join
-			INNER JOIN users u ON u.user_id = e.user_id_added
 			$questions_sql_join JOIN questions q ON q.exam_id = e.exam_id
 			INNER JOIN subjects s ON s.subject_id = e.subject_id
 			WHERE e.visibility = IFNULL(:visibility, e.visibility)
 			AND e.semester = IFNULL(:semester, e.semester)
-			AND e.user_id_added = IFNULL(:author_id, e.user_id_added)
 			AND e.subject_id = IFNULL(:subject_id, e.subject_id)
 			AND ( e.date LIKE IFNULL(:query, e.date)
-			OR s.name LIKE IFNULL(:query, s.name)
-			OR u.username LIKE IFNULL(:query, u.username) )
+			OR s.name LIKE IFNULL(:query, s.name) )
 			GROUP BY e.exam_id
 			ORDER BY e.semester ASC, s.name ASC, e.date DESC
 			LIMIT :limit"
@@ -45,7 +42,6 @@ $app->group('/exams', function() {
 		$stmt->bindValue(':user_id', $request->getQueryParam('user_id'), PDO::PARAM_INT);
 		$stmt->bindValue(':visibility', $request->getQueryParam('visibility'));
 		$stmt->bindValue(':semester', $request->getQueryParam('semester'));
-		$stmt->bindValue(':author_id', $request->getQueryParam('author_id'), PDO::PARAM_INT);
 		$stmt->bindValue(':subject_id', $request->getQueryParam('subject_id'), PDO::PARAM_INT);
 		$stmt->bindValue(':query', $query);
 		$stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
@@ -55,15 +51,6 @@ $app->group('/exams', function() {
 
 	$this->get('/distinct', function($request, $response, $args) {
 		$mysql = init();
-
-		$stmt_authors = $mysql->prepare(
-			"SELECT DISTINCT u.*
-			FROM exams e
-			INNER JOIN users u ON u.user_id = e.user_id_added
-			WHERE e.visibility = IFNULL(:visibility, e.visibility)
-			ORDER BY u.username ASC"
-		);
-		$stmt_authors->bindValue(':visibility', $request->getQueryParam('visibility'));
 
 		$stmt_semesters = $mysql->prepare(
 			"SELECT DISTINCT e.semester
@@ -79,7 +66,6 @@ $app->group('/exams', function() {
 			ORDER BY s.name ASC"
 		);
 
-		$data['authors'] = getAll($stmt_authors);
 		$data['semesters'] = getAll($stmt_semesters);
 		$data['subjects'] = getAll($stmt_subjects);
 		return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
@@ -89,9 +75,8 @@ $app->group('/exams', function() {
 		$mysql = init();
 
 		$stmt_exam = $mysql->prepare(
-			"SELECT e.*, u.username, u.email, s.name AS 'subject'
+			"SELECT e.*, s.name AS 'subject'
 			FROM exams e
-			LEFT JOIN users u ON u.user_id = e.user_id_added
 			LEFT JOIN subjects s ON s.subject_id = e.subject_id
 			WHERE e.exam_id = :exam_id"
 		);
@@ -186,13 +171,12 @@ $app->group('/exams', function() {
 			$body = $request->getParsedBody();
 
 			$stmt = $mysql->prepare(
-				"INSERT INTO exams (subject_id, date_added, date_updated, user_id_added, sort)
-				VALUES (:subject_id, :date_added, :date_updated, :user_id_added, :sort)"
+				"INSERT INTO exams (subject_id, date_added, date_updated, sort)
+				VALUES (:subject_id, :date_added, :date_updated, :sort)"
 			);
 			$stmt->bindValue(':subject_id', $body['subject_id']);
 			$stmt->bindValue(':date_added', time());
 			$stmt->bindValue(':date_updated', time());
-			$stmt->bindValue(':user_id_added', $body['user_id_added']);
 			$stmt->bindValue(':sort', $body['sort']);
 
 			$data['status'] = $stmt->execute();
@@ -256,9 +240,8 @@ $app->group('/exams', function() {
 						$question_image_url = strlen($question['question_image_url']) > 0 ? $question['question_image_url'] : '';
 
 						$stmt = $mysql->prepare(
-							"INSERT INTO questions (question, answers, correct_answer, exam_id, date_added,
-								user_id_added, explanation, question_image_url, type, category_id)
-								VALUES (:question, :answers, :correct_answer, :exam_id, :date, :user_id_added,
+							"INSERT INTO questions (question, answers, correct_answer, exam_id, date_added, explanation, question_image_url, type, category_id)
+								VALUES (:question, :answers, :correct_answer, :exam_id, :date,
 									:explanation, :question_image_url, :type, :category_id)"
 								);
 								$stmt->bindValue(':question', $question['question']);
@@ -266,7 +249,6 @@ $app->group('/exams', function() {
 								$stmt->bindValue(':correct_answer', $question['correct_answer']);
 								$stmt->bindValue(':exam_id', $exam['exam_id'], PDO::PARAM_INT);
 								$stmt->bindValue(':date', time());
-								$stmt->bindValue(':user_id_added', $user_id, PDO::PARAM_INT);
 								$stmt->bindValue(':explanation', $explanation);
 								$stmt->bindValue(':question_image_url', $question_image_url);
 								$stmt->bindValue(':type', $question['type']);

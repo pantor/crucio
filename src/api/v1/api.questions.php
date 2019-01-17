@@ -221,10 +221,9 @@ $app->group('/questions', function() {
     $mysql = init();
 
     $stmt_question = $mysql->prepare(
-      "SELECT q.*, e.*, u.email, u.username, c.name AS 'topic', s.name AS 'subject'
+      "SELECT q.*, e.*, c.name AS 'topic', s.name AS 'subject'
       FROM questions q
       INNER JOIN exams e ON e.exam_id = q.exam_id
-      INNER JOIN users u ON u.user_id = e.user_id_added
       INNER JOIN subjects s ON s.subject_id = e.subject_id
       LEFT JOIN categories c ON q.category_id = c.category_id
       WHERE q.question_id = :question_id"

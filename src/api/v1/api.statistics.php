@@ -78,9 +78,8 @@ $app->group('/stats', function() {
 
     if (filter_var($request->getQueryParam('examNew'), FILTER_VALIDATE_BOOLEAN)) {
       $stmt = $mysql->prepare(
-        "SELECT 'exam_new' activity, e.*, e.date as year, e.date_added as date, u.username
+        "SELECT 'exam_new' activity, e.*, e.date as year, e.date_added as date
         FROM exams e
-        INNER JOIN users u ON u.user_id = e.user_id_added
         ORDER BY e.date_added DESC
         LIMIT 100"
       );
@@ -89,9 +88,8 @@ $app->group('/stats', function() {
 
     if (filter_var($request->getQueryParam('examUpdate'), FILTER_VALIDATE_BOOLEAN)) {
       $stmt = $mysql->prepare(
-        "SELECT 'exam_update' activity, e.*, e.date as year, e.date_updated as date, u.username
+        "SELECT 'exam_update' activity, e.*, e.date as year, e.date_updated as date
         FROM exams e
-        INNER JOIN users u ON u.user_id = e.user_id_added
         ORDER BY e.date_updated DESC
         LIMIT 100"
       );

@@ -16,16 +16,15 @@ export class AuthorCommentsComponent implements OnInit {
   constructor(private api: ApiService, private auth: AuthService) {
     this.user = this.auth.getUser();
 
-    this.commentSearch = { author: this.user };
-
-    this.distinctAuthors = [ this.user ];
+    this.commentSearch = { };
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.loadComments();
+  }
 
   loadComments(): void {
     const data = {
-      author_id: this.commentSearch.author && this.commentSearch.author.user_id,
       query: this.commentSearch.query,
       limit: 100,
     };

@@ -64,7 +64,6 @@ CREATE TABLE IF NOT EXISTS `comments` (
 CREATE TABLE IF NOT EXISTS `exams` (
 `exam_id` int(11) NOT NULL,
   `subject_id` int(11) NOT NULL,
-  `user_id_added` int(11) NOT NULL,
   `date` text COLLATE utf8_unicode_ci NOT NULL,
   `semester` int(11) NOT NULL,
   `professor` text COLLATE utf8_unicode_ci NOT NULL,

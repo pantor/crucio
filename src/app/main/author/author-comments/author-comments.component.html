@@ -1,8 +1,6 @@
-<h4>Kommentare zu deinen Klausuren</h4>
+<h4>Kommentare</h4>
 
 <div class="btn-toolbar no-gutters">
-  <app-dropdown-button class="mr-2" [data]="distinctAuthors" [selected]="commentSearch.author" showKey="username" placeholder="Alle Autoren" (onUpdate)="commentSearch.author = $event; loadComments()"></app-dropdown-button>
-
   <form class="input-group col" (ngSubmit)="loadComments()">
     <input class="form-control" type="text" name="query" [(ngModel)]="commentSearch.query" placeholder="...">
 

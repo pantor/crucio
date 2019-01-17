@@ -25,12 +25,10 @@ export class LearnReportModalComponent implements OnInit {
         name: this.user.username,
         email: this.user.email,
         question_id: this.question.question_id,
-        author: this.question.username,
         question: this.question.question,
         exam_id: this.question.exam_id,
         subject: this.question.subject,
         date: this.question.date,
-        author_email: this.question.email,
         mail_subject: 'Allgemein',
       };
       this.api.post('contact/send-mail-question', data).subscribe(() => {

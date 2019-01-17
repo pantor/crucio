@@ -38,13 +38,12 @@ $app->group('/contact', function () {
     }
 
     $sender_name = $name.' - Kontakt Crucio';
-    $destination = 'kontakt@crucio-leipzig.de, '.$body['author_email'];
+    $destination = 'kontakt@crucio-leipzig.de';
 
     $hooks = [
       'MESSAGE' => $text,
       'MAIL' => $email,
       'USERNAME' => $name,
-      'AUTHOR' => $body['author'],
       'QUESTION' => $body['question'],
       'QUESTION_ID' => $body['question_id'],
       'SUBJECT' => $body['subject'],

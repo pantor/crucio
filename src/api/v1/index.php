@@ -4,7 +4,17 @@ require '../../vendor/autoload.php';
 
 require 'helper.php';
 
+if (isTestServer()) {
+  $config = include(dirname(__FILE__).'/../config.vagrant.php');
+} else {
+  $config = include(dirname(__FILE__).'/../config.php');
+}
+
 $app = new \Slim\App();
+
+$app->add(new \Slim\Middleware\JwtAuthentication([
+  "secret" => $config['secret'],
+]));
 
 require 'api.comments.php';
 require 'api.contact.php';

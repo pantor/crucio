@@ -38,17 +38,13 @@ $app->group('/comments', function() {
     $query = strlen($request->getQueryParam('query')) > 0 ? "%".$request->getQueryParam('query')."%" : null;
 
     $stmt = $mysql->prepare(
-      "SELECT c.*, u.username, q.question, q.exam_id, e.user_id_added, (
-        SELECT u2.username
-        FROM users u2
-        WHERE u2.user_id = e.user_id_added) AS 'username_added'
+      "SELECT c.*, u.username, q.question, q.exam_id
         FROM comments c
         INNER JOIN users u ON u.user_id = c.user_id
         INNER JOIN questions q ON q.question_id = c.question_id
         INNER JOIN exams e ON e.exam_id = q.exam_id
         WHERE u.user_id = IFNULL(:user_id, u.user_id)
         AND c.question_id = IFNULL(:question_id, c.question_id)
-        AND e.user_id_added = IFNULL(:author_id, e.user_id_added)
         AND ( c.comment LIKE IFNULL(:query, c.comment)
         OR q.question LIKE IFNULL(:query, q.question)
         OR q.question_id LIKE IFNULL(:query, q.question_id)
@@ -58,7 +54,6 @@ $app->group('/comments', function() {
       );
       $stmt->bindValue(':user_id', $request->getQueryParam('user_id'), PDO::PARAM_INT);
       $stmt->bindValue(':question_id', $request->getQueryParam('question_id'), PDO::PARAM_INT);
-      $stmt->bindValue(':author_id', $request->getQueryParam('author_id'), PDO::PARAM_INT);
       $stmt->bindValue(':query', $query);
       $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 
@@ -73,22 +68,6 @@ $app->group('/comments', function() {
         "SELECT DISTINCT u.*
         FROM comments c
         INNER JOIN users u ON u.user_id = c.user_id
-        ORDER BY u.user_id ASC"
-      );
-
-      $data['authors'] = getAll($stmt);
-      return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
-    });
-
-    $this->get('/distinct/authors', function($request, $response, $args) {
-      $mysql = init();
-
-      $stmt = $mysql->prepare(
-        "SELECT DISTINCT u.*
-        FROM comments c
-        INNER JOIN questions q ON q.question_id = c.question_id
-        INNER JOIN exams e ON e.exam_id = q.exam_id
-        INNER JOIN users u ON u.user_id = e.user_id_added
         ORDER BY u.user_id ASC"
       );
 

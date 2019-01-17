@@ -26,9 +26,8 @@ $app->group('/collections', function() {
 
       if ($collection['type'] == 'exam') {
         $stmt_exam = $mysql->prepare(
-          "SELECT e.*, u.username, u.email, s.name AS 'subject'
+          "SELECT e.*, s.name AS 'subject'
           FROM exams e
-          LEFT JOIN users u ON u.user_id = e.user_id_added
           LEFT JOIN subjects s ON s.subject_id = e.subject_id
           WHERE e.exam_id = :exam_id"
         );
