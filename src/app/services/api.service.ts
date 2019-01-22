@@ -6,11 +6,13 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class ApiService {
   readonly base: string = 'api/v1/';
-  headers: Headers;
+  private headers: Headers;
 
-  constructor(private http: Http) {
+  constructor(private http: Http) { }
+
+  setJwt(jwt: string) {
     this.headers = new Headers();
-    this.headers.append('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.zbgd5BNF1cqQ_prCEqIvBTjSxMS8bDLnJAE_wE-0Cxg');
+    this.headers.append('Authorization', 'Bearer ' + jwt); // 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvd3d3LmNydWNpby1sZWlwemlnLmRlIiwiaWF0IjoxNTQ4MTgxMTAxLCJ1aWQiOiIxIn0.EcxZCWLGqL_BYs22uNAlJ_-g67EBUbcONGmLLsWUed4' + '');
   }
 
   get(path: string, data: any = {}): Observable<any> {

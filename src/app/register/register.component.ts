@@ -35,7 +35,7 @@ export class RegisterComponent implements OnInit {
       password: this.f.value.password,
       course: 1
     };
-    this.api.post('users', data).subscribe(result => {
+    this.api.post('users/register', data).subscribe(result => {
       if (result.status) {
         this.modal.open(RegisterSuccessModalComponent);
       }

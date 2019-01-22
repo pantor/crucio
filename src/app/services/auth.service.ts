@@ -2,16 +2,17 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie';
 
+import { ApiService } from './api.service';
 
 @Injectable()
 export class AuthService {
   private user: Crucio.User;
 
-  constructor(private cookieService: CookieService,  private readonly router: Router) { }
+  constructor(private cookieService: CookieService, private readonly router: Router, private api: ApiService) { }
 
   getUser(): Crucio.User {
     this.tryGetUser();
-    if (!this.user) {
+    if (!this.user || !this.user.jwt) {
       window.location.replace('/');
     }
     return this.user;
@@ -21,6 +22,9 @@ export class AuthService {
     // Check if user is in already in user object and check if cookies
     if (this.user == null && this.cookieService.getObject('CrucioUser') != null) {
       this.setUser(this.cookieService.getObject('CrucioUser'));
+    }
+    if (this.user) {
+      this.api.setJwt(this.user.jwt);
     }
     return this.user;
   }
@@ -47,6 +51,6 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     this.tryGetUser();
-    return (this.user && this.user.user_id > 0);
+    return (this.user && this.user.jwt && this.user.user_id > 0);
   }
 }

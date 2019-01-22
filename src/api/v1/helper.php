@@ -7,16 +7,10 @@ function isTestServer() {
 function init() {
   error_reporting(0);
   try {
-    if (isTestServer()) {
-      $config = include(dirname(__FILE__).'/../config.vagrant.php');
-    } else {
-      $config = include(dirname(__FILE__).'/../config.php');
-    }
-
     $mysql = new PDO(
-      'mysql:host='.$config['host'].';dbname='.$config['dbname'].';charset=utf8',
-      $config['user'],
-      $config['password']
+      'mysql:host='.getenv('host').';dbname='.getenv('dbname').';charset=utf8',
+      getenv('user'),
+      getenv('password')
     );
     return $mysql;
   } catch(PDOException $ex) {

@@ -19,7 +19,7 @@ export class IndexComponent implements OnInit {
     window.document.title = 'Crucio | Fachschaft Medizin Leipzig';
 
     const user = auth.tryGetUser();
-    if (user && user.remember_me === 'true') {
+    if (user && user.jwt && user.remember_me === 'true') {
       this.auth.setUser(user, true);
       this.router.navigate(['/app']);
     }
@@ -38,6 +38,7 @@ export class IndexComponent implements OnInit {
     this.api.get('users/login', data).subscribe(result => {
       if (result.status) {
         this.auth.setUser(result.logged_in_user, true);
+        this.api.setJwt(result.logged_in_user.jwt);
         this.router.navigate(['/app']);
       } else {
         this.failedLogin = true;

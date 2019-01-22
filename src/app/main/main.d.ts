@@ -2,6 +2,7 @@ declare namespace Crucio {
   interface User {
     user_id: number;
     username: string;
+    jwt: string;
     active: number;
     course_id: number;
     email: string;

@@ -99,8 +99,14 @@ $app->group('/users', function() {
     );
     $stmt->bindValue(':last_sign_in', time());
     $stmt->bindValue(':user_id', $user['user_id']);
-
     $data['status'] = $stmt->execute();
+
+    $jwt_token = array(
+      "iss" => "https://www.crucio-leipzig.de",
+      "iat" => time(),
+      "uid" => $user['user_id']
+    );
+    $user['jwt'] = \Firebase\JWT\JWT::encode($jwt_token, getenv('secret'));
     $data['logged_in_user'] = $user;
     return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
   });
@@ -120,7 +126,7 @@ $app->group('/users', function() {
     return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
   });
 
-  $this->post('', function($request, $response, $args) {
+  $this->post('/register', function($request, $response, $args) {
     $mysql = init();
     $body = $request->getParsedBody();
 
