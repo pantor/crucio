@@ -12,7 +12,7 @@ export class ApiService {
 
   setJwt(jwt: string) {
     this.headers = new Headers();
-    this.headers.append('Authorization', 'Bearer ' + jwt); // 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvd3d3LmNydWNpby1sZWlwemlnLmRlIiwiaWF0IjoxNTQ4MTgxMTAxLCJ1aWQiOiIxIn0.EcxZCWLGqL_BYs22uNAlJ_-g67EBUbcONGmLLsWUed4' + '');
+    this.headers.append('Authorization', 'Bearer ' + jwt);
   }
 
   get(path: string, data: any = {}): Observable<any> {
