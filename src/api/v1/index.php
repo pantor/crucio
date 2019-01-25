@@ -13,7 +13,7 @@ if (isTestServer()) {
 $app = new \Slim\App();
 
 $app->add(new \Slim\Middleware\JwtAuthentication([
-  "path" => "/",
+  "path" => ["/"],
   "passthrough" => ["/users/login", "/users/register", "/users/activate", "/users/password/reset", "/contact/send-mail", "/pdf"],
   "secret" => getenv('secret'),
 ]));

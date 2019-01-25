@@ -2,7 +2,13 @@
 
 $app->group('/pdf', function() {
 
-  $this->get('/collection/{view}', function($request, $response, $args) {
+  $this->get('/collection/{view}/{token}/', function($request, $response, $args) {
+    try {
+      $decoded = \Firebase\JWT\JWT::decode($args['token'], getenv('secret'), array('HS256'));
+    } catch (Exception $e) {
+      return $response->withStatus(403);
+    }
+
     $mysql = init();
 
     $methods = array('pdf-exam', 'pdf-solution', 'pdf-both');

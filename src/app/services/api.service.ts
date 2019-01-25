@@ -6,11 +6,13 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class ApiService {
   readonly base: string = 'api/v1/';
+  jwt: string;
   private headers: Headers;
 
   constructor(private http: Http) { }
 
-  setJwt(jwt: string) {
+  setJwt(jwt: string): void {
+    this.jwt = jwt;
     this.headers = new Headers();
     this.headers.append('Authorization', 'Bearer ' + jwt);
   }

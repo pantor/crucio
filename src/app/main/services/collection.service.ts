@@ -103,7 +103,7 @@ export class CollectionService {
           questionSearch: this.collection.questionSearch,
         }));
 
-        window.location.assign(`${this.api.base}pdf/collection/${method}?list=${listString}&info=${info}`);
+        window.location.assign(`${this.api.base}pdf/collection/${method}/${this.api.jwt}/?list=${listString}&info=${info}`);
         break;
     }
   }
