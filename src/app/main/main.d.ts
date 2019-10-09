@@ -25,8 +25,16 @@ declare namespace Crucio {
     exam_id: number;
     file_name: string;
     subject_id: number;
+    subject?: string;
     semester: number;
     date: string;
+    professor?: string;
+    sort?: string;
+    visibility?: number;
+    notes?: string;
+    duration?: number;
+    date_added?: number;
+    date_updated?: number;
     answered_questions?: number;
   }
 

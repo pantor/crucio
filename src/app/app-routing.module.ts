@@ -19,7 +19,7 @@ const routes: Routes = [
   { path: 'activate-account', component: ActivateAccountComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'change-password', component: ChangePasswordComponent },
-  { path: 'app', canActivateChild: [MainGuard], loadChildren: 'app/main/main.module#MainModule' },
+  { path: 'app', canActivateChild: [MainGuard], loadChildren: () => import('app/main/main.module').then(m => m.MainModule) },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 
