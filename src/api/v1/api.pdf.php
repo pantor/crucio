@@ -133,8 +133,9 @@ $app->group('/pdf', function() {
 
         // Image
         $question_dx = 0;
+        $image_url_not_empty = strlen($questions[$i]['question_image_url']) > 0;
         $image_path = '../../files/'.$questions[$i]['question_image_url'];
-        if ($questions[$i]['question_image_url'] !== '' && file_exists($image_path)) {
+        if ($image_url_not_empty && file_exists($image_path)) {
           $pdf->Image($image_path, 133, $pdf->GetY(), 60, 0);
           $question_dx = 106;
         }

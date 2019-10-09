@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule, JsonpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CookieModule } from 'ngx-cookie';
@@ -57,8 +57,7 @@ import { ToastComponent } from './directives/toast/toast.component';
   imports: [
     CommonModule,
     MainRoutingModule,
-    HttpModule,
-    JsonpModule,
+    HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     CookieModule,

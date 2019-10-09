@@ -2,7 +2,7 @@
 
 Crucio is an e-learning system for multiple-choice questions. Student groups can enter old or mock exams and make them available for all fellow students in an easy way. Crucio is currently used at the [Leipzig University](https://www.crucio-leipzig.de).
 
-![screenshot](https://raw.githubusercontent.com/pantor/crucio/master/doc/screenshot.png)
+![screenshot](https://raw.githubusercontent.com/pantor/crucio/master/doc/screenshot.jpg)
 
 Crucio is open source and freely available. If you or your student union want to introduce Crucio for your exam collection, feel free to contact us at *kontakt@crucio-leipzig.de*!
 

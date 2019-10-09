@@ -1,5 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 
 import { ApiService } from './api.service';
 
@@ -15,7 +15,7 @@ describe('ApiService', () => {
     TestBed.configureTestingModule({
       providers: [
         ApiService,
-        { provide: Http, useClass: HttpStubService }
+        { provide: HttpClient, useClass: HttpStubService }
       ]
     });
   });
