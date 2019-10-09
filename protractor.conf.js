@@ -9,7 +9,7 @@ exports.config = {
     './e2e/**/*.e2e-spec.ts'
   ],
   capabilities: {
-    'browserName': 'Safari'
+    'browserName': 'Firefox'
   },
   directConnect: true,
   baseUrl: 'http://localhost:4200/',
