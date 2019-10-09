@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs';
 
 import { ApiService } from '../../../services/api.service';
 import { DropdownButtonComponent } from '../../directives/dropdown-button/dropdown-button.component';
@@ -9,7 +9,7 @@ import { AuthorOralExamsComponent } from './author-oral-exams.component';
 
 class ApiStubService {
   get(url) {
-    return Observable.of({ years: [] });
+    return of({ years: [] });
   }
 }
 

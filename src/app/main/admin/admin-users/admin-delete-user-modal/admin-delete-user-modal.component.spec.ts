@@ -43,6 +43,7 @@ describe('AdminDeleteUserModalComponent', () => {
       showComments: 1,
       useAnswers: 0,
       useTags: 0,
+      jwt: '',
     };
     fixture.detectChanges();
   });

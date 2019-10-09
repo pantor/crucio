@@ -24,7 +24,7 @@ describe('HelpComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ HelpComponent, ToastComponent ],
-      imports: [ FormsModule, ReactiveFormsModule, NgbModule.forRoot() ],
+      imports: [ FormsModule, ReactiveFormsModule, NgbModule ],
       providers: [
         { provide: ApiService, useClass: ApiStubService},
         { provide: AuthService, useClass: AuthStubService }

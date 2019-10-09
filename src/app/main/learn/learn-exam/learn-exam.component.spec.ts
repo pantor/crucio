@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs';
 
 import { CollectionService } from '../../services/collection.service';
 import { ToastService } from '../../services/toast.service';
@@ -27,7 +27,7 @@ class CollectionStubService {
   }
 
   loadCombinedListAndQuestions(workedList) {
-    return Observable.of([]);
+    return of([]);
   }
 
   getLength() {
@@ -46,7 +46,7 @@ describe('LearnExamComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ LearnExamComponent, ToastComponent ],
-      imports: [ RouterTestingModule, FormsModule, NgbModule.forRoot() ],
+      imports: [ RouterTestingModule, FormsModule, NgbModule ],
       providers: [
         { provide: ApiService, useClass: ApiStubService },
         { provide: AuthService, useClass: AuthStubService },

@@ -14,18 +14,17 @@ jobs:
       with:
         node-version: 12.x
     
-    - name: npm install, build, and test
+    - name: Run npm install, build, and test
       run: |
         npm install
         npm run build --if-present
-        npm test
       env:
         CI: true
 
-    - name: FTP-Deploy-Action
+    - name: Deploy via FTP
       uses: SamKirkland/FTP-Deploy-Action@2.0.0
       env:
-        FTP_SERVER: ftp.strato.de
-        FTP_USERNAME: ftp_pantorix@crucio-leipzig.de
+        FTP_SERVER: ssh.strato.de
+        FTP_USERNAME: sftp_berscheid@crucio-leipzig.de
         FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
         ARGS: --dry-run

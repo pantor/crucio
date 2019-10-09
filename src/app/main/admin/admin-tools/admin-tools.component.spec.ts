@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Observable } from 'rxjs/Observable';
 
 import { ApiService } from '../../../services/api.service';
 import { AdminToolsComponent } from './admin-tools.component';

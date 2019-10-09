@@ -16,7 +16,7 @@ describe('ContactComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ContactComponent ],
-      imports: [ FormsModule, ReactiveFormsModule, NgbModule.forRoot() ],
+      imports: [ FormsModule, ReactiveFormsModule, NgbModule ],
       providers: [
         { provide: ApiService, useClass: ApiStubService}
       ]

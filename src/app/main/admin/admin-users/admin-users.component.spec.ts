@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs';
 
 import { ApiService } from '../../../services/api.service';
 import { AuthService } from '../../../services/auth.service';
@@ -11,7 +11,7 @@ import { AdminUsersComponent } from './admin-users.component';
 
 class ApiStubService {
   get(url) {
-    return Observable.of({ groups: [], semesters: [] });
+    return of({ groups: [], semesters: [] });
   }
 }
 
@@ -28,7 +28,7 @@ describe('AdminUsersComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ AdminUsersComponent, TimeagoComponent, DropdownButtonComponent ],
-      imports: [ FormsModule, NgbModule.forRoot() ],
+      imports: [ FormsModule, NgbModule ],
       providers: [
         { provide: ApiService, useClass: ApiStubService },
         { provide: AuthService, useClass: AuthStubService }

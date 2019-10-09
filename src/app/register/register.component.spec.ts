@@ -16,7 +16,7 @@ describe('RegisterComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ RegisterComponent ],
-      imports: [ FormsModule, ReactiveFormsModule, NgbModule.forRoot() ],
+      imports: [ FormsModule, ReactiveFormsModule, NgbModule ],
       providers: [
         { provide: ApiService, useClass: ApiStubService},
       ]

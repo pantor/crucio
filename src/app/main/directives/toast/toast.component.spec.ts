@@ -11,7 +11,7 @@ describe('ToastComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ToastComponent ],
-      imports: [ NgbModule.forRoot() ],
+      imports: [ NgbModule ],
       providers: [ ToastService ]
     })
     .compileComponents();

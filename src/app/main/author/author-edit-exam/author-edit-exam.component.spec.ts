@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { QuillModule } from 'ngx-quill';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs';
 
 import { ApiService } from '../../../services/api.service';
 import { AuthService } from '../../../services/auth.service';
@@ -13,9 +13,9 @@ import { AuthorEditExamComponent } from './author-edit-exam.component';
 class ApiStubService {
   get(url) {
     if (url === 'subjects') {
-      return Observable.of({ subjects: [] });
+      return of({ subjects: [] });
     } else {
-      return Observable.of({ exam: {}, questions: [] });
+      return of({ exam: {}, questions: [] });
     }
   }
 }
@@ -27,7 +27,7 @@ class AuthStubService {
 }
 
 const RouteParams = {
-  queryParams: Observable.of({ examId: 1, openQuestionId: 0 })
+  queryParams: of({ examId: 1, openQuestionId: 0 })
 }
 
 describe('AuthorEditExamComponent', () => {
@@ -37,7 +37,7 @@ describe('AuthorEditExamComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ AuthorEditExamComponent, ToastComponent ],
-      imports: [ FormsModule, QuillModule, NgbModule.forRoot() ],
+      imports: [ FormsModule, QuillModule, NgbModule ],
       providers: [
         { provide: ApiService, useClass: ApiStubService },
         { provide: AuthService, useClass: AuthStubService },

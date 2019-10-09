@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TagInputModule } from 'ngx-chips';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs';
 
 import { ToastService } from '../../services/toast.service';
 import { CollectionService } from '../../services/collection.service';
@@ -21,7 +21,7 @@ class AuthStubService {
 
 class ApiStubService {
   get(url, data) {
-    return Observable.of({ question: {}, comments: [], tags: '' });
+    return of({ question: {}, comments: [], tags: '' });
   }
 }
 
@@ -31,7 +31,7 @@ class CollectionStubService {
   }
 
   loadCombinedListAndQuestions(workedList) {
-    return Observable.of([]);
+    return of([]);
   }
 
   getLength() {
@@ -58,7 +58,7 @@ describe('LearnQuestionComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ LearnQuestionComponent, TimeagoComponent, ToastComponent ],
-      imports: [ FormsModule, NgbModule.forRoot(), RouterTestingModule, TagInputModule ],
+      imports: [ FormsModule, NgbModule, RouterTestingModule, TagInputModule ],
       providers: [
         { provide: AuthService, useClass: AuthStubService },
         { provide: ApiService, useClass: ApiStubService },

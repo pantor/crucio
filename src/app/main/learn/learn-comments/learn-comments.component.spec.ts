@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs';
 
 import { AuthService } from '../../../services/auth.service';
 import { ApiService } from '../../../services/api.service';
@@ -15,7 +15,7 @@ class AuthStubService {
 
 class ApiStubService {
   get(url, data) {
-    return Observable.of({ comments: [] });
+    return of({ comments: [] });
   }
 }
 

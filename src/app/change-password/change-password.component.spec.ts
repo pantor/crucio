@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -12,7 +12,7 @@ class ApiStubService {
 }
 
 const RouteParams = {
-  queryParams: Observable.of({token: 'asdfb'})
+  queryParams: of({token: 'asdfb'})
 };
 
 describe('ChangePasswordComponent', () => {
@@ -22,7 +22,7 @@ describe('ChangePasswordComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ChangePasswordComponent ],
-      imports: [ FormsModule, ReactiveFormsModule, NgbModule.forRoot() ],
+      imports: [ FormsModule, ReactiveFormsModule, NgbModule ],
       providers: [
         { provide: ApiService, useClass: ApiStubService },
         { provide: ActivatedRoute, useValue: RouteParams },

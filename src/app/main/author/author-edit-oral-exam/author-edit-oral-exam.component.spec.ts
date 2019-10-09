@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs';
 
 import { AuthService } from '../../../services/auth.service';
 import { ApiService } from '../../../services/api.service';
@@ -11,7 +11,7 @@ import { AuthorEditOralExamComponent } from './author-edit-oral-exam.component';
 
 class ApiStubService {
   get(url) {
-    return Observable.of({ oral_exam: {} });
+    return of({ oral_exam: {} });
   }
 }
 
@@ -22,7 +22,7 @@ class AuthStubService {
 }
 
 const RouteParams = {
-  queryParams: Observable.of({ oralExamId: 1 })
+  queryParams: of({ oralExamId: 1 })
 }
 
 describe('AuthorEditOralExamComponent', () => {
@@ -32,7 +32,7 @@ describe('AuthorEditOralExamComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ AuthorEditOralExamComponent, ToastComponent ],
-      imports: [ FormsModule, NgbModule.forRoot() ],
+      imports: [ FormsModule, NgbModule ],
       providers: [
         { provide: AuthService, useClass: AuthStubService },
         { provide: ApiService, useClass: ApiStubService },

@@ -1,18 +1,18 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs';
 
 import { ApiService } from '../services/api.service';
 import { ActivateAccountComponent } from './activate-account.component';
 
 class ApiStubService {
   put(url, data) {
-    return Observable.of({ error: '' });
+    return of({ error: '' });
   }
 }
 
 const RouteParams = {
-  queryParams: Observable.of({token: 'asdfb'})
+  queryParams: of({token: 'asdfb'})
 };
 
 describe('ActivateAccountComponent', () => {

@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs';
 
 import { CollectionService } from '../../services/collection.service';
 import { ToastService } from '../../services/toast.service';
@@ -18,7 +18,7 @@ class AuthStubService {
 
 class ApiStubService {
   get(url, data) {
-    return Observable.of({ exam: {} });
+    return of({ exam: {} });
   }
 }
 
@@ -28,7 +28,7 @@ class CollectionStubService {
   }
 
   loadCombinedListAndQuestions(workedList) {
-    return Observable.of([]);
+    return of([]);
   }
 
   analyseCombination(list) {
@@ -55,7 +55,7 @@ describe('LearnAnalysisComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ LearnAnalysisComponent, ToastComponent ],
-      imports: [ RouterTestingModule, NgbModule.forRoot() ],
+      imports: [ RouterTestingModule, NgbModule ],
       providers: [
         { provide: AuthService, useClass: AuthStubService },
         { provide: ApiService, useClass: ApiStubService },

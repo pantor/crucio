@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs';
 
 import { ApiService } from '../../../../services/api.service';
 import { TimeagoComponent } from '../../../directives/timeago/timeago.component';
@@ -10,7 +10,7 @@ import { AdminUserModalComponent } from './admin-user-modal.component';
 
 class ApiStubService {
   get(url, data) {
-    return Observable.of({ groups: [] });
+    return of({ groups: [] });
   }
 }
 
@@ -21,7 +21,7 @@ describe('AdminUserModalComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ AdminUserModalComponent, TimeagoComponent ],
-      imports: [ FormsModule, NgbModule.forRoot() ],
+      imports: [ FormsModule, NgbModule ],
       providers: [
         { provide: ApiService, useClass: ApiStubService },
         NgbActiveModal,
@@ -50,6 +50,7 @@ describe('AdminUserModalComponent', () => {
       showComments: 1,
       useAnswers: 0,
       useTags: 0,
+      jwt: '',
     };
     fixture.detectChanges();
   });

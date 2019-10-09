@@ -16,7 +16,7 @@ describe('ForgotPasswordComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ForgotPasswordComponent ],
-      imports: [ FormsModule, ReactiveFormsModule, NgbModule.forRoot() ],
+      imports: [ FormsModule, ReactiveFormsModule, NgbModule ],
       providers: [
         { provide: ApiService, useClass: ApiStubService},
       ]

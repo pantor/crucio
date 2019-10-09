@@ -2,7 +2,14 @@ import { TestBed, inject } from '@angular/core/testing';
 import { CookieService } from 'ngx-cookie';
 import { RouterTestingModule } from '@angular/router/testing';
 
+import { ApiService } from '../services/api.service';
 import { AuthService } from './auth.service';
+
+class ApiStubService {
+  put(url, data) {
+
+  }
+}
 
 class CookieStubService {
   getObject(key) {
@@ -24,6 +31,7 @@ describe('AuthService', () => {
       imports: [ RouterTestingModule ],
       providers: [
         AuthService,
+        { provide: ApiService, useClass: ApiStubService },
         { provide: CookieService, useClass: CookieStubService },
       ]
     });

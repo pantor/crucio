@@ -1,12 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs';
 
 import { ApiService } from '../../../services/api.service';
 import { AuthorSubjectsComponent } from './author-subjects.component';
 
 class ApiStubService {
   get(url, data) {
-    return Observable.of({
+    return of({
       subjects: []
     })
   }
