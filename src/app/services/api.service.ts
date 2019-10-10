@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 @Injectable()
 export class ApiService {
@@ -13,12 +12,16 @@ export class ApiService {
 
   setJwt(jwt: string): void {
     this.jwt = jwt;
-    this.headers = new HttpHeaders();
-    this.headers.append('Authorization', 'Bearer ' + jwt);
+    this.headers = new HttpHeaders({'Authorization': 'Bearer ' + jwt});
   }
 
   get(path: string, data: any = {}): Observable<any> {
-    return this.http.get(this.base + path, { headers: this.headers, params: data });
+    const res = Object.keys(data) // Filter undefined values
+      .filter( key => data[key] != undefined )
+      .reduce((res, key) => (res[key] = data[key], res), {});
+
+    const params = new HttpParams({ fromObject: res });
+    return this.http.get(this.base + path, { headers: this.headers, params });
   }
 
   post(path: string, data: any): Observable<any> {
@@ -30,13 +33,18 @@ export class ApiService {
   }
 
   delete(path: string, data: any = {}): Observable<any> {
-    return this.http.delete(this.base + path, { headers: this.headers, params: data });
+    const res = Object.keys(data) // Filter undefined values
+      .filter( key => data[key] != undefined )
+      .reduce((res, key) => (res[key] = data[key], res), {});
+
+    const params = new HttpParams({ fromObject: res });
+    return this.http.delete(this.base + path, { headers: this.headers, params });
   }
 
   upload(file: File): Observable<any> {
     const data: FormData = new FormData();
     data.append('file', file, file.name);
 
-    return this.http.post(this.base + 'file/upload', data, { headers: this.headers }).pipe(map((res: Response) => res.json()));
+    return this.http.post(this.base + 'file/upload', data, { headers: this.headers });
   }
 }
