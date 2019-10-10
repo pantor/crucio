@@ -28,3 +28,5 @@ jobs:
         FTP_USERNAME: sftp_berscheid@crucio-leipzig.de
         FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
         ARGS: --dry-run
+        METHOD: sftp
+        PORT: 22
