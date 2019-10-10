@@ -27,6 +27,7 @@ jobs:
         FTP_SERVER: ssh.strato.de
         FTP_USERNAME: sftp_berscheid@crucio-leipzig.de
         FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-        ARGS: --dry-run
         METHOD: sftp
         PORT: 22
+        LOCAL_DIR: dist
+        ARGS: --dry-run --include-glob=*.js --include-glob=.svg --include-glob=*.html --include-glob=*.css --include-glob=*.eot --include-glob=*.woff2 --include-glob=*.ttf --include-glob=*.woff --include=api --include=assets --include=.htaccess --include=vendor
