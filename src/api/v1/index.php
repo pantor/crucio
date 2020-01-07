@@ -14,7 +14,7 @@ $app = new \Slim\App();
 
 $app->add(new \Slim\Middleware\JwtAuthentication([
   "path" => ["/"],
-  "passthrough" => ["/users/login", "/users/register", "/users/activate", "/users/password/reset", "/contact/send-mail", "/pdf"],
+  "passthrough" => ["/users/login", "/users/register", "/users/activate", "/users/password/token", "/users/password/reset", "/contact/send-mail", "/pdf"],
   "secret" => getenv('secret'),
 ]));
 

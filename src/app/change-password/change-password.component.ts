@@ -42,10 +42,10 @@ export class ChangePasswordComponent implements OnInit {
     this.api.post('users/password/token', data).subscribe(result => {
       if (result.status) {
         this.modal.open(ChangePasswordSuccessModalComponent);
-      }
-
-      if (result.error === 'error_token') {
+      } else if (result.error === 'error_token') {
         this.f.controls.password.setErrors({ 'token': true });
+      } else {
+        this.f.controls.password.setErrors({ 'unknown': true });
       }
     });
   }
