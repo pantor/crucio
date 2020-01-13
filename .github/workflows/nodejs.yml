@@ -22,7 +22,7 @@ jobs:
         CI: true
         
     - name: Add Database Config
-      run: echo """${{ secrets.DATABASE_CONFIG }}""" > api/config.php
+      run: echo """${{ secrets.DATABASE_CONFIG }}""" > dist/api/config.php
 
     - name: Deploy via FTP
       uses: SamKirkland/FTP-Deploy-Action@2.0.0
