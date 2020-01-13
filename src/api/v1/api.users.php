@@ -22,7 +22,7 @@ $app->group('/users', function() {
     );
     $stmt->bindValue(':group_id', $request->getQueryParam('group_id'));
     $stmt->bindValue(':semester', $request->getQueryParam('semester'));
-    $stmt->bindValue(':query', $query);
+    $stmt->bindValue(':query', $query, PDO::PARAM_STR);
     $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
     $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 
@@ -96,7 +96,7 @@ $app->group('/users', function() {
       WHERE user_id = :user_id"
     );
     $stmt->bindValue(':last_sign_in', time());
-    $stmt->bindValue(':user_id', $user['user_id']);
+    $stmt->bindValue(':user_id', $user['user_id'], PDO::PARAM_INT);
     $data['status'] = $stmt->execute();
 
     $jwt_token = array(
@@ -175,11 +175,11 @@ $app->group('/users', function() {
       "INSERT INTO users (username, username_clean, password, email, activationtoken, last_activation_request, sign_up_date, course_id, semester)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
     );
-    $stmt->bindValue(1, $username);
-    $stmt->bindValue(2, $clean_username);
-    $stmt->bindValue(3, $secure_pass);
-    $stmt->bindValue(4, $email);
-    $stmt->bindValue(5, $activation_token);
+    $stmt->bindValue(1, $username, PDO::PARAM_STR);
+    $stmt->bindValue(2, $clean_username, PDO::PARAM_STR);
+    $stmt->bindValue(3, $secure_pass, PDO::PARAM_STR);
+    $stmt->bindValue(4, $email, PDO::PARAM_STR);
+    $stmt->bindValue(5, $activation_token, PDO::PARAM_STR);
     $stmt->bindValue(6, time());
     $stmt->bindValue(7, time());
     $stmt->bindValue(8, $course_id, PDO::PARAM_INT);
@@ -203,7 +203,7 @@ $app->group('/users', function() {
         WHERE activationtoken = :token
         LIMIT 1"
     );
-    $stmt->bindValue(':token', $body['token']);
+    $stmt->bindValue(':token', $body['token'], PDO::PARAM_STR);
 
     $data['status'] = $stmt->execute();
     return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
@@ -264,7 +264,7 @@ $app->group('/users', function() {
       SET password = :password
       WHERE user_id = :user_id"
     );
-    $stmt->bindValue(':password', $secure_pass);
+    $stmt->bindValue(':password', $secure_pass, PDO::PARAM_STR);
     $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
 
     $data['status'] = $stmt->execute();
@@ -280,14 +280,14 @@ $app->group('/users', function() {
       SET highlightExams = ?, showComments = ?, repetitionValue = ?, useAnswers = ?, useTags = ?, semester = ?, course_id = ?
       WHERE user_id = ?"
     );
-    $stmt->bindValue(1, $body['highlightExams']);
-    $stmt->bindValue(2, $body['showComments']);
-    $stmt->bindValue(3, $body['repetitionValue']);
-    $stmt->bindValue(4, $body['useAnswers']);
-    $stmt->bindValue(5, $body['useTags']);
-    $stmt->bindValue(6, $body['semester']);
-    $stmt->bindValue(7, $body['course_id']);
-    $stmt->bindValue(8, $args['user_id']);
+    $stmt->bindValue(1, $body['highlightExams'], PDO::PARAM_BOOL);
+    $stmt->bindValue(2, $body['showComments'], PDO::PARAM_BOOL);
+    $stmt->bindValue(3, $body['repetitionValue'], PDO::PARAM_BOOL);
+    $stmt->bindValue(4, $body['useAnswers'], PDO::PARAM_BOOL);
+    $stmt->bindValue(5, $body['useTags'], PDO::PARAM_BOOL);
+    $stmt->bindValue(6, $body['semester'], PDO::PARAM_INT);
+    $stmt->bindValue(7, $body['course_id'], PDO::PARAM_INT);
+    $stmt->bindValue(8, $args['user_id'], PDO::PARAM_INT);
 
     $data['status'] = $stmt->execute();
     return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
@@ -302,8 +302,8 @@ $app->group('/users', function() {
       SET group_id = :group_id
       WHERE user_id = :user_id"
     );
-    $stmt->bindValue(':group_id', $body['group_id']);
-    $stmt->bindValue(':user_id', $args['user_id']);
+    $stmt->bindValue(':group_id', $body['group_id'], PDO::PARAM_INT);
+    $stmt->bindValue(':user_id', $args['user_id'], PDO::PARAM_INT);
 
     $data['status'] = $stmt->execute();
     return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
@@ -331,9 +331,9 @@ $app->group('/users', function() {
         SET password = ?, activationtoken = ?
         WHERE activationtoken = ?"
       );
-      $stmt->bindValue(1, $secure_pass);
-      $stmt->bindValue(2, $new_activation_token);
-      $stmt->bindValue(3, sanitize($body['token']));
+      $stmt->bindValue(1, $secure_pass, PDO::PARAM_STR);
+      $stmt->bindValue(2, $new_activation_token, PDO::PARAM_STR);
+      $stmt->bindValue(3, sanitize($body['token']), PDO::PARAM_STR);
 
       $data['status'] = $stmt->execute();
       $data['status_flag'] = flagLostpasswordRequest($mysql, $user['username_clean'], 0);

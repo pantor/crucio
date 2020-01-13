@@ -3,18 +3,18 @@
 <div class="container">
   <div class="row mb-4">
     <div class="col-lg-8 order-lg-1 order-2">
-      <blockquote class="blockquote">
-        <p class="mb-0">
-          <a *ngIf="question?.question_image_url" (click)="openImageModal()">
-            <img class="img-thumbnail pull-right" width="250px" src="/files/{{ question?.question_image_url }}">
-          </a>
-
-          <span [innerHtml]="question?.question"></span>
-
+      <div class="d-flex mb-0">
+        <blockquote class="blockquote">
+          <p [innerHtml]="question?.question"></p>
+  
           <span class="badge badge-info" *ngIf="question?.type == 1"> Freie Frage</span>
           <span class="badge badge-danger" *ngIf="question?.type > 1 && !question?.correct_answer"> Keine Antwort</span>
-        </p>
-      </blockquote>
+        </blockquote>
+        
+        <a *ngIf="question?.question_image_url">
+          <img class="img-thumbnail" max-width="250px" src="/files/{{ question?.question_image_url }}" (click)="openImageModal()">
+        </a>
+      </div>
 
       <div class="custom-controls-stacked" *ngIf="question?.type > 1">
         <div class="showhim" *ngFor="let a of question.answers; let j = index" [hidden]="j >= question?.type">

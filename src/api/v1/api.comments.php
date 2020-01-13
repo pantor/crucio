@@ -24,7 +24,7 @@ $app->group('/comments', function() {
     );
     $stmt->bindValue(':user_id', $request->getQueryParam('user_id'), PDO::PARAM_INT);
     $stmt->bindValue(':question_id', $request->getQueryParam('question_id'), PDO::PARAM_INT);
-    $stmt->bindValue(':query', $query);
+    $stmt->bindValue(':query', $query, PDO::PARAM_STR);
     $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 
     $data['comments'] = getAll($stmt);
@@ -54,7 +54,7 @@ $app->group('/comments', function() {
       );
       $stmt->bindValue(':user_id', $request->getQueryParam('user_id'), PDO::PARAM_INT);
       $stmt->bindValue(':question_id', $request->getQueryParam('question_id'), PDO::PARAM_INT);
-      $stmt->bindValue(':query', $query);
+      $stmt->bindValue(':query', $query, PDO::PARAM_STR);
       $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 
       $data['comments'] = getAll($stmt);
@@ -85,7 +85,7 @@ $app->group('/comments', function() {
       );
       $stmt->bindValue(':user_id', $args['user_id'], PDO::PARAM_INT);
       $stmt->bindValue(':time', time());
-      $stmt->bindValue(':comment', $body['comment']);
+      $stmt->bindValue(':comment', $body['comment'], PDO::PARAM_STR);
       $stmt->bindValue(':question_id', $body['question_id'], PDO::PARAM_INT);
       $stmt->bindValue(':reply_to', $body['reply_to']);
 

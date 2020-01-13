@@ -15,6 +15,8 @@ $footer-height: 56px;
 @import "~bootstrap/scss/bootstrap.scss";
 @import "~quill/dist/quill.snow.css";
 
+$fa-font-path: "../node_modules/font-awesome/fonts";
+@import "~font-awesome/scss/font-awesome.scss";
 
 
 html,

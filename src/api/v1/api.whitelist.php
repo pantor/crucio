@@ -15,7 +15,7 @@ $app->group('/whitelist', function() {
       WHERE ( w.mail_address LIKE IFNULL(:query, w.mail_address) )
       LIMIT :limit"
     );
-    $stmt->bindValue(':query', $query);
+    $stmt->bindValue(':query', $query, PDO::PARAM_STR);
     $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 
     $data['whitelist'] = getAll($stmt);
@@ -31,7 +31,7 @@ $app->group('/whitelist', function() {
       INTO whitelist ( mail_address )
       VALUES (:mail_address)"
     );
-    $stmt->bindValue(':mail_address', $body['mail_address']);
+    $stmt->bindValue(':mail_address', $body['mail_address'], PDO::PARAM_STR);
 
     $data['status'] = $stmt->execute();
     return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
@@ -45,7 +45,7 @@ $app->group('/whitelist', function() {
       FROM whitelist
       WHERE mail_address = :mail_address"
     );
-    $stmt->bindValue(':mail_address', $args['mail_address']);
+    $stmt->bindValue(':mail_address', $args['mail_address'], PDO::PARAM_STR);
 
     $data['status'] = $stmt->execute();
     return $response->withJson($data, 200, JSON_NUMERIC_CHECK);

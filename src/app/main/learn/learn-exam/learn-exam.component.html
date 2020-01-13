@@ -26,18 +26,18 @@
 
   <div class="col-lg-8 pull-lg-4">
     <div *ngFor="let c of combination; let i = index" id="question{{ i }}">
-      <blockquote class="blockquote">
-        <p class="mb-0">
-          <a *ngIf="c.question?.question_image_url" (click)="openImageModal(c.question?.question_image_url)">
-            <img class="img-thumbnail pull-right" width="250px" src="/files/{{ c.question?.question_image_url }}">
-          </a>
-
-          <span [innerHtml]="c.question?.question"></span>
-
+      <div class="d-flex mb-0">
+        <blockquote class="blockquote">
+          <p [innerHtml]="c.question?.question"></p>
+  
           <span class="badge badge-info" *ngIf="c.question?.type == 1"> Freie Frage</span>
           <span class="badge badge-danger" *ngIf="c.question?.type > 1 && !c.question?.correct_answer"> Keine Antwort</span>
-        </p>
-      </blockquote>
+        </blockquote>
+        
+        <a *ngIf="c.question?.question_image_url">
+          <img class="img-thumbnail" max-width="250px" src="/files/{{ c.question?.question_image_url }}" (click)="openImageModal(c.question?.question_image_url)">
+        </a>
+      </div>
 
       <div class="custom-controls-stacked" *ngIf="c.question?.type > 1">
         <div class="custom-control custom-radio mt-2" *ngFor="let a of c.question.answers; let j = index" (click)="collection.setAnswer(i, j + 1)" [hidden]="j >= c.question?.type">

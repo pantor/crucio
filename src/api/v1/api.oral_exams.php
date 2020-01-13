@@ -24,7 +24,7 @@ $app->group('/oral_exams', function() {
     $stmt->bindValue(':oral_exam_id', $request->getQueryParam('oral_exam_id'), PDO::PARAM_INT);
     $stmt->bindValue(':year', $request->getQueryParam('year'), PDO::PARAM_INT);
     $stmt->bindValue(':semester', $request->getQueryParam('semester'), PDO::PARAM_INT);
-    $stmt->bindValue(':query', $query);
+    $stmt->bindValue(':query', $query, PDO::PARAM_STR);
 
     $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 
@@ -85,15 +85,15 @@ $app->group('/oral_exams', function() {
       SET examiner_1 = :examiner_1, examiner_2 = :examiner_2, examiner_3 = :examiner_3, examiner_4 = :examiner_4, examiner_count = :examiner_count, semester = :semester, year = :year, filename = :filename
       WHERE oral_exam_id = :oral_exam_id"
     );
-    $stmt->bindValue(':examiner_1', $body['examiner_1']);
-    $stmt->bindValue(':examiner_2', $body['examiner_2']);
-    $stmt->bindValue(':examiner_3', $body['examiner_3']);
-    $stmt->bindValue(':examiner_4', $body['examiner_4']);
+    $stmt->bindValue(':examiner_1', $body['examiner_1'], PDO::PARAM_STR);
+    $stmt->bindValue(':examiner_2', $body['examiner_2'], PDO::PARAM_STR);
+    $stmt->bindValue(':examiner_3', $body['examiner_3'], PDO::PARAM_STR);
+    $stmt->bindValue(':examiner_4', $body['examiner_4'], PDO::PARAM_STR);
     $stmt->bindValue(':examiner_count', $body['examiner_count']);
-    $stmt->bindValue(':semester', $body['semester']);
-    $stmt->bindValue(':year', $body['year']);
-    $stmt->bindValue(':filename', $body['filename']);
-    $stmt->bindValue(':oral_exam_id', $args['oral_exam_id']);
+    $stmt->bindValue(':semester', $body['semester'], PDO::PARAM_STR);
+    $stmt->bindValue(':year', $body['year'], PDO::PARAM_INT);
+    $stmt->bindValue(':filename', $body['filename'], PDO::PARAM_STR);
+    $stmt->bindValue(':oral_exam_id', $args['oral_exam_id'], PDO::PARAM_INT);
 
     $data['status'] = $stmt->execute();
     return $response->withJson($data, 200, JSON_NUMERIC_CHECK);

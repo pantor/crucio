@@ -19,6 +19,7 @@ import { matchingPasswords } from '../../services/validators';
 export class UserComponent implements OnInit {
   user: Crucio.User;
   f: FormGroup;
+  qwer: true;
 
   constructor(private api: ApiService, private auth: AuthService, private toast: ToastService, private modal: NgbModal, private fb: FormBuilder) {
     window.document.title = 'Account | Crucio';

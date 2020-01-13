@@ -15,13 +15,21 @@ export class ApiService {
     this.headers = new HttpHeaders({'Authorization': 'Bearer ' + jwt});
   }
 
-  get(path: string, data: any = {}): Observable<any> {
+  makeParams(data: any): HttpParams {
     const res = Object.keys(data) // Filter undefined values
       .filter( key => data[key] != undefined )
-      .reduce((res, key) => (res[key] = data[key], res), {});
+      .reduce((res, key) => {
+        if (typeof data[key] === 'object') {
+          return (res[key] = JSON.stringify(data[key]), res);
+        }
+        return (res[key] = data[key], res);
+      }, {});
 
-    const params = new HttpParams({ fromObject: res });
-    return this.http.get(this.base + path, { headers: this.headers, params });
+    return new HttpParams({ fromObject: res });
+  }
+
+  get(path: string, data: any = {}): Observable<any> {
+    return this.http.get(this.base + path, { headers: this.headers, params: this.makeParams(data) });
   }
 
   post(path: string, data: any): Observable<any> {
@@ -33,12 +41,7 @@ export class ApiService {
   }
 
   delete(path: string, data: any = {}): Observable<any> {
-    const res = Object.keys(data) // Filter undefined values
-      .filter( key => data[key] != undefined )
-      .reduce((res, key) => (res[key] = data[key], res), {});
-
-    const params = new HttpParams({ fromObject: res });
-    return this.http.delete(this.base + path, { headers: this.headers, params });
+    return this.http.delete(this.base + path, { headers: this.headers, params: this.makeParams(data) });
   }
 
   upload(file: File): Observable<any> {

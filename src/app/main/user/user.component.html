@@ -7,37 +7,13 @@
 <div class="form-group row">
   <label class="col-sm-3">Allgemein</label>
   <div class="col-sm-9">
-    <!--div class="form-check">
-      <div class="custom-control custom-checkbox">
-        <input type="checkbox" class="custom-control-input" [(ngModel)]="user.highlightExams">
-        <label class="custom-control-label">Empfohlene Fragen und Klausuren hervorheben</label>
-      </div>
-    </div-->
-
     <div class="form-check">
       <div class="custom-control custom-checkbox">
-        <input type="checkbox" class="custom-control-input" [(ngModel)]="user.showComments">
-        <label class="custom-control-label">Kommentare automatisch ausblenden</label>
+        <input type="checkbox" class="custom-control-input" id="showCommentsCheckbox" [(ngModel)]="user.showComments">
+        <label class="custom-control-label" for="showCommentsCheckbox">Kommentare automatisch ausblenden</label>
       </div>
     </div>
   </div>
-
-  <!--label class="col-sm-3 col-form-label">Datenschutz</label>
-  <div class="col-sm-9">
-    <div class="form-check">
-      <div class="custom-control custom-checkbox">
-        <input type="checkbox" class="custom-control-input" [(ngModel)]="user.useAnswers">
-        <label class="custom-control-label">Meine Antworten verwenden, um schwere Fragen herauszufinden</label>
-      </div>
-    </div>
-
-    <div class="form-check">
-      <div class="custom-control custom-checkbox">
-        <input type="checkbox" class="custom-control-input" [(ngModel)]="user.useTags">
-        <label class="custom-control-label">Meine Markierungen verwenden, um Fragen zu katalogisieren</label>
-      </div>
-    </div>
-  </div-->
 </div>
 
 <div class="form-group row">

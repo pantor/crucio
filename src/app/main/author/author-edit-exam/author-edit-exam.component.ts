@@ -167,7 +167,7 @@ export class AuthorEditExamComponent implements OnInit {
 
     if (validate) {
       const data = { exam: this.exam, questions: this.questions, user_id: this.user.user_id };
-      this.api.put(`exams/${this.examId}`, data).subscribe(result => {
+      this.api.put(`exams/${this.examId}`, data).subscribe(result => {        
         if (result.status) {
           for (let i = 0; i < result.question_id_list.length; i++) {
             this.questions[i].question_id = result.question_id_list[i];

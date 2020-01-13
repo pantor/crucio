@@ -24,7 +24,7 @@ $app->group('/tags', function() {
 		);
 		$stmt->bindValue(':user_id', $request->getQueryParam('user_id'), PDO::PARAM_INT);
 		$stmt->bindValue(':question_id', $request->getQueryParam('question_id'), PDO::PARAM_INT);
-		$stmt->bindValue(':query', $query);
+		$stmt->bindValue(':query', $query, PDO::PARAM_STR);
 		$stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 
 		$data['tags'] = getAll($stmt);
@@ -72,7 +72,7 @@ $app->group('/tags', function() {
 			LIMIT :limit"
 		);
 		$stmt->bindValue(':user_id', $request->getQueryParam('user_id'), PDO::PARAM_INT);
-		$stmt->bindValue(':tag', $tag_query);
+		$stmt->bindValue(':tag', $tag_query, PDO::PARAM_STR);
 		$stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 
 		$collection['list'] = getAll($stmt);
@@ -106,7 +106,7 @@ $app->group('/tags', function() {
 			);
 			$stmt->bindValue(':question_id', $body['question_id'], PDO::PARAM_INT);
 			$stmt->bindValue(':user_id', $body['user_id'], PDO::PARAM_INT);
-			$stmt->bindValue(':tags', $body['tags']);
+			$stmt->bindValue(':tags', $body['tags'], PDO::PARAM_STR);
 		}
 
 		$data['status'] = $stmt->execute();
