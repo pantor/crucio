@@ -20,6 +20,9 @@ jobs:
         npm run build --if-present
       env:
         CI: true
+        
+    - name: Add Database Config
+      run: echo ${{ secrets.DATABASE_CONFIG }} > api/config.php
 
     - name: Deploy via FTP
       uses: SamKirkland/FTP-Deploy-Action@2.0.0
@@ -30,4 +33,4 @@ jobs:
         METHOD: sftp
         PORT: 22
         LOCAL_DIR: dist
-        ARGS: --exclude=files --exclude=cgi-bin --exclude=cgi-data --parallel=4
+        ARGS: --exclude=files --exclude=cgi-bin --exclude=cgi-data --parallel=4 --delete
