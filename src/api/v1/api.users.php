@@ -51,10 +51,8 @@ $app->group('/users', function() {
   });
 
   $this->get('/login', function($request, $response, $args) {
-    $mysql = init();
-
     $email = $request->getQueryParam('email');
-    $password = $request->getQueryParam('password');
+    // $password = $request->getQueryParam('password');
     $password_encoded = urldecode($request->getQueryParam('password_encoded'));
     $remember_choice = !empty($request->getQueryParam('remember_me')) ? $request->getQueryParam('remember_me') : 0;
 
@@ -63,26 +61,26 @@ $app->group('/users', function() {
       return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
     }
 
-    if (!$password) {
+    if (!$password_encoded) {
       $data['error'] = 'error_no_password';
       return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
     }
 
-    if (!getCount($mysql, "users WHERE email = ?", [$email])) {
+    $mysql = init();
+    $user = fetchUserDetailsByMail($mysql, $email);
+
+    if (!is_array($user)) {
       $data['error'] = 'error_incorrect_password';
       return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
     }
-
-    $user = fetchUserDetailsByMail($mysql, $email);
 
     if ($user['active'] == 0) {
       $data['error'] = 'error_account_not_activated';
       return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
     }
 
-    $entered_pass = generateHash($password, $user['password']);
     $entered_pass_encoded = generateHash($password_encoded, $user['password']);
-    if ($entered_pass != $user['password'] && $entered_pass_encoded != $user['password']) {
+    if ($entered_pass_encoded != $user['password']) {
       $data['error'] = 'error_incorrect_password';
       return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
     }

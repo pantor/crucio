@@ -44,14 +44,14 @@ function validateEMail($mysql, $email) {
 }
 
 function fetchUserDetailsByMail($mysql, $email) {
-  $stmt = $mysql->prepare("SELECT * FROM users WHERE email = :email");
+  $stmt = $mysql->prepare("SELECT * FROM users WHERE email = :email LIMIT 1");
   $stmt->bindValue(':email', sanitize($email));
 
   return getFetch($stmt);
 }
 
 function fetchUserDetailsByToken($mysql, $token) {
-  $stmt = $mysql->prepare("SELECT * FROM users WHERE activationtoken = :token");
+  $stmt = $mysql->prepare("SELECT * FROM users WHERE activationtoken = :token LIMIT 1");
   $stmt->bindValue(':token', sanitize($token));
 
   return getFetch($stmt);

@@ -2,8 +2,8 @@
 
 putenv('secret=supersecret');
 putenv('host=localhost');
-putenv('dbname=scotchbox');
+putenv('dbname=crucio');
 putenv('user=root');
-putenv('password=root');
+putenv('password=');
 
 ?>
