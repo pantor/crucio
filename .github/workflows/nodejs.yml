@@ -21,6 +21,11 @@ jobs:
       env:
         CI: true
         
+    - name: GitHub Action for Composer
+      uses: pxgamer/composer-action@master
+      with:
+        command: install --optimize-autoloader -d src/
+        
     - name: Add Database Config
       run: echo """${{ secrets.DATABASE_CONFIG }}""" > dist/api/config.php
 
