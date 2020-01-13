@@ -14,18 +14,18 @@ jobs:
       with:
         node-version: 12.x
     
+    - name: Run Composer install
+      uses: pxgamer/composer-action@v2.1.0
+      with:
+        command: install --optimize-autoloader -d src/
+
     - name: Run npm install, build, and test
       run: |
         npm install
         npm run build --if-present
       env:
         CI: true
-        
-    - name: GitHub Action for Composer
-      uses: pxgamer/composer-action@master
-      with:
-        command: install --optimize-autoloader -d src/
-        
+
     - name: Add Database Config
       run: echo """${{ secrets.DATABASE_CONFIG }}""" > dist/api/config.php
 

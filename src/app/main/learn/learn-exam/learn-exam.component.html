@@ -27,7 +27,7 @@
   <div class="col-lg-8 pull-lg-4">
     <div *ngFor="let c of combination; let i = index" id="question{{ i }}">
       <div class="d-flex mb-0">
-        <blockquote class="blockquote">
+        <blockquote class="blockquote mr-auto">
           <p [innerHtml]="c.question?.question"></p>
   
           <span class="badge badge-info" *ngIf="c.question?.type == 1"> Freie Frage</span>
