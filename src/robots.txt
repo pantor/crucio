@@ -1,0 +1,7 @@
+User-agent: *
+
+Allow: /$
+Allow: /contact
+Allow: /about
+Allow: /register
+Disallow: /

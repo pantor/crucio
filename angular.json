@@ -22,7 +22,8 @@
               "src/files",
               "src/api",
               "src/vendor",
-              "src/.htaccess"
+              "src/.htaccess",
+              "src/robots.txt"
             ],
             "styles": [
               "src/styles.scss"
@@ -94,7 +95,8 @@
               "src/files",
               "src/api",
               "src/vendor",
-              "src/.htaccess"
+              "src/.htaccess",
+              "src/robots.txt"
             ]
           }
         },
