@@ -24,10 +24,10 @@ jobs:
     - name: Deploy via FTP
       uses: SamKirkland/FTP-Deploy-Action@2.0.0
       env:
-        FTP_SERVER: ssh.strato.de
-        FTP_USERNAME: sftp_berscheid@crucio-leipzig.de
+        FTP_SERVER: ${{ secrets.FTP_SERVER }}
+        FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
         FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
         METHOD: sftp
         PORT: 22
         LOCAL_DIR: dist
-        ARGS: --dry-run --include-glob=*.js --include-glob=.svg --include-glob=*.html --include-glob=*.css --include-glob=*.eot --include-glob=*.woff2 --include-glob=*.ttf --include-glob=*.woff --include=api --include=assets --include=.htaccess --include=vendor
+        ARGS: --exclude=files --exclude=cgi-bin --exclude=cgi-data --parallel=4
