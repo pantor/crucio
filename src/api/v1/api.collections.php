@@ -9,8 +9,8 @@ $app->group('/collections', function() {
     $stmt = $mysql->prepare(
       "SELECT c.*
       FROM collections c
-      WHERE c.user_id = IFNULL(:user_id, c.user_id)
-      AND c.collection_id = IFNULL(:collection_id, c.collection_id)
+      WHERE (ISNULL(:user_id) OR c.user_id = :user_id)
+      AND (ISNULL(:collection_id) OR c.collection_id = :collection_id)
       ORDER BY c.save_date DESC
       LIMIT :limit"
     );
