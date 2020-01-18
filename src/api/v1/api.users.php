@@ -13,13 +13,9 @@ $app->group('/users', function() {
       "SELECT u.*, g.name AS 'group_name'
       FROM users u
       INNER JOIN groups g ON g.group_id = u.group_id
-      WHERE u.group_id = IFNULL(:group_id, u.group_id)
-      AND u.semester = IFNULL(:semester, u.semester)
-      AND ( u.username LIKE IFNULL(:query, u.username)
-      OR u.email LIKE IFNULL(:query, u.email) )
-      -- WHERE (ISNULL(:group_id) OR u.group_id = :group_id)
-      -- AND (ISNULL(:semester) OR u.semester = :semester)
-      -- AND ( (ISNULL(:query) OR u.username LIKE :query OR u.email LIKE :query) )
+      WHERE (ISNULL(:group_id) OR u.group_id = :group_id)
+      AND (ISNULL(:semester) OR u.semester = :semester)
+      AND ( (ISNULL(:query) OR u.username LIKE :query OR u.email LIKE :query) )
       ORDER BY g.name ASC, u.user_id DESC
       LIMIT :offset, :limit"
     );

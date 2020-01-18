@@ -51,7 +51,7 @@ $app->group('/subjects', function (){
       "SELECT c.*, s.subject_id, s.name as 'subject'
       FROM subjects s
       LEFT JOIN categories c ON c.subject_id = s.subject_id
-      WHERE s.subject_id = IFNULL(:subject_id, s.subject_id)
+      WHERE ( ISNULL(:subject_id) OR s.subject_id = :subject_id )
       ORDER BY s.name, c.name ASC"
     );
     $stmt->bindValue(':subject_id', $request->getQueryParam('subject_id'), PDO::PARAM_INT);

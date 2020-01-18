@@ -12,7 +12,7 @@ $app->group('/whitelist', function() {
       "SELECT w.*, IF(u.user_id IS NOT NULL, 1, 0) as 'used'
       FROM whitelist w
       LEFT JOIN users u ON u.email = w.mail_address
-      WHERE ( w.mail_address LIKE IFNULL(:query, w.mail_address) )
+      WHERE ( ISNULL(:query) OR w.mail_address LIKE :query )
       LIMIT :limit"
     );
     $stmt->bindValue(':query', $query, PDO::PARAM_STR);

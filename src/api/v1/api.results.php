@@ -8,8 +8,8 @@ $app->group('/results', function() {
     $stmt = $mysql->prepare(
       "SELECT r.*
       FROM results r
-      WHERE r.user_id = IFNULL(:user_id, r.user_id)
-      AND r.question_id = IFNULL(:question_id, r.question_id)"
+      WHERE ( ISNULL(:user_id) OR r.user_id = :user_id )
+      AND ( ISNULL(:question_id) OR r.question_id = :question_id )"
     );
     $stmt->bindValue(':user_id', $request->getQueryParam('user_id'), PDO::PARAM_INT);
     $stmt->bindValue(':question_id', $request->getQueryParam('question_id'), PDO::PARAM_INT);

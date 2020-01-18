@@ -30,11 +30,10 @@ $app->group('/exams', function() {
 			$answered_questions_sql_join
 			$questions_sql_join JOIN questions q ON q.exam_id = e.exam_id
 			INNER JOIN subjects s ON s.subject_id = e.subject_id
-			WHERE e.visibility = IFNULL(:visibility, e.visibility)
-			AND e.semester = IFNULL(:semester, e.semester)
-			AND e.subject_id = IFNULL(:subject_id, e.subject_id)
-			AND ( e.date LIKE IFNULL(:query, e.date)
-			OR s.name LIKE IFNULL(:query, s.name) )
+			WHERE ( ISNULL(:visibility) OR e.visibility = :visibility )
+			AND ( ISNULL(:semester) OR e.semester = :semester )
+			AND ( ISNULL(:subject_id) OR e.subject_id = :subject_id )
+			AND ( ISNULL(:query) OR e.date LIKE :query OR s.name LIKE :query )
 			GROUP BY e.exam_id
 			ORDER BY e.semester ASC, s.name ASC, e.date DESC
 			LIMIT :limit"
@@ -55,7 +54,7 @@ $app->group('/exams', function() {
 		$stmt_semesters = $mysql->prepare(
 			"SELECT DISTINCT e.semester
 			FROM exams e
-			WHERE e.visibility = IFNULL(:visibility, e.visibility)
+			WHERE ( ISNULL(:visibility) OR e.visibility = :visibility )
 			ORDER BY e.semester ASC"
 		);
 		$stmt_semesters->bindValue(':visibility', $request->getQueryParam('visibility'));
