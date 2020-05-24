@@ -19,19 +19,25 @@ function init() {
 }
 
 function getAll($stmt) {
-  $stmt->execute();
-  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  if ($stmt->execute()) {
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  }
+  return false;
 }
 
 function getFetch($stmt, $params = null) {
-  $stmt->execute($params);
-  return $stmt->fetch(PDO::FETCH_ASSOC);
+  if ($stmt->execute($params)) {
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+  }
+  return false;
 }
 
 function getCount($mysql, $sub_query, $parameters = []) {
   $stmt = $mysql->prepare("SELECT COUNT(*) AS 'count' FROM $sub_query");
-  $stmt->execute($parameters);
-  return $stmt->fetch(PDO::FETCH_ASSOC)['count'];
+  if ($stmt->execute($parameters)) {
+    return $stmt->fetch(PDO::FETCH_ASSOC)['count'];
+  }
+  return false;
 }
 
 

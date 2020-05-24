@@ -99,8 +99,8 @@ $app->group('/comments', function() {
       $body = $request->getParsedBody();
 
       $stmt = $mysql->prepare(
-        "INSERT INTO user_comments_data (user_id, comment_id, user_voting, subscription)
-        VALUES (:user_id, :comment_id, :user_voting, '0')
+        "INSERT INTO user_comments_data (user_id, comment_id, user_voting)
+        VALUES (:user_id, :comment_id, :user_voting)
         ON DUPLICATE KEY UPDATE user_voting = :user_voting"
       );
       $stmt->bindValue(':user_id', $args['user_id'], PDO::PARAM_INT);

@@ -139,8 +139,7 @@ CREATE TABLE IF NOT EXISTS `results` (
   `attempt` int(11) NOT NULL,
   `correct` int(11) NOT NULL,
   `given_result` int(11) NOT NULL,
-  `date` int(11) NOT NULL,
-  `resetted` int(11) NOT NULL
+  `date` int(11) NOT NULL
 ) ENGINE=MyISAM AUTO_INCREMENT=4000794 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -205,8 +204,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 CREATE TABLE IF NOT EXISTS `user_comments_data` (
   `user_id` int(11) NOT NULL,
   `comment_id` int(11) NOT NULL,
-  `user_voting` int(11) NOT NULL DEFAULT '0',
-  `subscription` int(11) NOT NULL
+  `user_voting` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------

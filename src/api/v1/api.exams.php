@@ -15,7 +15,7 @@ $app->group('/exams', function() {
 			$answered_questions_sql_join = " LEFT JOIN (SELECT q.exam_id, COUNT(*) AS 'answered_questions'
 			FROM results r
 			INNER JOIN questions q ON q.question_id = r.question_id AND r.user_id = :user_id
-			WHERE r.resetted = 0 AND r.attempt = 1
+			WHERE r.attempt = 1
 			GROUP BY q.exam_id) AS R ON e.exam_id = R.exam_id ";
 		}
 
@@ -119,7 +119,7 @@ $app->group('/exams', function() {
 			LEFT JOIN (SELECT q.exam_id, COUNT(*) AS 'answered_questions'
 			FROM results r
 			INNER JOIN questions q ON q.question_id = r.question_id AND r.user_id = :user_id
-			WHERE r.resetted = 0 AND r.attempt = 1
+			WHERE r.attempt = 1
 			GROUP BY q.exam_id) AS R ON e.exam_id = R.exam_id
 			INNER JOIN questions q ON q.exam_id = e.exam_id
 			INNER JOIN subjects s ON s.subject_id = e.subject_id

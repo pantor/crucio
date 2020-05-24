@@ -104,7 +104,8 @@ $app->group('/collections', function() {
     $mysql = init();
 
     $stmt = $mysql->prepare(
-      "DELETE FROM collections
+      "DELETE
+      FROM collections
       WHERE collection_id = :collection_id"
     );
     $stmt->bindValue(':collection_id', $args['collection_id'], PDO::PARAM_INT);

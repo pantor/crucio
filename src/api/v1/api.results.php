@@ -26,8 +26,8 @@ $app->group('/results', function() {
 
     $stmt = $mysql->prepare(
       "INSERT
-      INTO results (user_id, question_id, attempt, correct, given_result, date, resetted)
-      VALUES (:user_id, :question_id, :attempt, :correct, :given_result, :date, '0')"
+      INTO results (user_id, question_id, attempt, correct, given_result, date)
+      VALUES (:user_id, :question_id, :attempt, :correct, :given_result, :date)"
     );
     $stmt->bindValue(':user_id', $body['user_id'], PDO::PARAM_INT);
     $stmt->bindValue(':question_id', $body['question_id'], PDO::PARAM_INT);
@@ -44,8 +44,7 @@ $app->group('/results', function() {
     $mysql = init();
 
     $stmt = $mysql->prepare(
-      "UPDATE results
-      SET resetted = '1'
+      "DELETE FROM results
       WHERE user_id = :user_id"
     );
     $stmt->bindValue(':user_id', $args['user_id'], PDO::PARAM_INT);
@@ -58,9 +57,9 @@ $app->group('/results', function() {
     $mysql = init();
 
     $stmt = $mysql->prepare(
-      "UPDATE results r
+      "DELETE r
+      FROM results r
       INNER JOIN questions q ON q.question_id = r.question_id
-      SET r.resetted = '1'
       WHERE q.exam_id = :exam_id
       AND r.user_id = :user_id"
     );
