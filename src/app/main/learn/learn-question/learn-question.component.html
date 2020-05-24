@@ -30,7 +30,7 @@
       </div>
 
       <div class *ngIf="question?.type == 1 && isAnswerGiven">
-        <p [innerHtml]="question.answers[0]"></p>
+        <p [innerHtml]="question?.answers[0]"></p>
       </div>
     </div>
 
@@ -76,7 +76,7 @@
           <i class="fa fa-backward"></i>
       </button>
 
-      <button class="btn" [ngClass]="{ 'btn-outline-primary': !isAnswerGiven, 'btn-success': isAnswerRight, 'btn-danger': isAnswerWrong }" [disabled]="isAnswerGiven || (question?.type == 1 && question?.answers[0].length == 0) || (question?.type > 1 && question?.correct_answer == 0)" (click)="showSolution()">
+      <button class="btn" [ngClass]="{ 'btn-outline-primary': !isAnswerGiven, 'btn-success': isAnswerRight, 'btn-danger': isAnswerWrong }" [disabled]="isAnswerGiven || (question?.type == 1 && question?.answers[0]?.length == 0) || (question?.type > 1 && question?.correct_answer == 0)" (click)="showSolution()">
           Lösung <span class="d-none d-sm-inline-block">anzeigen</span>
       </button>
 

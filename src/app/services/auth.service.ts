@@ -19,8 +19,11 @@ export class AuthService {
   }
 
   tryGetUser(): Crucio.User {
-    // Check if user is in already in user object and check if cookies
-    if (this.user == null && this.cookieService.getObject('CrucioUser') != null) {
+    // Check if user is in already in user object and check localStorage
+    if (this.user == null && localStorage.getItem('CrucioUser') != null) {
+      this.setUser(JSON.parse(localStorage.getItem('CrucioUser')));
+    
+    } else if (this.user == null && this.cookieService.getObject('CrucioUser') != null) {
       this.setUser(this.cookieService.getObject('CrucioUser'));
     }
     if (this.user) {
@@ -29,23 +32,23 @@ export class AuthService {
     return this.user;
   }
 
-  setUser(newUser: any, saveNewCookie: boolean = false): void {
+  setUser(newUser: any, saveLocal: boolean = false): void {
     this.user = newUser;
 
-    if (saveNewCookie || this.cookieService.getObject('CrucioUser') != null) {
-      const expires = new Date();
-      expires.setDate(expires.getDate() + 21); // [Days]
-      this.cookieService.putObject('CrucioUser', this.user, { expires });
+    if (saveLocal || localStorage.getItem('CrucioUser') != null) {
+      localStorage.setItem('CrucioUser', JSON.stringify(this.user));
     }
 
     if (!this.user.remember_me) {
       this.cookieService.remove('CrucioUser');
+      localStorage.removeItem('CrucioUser');
     }
   }
 
   logout(): void {
     this.user = undefined;
     this.cookieService.remove('CrucioUser');
+    localStorage.removeItem('CrucioUser');
     this.router.navigate(['/']);
   }
 
