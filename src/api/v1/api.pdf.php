@@ -63,7 +63,6 @@ $app->group('/pdf', function() {
     $pdf = new crucioPDF('P', PDF_UNIT, 'A4', true, 'UTF-8', false, true);
     $pdf->SetCreator(PDF_CREATOR);
     $pdf->SetAuthor('Crucio');
-    $pdf->SetTitle('Klausur Nr. '.$exam_id);
     $pdf->SetMargins(PDF_MARGIN_LEFT, 35, PDF_MARGIN_RIGHT);
 
     // Make title and filename
@@ -81,7 +80,7 @@ $app->group('/pdf', function() {
       $pdf->cTitle = $exam['subject'];
       $pdf->cSubtitle = $exam['semester'].'. Semester  |  '.$exam['date'];
 
-      $filename = 'crucio-'.$view_name.'-'.$info['examId'].'.pdf';
+      $filename = "crucio-{$view_name}-{$info['examId']}.pdf";
     } else if ($info['type'] == 'subjects') {
       $stmt_subject = $mysql->prepare(
         "SELECT s.name as 'subject'
@@ -95,26 +94,26 @@ $app->group('/pdf', function() {
       $pdf->cTitle = $main_subject;
       $pdf->cSubtitle = '';
 
-      $filename = 'crucio-'.$view_name.'.pdf';
+      $filename = "crucio-{$view_name}.pdf";
     } else if ($info['type'] == 'tags') {
       $pdf->cTitle = $info['tag'];
       $pdf->cSubtitle = 'Deine Markierung';
 
-      $filename = 'crucio-'.$view_name.'-'.$info['tag'].'.pdf';
+      $filename = "crucio-{$view_name}-{$info['tag']}.pdf";
     } else if ($info['type'] == 'query') {
       $pdf->cTitle = $info['questionSearch']['query'];
 
       if ($info['questionSearch']['semester']) {
-        $pdf->cSubtitle = $info['questionSearch']['semester'].'. Semester';
+        $pdf->cSubtitle = "{$info['questionSearch']['semester']}. Semester";
       }
 
-      $filename = 'crucio-'.$view_name.'-'.$info['questionSearch']['query'].'.pdf';
+      $filename = "crucio-{$view_name}-{$info['questionSearch']['query']}.pdf";
     } else {
       $response = $response->withStatus(404);
       return $response->write('Not found. Neither exam or solution.');
     }
 
-
+    $pdf->SetTitle($filename);
     $pdf->AddPage('P', 'A4');
 
     if ($args['view'] == 'pdf-exam' || $args['view'] == 'pdf-both') {
