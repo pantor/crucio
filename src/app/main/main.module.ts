@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { CookieModule } from 'ngx-cookie';
 import { TagInputModule } from 'ngx-chips';
 import { QuillModule } from 'ngx-quill';
 
@@ -60,7 +59,6 @@ import { ToastComponent } from './directives/toast/toast.component';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    CookieModule,
     NgbModule,
     TagInputModule,
     QuillModule

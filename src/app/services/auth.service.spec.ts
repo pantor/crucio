@@ -1,5 +1,4 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { CookieService } from 'ngx-cookie';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { ApiService } from '../services/api.service';
@@ -11,20 +10,6 @@ class ApiStubService {
   }
 }
 
-class CookieStubService {
-  getObject(key) {
-
-  }
-
-  putObject(key, object) {
-
-  }
-
-  remove() {
-
-  }
-}
-
 describe('AuthService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -32,7 +17,6 @@ describe('AuthService', () => {
       providers: [
         AuthService,
         { provide: ApiService, useClass: ApiStubService },
-        { provide: CookieService, useClass: CookieStubService },
       ]
     });
   });

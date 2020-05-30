@@ -4,7 +4,7 @@ $app->group('/collections', function() {
   $this->get('', function($request, $response, $args) {
     $mysql = init();
 
-    $limit = intval($request->getQueryParam('limit', 10000));
+    $limit = intval($request->getQueryParam('limit', 50));
 
     $stmt = $mysql->prepare(
       "SELECT c.*

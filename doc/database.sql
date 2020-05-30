@@ -232,13 +232,13 @@ ALTER TABLE `categories`
 -- Indizes für die Tabelle `collections`
 --
 ALTER TABLE `collections`
- ADD PRIMARY KEY (`collection_id`), ADD KEY `collection_id` (`collection_id`);
+ ADD PRIMARY KEY (`collection_id`), ADD KEY `user_date` (`user_id`, `save_date`);
 
 --
 -- Indizes für die Tabelle `comments`
 --
 ALTER TABLE `comments`
- ADD PRIMARY KEY (`comment_id`), ADD KEY `id` (`comment_id`);
+ ADD PRIMARY KEY (`comment_id`);
 
 --
 -- Indizes für die Tabelle `exams`
@@ -262,7 +262,7 @@ ALTER TABLE `oral_exams`
 -- Indizes für die Tabelle `questions`
 --
 ALTER TABLE `questions`
- ADD UNIQUE KEY `question_id_2` (`question_id`), ADD KEY `question_id` (`question_id`), ADD KEY `question_id_3` (`question_id`), ADD KEY `question_id_4` (`question_id`);
+ ADD PRIMARY KEY `question_id` (`question_id`);
 
 --
 -- Indizes für die Tabelle `results`
@@ -286,19 +286,19 @@ ALTER TABLE `tags`
 -- Indizes für die Tabelle `users`
 --
 ALTER TABLE `users`
- ADD PRIMARY KEY (`user_id`), ADD UNIQUE KEY `username` (`username`), ADD UNIQUE KEY `user_id` (`user_id`);
+ ADD PRIMARY KEY (`user_id`), ADD UNIQUE KEY `username` (`username`);
 
 --
 -- Indizes für die Tabelle `user_comments_data`
 --
 ALTER TABLE `user_comments_data`
- ADD UNIQUE KEY `user_comments_data_unique` (`user_id`,`comment_id`);
+ ADD UNIQUE KEY `user_id` (`user_id`,`comment_id`), ADD INDEX KEY `comment_id` (`comment_id`);
 
 --
 -- Indizes für die Tabelle `whitelist`
 --
 ALTER TABLE `whitelist`
- ADD PRIMARY KEY (`mail_id`), ADD FULLTEXT KEY `mail_address` (`mail_address`), ADD FULLTEXT KEY `mail_address_2` (`mail_address`);
+ ADD PRIMARY KEY (`mail_id`), ADD FULLTEXT KEY `mail_address` (`mail_address`);
 
 --
 -- AUTO_INCREMENT für exportierte Tabellen

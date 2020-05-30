@@ -1,4 +1,5 @@
 <?php
+// error_reporting(E_ALL); ini_set("display_errors", 1);
 
 require '../../vendor/autoload.php';
 
@@ -10,7 +11,12 @@ if (isTestServer()) {
   require dirname(__FILE__).'/../config.php';
 }
 
-$app = new \Slim\App();
+$app = new \Slim\App([
+  'settings' => [
+    'displayErrorDetails' => false,
+    'debug'               => false,
+  ]
+]);
 
 $app->add(new \Slim\Middleware\JwtAuthentication([
   "path" => ["/"],

@@ -5,7 +5,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { CookieModule } from 'ngx-cookie';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -45,7 +44,6 @@ import { ForgotPasswordSuccessModalComponent } from './forgot-password/forgot-pa
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    CookieModule.forRoot(),
     NgbModule,
     BrowserAnimationsModule
   ],

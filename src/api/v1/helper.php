@@ -1,7 +1,10 @@
 <?php
 
 function isTestServer() {
-  return ($_SERVER['SERVER_ADDR'] == '192.168.33.10'); // Vagrant Address
+  if (array_key_exists('SERVER_ADDR', $_SERVER)) {
+    return ($_SERVER['SERVER_ADDR'] == '192.168.33.10'); // Vagrant Address
+  }
+  return false;
 }
 
 function init() {
@@ -12,6 +15,7 @@ function init() {
       getenv('user'),
       getenv('password')
     );
+    // $mysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     return $mysql;
   } catch(PDOException $ex) {
     die('connection error');
