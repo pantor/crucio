@@ -51,14 +51,14 @@ body {
 .answer-success {
   padding: 0 5px;
   font-weight: bold;
-  background-color: lighten($green, 50%); // #dff0d8
+  background-color: lighten($green, 50%);
   color: $green;
 }
 
 .answer-danger {
   padding: 0 5px;
   font-weight: bold;
-  background-color: lighten($red, 40%); // #f2dede
+  background-color: lighten($red, 40%);
   color: $red;
 }
 
@@ -97,7 +97,6 @@ input[type="file"] {
   margin: 0 auto (-$footer-height); // Negative indent footer by its height
   padding: 0 0 $footer-height; // Pad bottom by footer height
 }
-
 
 .ql-container {
   height: auto;

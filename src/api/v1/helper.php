@@ -15,7 +15,7 @@ function init() {
       getenv('user'),
       getenv('password')
     );
-    // $mysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
     return $mysql;
   } catch(PDOException $ex) {
     die('connection error');
@@ -133,7 +133,7 @@ function fillTemplate($hooks, $template) {
 function sendTemplateMail($templateName, $destination, $subject, $additionalHooks, $senderName = 'Crucio', $senderMail = 'noreply@crucio-leipzig.de') {
   $basicHooks = [
     'WEBSITENAME' => 'Crucio',
-    'WEBSITEURL' => $website_url,
+    'WEBSITEURL' => 'https://crucio-leipzig.de',
     'DATE' => date('l \\t\h\e jS'),
   ];
 

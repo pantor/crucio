@@ -17,7 +17,7 @@ export class ApiService {
 
   makeParams(data: any): HttpParams {
     const res = Object.keys(data) // Filter undefined values
-      .filter( key => data[key] != undefined )
+      .filter( key => data[key] !== undefined )
       .reduce((res, key) => {
         if (typeof data[key] === 'object') {
           return (res[key] = JSON.stringify(data[key]), res);

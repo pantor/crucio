@@ -21,7 +21,6 @@ export class AuthService {
     // Check if user is in already in user object and check localStorage
     if (this.user == null && localStorage.getItem('CrucioUser') != null) {
       this.setUser(JSON.parse(localStorage.getItem('CrucioUser')));
-    
     }
     if (this.user) {
       this.api.setJwt(this.user.jwt);
