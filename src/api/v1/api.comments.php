@@ -39,91 +39,91 @@ $app->group('/comments', function() {
 
     $stmt = $mysql->prepare(
       "SELECT c.*, u.username, q.question, q.exam_id
-        FROM comments c
-        INNER JOIN users u ON u.user_id = c.user_id
-        INNER JOIN questions q ON q.question_id = c.question_id
-        INNER JOIN exams e ON e.exam_id = q.exam_id
-        WHERE u.user_id = IFNULL(:user_id, u.user_id)
-        AND c.question_id = IFNULL(:question_id, c.question_id)
-        AND ( c.comment LIKE IFNULL(:query, c.comment)
-        OR q.question LIKE IFNULL(:query, q.question)
-        OR q.question_id LIKE IFNULL(:query, q.question_id)
-        OR u.username LIKE IFNULL(:query, u.username) )
-        ORDER BY c.comment_id DESC
-        LIMIT :limit"
-      );
-      $stmt->bindValue(':user_id', $request->getQueryParam('user_id'), PDO::PARAM_INT);
-      $stmt->bindValue(':question_id', $request->getQueryParam('question_id'), PDO::PARAM_INT);
-      $stmt->bindValue(':query', $query, PDO::PARAM_STR);
-      $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+      FROM comments c
+      INNER JOIN users u ON u.user_id = c.user_id
+      INNER JOIN questions q ON q.question_id = c.question_id
+      INNER JOIN exams e ON e.exam_id = q.exam_id
+      WHERE u.user_id = IFNULL(:user_id, u.user_id)
+      AND c.question_id = IFNULL(:question_id, c.question_id)
+      AND ( c.comment LIKE IFNULL(:query, c.comment)
+      OR q.question LIKE IFNULL(:query, q.question)
+      OR q.question_id LIKE IFNULL(:query, q.question_id)
+      OR u.username LIKE IFNULL(:query, u.username) )
+      ORDER BY c.comment_id DESC
+      LIMIT :limit"
+    );
+    $stmt->bindValue(':user_id', $request->getQueryParam('user_id'), PDO::PARAM_INT);
+    $stmt->bindValue(':question_id', $request->getQueryParam('question_id'), PDO::PARAM_INT);
+    $stmt->bindValue(':query', $query, PDO::PARAM_STR);
+    $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 
-      $data['comments'] = getAll($stmt);
-      return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
-    });
-
-    $this->get('/distinct/users', function($request, $response, $args) {
-      $mysql = init();
-
-      $stmt = $mysql->prepare(
-        "SELECT DISTINCT u.*
-        FROM comments c
-        INNER JOIN users u ON u.user_id = c.user_id
-        ORDER BY u.user_id ASC"
-      );
-
-      $data['authors'] = getAll($stmt);
-      return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
-    });
-
-    $this->post('/{user_id}', function($request, $response, $args) {
-      $mysql = init();
-      $body = $request->getParsedBody();
-
-      $stmt = $mysql->prepare(
-        "INSERT INTO comments (user_id, date, comment, question_id, reply_to)
-        VALUES (:user_id, :time, :comment, :question_id, :reply_to)"
-      );
-      $stmt->bindValue(':user_id', $args['user_id'], PDO::PARAM_INT);
-      $stmt->bindValue(':time', time());
-      $stmt->bindValue(':comment', $body['comment'], PDO::PARAM_STR);
-      $stmt->bindValue(':question_id', $body['question_id'], PDO::PARAM_INT);
-      $stmt->bindValue(':reply_to', $body['reply_to']);
-
-      $data['status'] = $stmt->execute();
-      $data['comment_id'] = $mysql->lastInsertId();
-      return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
-    });
-
-    $this->post('/{comment_id}/user/{user_id}', function($request, $response, $args) {
-      $mysql = init();
-      $body = $request->getParsedBody();
-
-      $stmt = $mysql->prepare(
-        "INSERT INTO user_comments_data (user_id, comment_id, user_voting)
-        VALUES (:user_id, :comment_id, :user_voting)
-        ON DUPLICATE KEY UPDATE user_voting = :user_voting"
-      );
-      $stmt->bindValue(':user_id', $args['user_id'], PDO::PARAM_INT);
-      $stmt->bindValue(':comment_id', $args['comment_id'], PDO::PARAM_INT);
-      $stmt->bindValue(':user_voting', $body['user_voting']);
-
-      $data['status'] = $stmt->execute();
-      return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
-    });
-
-    $this->delete('/{comment_id}', function($request, $response, $args) {
-      $mysql = init();
-
-      $stmt = $mysql->prepare(
-        "DELETE
-        FROM comments
-        WHERE comment_id = :comment_id"
-      );
-      $stmt->bindValue(':comment_id', $args['comment_id'], PDO::PARAM_INT);
-
-      $data['status'] = $stmt->execute();
-      return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
-    });
+    $data['comments'] = getAll($stmt);
+    return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
   });
 
-  ?>
+  $this->get('/distinct/users', function($request, $response, $args) {
+    $mysql = init();
+
+    $stmt = $mysql->prepare(
+      "SELECT DISTINCT u.*
+      FROM comments c
+      INNER JOIN users u ON u.user_id = c.user_id
+      ORDER BY u.user_id ASC"
+    );
+
+    $data['authors'] = getAll($stmt);
+    return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
+  });
+
+  $this->post('/{user_id}', function($request, $response, $args) {
+    $mysql = init();
+    $body = $request->getParsedBody();
+
+    $stmt = $mysql->prepare(
+      "INSERT INTO comments (user_id, date, comment, question_id, reply_to)
+      VALUES (:user_id, :time, :comment, :question_id, :reply_to)"
+    );
+    $stmt->bindValue(':user_id', $args['user_id'], PDO::PARAM_INT);
+    $stmt->bindValue(':time', time());
+    $stmt->bindValue(':comment', $body['comment'], PDO::PARAM_STR);
+    $stmt->bindValue(':question_id', $body['question_id'], PDO::PARAM_INT);
+    $stmt->bindValue(':reply_to', $body['reply_to']);
+
+    $data['status'] = $stmt->execute();
+    $data['comment_id'] = $mysql->lastInsertId();
+    return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
+  });
+
+  $this->post('/{comment_id}/user/{user_id}', function($request, $response, $args) {
+    $mysql = init();
+    $body = $request->getParsedBody();
+
+    $stmt = $mysql->prepare(
+      "INSERT INTO user_comments_data (user_id, comment_id, user_voting)
+      VALUES (:user_id, :comment_id, :user_voting)
+      ON DUPLICATE KEY UPDATE user_voting = :user_voting"
+    );
+    $stmt->bindValue(':user_id', $args['user_id'], PDO::PARAM_INT);
+    $stmt->bindValue(':comment_id', $args['comment_id'], PDO::PARAM_INT);
+    $stmt->bindValue(':user_voting', $body['user_voting']);
+
+    $data['status'] = $stmt->execute();
+    return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
+  });
+
+  $this->delete('/{comment_id}', function($request, $response, $args) {
+    $mysql = init();
+
+    $stmt = $mysql->prepare(
+      "DELETE
+      FROM comments
+      WHERE comment_id = :comment_id"
+    );
+    $stmt->bindValue(':comment_id', $args['comment_id'], PDO::PARAM_INT);
+
+    $data['status'] = $stmt->execute();
+    return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
+  });
+});
+
+?>
