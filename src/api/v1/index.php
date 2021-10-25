@@ -20,7 +20,7 @@ $app = new \Slim\App([
 
 $app->add(new \Tuupola\Middleware\JwtAuthentication([
   "path" => ["/"],
-  "passthrough" => ["/users/login", "/users/register", "/users/activate", "/users/password/token", "/users/password/reset", "/contact/send-mail", "/pdf"],
+  "ignore" => ["/users/login", "/users/register", "/users/activate", "/users/password/token", "/users/password/reset", "/contact/send-mail", "/pdf"],
   "secret" => getenv('secret'),
 ]));
 
