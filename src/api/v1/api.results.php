@@ -26,13 +26,12 @@ $app->group('/results', function() {
 
     $stmt = $mysql->prepare(
       "INSERT
-      INTO results (user_id, question_id, attempt, correct, given_result, date)
-      VALUES (:user_id, :question_id, :attempt, :correct, :given_result, :date)"
+      INTO results (user_id, question_id, attempt, given_result, date)
+      VALUES (:user_id, :question_id, :attempt, :given_result, :date)"
     );
     $stmt->bindValue(':user_id', $body['user_id'], PDO::PARAM_INT);
     $stmt->bindValue(':question_id', $body['question_id'], PDO::PARAM_INT);
     $stmt->bindValue(':attempt', $attempt_count + 1, PDO::PARAM_INT);
-    $stmt->bindValue(':correct', $body['correct']);
     $stmt->bindValue(':given_result', $body['given_result'], PDO::PARAM_INT);
     $stmt->bindValue(':date', time());
 

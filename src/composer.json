@@ -1,9 +1,9 @@
 {
     "require": {
         "slim/slim": "^3.12",
-        "tecnickcom/tcpdf": "^6.2",
+        "tecnickcom/tcpdf": "^6.4",
         "phpmailer/phpmailer": "^5.2",
-        "tuupola/slim-jwt-auth": "^2.4",
-        "firebase/php-jwt": "^5.2"
+        "tuupola/slim-jwt-auth": "^3.5",
+        "firebase/php-jwt": "^5.4"
     }
 }

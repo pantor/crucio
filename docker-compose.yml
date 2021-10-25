@@ -30,13 +30,26 @@ services:
     volumes:
       - ./e2e/mysql-init-files:/docker-entrypoint-initdb.d
 
+  db_collections:
+    image: mysql/mysql-server:5.7
+    command:
+      --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: p1q5we8s_f
+      MYSQL_DATABASE: dbs4617543
+      MYSQL_USER: test
+      MYSQL_PASSWORD: q8df72p0d
+    volumes:
+      - ./e2e/mysql-init-files-colls:/docker-entrypoint-initdb.d
+
   phpmyadmin:
     image: phpmyadmin
     restart: always
     ports:
       - 8080:80
     environment:
-      PMA_HOST: db
+      PMA_HOST: db_collections
       MYSQL_ROOT_PASSWORD: p1q5we8s_f
     depends_on:
       - db

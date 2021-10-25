@@ -4,11 +4,20 @@ function init() {
   error_reporting(0);
   try {
     $mysql = new PDO(
-      'mysql:host='.getenv('host').';dbname='.getenv('dbname').';charset=utf8',
-      getenv('user'),
-      getenv('password')
+      'mysql:host='.getenv('host').';dbname='.getenv('dbname').';charset=utf8', getenv('user'), getenv('password')
     );
-    
+    return $mysql;
+  } catch(PDOException $ex) {
+    die('connection error');
+  }
+}
+
+function init_collections() {
+  error_reporting(0);
+  try {
+    $mysql = new PDO(
+      'mysql:host='.getenv('host2').';dbname='.getenv('dbname2').';charset=utf8', getenv('user2'), getenv('password2')
+    );
     return $mysql;
   } catch(PDOException $ex) {
     die('connection error');

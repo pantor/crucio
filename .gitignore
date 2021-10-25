@@ -46,3 +46,4 @@ Thumbs.db
 # Config Files
 /src/api/config.php
 /e2e/mysql-init-files
+/e2e/mysql-init-files-colls

@@ -3,10 +3,11 @@
 $app->group('/collections', function() {
   $this->get('', function($request, $response, $args) {
     $mysql = init();
+    $mysql_collections = init_collections();
 
     $limit = intval($request->getQueryParam('limit', 50));
 
-    $stmt = $mysql->prepare(
+    $stmt = $mysql_collections->prepare(
       "SELECT c.*
       FROM collections c
       WHERE (ISNULL(:user_id) OR c.user_id = :user_id)
@@ -63,7 +64,7 @@ $app->group('/collections', function() {
   });
 
   $this->post('', function($request, $response, $args) {
-    $mysql = init();
+    $mysql = init_collections();
     $body = $request->getParsedBody();
 
     $collection = serialize($body['collection']);
@@ -82,7 +83,7 @@ $app->group('/collections', function() {
   });
 
   $this->put('/{collection_id}', function($request, $response, $args) {
-    $mysql = init();
+    $mysql = init_collections();
     $body = $request->getParsedBody();
 
     $collection = serialize($body['collection']);
@@ -101,7 +102,7 @@ $app->group('/collections', function() {
   });
 
   $this->delete('/{collection_id}', function($request, $response, $args) {
-    $mysql = init();
+    $mysql = init_collections();
 
     $stmt = $mysql->prepare(
       "DELETE

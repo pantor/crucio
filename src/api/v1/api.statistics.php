@@ -4,6 +4,7 @@ $app->group('/stats', function() {
 
   $this->get('/summary', function($request, $response, $args) {
     $mysql = init();
+    $mysql_collections = init_collections();
 
     $time = time();
     $stats['time'] = $time;
@@ -21,8 +22,7 @@ $app->group('/stats', function() {
 
     $stats['comment_count'] = getCount($mysql, 'comments');
     $stats['tag_count'] = getCount($mysql, 'tags');
-    $stats['collection_count'] = getCount($mysql, 'collections');
-
+    $stats['collection_count'] = getCount($mysql_collections, 'collections');
 
     $data['stats'] = $stats;
     return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
