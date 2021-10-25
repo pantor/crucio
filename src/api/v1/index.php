@@ -1,12 +1,12 @@
 <?php
 // error_reporting(E_ALL); ini_set("display_errors", 1);
 
-require '../../vendor/autoload.php';
+require dirname(__FILE__).'/../../vendor/autoload.php';
 
 require 'helper.php';
 
-if (isTestServer()) {
-  require dirname(__FILE__).'/../config.vagrant.php';
+if (getenv('IN_DOCKER')) {
+  require dirname(__FILE__).'/../config.docker.php';
 } else {
   require dirname(__FILE__).'/../config.php';
 }

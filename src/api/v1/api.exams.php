@@ -170,10 +170,11 @@ $app->group('/exams', function() {
 		$body = $request->getParsedBody();
 
 		$stmt = $mysql->prepare(
-			"INSERT INTO exams (subject_id, date_added, date_updated, sort)
-			VALUES (:subject_id, :date_added, :date_updated, :sort)"
+			"INSERT INTO exams (subject_id, user_id_added, date_added, date_updated, sort)
+			VALUES (:subject_id, :user_id_added, :date_added, :date_updated, :sort)"
 		);
 		$stmt->bindValue(':subject_id', $body['subject_id']);
+		$stmt->bindValue(':user_id_added', $body['user_id_added']);
 		$stmt->bindValue(':date_added', time());
 		$stmt->bindValue(':date_updated', time());
 		$stmt->bindValue(':sort', $body['sort']);

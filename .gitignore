@@ -45,3 +45,4 @@ Thumbs.db
 
 # Config Files
 /src/api/config.php
+/e2e/mysql-init-files

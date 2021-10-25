@@ -1,12 +1,5 @@
 <?php
 
-function isTestServer() {
-  if (array_key_exists('SERVER_ADDR', $_SERVER)) {
-    return ($_SERVER['SERVER_ADDR'] == '192.168.33.10'); // Vagrant Address
-  }
-  return false;
-}
-
 function init() {
   error_reporting(0);
   try {

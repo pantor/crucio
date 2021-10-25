@@ -51,7 +51,11 @@ export class AuthorExamsComponent implements OnInit {
     };
 
     this.api.post('exams', data).subscribe(result => {
-      this.router.navigate(['/app/edit-exam'], { queryParams: { examId: result.exam_id } });
+      if (result.status) {
+        this.router.navigate(['/app/edit-exam'], { queryParams: { examId: result.exam_id } });
+      } else {
+        alert('Error: Could not save new exam!');
+      }
     });
   }
 }

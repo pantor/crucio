@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "firebase/php-jwt",
-            "version": "v5.2.0",
+            "version": "v5.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/firebase/php-jwt.git",
-                "reference": "feb0e820b8436873675fd3aca04f3728eb2185cb"
+                "reference": "d2113d9b2e0e349796e72d2a63cf9319100382d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/feb0e820b8436873675fd3aca04f3728eb2185cb",
-                "reference": "feb0e820b8436873675fd3aca04f3728eb2185cb",
+                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/d2113d9b2e0e349796e72d2a63cf9319100382d2",
+                "reference": "d2113d9b2e0e349796e72d2a63cf9319100382d2",
                 "shasum": ""
             },
             "require": {
@@ -25,6 +25,9 @@
             },
             "require-dev": {
                 "phpunit/phpunit": ">=4.8 <=9"
+            },
+            "suggest": {
+                "paragonie/sodium_compat": "Support EdDSA (Ed25519) signatures when libsodium is not present"
             },
             "type": "library",
             "autoload": {
@@ -54,7 +57,11 @@
                 "jwt",
                 "php"
             ],
-            "time": "2020-03-25T18:49:23+00:00"
+            "support": {
+                "issues": "https://github.com/firebase/php-jwt/issues",
+                "source": "https://github.com/firebase/php-jwt/tree/v5.4.0"
+            },
+            "time": "2021-06-23T19:00:23+00:00"
         },
         {
             "name": "nikic/fast-route",
@@ -100,6 +107,10 @@
                 "router",
                 "routing"
             ],
+            "support": {
+                "issues": "https://github.com/nikic/FastRoute/issues",
+                "source": "https://github.com/nikic/FastRoute/tree/master"
+            },
             "time": "2018-02-13T20:26:39+00:00"
         },
         {
@@ -177,6 +188,10 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
+            "support": {
+                "issues": "https://github.com/PHPMailer/PHPMailer/issues",
+                "source": "https://github.com/PHPMailer/PHPMailer/tree/v5.2.28"
+            },
             "funding": [
                 {
                     "url": "https://marcus.bointon.com/donations/",
@@ -195,29 +210,29 @@
         },
         {
             "name": "pimple/pimple",
-            "version": "v3.3.0",
+            "version": "v3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/silexphp/Pimple.git",
-                "reference": "e55d12f9d6a0e7f9c85992b73df1267f46279930"
+                "reference": "86406047271859ffc13424a048541f4531f53601"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/silexphp/Pimple/zipball/e55d12f9d6a0e7f9c85992b73df1267f46279930",
-                "reference": "e55d12f9d6a0e7f9c85992b73df1267f46279930",
+                "url": "https://api.github.com/repos/silexphp/Pimple/zipball/86406047271859ffc13424a048541f4531f53601",
+                "reference": "86406047271859ffc13424a048541f4531f53601",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2.5",
-                "psr/container": "^1.0"
+                "php": ">=7.2.5",
+                "psr/container": "^1.1"
             },
             "require-dev": {
-                "symfony/phpunit-bridge": "^3.4|^4.4|^5.0"
+                "symfony/phpunit-bridge": "^5.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.3.x-dev"
+                    "dev-master": "3.4.x-dev"
                 }
             },
             "autoload": {
@@ -241,31 +256,29 @@
                 "container",
                 "dependency injection"
             ],
-            "time": "2020-03-03T09:12:48+00:00"
+            "support": {
+                "source": "https://github.com/silexphp/Pimple/tree/v3.4.0"
+            },
+            "time": "2021-03-06T08:28:00+00:00"
         },
         {
             "name": "psr/container",
-            "version": "1.0.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/container.git",
-                "reference": "b7ce3b176482dbbc1245ebf52b181af44c2cf55f"
+                "reference": "8622567409010282b7aeebe4bb841fe98b58dcaf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/container/zipball/b7ce3b176482dbbc1245ebf52b181af44c2cf55f",
-                "reference": "b7ce3b176482dbbc1245ebf52b181af44c2cf55f",
+                "url": "https://api.github.com/repos/php-fig/container/zipball/8622567409010282b7aeebe4bb841fe98b58dcaf",
+                "reference": "8622567409010282b7aeebe4bb841fe98b58dcaf",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": ">=7.2.0"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Psr\\Container\\": "src/"
@@ -278,7 +291,7 @@
             "authors": [
                 {
                     "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
+                    "homepage": "https://www.php-fig.org/"
                 }
             ],
             "description": "Common Container Interface (PHP FIG PSR-11)",
@@ -290,7 +303,11 @@
                 "container-interop",
                 "psr"
             ],
-            "time": "2017-02-14T16:28:37+00:00"
+            "support": {
+                "issues": "https://github.com/php-fig/container/issues",
+                "source": "https://github.com/php-fig/container/tree/1.1.1"
+            },
+            "time": "2021-03-05T17:36:06+00:00"
         },
         {
             "name": "psr/http-message",
@@ -340,20 +357,23 @@
                 "request",
                 "response"
             ],
+            "support": {
+                "source": "https://github.com/php-fig/http-message/tree/master"
+            },
             "time": "2016-08-06T14:39:51+00:00"
         },
         {
             "name": "psr/log",
-            "version": "1.1.3",
+            "version": "1.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "0f73288fd15629204f9d42b7055f72dacbe811fc"
+                "reference": "d49695b909c3b7628b6289db5479a1c204601f11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/0f73288fd15629204f9d42b7055f72dacbe811fc",
-                "reference": "0f73288fd15629204f9d42b7055f72dacbe811fc",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/d49695b909c3b7628b6289db5479a1c204601f11",
+                "reference": "d49695b909c3b7628b6289db5479a1c204601f11",
                 "shasum": ""
             },
             "require": {
@@ -377,7 +397,7 @@
             "authors": [
                 {
                     "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
+                    "homepage": "https://www.php-fig.org/"
                 }
             ],
             "description": "Common interface for logging libraries",
@@ -387,7 +407,10 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2020-03-23T09:12:05+00:00"
+            "support": {
+                "source": "https://github.com/php-fig/log/tree/1.1.4"
+            },
+            "time": "2021-05-03T11:20:27+00:00"
         },
         {
             "name": "slim/slim",
@@ -460,20 +483,24 @@
                 "micro",
                 "router"
             ],
+            "support": {
+                "issues": "https://github.com/slimphp/Slim/issues",
+                "source": "https://github.com/slimphp/Slim/tree/3.x"
+            },
             "time": "2019-11-28T17:40:33+00:00"
         },
         {
             "name": "tecnickcom/tcpdf",
-            "version": "6.3.5",
+            "version": "6.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tecnickcom/TCPDF.git",
-                "reference": "19a535eaa7fb1c1cac499109deeb1a7a201b4549"
+                "reference": "172540dcbfdf8dc983bc2fe78feff48ff7ec1c76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/19a535eaa7fb1c1cac499109deeb1a7a201b4549",
-                "reference": "19a535eaa7fb1c1cac499109deeb1a7a201b4549",
+                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/172540dcbfdf8dc983bc2fe78feff48ff7ec1c76",
+                "reference": "172540dcbfdf8dc983bc2fe78feff48ff7ec1c76",
                 "shasum": ""
             },
             "require": {
@@ -522,7 +549,17 @@
                 "pdf417",
                 "qrcode"
             ],
-            "time": "2020-02-14T14:20:12+00:00"
+            "support": {
+                "issues": "https://github.com/tecnickcom/TCPDF/issues",
+                "source": "https://github.com/tecnickcom/TCPDF/tree/6.4.2"
+            },
+            "funding": [
+                {
+                    "url": "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&currency_code=GBP&business=paypal@tecnick.com&item_name=donation%20for%20tcpdf%20project",
+                    "type": "custom"
+                }
+            ],
+            "time": "2021-07-20T14:43:20+00:00"
         },
         {
             "name": "tuupola/slim-jwt-auth",
@@ -577,6 +614,10 @@
                 "middleware",
                 "psr-7"
             ],
+            "support": {
+                "issues": "https://github.com/tuupola/slim-jwt-auth/issues",
+                "source": "https://github.com/tuupola/slim-jwt-auth/tree/2.x"
+            },
             "time": "2018-04-03T06:12:18+00:00"
         }
     ],
@@ -588,5 +629,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.1.0"
 }
