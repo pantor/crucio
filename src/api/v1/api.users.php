@@ -161,15 +161,6 @@ $app->group('/users', function() {
     $secure_pass = generateHash($clean_password);
     $activation_token = generateActivationToken($mysql);
 
-    $website_url = getURL();
-    $activation_message = $website_url.'activate-account?token='.$activation_token;
-    $hooks = [
-      'ACTIVATION-MESSAGE' => $activation_message,
-      'ACTIVATION-KEY' => $activation_token,
-      'USERNAME' => $username,
-    ];
-    sendTemplateMail('new-registration', $email, 'Willkommen bei Crucio', $hooks);
-
     $stmt = $mysql->prepare(
       "INSERT INTO users (username, username_clean, password, email, activationtoken, last_activation_request, sign_up_date, course_id, semester)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
@@ -185,6 +176,17 @@ $app->group('/users', function() {
     $stmt->bindValue(9, $semester, PDO::PARAM_INT);
 
     $data['status'] = $stmt->execute();
+    if ($data['status']) {
+      $website_url = getURL();
+      $activation_message = $website_url.'activate-account?token='.$activation_token;
+      $hooks = [
+        'ACTIVATION-MESSAGE' => $activation_message,
+        'ACTIVATION-KEY' => $activation_token,
+        'USERNAME' => $username,
+      ];
+
+      sendTemplateMail('new-registration', $email, 'Willkommen bei Crucio', $hooks);
+    }
     return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
   });
 

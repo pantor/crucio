@@ -9,12 +9,14 @@
 
 <div class="card-columns" *ngIf="collections && collections.length">
   <div class="card" *ngFor="let c of collections; let i = index">
-    <div class="card-body">
-      <h5 class="card-title">
+    <div class="card-body" style="padding: 1em;">
+      <h5 class="card-title d-flex justify-content-between align-items-start">
         <span *ngIf="c.type == 'exam'"><i class="fa fa-list fa-fw"></i> {{ c.exam.subject }}</span>
         <span *ngIf="c.type == 'subjects'"><i class="fa fa-flask fa-fw"></i> {{ c.main_subject }}</span>
         <span *ngIf="c.type == 'query'"><i class="fa fa-search fa-fw"></i> {{ c.questionSearch.query }}</span>
         <span *ngIf="c.type == 'tags'"><i class="fa fa-tag fa-fw"></i> {{ c.tag }}</span>
+
+        <button class="close" (click)="removeCollection(i)"><small class="text-muted ml-1"><i class="fa fa-times-circle" aria-hidden="true"></i></small></button>
       </h5>
 
       <p class="card-text">
@@ -28,12 +30,12 @@
       </p>
     </div>
 
-    <div class="card-footer clearfix">
+    <div class="card-footer d-flex justify-content-between align-items-center" style="padding: 1em;">
       <small class="text-muted">
         {{ getWorkedList(c.list).length }} / {{ c.list.length }} Fragen
       </small>
 
-      <div ngbDropdown class="btn-group float-right" placement="bottom-right">
+      <div ngbDropdown class="btn-group ml-2" placement="bottom-right">
         <button type="button" class="btn btn-success btn-sm" (click)="learnCollection('question', i)"><i class="fa fa-fw fa-graduation-cap"></i> Lernen</button>
         <button class="btn btn-success btn-sm" ngbDropdownToggle></button>
 
@@ -41,8 +43,6 @@
           <button class="dropdown-item" (click)="learnCollection('exam', i)">Klausuransicht</button>
           <button class="dropdown-item" (click)="learnCollection('pdf-exam', i)">PDF Fragen</button>
           <button class="dropdown-item" (click)="learnCollection('pdf-solution', i)">PDF Lösungen</button>
-          <hr>
-          <button class="dropdown-item" (click)="removeCollection(i)">Sammlung löschen</button>
         </div>
       </div>
     </div>

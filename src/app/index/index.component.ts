@@ -44,6 +44,9 @@ export class IndexComponent implements OnInit {
         this.failedLogin = true;
         this.isLoading = false;
       }
+    }, error => {
+      this.failedLogin = true;
+      this.isLoading = false;
     });
   }
 }
