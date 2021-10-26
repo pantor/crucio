@@ -5,6 +5,7 @@ import { ApiService } from '../../../services/api.service';
 import { AuthService } from '../../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
 import { AuthorDeleteOralExamModalComponent } from './author-delete-oral-exam-modal/author-delete-oral-exam-modal.component';
+import { Crucio } from '../../main';
 
 @Component({
   selector: 'app-author-edit-oral-exam',

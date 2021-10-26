@@ -6,6 +6,7 @@ import { ApiService } from '../../../services/api.service';
 import { AuthService } from '../../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
 import { AuthorDeleteExamModalComponent } from './author-delete-exam-modal/author-delete-exam-modal.component';
+import { Crucio } from '../../main';
 
 @Component({
   selector: 'app-author-edit-exam',
@@ -177,6 +178,8 @@ export class AuthorEditExamComponent implements OnInit {
         } else {
           this.toast.new('Fehler');
         }
+      }, error => {
+        this.toast.new('Fehler');
       });
     } else {
       this.toast.new('Unvollständig');

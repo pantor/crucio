@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ApiService } from './api.service';
+import { Crucio } from '../main/main';
 
 @Injectable()
 export class AuthService {

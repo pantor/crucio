@@ -5,6 +5,7 @@ import { AuthService } from '../../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
 import { Collection, CollectionService } from './../../services/collection.service';
 import { LearnImageModalComponent } from '../learn-image-modal/learn-image-modal.component';
+import { Crucio } from '../../main';
 
 @Component({
   selector: 'app-learn-exam',

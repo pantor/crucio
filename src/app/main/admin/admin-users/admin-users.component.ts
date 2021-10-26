@@ -3,6 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from '../../../services/api.service';
 import { AuthService } from '../../../services/auth.service';
 import { AdminUserModalComponent } from './admin-user-modal/admin-user-modal.component';
+import { Crucio } from '../../main';
 
 @Component({
   selector: 'app-admin-users',

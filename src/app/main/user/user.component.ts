@@ -9,6 +9,7 @@ import { UserDeleteResultsModalComponent } from './user-delete-results-modal/use
 import { UserDeleteUserModalComponent } from './user-delete-user-modal/user-delete-user-modal.component';
 
 import { matchingPasswords } from '../../services/validators';
+import { Crucio } from '../main';
 
 @Component({
   selector: 'app-user',

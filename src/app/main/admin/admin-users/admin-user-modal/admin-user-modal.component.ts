@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from '../../../../services/api.service';
 import { AdminDeleteUserModalComponent } from '../admin-delete-user-modal/admin-delete-user-modal.component';
+import { Crucio } from '../../../main';
 
 @Component({
   selector: 'app-admin-user-modal',

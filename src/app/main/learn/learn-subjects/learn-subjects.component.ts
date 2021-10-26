@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
 import { Collection, CollectionService } from './../../services/collection.service';
+import { Crucio } from '../../main';
 
 @Component({
   selector: 'app-learn-subjects',
@@ -17,7 +18,7 @@ export class LearnSubjectsComponent implements OnInit {
 
   constructor(private api: ApiService, private collection: CollectionService) {
     this.api.get('subjects', { has_questions: true })
-      .subscribe(result => this.subjects = result.subjects);
+      .subscribe(result => { this.subjects = result.subjects });
   }
 
   ngOnInit() { }

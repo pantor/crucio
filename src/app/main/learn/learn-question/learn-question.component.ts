@@ -7,6 +7,7 @@ import { Collection, CollectionService } from '../../services/collection.service
 import { Toast, ToastService } from '../../services/toast.service';
 import { LearnImageModalComponent } from '../learn-image-modal/learn-image-modal.component';
 import { LearnReportModalComponent } from '../learn-report-modal/learn-report-modal.component';
+import { Crucio } from '../../main';
 
 interface QuestionExam extends Crucio.Question, Crucio.Exam {
   professor: string;

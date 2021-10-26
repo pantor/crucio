@@ -120,7 +120,7 @@ CREATE TABLE `questions` (
   `answers` text COLLATE utf8_unicode_ci NOT NULL,
   `explanation` text COLLATE utf8_unicode_ci,
   `question_image_url` text COLLATE utf8_unicode_ci,
-  `explanation_image_url` text COLLATE utf8_unicode_ci NOT NULL
+  `explanation_image_url` text COLLATE utf8_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- --------------------------------------------------------
@@ -225,13 +225,6 @@ ALTER TABLE `categories`
   ADD PRIMARY KEY (`category_id`);
 
 --
--- Indizes für die Tabelle `collections`
---
-ALTER TABLE `collections`
-  ADD PRIMARY KEY (`collection_id`) USING BTREE,
-  ADD KEY `user_date` (`user_id`,`save_date`);
-
---
 -- Indizes für die Tabelle `comments`
 --
 ALTER TABLE `comments`
@@ -318,12 +311,6 @@ ALTER TABLE `whitelist` ADD FULLTEXT KEY `mail_address` (`mail_address`);
 --
 ALTER TABLE `categories`
   MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT für Tabelle `collections`
---
-ALTER TABLE `collections`
-  MODIFY `collection_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT für Tabelle `comments`

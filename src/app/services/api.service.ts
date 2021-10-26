@@ -16,7 +16,7 @@ export class ApiService {
   }
 
   makeParams(data: any): HttpParams {
-    const res = Object.keys(data) // Filter undefined values
+    const obj = Object.keys(data) // Filter undefined values
       .filter( key => data[key] !== undefined )
       .reduce((res, key) => {
         if (typeof data[key] === 'object') {
@@ -25,7 +25,7 @@ export class ApiService {
         return (res[key] = data[key], res);
       }, {});
 
-    return new HttpParams({ fromObject: res });
+    return new HttpParams({ fromObject: obj });
   }
 
   get(path: string, data: any = {}): Observable<any> {

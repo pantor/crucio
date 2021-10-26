@@ -21,7 +21,6 @@ services:
     image: mysql/mysql-server:5.7
     command:
       --default-authentication-plugin=mysql_native_password
-    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: p1q5we8s_f
       MYSQL_DATABASE: DB1581583
@@ -34,7 +33,6 @@ services:
     image: mysql/mysql-server:5.7
     command:
       --default-authentication-plugin=mysql_native_password
-    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: p1q5we8s_f
       MYSQL_DATABASE: dbs4617543
@@ -45,11 +43,10 @@ services:
 
   phpmyadmin:
     image: phpmyadmin
-    restart: always
     ports:
       - 8080:80
     environment:
-      PMA_HOST: db_collections
+      PMA_HOST: db
       MYSQL_ROOT_PASSWORD: p1q5we8s_f
     depends_on:
       - db

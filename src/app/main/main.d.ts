@@ -1,4 +1,4 @@
-declare namespace Crucio {
+export declare namespace Crucio {
   interface User {
     user_id: number;
     username: string;

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from '../../../services/api.service';
+import { Crucio } from '../../main';
 
 @Component({
   selector: 'app-user-delete-tags-modal',

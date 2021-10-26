@@ -3,6 +3,7 @@ import { ApiService } from '../../../services/api.service';
 import { AuthService } from '../../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
 import { Collection, CollectionService } from '../../services/collection.service';
+import { Crucio } from '../../main';
 
 @Component({
   selector: 'app-learn-analysis',
