@@ -240,14 +240,16 @@ $app->group('/exams', function() {
 					$question_image_url = strlen($question['question_image_url']) > 0 ? $question['question_image_url'] : '';
 
 					$stmt = $mysql->prepare(
-						"INSERT INTO questions (question, answers, correct_answer, exam_id, date_added, explanation, question_image_url, type, category_id)
-							VALUES (:question, :answers, :correct_answer, :exam_id, :date,
+						"INSERT INTO questions (question, answers, correct_answer, exam_id, date_added,
+							user_id_added, explanation, question_image_url, type, category_id)
+						VALUES (:question, :answers, :correct_answer, :exam_id, :date, :user_id_added,
 								:explanation, :question_image_url, :type, :category_id)"
 					);
 					$stmt->bindValue(':question', $question['question']);
 					$stmt->bindValue(':answers', serialize($question['answers']));
 					$stmt->bindValue(':correct_answer', $question['correct_answer']);
 					$stmt->bindValue(':exam_id', $exam['exam_id'], PDO::PARAM_INT);
+					$stmt->bindValue(':user_id_added', $user_id, PDO::PARAM_INT);
 					$stmt->bindValue(':date', time());
 					$stmt->bindValue(':explanation', $explanation);
 					$stmt->bindValue(':question_image_url', $question_image_url);

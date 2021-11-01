@@ -270,9 +270,6 @@ $app->group('/questions', function() {
     $stmt_tags->bindValue(':user_id', intval($args['user_id']), PDO::PARAM_INT);
     $stmt_tags->bindValue(':question_id', intval($args['question_id']), PDO::PARAM_INT);
     $tags = getFetch($stmt_tags);
-    if (!$tags) {
-      $tags = '';
-    }
 
     $stmt_comments = $mysql->prepare(
       "SELECT c.*, u.username, SUM(IF(uc.user_id != :user_id, uc.user_voting, 0)) as 'voting', SUM(IF(uc.user_id = :user_id, uc.user_voting, 0)) as 'user_voting'
@@ -288,7 +285,7 @@ $app->group('/questions', function() {
     $comments = getAll($stmt_comments);
 
     $data['question'] = $question;
-    $data['tags'] = $tags['tags'];
+    $data['tags'] = $tags ? $tags['tags'] : '';
     $data['comments'] = $comments;
     return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
   });
