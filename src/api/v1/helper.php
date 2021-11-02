@@ -152,14 +152,7 @@ function sendMail($destination, $subject, $message, $senderName, $senderMail) {
   $mail->SMTPAuth = false;
   $mail->Port = 1025;
 
-  if (isTestServer()) {
-    $mail->isSMTP();
-    $mail->Host = "127.0.0.1";
-    $mail->SMTPAuth = false;
-    $mail->Port = 1025;
-  } else {
-    $mail->isSendmail();
-  }
+  $mail->isSendmail();
 
   $mail->CharSet = 'UTF-8';
   $mail->setFrom($senderMail, $senderName);
@@ -169,11 +162,7 @@ function sendMail($destination, $subject, $message, $senderName, $senderMail) {
     $mail->addAddress(trim($address));
   }
 
-  if (isTestServer()) {
-    $mail->msgHTML("Test Mail");
-  } else {
-    $mail->msgHTML($message);
-  }
+  $mail->msgHTML($message);
 
   $mail->Subject = $subject;
   $mail->AltBody = $message;

@@ -22,6 +22,11 @@ $app->group('/results', function() {
     $mysql = init();
     $body = $request->getParsedBody();
 
+    if (is_null($body['given_result'])) {
+      $data['status'] = 'no_given_result';
+      return $response->withJson($data, 200, JSON_NUMERIC_CHECK);
+    }
+
     $attempt_count = getCount($mysql, "results r WHERE r.user_id = ? AND r.question_id = ?", [$body['user_id'], $body['question_id']]);
 
     $stmt = $mysql->prepare(
