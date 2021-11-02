@@ -3,6 +3,10 @@
 function getQuestionsFromList($mysql, $list) {
   $question_id_list = $list; // json_decode($request->getQueryParam('list'));
 
+  if (empty($question_id_list)) {
+    return [];
+  }
+
   $question_id_list_sql_params = [];
 
   $question_id_list_sql = '';
